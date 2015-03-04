@@ -1,0 +1,679 @@
+2014-03-26 14:29:24+0100 [-] LeapServerFactory starting on 9999
+2014-03-26 14:29:24+0100 [-] Starting factory <__main__.LeapServerFactory instance at 0x10e963710>
+2014-03-26 14:29:27+0100 [__main__.LeapServerFactory] Found image files: ['./img/meanings/5_1.png', './img/meanings/5_2.png', './img/meanings/5_3.png', './img/meanings/5_4.png', './img/meanings/5_5.png']
+2014-03-26 14:29:27+0100 [__main__.LeapServerFactory] Images in place!
+2014-03-26 14:29:27+0100 [__main__.LeapServerFactory] [['./img/meanings/5_5.png', './img/meanings/5_1.png', './img/meanings/5_3.png', './img/meanings/5_2.png', './img/meanings/5_4.png'], ['./img/meanings/3_1.png', './img/meanings/5_5.png', './img/meanings/5_2.png', './img/meanings/5_3.png', './img/meanings/1_1.png', './img/meanings/1_3.png', './img/meanings/3_5.png', './img/meanings/5_1.png', './img/meanings/5_4.png', './img/meanings/3_3.png', './img/meanings/1_5.png'], ['./img/meanings/3_1.png', './img/meanings/5_5.png', './img/meanings/5_4.png', './img/meanings/5_3.png', './img/meanings/5_2.png', './img/meanings/1_5.png', './img/meanings/1_1.png', './img/meanings/1_3.png', './img/meanings/3_5.png', './img/meanings/5_1.png', './img/meanings/3_3.png']]
+2014-03-26 14:29:27+0100 [__main__.LeapServerFactory] Connection with 127.0.0.1 is made
+2014-03-26 14:32:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:32:38+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:32:38+0100 [LeapServer,0,127.0.0.1] No response submitted, sending the same picture
+2014-03-26 14:32:38+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_5.png
+2014-03-26 14:32:44+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:32:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:33:17+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:33:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:33:25+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:33:25+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:33:25+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:33:25+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_1.png
+2014-03-26 14:33:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:33:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:33:45+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:33:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:33:53+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:33:53+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:33:53+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:33:53+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_3.png
+2014-03-26 14:33:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:34:02+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:34:10+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:34:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:34:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:34:19+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:34:19+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:34:19+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_2.png
+2014-03-26 14:34:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:34:25+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:34:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:34:33+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:34:33+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:34:33+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_4.png
+2014-03-26 14:34:45+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:34:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:34:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:34:52+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:34:52+0100 [LeapServer,0,127.0.0.1] End of pictures for this phase.
+2014-03-26 14:34:52+0100 [LeapServer,0,127.0.0.1] End of practice; now for the testing phase
+2014-03-26 14:35:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:35:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 1
+2014-03-26 14:35:03+0100 [LeapServer,0,127.0.0.1] Got answer 1 (expected 1).
+2014-03-26 14:35:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:35:05+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:35:05+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:35:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:35:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 2
+2014-03-26 14:35:11+0100 [LeapServer,0,127.0.0.1] Got answer 2 (expected 3).
+2014-03-26 14:35:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:35:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:35:13+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:35:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:35:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 0
+2014-03-26 14:35:19+0100 [LeapServer,0,127.0.0.1] Got answer 0 (expected 0).
+2014-03-26 14:35:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:35:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:35:21+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:35:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:35:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 4
+2014-03-26 14:35:37+0100 [LeapServer,0,127.0.0.1] Got answer 4 (expected 4).
+2014-03-26 14:35:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:35:39+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:35:39+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:35:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:35:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 2
+2014-03-26 14:35:47+0100 [LeapServer,0,127.0.0.1] Got answer 2 (expected 2).
+2014-03-26 14:35:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:35:49+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:35:49+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:35:49+0100 [LeapServer,0,127.0.0.1] End of practice, start the real phase.
+2014-03-26 14:36:00+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:36:00+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:36:00+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_5.png
+2014-03-26 14:36:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:36:05+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:36:16+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:36:16+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:36:16+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:36:16+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_1.png
+2014-03-26 14:36:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:36:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:36:27+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:36:27+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:36:27+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:36:27+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_3.png
+2014-03-26 14:36:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:36:35+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:36:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:36:44+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:36:49+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:36:49+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:36:49+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:36:49+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_2.png
+2014-03-26 14:36:56+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:36:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:37:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:37:06+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:37:06+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:37:06+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_4.png
+2014-03-26 14:37:10+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:37:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:37:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:37:19+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:37:19+0100 [LeapServer,0,127.0.0.1] End of pictures for this phase.
+2014-03-26 14:37:19+0100 [LeapServer,0,127.0.0.1] End of practice; now for the testing phase
+2014-03-26 14:37:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:37:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 3
+2014-03-26 14:37:29+0100 [LeapServer,0,127.0.0.1] Got answer 3 (expected 3).
+2014-03-26 14:37:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:37:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:37:31+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:37:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:37:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 0
+2014-03-26 14:37:37+0100 [LeapServer,0,127.0.0.1] Got answer 0 (expected 0).
+2014-03-26 14:37:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:37:39+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:37:39+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:37:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:37:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 2
+2014-03-26 14:37:52+0100 [LeapServer,0,127.0.0.1] Got answer 2 (expected 2).
+2014-03-26 14:37:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:37:54+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:37:54+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:37:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:37:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 4
+2014-03-26 14:37:59+0100 [LeapServer,0,127.0.0.1] Got answer 4 (expected 4).
+2014-03-26 14:37:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:38:01+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:38:01+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:38:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:38:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 1
+2014-03-26 14:38:06+0100 [LeapServer,0,127.0.0.1] Got answer 1 (expected 1).
+2014-03-26 14:38:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:38:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:38:08+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:38:08+0100 [LeapServer,0,127.0.0.1] End of test, end of phase.
+2014-03-26 14:38:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:38:58+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:38:58+0100 [LeapServer,0,127.0.0.1] No response submitted, sending the same picture
+2014-03-26 14:38:58+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_1.png
+2014-03-26 14:39:07+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:39:12+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:39:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:39:20+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:39:20+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:39:20+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_5.png
+2014-03-26 14:39:25+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:39:30+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:39:40+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:39:45+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:39:55+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:40:01+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:40:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:40:08+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:40:08+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:40:08+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_2.png
+2014-03-26 14:40:14+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:40:18+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:40:24+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:40:24+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:40:24+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:40:24+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_3.png
+2014-03-26 14:40:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:40:42+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:40:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:40:50+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:40:50+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:40:50+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_1.png
+2014-03-26 14:40:57+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:40:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:41:05+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:41:05+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:41:05+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:41:05+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_3.png
+2014-03-26 14:41:09+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:41:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:41:16+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:41:16+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:41:16+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:41:16+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_5.png
+2014-03-26 14:41:25+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:41:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:41:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:41:31+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:41:31+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:41:31+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_1.png
+2014-03-26 14:41:36+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:41:40+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:41:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:41:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:41:55+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:41:55+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:41:55+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:41:55+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_4.png
+2014-03-26 14:41:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:42:02+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:42:07+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:42:07+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:42:07+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:42:07+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_3.png
+2014-03-26 14:42:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:42:17+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:42:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:42:19+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:42:19+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:42:19+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_5.png
+2014-03-26 14:42:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:42:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:42:36+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:42:36+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:42:36+0100 [LeapServer,0,127.0.0.1] End of pictures for this phase.
+2014-03-26 14:42:36+0100 [LeapServer,0,127.0.0.1] End of practice; now for the testing phase
+2014-03-26 14:42:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:42:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 3
+2014-03-26 14:42:48+0100 [LeapServer,0,127.0.0.1] Got answer 3 (expected 3).
+2014-03-26 14:42:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:42:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:42:50+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:42:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:42:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 5
+2014-03-26 14:42:59+0100 [LeapServer,0,127.0.0.1] Got answer 5 (expected 5).
+2014-03-26 14:42:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:43:01+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:43:01+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:43:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:43:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 0
+2014-03-26 14:43:13+0100 [LeapServer,0,127.0.0.1] Got answer 0 (expected 0).
+2014-03-26 14:43:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:43:15+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:43:15+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:43:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:43:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 4
+2014-03-26 14:43:21+0100 [LeapServer,0,127.0.0.1] Got answer 4 (expected 4).
+2014-03-26 14:43:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:43:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:43:23+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:43:41+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:43:41+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 2
+2014-03-26 14:43:41+0100 [LeapServer,0,127.0.0.1] Got answer 2 (expected 2).
+2014-03-26 14:43:41+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:43:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:43:43+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:43:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:43:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 1
+2014-03-26 14:43:52+0100 [LeapServer,0,127.0.0.1] Got answer 1 (expected 1).
+2014-03-26 14:43:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:43:54+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:43:54+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:43:54+0100 [LeapServer,0,127.0.0.1] End of practice, start the real phase.
+2014-03-26 14:44:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:44:11+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:44:11+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_1.png
+2014-03-26 14:44:17+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:44:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:44:34+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:44:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:44:40+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:44:40+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:44:40+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:44:40+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_5.png
+2014-03-26 14:44:44+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:44:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:45:00+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:45:00+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:45:00+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:45:00+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_2.png
+2014-03-26 14:45:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:45:12+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:45:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:45:20+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:45:20+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:45:20+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_3.png
+2014-03-26 14:45:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:45:27+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:45:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:45:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:45:42+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:45:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:45:57+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:45:57+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:45:57+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:45:57+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_1.png
+2014-03-26 14:46:00+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:46:05+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:46:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:46:08+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:46:08+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:46:08+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_3.png
+2014-03-26 14:46:12+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:46:16+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:46:25+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:46:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:46:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:46:38+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:46:38+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:46:38+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_5.png
+2014-03-26 14:46:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:46:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:46:53+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:46:53+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:46:53+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:46:53+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_1.png
+2014-03-26 14:46:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:46:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:46:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:47:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:47:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:47:11+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:47:11+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:47:11+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_4.png
+2014-03-26 14:47:16+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:47:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:47:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:47:33+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:47:33+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:47:33+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_3.png
+2014-03-26 14:47:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:47:41+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:47:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:47:43+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:47:43+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:47:43+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_5.png
+2014-03-26 14:47:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:47:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:47:55+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:47:55+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:47:55+0100 [LeapServer,0,127.0.0.1] End of pictures for this phase.
+2014-03-26 14:47:55+0100 [LeapServer,0,127.0.0.1] End of practice; now for the testing phase
+2014-03-26 14:48:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:48:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 5
+2014-03-26 14:48:06+0100 [LeapServer,0,127.0.0.1] Got answer 5 (expected 5).
+2014-03-26 14:48:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:48:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:48:08+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:48:18+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:48:18+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 0
+2014-03-26 14:48:18+0100 [LeapServer,0,127.0.0.1] Got answer 0 (expected 0).
+2014-03-26 14:48:18+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:48:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:48:20+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:48:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:48:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 3
+2014-03-26 14:48:29+0100 [LeapServer,0,127.0.0.1] Got answer 3 (expected 3).
+2014-03-26 14:48:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:48:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:48:31+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:48:42+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:48:42+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 1
+2014-03-26 14:48:42+0100 [LeapServer,0,127.0.0.1] Got answer 1 (expected 1).
+2014-03-26 14:48:42+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:48:44+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:48:44+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:48:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:48:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 2
+2014-03-26 14:48:50+0100 [LeapServer,0,127.0.0.1] Got answer 2 (expected 2).
+2014-03-26 14:48:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:48:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:48:52+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:49:01+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:49:01+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 0
+2014-03-26 14:49:01+0100 [LeapServer,0,127.0.0.1] Got answer 0 (expected 4).
+2014-03-26 14:49:01+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:49:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:49:03+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:49:03+0100 [LeapServer,0,127.0.0.1] End of test, end of phase.
+2014-03-26 14:50:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:50:08+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:50:08+0100 [LeapServer,0,127.0.0.1] No response submitted, sending the same picture
+2014-03-26 14:50:08+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_1.png
+2014-03-26 14:50:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:50:32+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:50:36+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:50:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:50:51+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:50:55+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:51:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:51:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:51:28+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:51:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:51:36+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:51:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:51:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:51:40+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:51:42+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:51:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:51:54+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:52:09+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:52:16+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:52:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:52:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:52:27+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:52:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:52:31+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:52:31+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:52:31+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_5.png
+2014-03-26 14:52:34+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:52:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:52:44+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:52:46+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:52:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:52:54+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:52:57+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:53:03+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:53:04+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:53:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:53:07+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:53:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:53:16+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:53:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:53:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:53:25+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:53:34+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:53:34+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:53:34+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:53:34+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_4.png
+2014-03-26 14:53:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:53:41+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:53:44+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:53:44+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:53:44+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:53:44+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_3.png
+2014-03-26 14:53:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:53:51+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:53:53+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:53:53+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:53:53+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:53:53+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_2.png
+2014-03-26 14:53:57+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:54:02+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:54:05+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:54:05+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:54:05+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:54:05+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_5.png
+2014-03-26 14:54:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:54:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:54:17+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:54:17+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:54:17+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:54:17+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_1.png
+2014-03-26 14:54:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:54:24+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:54:26+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:54:26+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:54:26+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:54:26+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_3.png
+2014-03-26 14:54:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:54:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:54:35+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:54:35+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:54:35+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:54:35+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_5.png
+2014-03-26 14:54:39+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:54:45+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:54:49+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:54:49+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:54:49+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:54:49+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_1.png
+2014-03-26 14:54:51+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:54:57+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:54:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:55:02+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:55:04+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:55:09+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:55:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:55:11+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:55:11+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:55:11+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_3.png
+2014-03-26 14:55:16+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:55:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:55:24+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:55:24+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:55:24+0100 [LeapServer,0,127.0.0.1] End of pictures for this phase.
+2014-03-26 14:55:24+0100 [LeapServer,0,127.0.0.1] End of practice; now for the testing phase
+2014-03-26 14:55:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:55:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 3
+2014-03-26 14:55:33+0100 [LeapServer,0,127.0.0.1] Got answer 3 (expected 3).
+2014-03-26 14:55:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:55:35+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:55:35+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:55:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:55:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 5
+2014-03-26 14:55:48+0100 [LeapServer,0,127.0.0.1] Got answer 5 (expected 5).
+2014-03-26 14:55:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:55:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:55:50+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:55:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:55:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 7
+2014-03-26 14:55:58+0100 [LeapServer,0,127.0.0.1] Got answer 7 (expected 7).
+2014-03-26 14:55:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:56:00+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:56:00+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:56:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:56:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 10
+2014-03-26 14:56:06+0100 [LeapServer,0,127.0.0.1] Got answer 10 (expected 2).
+2014-03-26 14:56:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:56:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:56:08+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:56:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:56:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 8
+2014-03-26 14:56:21+0100 [LeapServer,0,127.0.0.1] Got answer 8 (expected 8).
+2014-03-26 14:56:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:56:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:56:23+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:56:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:56:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 0
+2014-03-26 14:56:33+0100 [LeapServer,0,127.0.0.1] Got answer 0 (expected 0).
+2014-03-26 14:56:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:56:35+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:56:35+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:56:46+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:56:46+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 4
+2014-03-26 14:56:46+0100 [LeapServer,0,127.0.0.1] Got answer 4 (expected 4).
+2014-03-26 14:56:46+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:56:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:56:48+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:56:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:56:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 8
+2014-03-26 14:56:59+0100 [LeapServer,0,127.0.0.1] Got answer 8 (expected 1).
+2014-03-26 14:56:59+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:57:01+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:57:01+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:57:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 14:57:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 6
+2014-03-26 14:57:11+0100 [LeapServer,0,127.0.0.1] Got answer 6 (expected 6).
+2014-03-26 14:57:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 14:57:13+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:57:13+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:57:13+0100 [LeapServer,0,127.0.0.1] End of practice, start the real phase.
+2014-03-26 14:57:21+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:57:21+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:57:21+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_1.png
+2014-03-26 14:57:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:57:35+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:57:36+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:57:36+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:57:36+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:57:36+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_5.png
+2014-03-26 14:57:43+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:57:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:57:49+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:57:57+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:58:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:58:10+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:58:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:58:20+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:58:20+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:58:20+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_4.png
+2014-03-26 14:58:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:58:27+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:58:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:58:29+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:58:29+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:58:29+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_3.png
+2014-03-26 14:58:32+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:58:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:58:39+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:58:39+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:58:39+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:58:39+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_2.png
+2014-03-26 14:58:41+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:58:46+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:58:47+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:58:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:58:51+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:58:56+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:59:06+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:59:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:59:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:59:19+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:59:19+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:59:19+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_5.png
+2014-03-26 14:59:23+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:59:27+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:59:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:59:29+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:59:29+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:59:29+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_1.png
+2014-03-26 14:59:32+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:59:35+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:59:38+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:59:41+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:59:49+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:59:49+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:59:49+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:59:49+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/1_3.png
+2014-03-26 14:59:52+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 14:59:57+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 14:59:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 14:59:58+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 14:59:58+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 14:59:58+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_5.png
+2014-03-26 15:00:02+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 15:00:08+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 15:00:19+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:00:19+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:00:19+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 15:00:19+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/5_1.png
+2014-03-26 15:00:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 15:00:27+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 15:00:29+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 15:00:37+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 15:00:45+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:00:45+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:00:45+0100 [LeapServer,0,127.0.0.1] Redundancy check for next pic passed
+2014-03-26 15:00:45+0100 [LeapServer,0,127.0.0.1] Sending next picture: ./img/meanings/3_3.png
+2014-03-26 15:00:49+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start recording
+2014-03-26 15:00:54+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End recording
+2014-03-26 15:00:55+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:00:55+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:00:55+0100 [LeapServer,0,127.0.0.1] End of pictures for this phase.
+2014-03-26 15:00:55+0100 [LeapServer,0,127.0.0.1] End of practice; now for the testing phase
+2014-03-26 15:01:09+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:01:09+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 0
+2014-03-26 15:01:09+0100 [LeapServer,0,127.0.0.1] Got answer 0 (expected 0).
+2014-03-26 15:01:09+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:01:11+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:01:11+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:01:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:01:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 8
+2014-03-26 15:01:22+0100 [LeapServer,0,127.0.0.1] Got answer 8 (expected 8).
+2014-03-26 15:01:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:01:24+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:01:24+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:01:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:01:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 5
+2014-03-26 15:01:31+0100 [LeapServer,0,127.0.0.1] Got answer 5 (expected 5).
+2014-03-26 15:01:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:01:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:01:33+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:01:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:01:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 6
+2014-03-26 15:01:48+0100 [LeapServer,0,127.0.0.1] Got answer 6 (expected 6).
+2014-03-26 15:01:48+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:01:50+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:01:50+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:01:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:01:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 4
+2014-03-26 15:01:58+0100 [LeapServer,0,127.0.0.1] Got answer 4 (expected 4).
+2014-03-26 15:01:58+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:02:00+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:02:00+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:02:10+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:02:10+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 7
+2014-03-26 15:02:10+0100 [LeapServer,0,127.0.0.1] Got answer 7 (expected 7).
+2014-03-26 15:02:10+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:02:12+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:02:12+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:02:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:02:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 1
+2014-03-26 15:02:20+0100 [LeapServer,0,127.0.0.1] Got answer 1 (expected 1).
+2014-03-26 15:02:20+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:02:22+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:02:22+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:02:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:02:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 2
+2014-03-26 15:02:31+0100 [LeapServer,0,127.0.0.1] Got answer 2 (expected 2).
+2014-03-26 15:02:31+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:02:33+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:02:33+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:02:40+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Start response
+2014-03-26 15:02:40+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> 3
+2014-03-26 15:02:40+0100 [LeapServer,0,127.0.0.1] Got answer 3 (expected 3).
+2014-03-26 15:02:40+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> End response
+2014-03-26 15:02:42+0100 [LeapServer,0,127.0.0.1] Received: <127.0.0.1> Request picture
+2014-03-26 15:02:42+0100 [LeapServer,0,127.0.0.1] nextPicture() called
+2014-03-26 15:02:42+0100 [LeapServer,0,127.0.0.1] End of test, end of phase.
+2014-03-26 15:02:42+0100 [LeapServer,0,127.0.0.1] End of experiment.
+2014-03-26 15:02:44+0100 [LeapServer,0,127.0.0.1] Connection with 127.0.0.1 is lost because: [Failure instance: Traceback (failure with no frames): <class 'twisted.internet.error.ConnectionDone'>: Connection was closed cleanly.
+	]
+2014-03-26 16:01:03+0100 [-] Received SIGINT, shutting down.
+2014-03-26 16:01:03+0100 [__main__.LeapServerFactory] (TCP Port 9999 Closed)
+2014-03-26 16:01:03+0100 [__main__.LeapServerFactory] Stopping factory <__main__.LeapServerFactory instance at 0x10e963710>

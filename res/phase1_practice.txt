@@ -1,0 +1,2 @@
+ 
+This is the content of phase1_practice.txt

@@ -1,0 +1,55 @@
+==> logs/12301516514.1.FAILURE <==
+2014-10-06 12:34:57.250677	Phase0 failed to produce any HMMs.
+2014-10-06 12:54:16.544954	Phase1 failed to produce any HMMs.
+==> logs/12301720514.1.FAILURE <==
+2014-10-06 13:13:00.325242	Phase0 failed to produce any HMMs.
+2014-10-06 13:21:55.333310	Phase1 failed to produce any HMMs.
+==> logs/12301921514.1.FAILURE <==
+2014-10-06 13:46:47.987681	Phase0 failed to produce any HMMs.
+2014-10-06 14:10:16.769271	Phase1 failed to produce any HMMs.
+==> logs/123R0137514.1r.FAILURE <==
+2014-10-06 15:06:57.826270	Phase0 failed to produce any HMMs.
+==> logs/123R0147514.1r.FAILURE <==
+2014-10-06 15:26:11.381543	Phase0 failed to produce any HMMs.
+==> logs/123r01619514.1r.FAILURE <==
+2014-10-06 15:59:50.337668	Phase0 failed to produce any HMMs.
+==> logs/123r01821514.1r.FAILURE <==
+2014-10-06 16:48:17.676771	Phase0 failed to produce any HMMs.
+==> logs/123R0223614.1r.FAILURE <==
+2014-10-06 17:12:51.257246	Phase0 failed to produce any HMMs.
+==> logs/1320116514.2.FAILURE <==
+2014-10-06 18:08:56.215954	Phase0 failed to produce any HMMs.
+2014-10-06 18:22:51.395970	Phase2 failed to produce any HMMs.
+==> logs/1320149514.2.FAILURE <==
+2014-10-06 18:37:35.187213	Phase0 failed to produce any HMMs.
+2014-10-06 19:05:50.054510	Phase2 failed to produce any HMMs.
+==> logs/13201516514.2.FAILURE <==
+2014-10-06 19:15:05.256210	Phase0 failed to produce any HMMs.
+2014-10-06 19:36:23.553702	Phase2 failed to produce any HMMs.
+==> logs/13201720514.2.FAILURE <==
+2014-10-06 19:38:30.957155	Phase0 failed to produce any HMMs.
+2014-10-06 19:40:53.455172	Phase2 failed to produce any HMMs.
+==> logs/13201820514.2.FAILURE <==
+2014-10-06 19:49:02.891012	Phase0 failed to produce any HMMs.
+2014-10-06 20:14:07.338184	Phase2 failed to produce any HMMs.
+==> logs/13202021514.2.FAILURE <==
+2014-10-06 20:23:29.830113	Phase0 failed to produce any HMMs.
+2014-10-06 20:46:26.637759	Phase2 failed to produce any HMMs.
+==> logs/13202126514.2.FAILURE <==
+2014-10-06 20:53:07.133278	Phase0 failed to produce any HMMs.
+2014-10-06 21:05:47.180229	Phase2 failed to produce any HMMs.
+==> logs/132R0128514.2r.FAILURE <==
+2014-10-06 21:21:42.199022	Phase0 failed to produce any HMMs.
+2014-10-06 22:07:10.438289	Phase2 failed to produce any HMMs.
+==> logs/132R0139514.2r.FAILURE <==
+2014-10-06 22:37:47.906982	Phase0 failed to produce any HMMs.
+2014-10-06 23:40:49.376353	Phase2 failed to produce any HMMs.
+==> logs/132r01513514.2r.FAILURE <==
+2014-10-06 23:49:20.329319	Phase0 failed to produce any HMMs.
+2014-10-07 00:06:47.404083	Phase2 failed to produce any HMMs.
+==> logs/132r01619514.2r.FAILURE <==
+2014-10-07 00:14:48.071949	Phase0 failed to produce any HMMs.
+2014-10-07 00:27:59.087496	Phase2 failed to produce any HMMs.
+==> logs/132r01921514.2r.FAILURE <==
+2014-10-07 00:44:17.667624	Phase0 failed to produce any HMMs.
+2014-10-07 01:26:40.795586	Phase2 failed to produce any HMMs.
