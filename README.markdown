@@ -15,7 +15,7 @@ LeapSDK binaries for OS X, Windows and Linux are included.
 * portaudio
 * twisted
 * jsonpickle
-* pygtk
+* PyQT
 * pandas
 
 ### Output ###
