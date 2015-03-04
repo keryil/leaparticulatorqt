@@ -471,7 +471,7 @@ if __name__ == '__main__':
         print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
         sys.exit(-1)
     else:
-        prefix = ""
+        prefix = None
         if len(sys.argv) > 2:
             prefix = sys.argv[2]
         from os.path import join
