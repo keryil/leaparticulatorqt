@@ -264,8 +264,9 @@ class LeapServer(basic.LineReceiver):
                             log.msg("End of experiment.")
                             self.send_all(Constants.EXIT)
                             import time
+                            from os.path import join
                             session_id = self.factory.uid
-                            with open("logs/%s.%s.exp.log" % (session_id, self.factory.condition), "w") as f:
+                            with open(join("logs", self.factory.log_prefix, "%s.%s.exp.log" % (session_id, self.factory.condition)), "w") as f:
                                 f.write(jsonpickle.encode(self.factory.images))
                                 f.write("\n")
                                 f.write(
@@ -337,8 +338,10 @@ class LeapServerFactory(protocol.Factory):
     test_results_practice = {}
     condition = None
 
-    def __init__(self, ui=None, condition=None):
-        import time
+    def __init__(self, ui=None, condition=None, prefix="."):
+        import time, os
+        from os.path import join, isdir
+        
         self.clients = set()
         self.ui = ui
         self.uid = time.strftime("%y%m%d.%H%M%S")
@@ -347,10 +350,12 @@ class LeapServerFactory(protocol.Factory):
             raise Exception(
                 "Invalid condition %s. Should be one of %s" % (condition, conditions))
         self.condition = condition
+        if not isdir(join("logs", prefix)):
+            os.mkdir(join("logs", prefix))
 
         log.startLogging(sys.stdout)
         log.addObserver(
-            FileLogObserver(open("logs/%s.log" % self.uid, 'w')).emit)
+            FileLogObserver(open(join("logs", prefix, "%s.log" % self.uid), 'w')).emit)
         log.msg("Condition: %s" % condition)
 
     def buildProtocol(self, addr):
@@ -462,9 +467,17 @@ def get_server_instance():
 if __name__ == '__main__':
     import sys
     endpoint = TCP4ServerEndpoint(reactor, Constants.leap_port)
-    try:
-        endpoint.listen(LeapServerFactory(condition=sys.argv[1]))
-    except IndexError:
+    if len(sys.argv) < 2:
         print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
         sys.exit(-1)
+    else:
+        prefix = "."
+        if len(sys.argv) > 2:
+            prefix = sys.argv[2]
+        from os.path import join
+        from os import getcwd
+        print "**** IMPORTANT: Log folder is %s ****" % join(getcwd(), "logs", prefix)
+        endpoint.listen(LeapServerFactory(condition=sys.argv[1], prefix=prefix))
+    
+        
     reactor.run()
