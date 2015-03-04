@@ -350,8 +350,8 @@ class LeapServerFactory(protocol.Factory):
             raise Exception(
                 "Invalid condition %s. Should be one of %s" % (condition, conditions))
         self.condition = condition
-        if not isdir(join("logs", prefix)):
-            os.mkdir(join("logs", prefix))
+        if not isdir(join(os.getcwd(), "logs", prefix)):
+            os.mkdir(join(os.getcwd(), "logs", prefix))
 
         log.startLogging(sys.stdout)
         log.addObserver(
