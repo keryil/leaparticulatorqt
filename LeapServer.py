@@ -338,7 +338,7 @@ class LeapServerFactory(protocol.Factory):
     test_results_practice = {}
     condition = None
 
-    def __init__(self, ui=None, condition=None, prefix="."):
+    def __init__(self, ui=None, condition=None, prefix=""):
         import time, os
         from os.path import join, isdir
         
@@ -471,7 +471,7 @@ if __name__ == '__main__':
         print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
         sys.exit(-1)
     else:
-        prefix = "."
+        prefix = ""
         if len(sys.argv) > 2:
             prefix = sys.argv[2]
         from os.path import join
