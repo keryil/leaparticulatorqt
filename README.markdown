@@ -30,9 +30,9 @@ You should change Constants.py file on client-side to specify the server ip/port
 
 1. Connect device (1.5. Check if it works via Visualizer)
 
-2. Launch LeapServer.py
+2. Launch LeapServer.py [condition] [log_directory_prefix="."]
 
-3. Launch ClientUI.py
+3. Launch QTClientUI.py
 
 4. Have fun.
 
