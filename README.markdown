@@ -17,6 +17,7 @@ LeapSDK binaries for OS X, Windows and Linux are included.
 * jsonpickle
 * PyQT
 * pandas
+* qt4reactor
 
 ### Output ###
 Most logging is to stdout which should be fixed. At the end of the experiment, the server dumps an %TIMEDATE%.exp.log file that consists of the image list, the learning phase data and
