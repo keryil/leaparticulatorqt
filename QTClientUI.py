@@ -362,7 +362,7 @@ class ClientUI(AbstractClientUI):
         if self.isPractice:
             self.phase += 1
         print "Phase %d" % self.phase
-        if self.phase == 0:
+        if self.phase == 0 and practice:
             self.show_window(self.infoWindow, mode=Constants.MOD_FIRSTSCREEN)
         else:
             self.show_window(self.infoWindow, mode=Constants.MOD_PREPHASE)
@@ -390,7 +390,7 @@ class ClientUI(AbstractClientUI):
         # this makes sure we don't lose the question during
         # the pre-test info screen
         if self.activeWindow != self.testWindow:
-            print "Waiting for test window"
+            # print "Waiting for test window"
             QtCore.QTimer.singleShot(.5, lambda: self.on_new_test_question(
                 question))
             return
