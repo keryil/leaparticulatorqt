@@ -251,10 +251,7 @@ class ClientUI(AbstractClientUI):
         get = getFunction(self.testWindow)
         btn = get(QtGui.QPushButton, "btnSubmit")
         group = get(QtGui.QGroupBox, "groupBox")
-        group.setStyleSheet("color: white")
-        # ; color: black")  # ;color: white;")
-        # hele hele
-
+        
         def submit():
             given_answer = self.current_question.given_answer
             if given_answer is None:
