@@ -1,1 +1,5 @@
-This is the content of final.txt
+And that’s the end!
+
+Thanks for taking part in the experiment.
+
+Please go and find the experimenter to receive gratitude and payment.
