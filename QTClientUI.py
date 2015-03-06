@@ -362,7 +362,8 @@ class ClientUI(AbstractClientUI):
         self.send(Constants.REQ_NEXT_PIC)
 
     def go_test(self):
-        self.show_window(self.testWindow)
+        self.show_window(self.infoWindow, mode=Constants.MOD_PRETEST)
+        # self.show_window(self.testWindow)
 
     def getCheckedButton(self):
         get = getFunction(self.testWindow)
@@ -372,7 +373,12 @@ class ClientUI(AbstractClientUI):
                 return btn
 
     def on_new_test_question(self, question):
-        assert self.activeWindow == self.testWindow
+        # this makes sure we don't lose the question during 
+        # the pre-test info screen
+        if self.activeWindow != self.testWindow:
+            print "Waiting for test window"
+            QtCore.QTimer.singleShot(.5, lambda: self.on_new_test_question(question))
+            return
         self.setupWindow(self.testWindow)
         self.current_question = question
         self.correct_button = None
