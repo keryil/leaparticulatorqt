@@ -222,6 +222,7 @@ class ClientUI(AbstractClientUI):
         # set the meaning space image
         label=self.infoWindow.findChildren(
             QtGui.QLabel, "lblMeaningSpace")[0]
+        label.pixmap = None
         dimension="dimensions"
         if self.phase == 0:
             dimension="dimension"
