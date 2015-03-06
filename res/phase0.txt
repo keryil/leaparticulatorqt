@@ -1,1 +1,11 @@
- This is the content of phase0.txt
+This is now the experimental round for the same squares you had in the practice round. 
+
+To generate a signal is the same:
+
+1. press Record
+2. create your signal
+3. press Stop
+
+You may play your signal back by pressing Play. You may rerecord your signal if you are not happy. 
+
+When you have finished press Submit.

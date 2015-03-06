@@ -1,1 +1,13 @@
-This is the content of firstscreen.txt
+Hello!
+
+And welcome to the experiment.
+
+Please read all of the text throughout the experiment. 
+
+Throughout, you will see squares which you need to create signals for. Make sure you can remember your signal for each square as you will be asked to recognise your signals during the experiment as well!
+
+In the experiment there are 3 phases, each phase has a practice session and an experimental sessions, and each session has a signal creation task and a signal recognition task. 
+
+You will create signals throughout using the Leap Motion detector in front of you. This is an infrared sensor which can sense where your hand above of it. You should move your hand either left or right to manipulate the signal. You can try this now.
+
+Please press Okay when you are ready to start the experiment.

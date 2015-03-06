@@ -1,2 +1,6 @@
  
-This is the content of phase2_practice.txt
+You are now going to do the practice session for phase 3! 
+
+You will be creating signals for different squares.
+
+The signals work in exactly the same way. 

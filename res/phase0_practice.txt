@@ -1,5 +1,3 @@
-
-
 To generate a signal throughout this experiment:
 
 1. press Record

@@ -1,1 +1,5 @@
- This is the content of phase2.txt
+This is now the experimental round for the same squares you had in the practice round for phase 3.
+
+Signals are generated in the same way.
+
+The squares are the same.

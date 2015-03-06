@@ -1,1 +1,11 @@
- This is test0_practice.
+This is (practice) test round for phase 3.
+
+You can hear a signal you have created by pressing Play.
+
+You must choose which square you think this signal is for. 
+
+Then press Submit.
+
+If you are correct, you will see a big green tick. 
+
+If you are wrong, you will see a big red cross. 
