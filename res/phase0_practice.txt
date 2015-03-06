@@ -1,2 +1,13 @@
- 
-This is the content of phase0_practice.txt
+
+
+To generate a signal throughout this experiment:
+
+1. press Record
+2. create your signal
+3. press Stop
+
+You may play your signal back by pressing Play. You may rerecord your signal if you are not happy. 
+
+When you have finished press Submit.
+
+You will be creating signals for different squares. 
