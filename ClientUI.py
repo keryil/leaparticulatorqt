@@ -216,7 +216,7 @@ class ClientUI(AbstractClientUI):
         self.testingWindow.queue_draw()
 
     def on_click_test_picture(self, widget, img):
-        self.question.given_answer = int(widget.get_name()[6:])#self.images[self.phase-1].index(img.filename)
+        self.question.given_answer = int(widget.get_name()[6:])
         self.btnSubmitTest.set_sensitive(True)
         for p in self.answerButtons:
             self.change_widget_background(p, "grey")

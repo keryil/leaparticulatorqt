@@ -22,10 +22,18 @@ class Meaning(object):
         self.size = size
         self.color = color
         self.shade = shade
-        self.filename = join(MEANING_DIR, "%s%s%s.%s" %
-                             (size, color, shade, IMG_EXTENSION))
-        # print join(getcwd(), self.filename)
-        assert path.isfile(join(getcwd(), self.filename))
+        
+    def filename(self):
+        """
+        Generates the filename of the image dynamically using the 
+        Constants module and OS-specific path settings of os.path
+        module.
+        """
+        fn = join(MEANING_DIR, "%s%s%s.%s" %
+                             (size, color, shade, IMG_EXTENSION)) 
+        assert path.isfile(join(getcwd(), fn))
+        return fn
+
 
     def FromFile(filename):
         name = filename.split(sep)[-1].split('.')[0]
@@ -36,7 +44,7 @@ class Meaning(object):
         """
         Tint is a tuple (r,g,b,a).
         """
-        base = QtGui.QPixmap(self.filename)
+        base = QtGui.QPixmap(self.filename())
         px = base
         if tint is not None:
             px = QtGui.QPixmap(250,250)
