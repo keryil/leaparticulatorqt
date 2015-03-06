@@ -109,6 +109,7 @@ TEST_WIN = 'testingWindow.ui'
 MOD_PREPHASE = "mod_prephase"
 MOD_PRETEST = "mod_pretest"
 MOD_EXIT = "mod_exit"
+MOD_FIRSTSCREEN = "mod_firstscreen"
 
 # delay between submitting a test answer and 
 # the presentation of the next question in msec

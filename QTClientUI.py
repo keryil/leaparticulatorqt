@@ -120,6 +120,8 @@ class ClientUI(AbstractClientUI):
                 submit.setEnabled(last_submit_state)
                 disconnect(play)
                 connect(play, "clicked()", fn_play)
+                if not record:
+                    submit.setEnabled(True)
             play.setText("Stop")
             disconnect(play)
             last_submit_state = submit.isEnabled()
@@ -190,8 +192,8 @@ class ClientUI(AbstractClientUI):
 
     def setupInfoWindow(self, mode=Constants.MOD_PREPHASE):
         """
-        Sets up the info window for whatever purpose, purposes 
-        are given with the parameter 'modes', 
+        Sets up the info window for whatever purpose, purposes
+        are given with the parameter 'modes',
         """
         if mode is None:
             mode = Constants.MOD_PREPHASE
@@ -203,31 +205,38 @@ class ClientUI(AbstractClientUI):
             res_name = "test%d" % self.phase
         elif mode == Constants.MOD_EXIT:
             res_name = "final"
+        elif mode == Constants.MOD_FIRSTSCREEN:
+            res_name = "firstscreen"
 
-        if self.isPractice and mode != Constants.MOD_EXIT:
+        first_or_last = mode in (Constants.MOD_EXIT, Constants.MOD_FIRSTSCREEN)
+
+        if self.isPractice and not first_or_last:
             res_name += "_practice"
-        info = loadFromRes(res_name)
-        label = self.infoWindow.findChildren(QtGui.QLabel, "lblInfo")[0]
-        if self.isPractice and mode != Constants.MOD_EXIT:
-            info = "PRACTICE ROUND: " + info
+
+        info=loadFromRes(res_name)
+        label=self.infoWindow.findChildren(QtGui.QLabel, "lblInfo")[0]
+        if self.isPractice and not first_or_last:
+            info="PRACTICE ROUND: " + info
         label.setText(info)
 
         # set the meaning space image
-        label = self.infoWindow.findChildren(
+        label=self.infoWindow.findChildren(
             QtGui.QLabel, "lblMeaningSpace")[0]
-        dimension = "dimensions"
+        dimension="dimensions"
         if self.phase == 0:
-            dimension = "dimension"
-        filename = os.path.join(os.getcwd(), Constants.MEANING_DIR,
-                                "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
-        print "Image: %s" % filename
-        pixmap = QtGui.QPixmap(filename)
-        # print "Pixmap: %s" % pixmap
-        label.setPixmap(pixmap)
-        label.repaint()
+            dimension="dimension"
+
+        if not first_or_last:
+            filename=os.path.join(os.getcwd(), Constants.MEANING_DIR,
+                                    "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
+            print "Image: %s" % filename
+            pixmap=QtGui.QPixmap(filename)
+            # print "Pixmap: %s" % pixmap
+            label.setPixmap(pixmap)
+            label.repaint()
 
         # connect the button clicked signal
-        button = self.infoWindow.findChildren(QtGui.QPushButton, "btnOkay")[0]
+        button=self.infoWindow.findChildren(QtGui.QPushButton, "btnOkay")[0]
         disconnect(button)
 
         # self.connection.factory.mode == Constants.LEARN:
@@ -244,18 +253,22 @@ class ClientUI(AbstractClientUI):
         elif mode == Constants.MOD_EXIT:
             connect(
                 button, "clicked()", lambda: QtCore.QCoreApplication.exit())
+        elif mode == Constants.MOD_FIRSTSCREEN:
+            connect( 
+                button, "clicked()", lambda: self.show_window(self.infoWindow, 
+                    mode=Constants.MOD_PREPHASE))
 
     def setupTestWindow(self):
         get = getFunction(self.testWindow)
         btn = get(QtGui.QPushButton, "btnSubmit")
         group = get(QtGui.QGroupBox, "groupBox")
-        group.setStyleSheet("color: white")
-        # ; color: black")  # ;color: white;")
-        # hele hele
 
         def submit():
-            success = (self.target_meaning == self.given_meaning)
             given_answer = self.current_question.given_answer
+            if given_answer is None:
+                print "Cannot submit before participant chooses an answer."
+                return
+            success = (self.target_meaning == self.given_meaning)
             assert given_answer is not None
             assert success == (
                 self.current_question.given_answer == self.current_question.answer)
@@ -282,12 +295,21 @@ class ClientUI(AbstractClientUI):
 
         disconnect(btn)
         connect(btn, "clicked()", submit)
+
+        btn.setEnabled(False)
+
         for i in range(1, 5):
-            btn = get(QtGui.QPushButton, "pushButton_%d" % (i))
-            btn.setAutoExclusive(False)
-            btn.setChecked(False)
-            btn.setAutoExclusive(True)
+            btn_ = get(QtGui.QPushButton, "pushButton_%d" % (i))
+            btn_.setAutoExclusive(False)
+            btn_.setChecked(False)
+            btn_.setAutoExclusive(True)
         self.theremin.mute()
+
+        play = get(QtGui.QPushButton, 'btnPlay')
+
+        def enable_submit():
+            btn.setEnabled(True)
+        connect(play, "clicked()", enable_submit)
 
     def on_new_picture(self, data):
         """
@@ -340,7 +362,10 @@ class ClientUI(AbstractClientUI):
         if self.isPractice:
             self.phase += 1
         print "Phase %d" % self.phase
-        self.show_window(self.infoWindow, mode=Constants.MOD_PREPHASE)
+        if self.phase == 0:
+            self.show_window(self.infoWindow, mode=Constants.MOD_FIRSTSCREEN)
+        else:
+            self.show_window(self.infoWindow, mode=Constants.MOD_PREPHASE)
 
     def extend_last_signal(self, pickled_frame):
         if self.isRecording:
@@ -351,17 +376,24 @@ class ClientUI(AbstractClientUI):
         self.send(Constants.REQ_NEXT_PIC)
 
     def go_test(self):
-        self.show_window(self.testWindow)
+        self.show_window(self.infoWindow, mode=Constants.MOD_PRETEST)
+        # self.show_window(self.testWindow)
 
     def getCheckedButton(self):
         get = getFunction(self.testWindow)
-        for i in range(1,5):
+        for i in range(1, 5):
             btn = get(QtGui.QPushButton, "pushButton_%d" % (i))
             if btn.isChecked():
                 return btn
 
     def on_new_test_question(self, question):
-        assert self.activeWindow == self.testWindow
+        # this makes sure we don't lose the question during
+        # the pre-test info screen
+        if self.activeWindow != self.testWindow:
+            print "Waiting for test window"
+            QtCore.QTimer.singleShot(.5, lambda: self.on_new_test_question(
+                question))
+            return
         self.setupWindow(self.testWindow)
         self.current_question = question
         self.correct_button = None
@@ -378,7 +410,7 @@ class ClientUI(AbstractClientUI):
             print "Selected %d" % meaning_id
             self.current_question.given_answer = meaning_id
             self.given_meaning = self.images[self.phase][meaning_id]
-            get(QtGui.QPushButton, "btnSubmit").setEnabled(True)
+            # get(QtGui.QPushButton, "btnSubmit").setEnabled(True)
 
         for i, meaning in zip(range(1, len(question.pics) + 1), question.pics):
             print i, meaning
@@ -391,7 +423,8 @@ class ClientUI(AbstractClientUI):
             # btn.setText(str(meaning_obj) + "(%d)" % meaning)
 
             disconnect(btn)
-            connect(btn, signal="clicked()", slot="map()", widget2=self.buttonSignalMapper)
+            connect(btn, signal="clicked()", slot="map()",
+                    widget2=self.buttonSignalMapper)
 
             self.buttonSignalMapper.setMapping(btn, int(meaning))
             if meaning == question.answer:
