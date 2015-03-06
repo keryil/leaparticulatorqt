@@ -227,7 +227,7 @@ class ClientUI(AbstractClientUI):
         if self.phase == 0:
             dimension="dimension"
 
-        if not first_or_last:
+        if not (first_or_last or mode == Constants.MOD_PRETEST):
             filename=os.path.join(os.getcwd(), Constants.MEANING_DIR,
                                     "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
             print "Image: %s" % filename
