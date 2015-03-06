@@ -120,6 +120,8 @@ class ClientUI(AbstractClientUI):
                 submit.setEnabled(last_submit_state)
                 disconnect(play)
                 connect(play, "clicked()", fn_play)
+                if not record:
+                    submit.setEnabled(True)
             play.setText("Stop")
             disconnect(play)
             last_submit_state = submit.isEnabled()
@@ -254,8 +256,11 @@ class ClientUI(AbstractClientUI):
         # hele hele
 
         def submit():
-            success = (self.target_meaning == self.given_meaning)
             given_answer = self.current_question.given_answer
+            if given_answer is None:
+                print "Cannot submit before participant chooses an answer."
+                return
+            success = (self.target_meaning == self.given_meaning)
             assert given_answer is not None
             assert success == (
                 self.current_question.given_answer == self.current_question.answer)
@@ -282,12 +287,21 @@ class ClientUI(AbstractClientUI):
 
         disconnect(btn)
         connect(btn, "clicked()", submit)
+
+        btn.setEnabled(False)
+
         for i in range(1, 5):
-            btn = get(QtGui.QPushButton, "pushButton_%d" % (i))
-            btn.setAutoExclusive(False)
-            btn.setChecked(False)
-            btn.setAutoExclusive(True)
+            btn_ = get(QtGui.QPushButton, "pushButton_%d" % (i))
+            btn_.setAutoExclusive(False)
+            btn_.setChecked(False)
+            btn_.setAutoExclusive(True)
         self.theremin.mute()
+
+        play = get(QtGui.QPushButton, 'btnPlay')
+        def enable_submit():
+            btn.setEnabled(True)
+        connect(play, "clicked()", enable_submit)
+
 
     def on_new_picture(self, data):
         """
@@ -378,7 +392,7 @@ class ClientUI(AbstractClientUI):
             print "Selected %d" % meaning_id
             self.current_question.given_answer = meaning_id
             self.given_meaning = self.images[self.phase][meaning_id]
-            get(QtGui.QPushButton, "btnSubmit").setEnabled(True)
+            # get(QtGui.QPushButton, "btnSubmit").setEnabled(True)
 
         for i, meaning in zip(range(1, len(question.pics) + 1), question.pics):
             print i, meaning
