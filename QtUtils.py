@@ -30,7 +30,7 @@ class Meaning(object):
         module.
         """
         fn = join(MEANING_DIR, "%s%s%s.%s" %
-                             (size, color, shade, IMG_EXTENSION)) 
+                             (self.size, self.color, self.shade, IMG_EXTENSION)) 
         assert path.isfile(join(getcwd(), fn))
         return fn
 
