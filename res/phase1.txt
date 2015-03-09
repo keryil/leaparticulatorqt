@@ -1,4 +1,4 @@
-This is now the experimental round for the same squares you had in the practice round for phase 2.
+This is now the second session for the same squares you had in the first session for phase 2.
 
 Signals are generated in the same way.
 

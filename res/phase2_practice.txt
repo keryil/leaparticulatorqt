@@ -1,5 +1,5 @@
  
-You are now going to do the practice session for phase 3! 
+You are now going to do the first session for phase 3! 
 
 You will be creating signals for different squares.
 

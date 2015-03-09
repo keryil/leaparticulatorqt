@@ -1,4 +1,4 @@
-This is test round for the first phase. 
+This is second test round for the first phase. 
 
 You can hear a signal you have created by pressing Play.
 

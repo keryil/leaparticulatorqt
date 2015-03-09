@@ -1,4 +1,4 @@
-Welcome to the first (practice) test round!
+Welcome to the first test round!
 
 You will be able to hear a signal you have created by pressing Play.
 

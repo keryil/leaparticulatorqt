@@ -1,4 +1,4 @@
-This is test round for phase 3. And the final one! 
+This is second test round for phase 3. And the final one! 
 
 You can hear a signal you have created by pressing Play.
 
