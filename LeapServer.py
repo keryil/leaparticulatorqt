@@ -146,7 +146,8 @@ class LeapServer(basic.LineReceiver):
         log.msg("nextPicture() called")
         # if we are in the learning phase
         if self.factory.mode == Constants.LEARN:
-            # print self.factory.image_index, self.factory.responses[self.other_end][self.phase]
+            # print self.factory.image_index,
+            # self.factory.responses[self.other_end][self.phase]
             if self.factory.image_index in self.factory.responses[self.other_end][self.phase]:
                 if self.factory.responses[self.other_end][self.phase][self.factory.image_index]:
                     # if there are more images to go
@@ -180,7 +181,7 @@ class LeapServer(basic.LineReceiver):
                                                                                                  self.phase],
                                                                                              n_of_images=self.n_of_options[self.phase])
                 print "Generated questions (%d): %s" % (len(self.factory.questions_by_phase[self.phase]),
-                                                            self.factory.questions_by_phase[self.phase])
+                                                        self.factory.questions_by_phase[self.phase])
             for q in self.factory.questions_by_phase[self.phase]:
                 q.signal = []
                 # if this is the first question of the run
@@ -339,9 +340,10 @@ class LeapServerFactory(protocol.Factory):
     condition = None
 
     def __init__(self, ui=None, condition=None, prefix=""):
-        import time, os
+        import time
+        import os
         from os.path import join, isdir
-        
+
         self.clients = set()
         self.ui = ui
         self.uid = time.strftime("%y%m%d.%H%M%S")
@@ -477,7 +479,7 @@ if __name__ == '__main__':
         from os.path import join
         from os import getcwd
         print "**** IMPORTANT: Log folder is %s ****" % join(getcwd(), "logs", prefix)
-        endpoint.listen(LeapServerFactory(condition=sys.argv[1], prefix=prefix))
-    
-        
+        endpoint.listen(
+            LeapServerFactory(condition=sys.argv[1], prefix=prefix))
+
     reactor.run()
