@@ -213,31 +213,31 @@ class ClientUI(AbstractClientUI):
         if self.isPractice and not first_or_last:
             res_name += "_practice"
 
-        info=loadFromRes(res_name)
-        label=self.infoWindow.findChildren(QtGui.QLabel, "lblInfo")[0]
+        info = loadFromRes(res_name)
+        label = self.infoWindow.findChildren(QtGui.QLabel, "lblInfo")[0]
         if self.isPractice and not first_or_last:
-            info="PRACTICE ROUND: " + info
+            info = "PRACTICE ROUND: " + info
         label.setText(info)
 
         # set the meaning space image
-        label=self.infoWindow.findChildren(
+        label = self.infoWindow.findChildren(
             QtGui.QLabel, "lblMeaningSpace")[0]
         label.pixmap = None
-        dimension="dimensions"
+        dimension = "dimensions"
         if self.phase == 0:
-            dimension="dimension"
+            dimension = "dimension"
 
         if not (first_or_last or mode == Constants.MOD_PRETEST):
-            filename=os.path.join(os.getcwd(), Constants.MEANING_DIR,
+            filename = os.path.join(os.getcwd(), Constants.MEANING_DIR,
                                     "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
             print "Image: %s" % filename
-            pixmap=QtGui.QPixmap(filename)
+            pixmap = QtGui.QPixmap(filename)
             # print "Pixmap: %s" % pixmap
             label.setPixmap(pixmap)
             label.repaint()
 
         # connect the button clicked signal
-        button=self.infoWindow.findChildren(QtGui.QPushButton, "btnOkay")[0]
+        button = self.infoWindow.findChildren(QtGui.QPushButton, "btnOkay")[0]
         disconnect(button)
 
         # self.connection.factory.mode == Constants.LEARN:
@@ -255,9 +255,9 @@ class ClientUI(AbstractClientUI):
             connect(
                 button, "clicked()", lambda: QtCore.QCoreApplication.exit())
         elif mode == Constants.MOD_FIRSTSCREEN:
-            connect( 
-                button, "clicked()", lambda: self.show_window(self.infoWindow, 
-                    mode=Constants.MOD_PREPHASE))
+            connect(
+                button, "clicked()", lambda: self.show_window(self.infoWindow,
+                                                              mode=Constants.MOD_PREPHASE))
 
     def setupTestWindow(self):
         get = getFunction(self.testWindow)
@@ -265,6 +265,7 @@ class ClientUI(AbstractClientUI):
         group = get(QtGui.QGroupBox, "groupBox")
 
         def submit():
+            get(QtGui.QPushButton, "btnPlay").setEnabled(False)
             given_answer = self.current_question.given_answer
             if given_answer is None:
                 print "Cannot submit before participant chooses an answer."
@@ -292,7 +293,10 @@ class ClientUI(AbstractClientUI):
             self.correct_button = None
             self.given_meaning = None
             self.target_meaning = None
-            QtCore.QTimer.singleShot(Constants.DELAY_TEST, self.next_question)
+            def next():
+                get(QtGui.QPushButton, "btnPlay").setEnabled(True)
+                self.next_question()
+            QtCore.QTimer.singleShot(Constants.DELAY_TEST, next) #self.next_question)
 
         disconnect(btn)
         connect(btn, "clicked()", submit)
