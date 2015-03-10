@@ -263,6 +263,7 @@ class ClientUI(AbstractClientUI):
         get = getFunction(self.testWindow)
         btn = get(QtGui.QPushButton, "btnSubmit")
         group = get(QtGui.QGroupBox, "groupBox")
+        get(QtGui.QPushButton, "btnPlay").setEnabled(True)
 
         def submit():
             get(QtGui.QPushButton, "btnPlay").setEnabled(False)
