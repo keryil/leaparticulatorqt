@@ -18,7 +18,7 @@ from StreamlinedDataAnalysis import id_to_log
 # taken from ClientUI.py
 # end of steal
 
-def calculate_amp_and_freq(f):
+def calculate_amp_and_freq(f, delimiter="|"):
     import Constants
     default_volume = Constants.default_amplitude
     default_pitch = Constants.default_pitch
@@ -28,7 +28,7 @@ def calculate_amp_and_freq(f):
     images = []
     cond = f.split(".")[1]
     print "File: %s, Condition: %s" % (f, cond)
-    data = pd.read_csv(f, delimiter="|", na_values=["NaN"])
+    data = pd.read_csv(f, delimiter=delimiter, na_values=["NaN"])
     new_file = ".".join(f.split(".")[:-1]) + ".freq_and_amp.csv"
     
     

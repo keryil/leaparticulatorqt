@@ -31,6 +31,9 @@ def recursive_decode(lst, verbose=False):
             print "Probably hit tail..."
     return lst
 
+# converts a list of objects to a list of their
+# string representations
+toStr = lambda x: map(str, x)
 
 def fromFile(filename):
 	lines = open(filename).readlines()
@@ -138,7 +141,7 @@ def toCSV(filename, delimiter="|", data=None):
 	csv_filename = filename.replace(".log", ".responses.csv")
 	
 	print("Saving responses into %s" % csv_filename)
-	doublequote = lambda x: "\"%s\"" % x
+	doublequote = lambda x: "\"%s\"" % str(x)
 	# first, the responses
 	with open(csv_filename, "w") as csv:
 		# write headers
@@ -162,7 +165,7 @@ def toCSV(filename, delimiter="|", data=None):
 	
 	# calculate the amplitudes and frequencies
 	from HandTrajectory2SignalTrajectory import calculate_amp_and_freq
-	calculate_amp_and_freq(csv_filename)
+	calculate_amp_and_freq(csv_filename, delimiter=delimiter)
 	
 	csv_filename = csv_filename.replace("responses", "tests")
 	print("Saving tests into %s" % csv_filename)
@@ -177,7 +180,7 @@ def toCSV(filename, delimiter="|", data=None):
 					csv.write(delimiter.join((client, 
 												'0', 
 												phase, 
-												doublequote(doublequote(delimiter).join(question.pics)), 
+												doublequote(doublequote(delimiter).join(toStr(question.pics))), 
 												doublequote(question.answer), 
 												doublequote(question.given_answer))))
 					csv.write("\n")
@@ -189,7 +192,7 @@ def toCSV(filename, delimiter="|", data=None):
 					csv.write(delimiter.join((client, 
 												'1', 
 												phase, 
-												doublequote(doublequote(delimiter).join(question.pics)), 
+												doublequote(doublequote(delimiter).join(toStr(question.pics))), 
 												doublequote(question.answer), 
 												doublequote(question.given_answer))))
 					csv.write("\n")
@@ -204,7 +207,7 @@ def toCSV(filename, delimiter="|", data=None):
 		csv.write("\n")
 		for phase in images:
 			for image in phase:
-				csv.write(image)
+				csv.write(str(image))
 				csv.write("\n")
 	return data
 

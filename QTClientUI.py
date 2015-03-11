@@ -209,6 +209,8 @@ class ClientUI(AbstractClientUI):
             res_name = "firstscreen"
 
         first_or_last = mode in (Constants.MOD_EXIT, Constants.MOD_FIRSTSCREEN)
+        first_or_last_or_pretest = mode in (
+            Constants.MOD_EXIT, Constants.MOD_FIRSTSCREEN, Constants.MOD_PRETEST)
 
         if self.isPractice and not first_or_last:
             res_name += "_practice"
@@ -227,14 +229,14 @@ class ClientUI(AbstractClientUI):
         if self.phase == 0:
             dimension = "dimension"
 
-        if not (first_or_last or (mode == Constants.MOD_PRETEST)):
+        if not first_or_last_or_pretest:
             filename = os.path.join(os.getcwd(), Constants.MEANING_DIR,
                                     "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
             print "Image: %s" % filename
             pixmap = QtGui.QPixmap(filename)
             # print "Pixmap: %s" % pixmap
             label.setPixmap(pixmap)
-            label.repaint()
+        label.repaint()
 
         # connect the button clicked signal
         button = self.infoWindow.findChildren(QtGui.QPushButton, "btnOkay")[0]
@@ -294,10 +296,12 @@ class ClientUI(AbstractClientUI):
             self.correct_button = None
             self.given_meaning = None
             self.target_meaning = None
+
             def next():
                 get(QtGui.QPushButton, "btnPlay").setEnabled(True)
                 self.next_question()
-            QtCore.QTimer.singleShot(Constants.DELAY_TEST, next) #self.next_question)
+            # self.next_question)
+            QtCore.QTimer.singleShot(Constants.DELAY_TEST, next)
 
         disconnect(btn)
         connect(btn, "clicked()", submit)
