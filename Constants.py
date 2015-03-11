@@ -19,12 +19,12 @@ leap_server = "127.0.0.1"
 fadeout_multiplier = 0.95
 fadeout_call_rate = 0.005
 
-# number of test questions per phase
-n_of_test_questions = [5, 9, 9]
 # number of options each test question has
 n_of_options = [4, 4, 4]
 # number of total available images per phase
-n_of_meanings = [7,12,12]
+n_of_meanings = [6,12,12]
+# number of test questions per phase
+n_of_test_questions = n_of_meanings
 
 question_mark_path = join("img","question_mark.jpg")
 
