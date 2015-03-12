@@ -10,7 +10,7 @@
 import pandas as pd
 import numpy as np
 import csv
-from LeapTheremin import palmToAmpAndFreq, palmToFreq, freqToMel
+from Constants import palmToAmpAndFreq, palmToFreq, freqToMel
 from StreamlinedDataAnalysis import id_to_log
 
 # <codecell>

@@ -38,7 +38,7 @@ from twisted.internet.task import LoopingCall
 import math
 from twisted.internet.endpoints import connectProtocol, TCP4ClientEndpoint
 from LeapServer import LeapClient, LeapClientFactory
-
+from Constants import freqToMel, palmToAmpAndFreq, palmToAmpAndMel, palmToFreq
 # import pygtk
 # pygtk.require("2.0")
 
@@ -47,35 +47,7 @@ from LeapServer import LeapClient, LeapClientFactory
 signal = []
 
 
-def freqToMel(freq):
-    return 2595 * math.log10(1 + freq / 700.)
 
-
-def palmToAmpAndFreq(palmPosition):
-    x, y = palmPosition[0], \
-        palmPosition[1]
-
-    if x == y == 0:
-        return 0, 0
-    amp = 1.1 - math.log(abs(y)) / math.log(250.)
-    amp = min(1., max(0., amp))
-    freq = 110 * (3 ** (abs(x + 200) / 200.))
-    return amp, freq
-
-
-def palmToAmpAndMel(palmPosition):
-    amp, freq = palmToAmpAndFreq(palmPosition)
-    return amp, freqToMel(freq)
-
-
-def palmToFreq(palmPosition):
-    x, y, z = palmPosition[0], \
-        palmPosition[1]
-
-    if x == y == 0:
-        return 0, 0
-
-    return 110 * (3 ** (abs(x + 200) / 200.))
 
 
 class ThereminPlayer(object):
