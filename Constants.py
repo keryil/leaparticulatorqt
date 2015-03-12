@@ -115,6 +115,7 @@ MOD_FIRSTSCREEN = "mod_firstscreen"
 # the presentation of the next question in msec
 DELAY_TEST = 1000
 
+import math
 
 def install_reactor():
     # https://github.com/ghtdak/qtreactor/issues/21
