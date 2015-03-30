@@ -29,7 +29,7 @@ import Constants
 import jsonpickle
 import TestQuestion
 from LeapFrame import LeapFrame
-from QtUtils import Meaning
+from QtUtils import FeaturelessMeaning
 
 
 class LeapServer(basic.LineReceiver):
@@ -60,14 +60,15 @@ class LeapServer(basic.LineReceiver):
         from glob import glob
         from random import shuffle, sample
         from itertools import product
-        # log.msg("Found image files: %s" % glob(self.image_mask_1))
-        rng = range(1, 7)
 
-        self.factory.images[0] = [Meaning(size, 1, 1) for size in rng]
-        self.factory.images[1] = sample([Meaning(size, 1, shade) for size, shade in product(rng, rng)],
-                                        self.n_of_meanings[1])
-        self.factory.images[2] = sample([Meaning(size, color, shade) for size, color, shade in product(rng, rng, rng)],
-                                        self.n_of_meanings[2])
+        files_ = set(range(1,16))
+        files = [None, None, None]
+        files[0] = set(sample(files_, 5))
+        files[1] = files[0].union(set(sample(files_.difference(files[0]), 5)))
+        files[2] = files_
+
+        for i in range(3):
+            self.factory.images[i] = [FeaturelessMeaning(n) for n in files[i]]
 
         shuffle(self.factory.images[0])
         shuffle(self.factory.images[1])
