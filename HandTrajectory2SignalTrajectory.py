@@ -10,7 +10,7 @@
 import pandas as pd
 import numpy as np
 import csv
-from LeapTheremin import palmToAmpAndFreq, palmToFreq, freqToMel
+from Constants import palmToAmpAndFreq, palmToFreq, freqToMel
 from StreamlinedDataAnalysis import id_to_log
 
 # <codecell>
@@ -71,7 +71,7 @@ def calculate_amp_and_freq(f, delimiter="|"):
     data["amplitude_n"] = norm_series(amps)
     data["mel_n"] = norm_series(mels)
     data["image"] = series(images)
-    data.to_csv(new_file, sep="|", na_rep="NaN", quoting=csv.QUOTE_NONE)
+    data.to_csv(new_file, sep=delimiter, na_rep="NaN", quoting=csv.QUOTE_NONE)
     
 def doit():
 #     files = []
