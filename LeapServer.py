@@ -42,10 +42,6 @@ class LeapServer(basic.LineReceiver):
     # image_mask_2 = "./img/meanings/*_[135].png"
     # image_mask_3 = "./img/meanings/*_[135].png"
 
-    image_mask_1 = "./img/meanings/5_*.png"
-    image_mask_2 = "./img/meanings/*_[135].png"
-    image_mask_3 = "./img/meanings/*_[135].png"
-
     recording = False
 
     # number of test questions per phase
