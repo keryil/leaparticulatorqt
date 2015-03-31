@@ -230,12 +230,29 @@ class ClientUI(AbstractClientUI):
             dimension = "dimension"
 
         if not first_or_last_or_pretest:
-            filename = os.path.join(os.getcwd(), Constants.MEANING_DIR,
-                                    "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
-            print "Image: %s" % filename
+            from subprocess import Popen
+            from shlex import split
+            from os.path import join
+            from os import remove
+            images = self.images[self.phase]
+            filename = join(Constants.MEANING_DIR, "montage.png")
+            command = "montage \"%s\" \"%s\"" % ("\" \"".join([i.filename() for i in images]),
+                                         filename)
+            print "Montage creation command: %s" % command
+            out, err = Popen(split(command)).communicate()
+            print "Montage creation output: %s\t,\t%s" % (out, err)
+            command = "convert -resize 550x550 \"%s\" \"%s\"" % tuple([filename]*2)
+            print "Montage resize command: %s" % command
+            out, err = Popen(split(command)).communicate()
+            print "Montage resize output: %s\t,\t%s" % (out, err)
+            
+            # filename = os.path.join(os.getcwd(), Constants.MEANING_DIR,
+            #                         "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
+            # print "Image: %s" % filename
             pixmap = QtGui.QPixmap(filename)
             # print "Pixmap: %s" % pixmap
             label.setPixmap(pixmap)
+            remove(filename)
         label.repaint()
 
         # connect the button clicked signal

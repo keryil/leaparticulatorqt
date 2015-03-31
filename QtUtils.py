@@ -36,8 +36,8 @@ class AbstractMeaning(object):
         tuples = [str(self.feature_dict[f]) for f in self.feature_order]
         format_txt = self.feature_sep.join(["%s"] * len(tuples))
         format_txt += ".%s"
-        print format_txt
-        print tuples
+        # print format_txt
+        # print tuples
         import sys;sys.stdout.flush()
         tuples.append(IMG_EXTENSION)
         fn = join(MEANING_DIR, format_txt %
