@@ -4,12 +4,14 @@ Created on Feb 18, 2014
 @author: kerem
 '''
 from PyQt4 import QtGui
+from PyQt4.QtGui import QApplication
 import sys
-app = QtGui.QApplication.instance()
+app = QApplication.instance()
 if app is None:
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
+    print "LeapServer new QApp: %s" % app
 else:
-    print "Existing QApplication instance:", app
+    print "LeapServer existing QApp: %s" % app
 
 once = False
 # if "twisted.internet.reactor" not in sys.modules:

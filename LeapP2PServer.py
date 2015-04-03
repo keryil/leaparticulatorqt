@@ -2,10 +2,20 @@
 
 once = False
 qapplication = None
+
+from PyQt4.QtGui import QApplication
 import sys
+print "LeapP2PServer QApp check...",
+app = QApplication.instance()
+if app is None:
+    app = QApplication(sys.argv)
+    print "LeapP2PServer new QApp: %s" % app
+else:
+    print "LeapP2PServer existing QApp: %s" % app
+
+
 from Constants import install_reactor
-from PySide.QtGui import QApplication
-qapplication = QApplication(sys.argv)
+qapplication = app
 install_reactor()
 # import sys, platform
 # if "qt4reactor" not in sys.modules:
@@ -511,9 +521,12 @@ if __name__ == '__main__':
     from LeapP2PServerUI import LeapP2PServerUI
     try:
         assert len(sys.argv) > 2
+        no_ui = sys.argv[-1] == "no_ui"
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
+            print "Init UI object..."
             ui = LeapP2PClientUI(qapplication)
+            print "Init theremin..."
             theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1, 
                                                                           default_volume=None,#Constants.default_amplitude, 
                                                                           ui=ui, realtime=False, 
@@ -526,14 +539,20 @@ if __name__ == '__main__':
             connection_def = endpoint.connect(factory)
             connection_def.addCallback(ui.setClient)
             # ui.setClient(connection)
+            print "Starting reactor..."
             reactor.runReturn()
+            print "Starting UI..."
             ui.go()
         elif sys.argv[2] == "server":
             try:
-                ui = LeapP2PServerUI(qapplication)
-                get_server_instance(condition=sys.argv[1], ui=ui)
-                reactor.runReturn()
-                ui.go()
+                if no_ui:
+                    get_server_instance(condition=sys.argv[1], ui=None)
+                    reactor.run()
+                else:
+                    ui = LeapP2PServerUI(qapplication)
+                    get_server_instance(condition=sys.argv[1], ui=ui)
+                    reactor.runReturn()
+                    ui.go()
             except IndexError, e:
                 import traceback
                 traceback.print_exc()
@@ -542,3 +561,5 @@ if __name__ == '__main__':
     except AssertionError:
                 print "USAGE: LeapP2PServer {condition} {client/server} [client_id]."
                 sys.exit(-1)
+
+    sys.exit(app.exec_())

@@ -1,4 +1,4 @@
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtCore, QtGui, uic
 from PyQt4.uic import compileUi
 from PyQt4.QtCore import QFile
 from os.path import join, basename
@@ -84,46 +84,62 @@ def setButtonIcon(button, pixmap):
         button.setIconSize(pixmap.rect().size())
     button.setText("")
 
-def loadWidget(uifilename,
-               base_type=QtGui.QMainWindow,
-               parent=None):
+def loadUiWidget(uifilename,
+               parent=None,
+               root=getcwd()):
     """
     Convenience method to load and setup
     and widget, a QMainWindow by default.
     """
-    widget = base_type(parent=parent)
-    ui = loadUiWidget(uifilename=uifilename)
-    ui.setupUi(widget)
-    return widget
-
-
-def loadUiWidget(uifilename, parent=None, root=getcwd()):
-    """
-    This function loads a QT widget from a .ui file.
-    """
-    ui_class = loadUiWidgetClass(uifilename, parent, root)
-    ui = ui_class()
-    return ui
-
-
-def loadUiWidgetClass(uifilename, parent=None, root=getcwd()):
-    """
-    This function loads a QT widget from a .ui file.
-    """
     ui_file = join(root, QT_DIR, uifilename)
-    bare_name = basename(uifilename).split('.')[0]
-    py_file = open(join(root, QT_DIR, bare_name + '.py'), 'w')
+    print "Loading ui file: %s" %ui_file
+    w = uic.loadUi(ui_file)
+    w.setParent(parent)
+    return w
 
-    print "Writing python module %s for file %s" % (py_file, ui_file)
-    compileUi(ui_file, py_file)
-    py_file.close()
-    module_name = bare_name
-    class_name = "Ui_%s" % module_name
+# def loadWidget(uifilename,
+#                base_type=QtGui.QMainWindow,
+#                parent=None):
+#     """
+#     Convenience method to load and setup
+#     and widget, a QMainWindow by default.
+#     """
+#     widget = base_type(parent=parent)
+#     ui = loadUiWidget(uifilename=uifilename)
+#     print "Loaded widget..."
+#     ui.setupUi(widget)
+#     print "Setup widget."
+#     return widget
 
-    ui_class = getattr(import_module("%s.%s" % (QT_DIR,
-                                                module_name)),
-                       class_name)
-    return ui_class
+
+# def loadUiWidget(uifilename, parent=None, root=getcwd()):
+#     """
+#     This function loads a QT widget from a .ui file.
+#     """
+#     ui_class = loadUiWidgetClass(uifilename, parent, root)
+#     ui = ui_class()
+#     return ui
+
+
+# def loadUiWidgetClass(uifilename, parent=None, root=getcwd()):
+#     """
+#     This function loads a QT widget from a .ui file.
+#     """
+#     ui_file = join(root, QT_DIR, uifilename)
+#     bare_name = basename(uifilename).split('.')[0]
+#     py_file = open(join(root, QT_DIR, bare_name + '.py'), 'w')
+
+#     print "Writing python module %s for file %s" % (py_file, ui_file)
+#     compileUi(ui_file, py_file)
+#     py_file.close()
+#     module_name = bare_name
+#     class_name = "Ui_%s" % module_name
+
+#     ui_class = getattr(import_module("%s.%s" % (QT_DIR,
+#                                                 module_name)),
+#                        class_name)
+#     print "Loaded the class %s" % class_name
+#     return ui_class
 
 
 def connect(widget, signal, slot, old_syntax=False, widget2=None):

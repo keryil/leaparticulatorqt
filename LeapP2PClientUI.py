@@ -2,24 +2,31 @@
 # -*- coding: utf-8 -*-
 
 # simple.py
-import sys
-from PySide.QtCore import *
-from PySide.QtGui import *
-from PySide.QtDeclarative import QDeclarativeView
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from PyQt4.QtDeclarative import QDeclarativeView
 
-from PySide import QtCore, QtGui, QtUiTools
+from PyQt4 import QtCore, QtGui, uic
+
+
+import sys
+app = QApplication.instance()
+if app is None:
+    app = QApplication(sys.argv)
+    print "LeapP2PClient new QApp: %s" % app
+else:
+    print "LeapP2PClient existing QApp: %s" % app
+
 from LeapTheremin import ThereminPlayback
 from P2PMessaging import EndRoundMessage
+from QtUtils import connect, disconnect 
+# from QtUtils import loadWidget as loadUiWidget
 
-
-def loadUiWidget(uifilename, parent=None):
-        loader = QtUiTools.QUiLoader()
-        uifile = QFile("qt_interface/" + uifilename)
-        uifile.open(QFile.ReadOnly)
-        ui = loader.load(uifile, parent)
-        uifile.close()
-        return ui
-        
+def loadUiWidget(name, parent=None):
+    widget = uic.loadUi("qt_generated/%s" % name)
+    widget.setParent(parent)
+    return widget
+     
 def fn(self, event):
         event.ignore()
 
@@ -81,17 +88,18 @@ class LeapP2PClientUI(object):
 
     def first_screen(self):
         self.close_all()
+        # import pdb;pdb.set_trace()
         self.firstWin = loadUiWidget('FirstWindow.ui')
         button = self.firstWin.findChildren(QPushButton, "btnOkay")[0]
+        print "loaded"
         self.firstWin.showFullScreen()
-        button.clicked.connect(self.show_wait)
+        connect(button, "clicked()", self.show_wait)
+        print "first_screen done"
         return self.firstWin
 
-    def unique_connect(self, slot, func):
-        if slot in self.slots_dict:
-            slot.disconnect(self.slots_dict[slot])
-        slot.connect(func)
-        self.slots_dict[slot] = func
+    def unique_connect(self, widget, signal, slot):
+        disconnect(widget)
+        connect(widget, signal, slot)
 
     def creation_screen(self,image=None):
         # close previous windows
@@ -104,10 +112,10 @@ class LeapP2PClientUI(object):
             self.show_wait()
 
         button = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
-        button.clicked.connect(submit_and_proceed)
+        connect(button, "clicked()", submit_and_proceed)
 
         button = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
-        self.unique_connect(button.clicked, self.start_recording)
+        self.unique_connect(button, "clicked()", self.start_recording)
 
         button = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
         button.setEnabled(False)
@@ -120,7 +128,8 @@ class LeapP2PClientUI(object):
         slider.setRange(1,100)
         slider.setSingleStep(1)
         slider.setValue(100)
-        slider.valueChanged.connect(self.set_volume)
+        self.unique_connect(slider, "valueChanged(int)", self.set_volume)
+        # slider.valueChanged.connect(self.set_volume)
 
         # self.show_wait(self.creationWin)
         self.creationWin.showFullScreen()
@@ -140,24 +149,24 @@ class LeapP2PClientUI(object):
             # self.factory.start_recording()
             button = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
             button.setText("Stop")
-            self.unique_connect(button.clicked, self.stop_recording)
+            self.unique_connect(button, "clicked()", self.stop_recording)
             self.flicker()
 
 
     def setup_play_button(self, button, signal):
         def enable():
             button.setEnabled(True)
-            self.unique_connect(button.clicked, play)
+            self.unique_connect(button, "clicked()", play)
 
         def play():
             button.setEnabled(False)
             # button.setText("Stop")
-            self.unique_connect(button.clicked, self.playback_player.stop)
+            self.unique_connect(button, "clicked()", self.playback_player.stop)
             self.playback_player.start(signal, 
                                        enable)
             self.flicker()
         
-        self.unique_connect(button.clicked, play)
+        self.unique_connect(button, "clicked()", play)
 
     def stop_recording(self):
         if self.creationWin and self.recording:
@@ -167,7 +176,7 @@ class LeapP2PClientUI(object):
             self.theremin.mute()
             btnRec = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
             btnRec.setText("Re-record")
-            self.unique_connect(btnRec.clicked, self.start_recording)
+            self.unique_connect(btnRec, "clicked()", self.start_recording)
 
             btnPlay = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
             btnPlay.setEnabled(True)
@@ -224,7 +233,7 @@ class LeapP2PClientUI(object):
 
         self.testWin = loadUiWidget('SignalTesting.ui')
         btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
-        btnSubmit.clicked.connect(submit)
+        connect(btnSubmit, "clicked()", submit)
         def enable():
             btnSubmit.setEnabled(True)
 
@@ -243,7 +252,7 @@ class LeapP2PClientUI(object):
             # pixmap.setAlignment()
             view.setIcon(QIcon(pixmap))
             view.setIconSize(pixmap.rect().size())
-            view.clicked.connect(enable)
+            connect(view, "clicked()", enable)
 
         self.testWin.showFullScreen()
 
@@ -265,7 +274,7 @@ class LeapP2PClientUI(object):
             button.setEnabled(False)
             button.setText("Waiting for the other participant to click this button")
 
-        button.clicked.connect(proceed)
+        connect(button, "clicked()", proceed)
         self.feedbackWin.findChildren(QLabel, "lblImageCorrect")[0].setPixmap(image_true)
         self.feedbackWin.findChildren(QLabel, "lblImageGuess")[0].setPixmap(image_guess)
         # else:
@@ -277,11 +286,12 @@ class LeapP2PClientUI(object):
 
         # Create Qt application and the QDeclarative view
         # self.app = QApplication.instance()
-        if not self.app:
-            self.app = QApplication(sys.argv)
-        # firstWin = loadUiWidget('qt_interface/FirstWindow.ui')
+        # if not self.app:
+        #     self.app = app
+        # print "boohoo"
+        # firstWin = loadUiWidget('FirstWindow.ui')
         # button = firstWin.findChildren(QPushButton, "btnOkay")[0]
-        # button.clicked.connect(firstWin.close)
+        # connect(button, "clicked()", firstWin.close)
         # firstWin.showFullScreen()
         self.first_screen()
         # self.creation_screen(QPixmap("img/meanings/5_5.png"))
@@ -293,8 +303,8 @@ class LeapP2PClientUI(object):
         # # Set the QML file and show
         # view.setSource(url)
         # Enter Qt main loop
-        sys.exit(self.app.exec_())
 
-# if __name__ == "__main__":
-#     gui = LeapP2PClientUI()
-#     gui.go()
+if __name__ == "__main__":
+    gui = LeapP2PClientUI(app)
+    gui.go()
+    sys.exit(app.exec_())
