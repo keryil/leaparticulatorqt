@@ -22,7 +22,7 @@ fadeout_call_rate = 0.005
 # number of options each test question has
 n_of_options = [4, 4, 4]
 # number of total available images per phase
-n_of_meanings = [6,12,12]
+n_of_meanings = [5,10,15]
 # number of test questions per phase
 n_of_test_questions = n_of_meanings
 
@@ -95,7 +95,7 @@ XY, AMP_AND_FREQ, AMP_AND_MEL = "xy", "amp_and_freq", "amp_and_mel"
 # from them
 QT_DIR = 'qt_generated'
 IMG_DIR = 'img'
-MEANING_DIR = join(IMG_DIR, 'meanings', 'newexperiment')
+MEANING_DIR = join(IMG_DIR, 'meanings', 'featureless')
 IMG_EXTENSION = 'png'
 
 FALSE_OVERLAY = join(IMG_DIR, "false.png")
