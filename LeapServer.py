@@ -31,7 +31,7 @@ import Constants
 import jsonpickle
 import TestQuestion
 from LeapFrame import LeapFrame
-from QtUtils import FeaturelessMeaning
+from Meaning import FeaturelessMeaning
 
 
 class LeapServer(basic.LineReceiver):

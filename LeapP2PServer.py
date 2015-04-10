@@ -46,6 +46,7 @@ import TestQuestion
 from LeapFrame import LeapFrame
 from P2PMessaging import *
 from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
+from Meaning import P2PMeaning
 
 
 # class LeapP2PRoundData(object):
@@ -163,7 +164,7 @@ class LeapP2PServer(basic.LineReceiver):
     def __init__(self, factory):  # , image_mask="./img/animals/*.png"):
         self.factory = factory
         # self.factory.mode = Constants.INIT
-        if len(self.factory.images[0]) == 0:
+        if len(self.factory.images) == 0:
             from glob import glob
             from random import shuffle
             log.msg("Found image files: %s" % glob(self.image_mask))
@@ -173,7 +174,8 @@ class LeapP2PServer(basic.LineReceiver):
             # shuffle(self.factory.images[0])
             # shuffle(self.factory.images[1])
             # shuffle(self.factory.images[2])
-            self.factory.images = glob(self.image_mask)
+            images = glob(self.image_mask)
+            self.factory.images = [[P2PMeaning.FromFile(i) for i in images] for a in range(3)]
             shuffle(self.factory.images)
             print "Images in place!"
             log.msg(self.factory.images)
@@ -235,7 +237,9 @@ class LeapP2PServer(basic.LineReceiver):
                 self.factory.session.addCallback(self.factory.ui.onSessionChange)
                 # self.factory.session_data = LeapP2PSession(self.factory.clients)
                 self.send_all(StartMessage())
-                self.send_all(ImageListMessage(self.factory.images))
+                img_list = ImageListMessage(self.factory.images)
+                print img_list
+                self.send_all(img_list)
             self.choose_speaker_and_topic()
 
     def choose_speaker_and_topic(self):
