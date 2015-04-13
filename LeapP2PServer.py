@@ -47,6 +47,7 @@ from LeapFrame import LeapFrame
 from P2PMessaging import *
 from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
 from Meaning import P2PMeaning
+import os
 
 
 # class LeapP2PRoundData(object):
@@ -77,7 +78,7 @@ class LeapP2PRoundSummary(object):
 
     def set_hearers_contribution(self, response_message):
         self.guess = response_message.data.image
-        self.success = (self.guess == self.image)
+        self.success = (str(self.guess) == str(self.image))
 
 
 def notifies(f):
@@ -148,10 +149,9 @@ class LeapP2PServer(basic.LineReceiver):
     MAX_LENGTH = 1024*1024*10
     response = []
     phase = 0
-    image_mask_1 = "./img/meanings/5_*.png"
-    image_mask_2 = "./img/meanings/*_[135].png"
-    image_mask_3 = "./img/meanings/*_[135].png"
-    image_mask = "./img/meanings/[135]_[12345].png"
+   
+    image_mask = os.path.join(Constants.MEANING_DIR, "[135]_[12345].%s" % 
+                              Constants.IMG_EXTENSION)
     recording = False
     n_of_test_questions = [5,9,9]
     n_of_options = [4,4,4]
@@ -164,7 +164,7 @@ class LeapP2PServer(basic.LineReceiver):
     def __init__(self, factory):  # , image_mask="./img/animals/*.png"):
         self.factory = factory
         # self.factory.mode = Constants.INIT
-        if len(self.factory.images) == 0:
+        if len(self.factory.images[0]) == 0:
             from glob import glob
             from random import shuffle
             log.msg("Found image files: %s" % glob(self.image_mask))
@@ -238,7 +238,8 @@ class LeapP2PServer(basic.LineReceiver):
                 # self.factory.session_data = LeapP2PSession(self.factory.clients)
                 self.send_all(StartMessage())
                 img_list = ImageListMessage(self.factory.images)
-                print img_list
+                # print self.factory.images
+                # print img_list
                 self.send_all(img_list)
             self.choose_speaker_and_topic()
 
@@ -255,7 +256,7 @@ class LeapP2PServer(basic.LineReceiver):
 
         # choose an image
         # TODO: we need a strategy for this
-        image = choice(self.factory.images)
+        image = choice(self.factory.images[self.factory.phase])
         log.msg("The chosen image is: %s" % image)
         log.msg("Speaker: %s; Hearer: %s" % (self.factory.clients[speaker], 
                                              self.factory.clients[hearer]))
@@ -358,6 +359,7 @@ class LeapP2PServerFactory(protocol.Factory):
         log.startLogging(sys.stdout)
         if not no_log:
             log.addObserver(FileLogObserver(open("logs/%s.log" % self.uid,'w')).emit)
+        self.phase = 0
         log.msg("Condition: %s" % condition)
 
     def buildProtocol(self, addr):
@@ -422,7 +424,7 @@ class LeapP2PClient(basic.LineReceiver):
             assert self.factory.mode == Constants.LISTENER
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
-            options = sample(list(set(self.factory.images) - set([message.data.image])),3) + [message.data.image]
+            options = sample(list(set(self.factory.images[self.factory.phase]) - set([message.data.image])),3) + [message.data.image]
             shuffle(options)
             self.ui.wait_over()
             self.ui.test_screen(options)
@@ -473,6 +475,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
         self.theremin = leap_listener
         self.ui = ui
         self.uid = uid
+        self.phase = 0
     
     # def start_recording(self):
     #     self.resetSignal()

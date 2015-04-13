@@ -95,7 +95,7 @@ XY, AMP_AND_FREQ, AMP_AND_MEL = "xy", "amp_and_freq", "amp_and_mel"
 # from them
 QT_DIR = 'qt_generated'
 IMG_DIR = 'img'
-MEANING_DIR = join(IMG_DIR, 'meanings', 'featureless')
+MEANING_DIR = join(IMG_DIR, 'meanings')#, 'featureless')
 IMG_EXTENSION = 'png'
 
 FALSE_OVERLAY = join(IMG_DIR, "false.png")

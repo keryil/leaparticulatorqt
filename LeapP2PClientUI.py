@@ -122,7 +122,7 @@ class LeapP2PClientUI(object):
         # self.setup_play_button(button, self.getSignal())
 
         label = self.creationWin.findChildren(QLabel, "lblImage")[0]
-        label.setPixmap(image)
+        label.setPixmap(image.pixmap())
 
         slider = self.creationWin.findChildren(QSlider, "sldVolume")[0]
         slider.setRange(1,100)
@@ -211,10 +211,12 @@ class LeapP2PClientUI(object):
         self.waitDialog.show()
         self.waitDialog.activateWindow()
         self.waitDialog.setFocus()
+        parent.setEnabled(False)
         # self.waitDialog.closeEvent = fn
 
     def wait_over(self):
         if self.waitDialog:
+            self.waitDialog.parent().setEnabled(True)
             self.waitDialog.close()
             self.waitDialog = None
 
@@ -248,7 +250,7 @@ class LeapP2PClientUI(object):
     
         for i, image in zip(range(1,5), images):
             view = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
-            pixmap = QPixmap(image)
+            pixmap = image.pixmap()
             # pixmap.setAlignment()
             view.setIcon(QIcon(pixmap))
             view.setIconSize(pixmap.rect().size())
@@ -275,8 +277,8 @@ class LeapP2PClientUI(object):
             button.setText("Waiting for the other participant to click this button")
 
         connect(button, "clicked()", proceed)
-        self.feedbackWin.findChildren(QLabel, "lblImageCorrect")[0].setPixmap(image_true)
-        self.feedbackWin.findChildren(QLabel, "lblImageGuess")[0].setPixmap(image_guess)
+        self.feedbackWin.findChildren(QLabel, "lblImageCorrect")[0].setPixmap(image_true.pixmap())
+        self.feedbackWin.findChildren(QLabel, "lblImageGuess")[0].setPixmap(image_guess.pixmap())
         # else:
         #     button.clicked.connect(self.creation_screen)
         self.feedbackWin.showFullScreen()

@@ -1,5 +1,9 @@
 import os.path
 from Constants import IMG_EXTENSION, MEANING_DIR
+from PyQt4 import QtGui
+import os
+from os import getcwd
+from os.path import join
 
 loadFromRes = lambda path: open(join(getcwd(), "res", path + ".txt")).read()
 
@@ -32,8 +36,9 @@ class AbstractMeaning(object):
         import sys;sys.stdout.flush()
         tuples.append(IMG_EXTENSION)
         fn = join(MEANING_DIR, format_txt %
-                             tuple(tuples)) 
-        assert path.isfile(join(getcwd(), fn))
+                             tuple(tuples))
+        print join(getcwd(), fn) 
+        assert os.path.isfile(join(getcwd(), fn))
         return fn
 
     @classmethod
@@ -117,12 +122,12 @@ class Meaning(object):
         """
         fn = join(MEANING_DIR, "%s%s%s.%s" %
                              (self.size, self.color, self.shade, IMG_EXTENSION)) 
-        assert path.isfile(join(getcwd(), fn))
+        assert os.path.isfile(join(getcwd(), fn))
         return fn
 
 
     def FromFile(filename):
-        name = filename.split(sep)[-1].split('.')[0]
+        name = filename.split(os.path.sep)[-1].split('.')[0]
         args = map(int, list(name))
         return Meaning(*args)
 

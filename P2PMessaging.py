@@ -27,6 +27,7 @@ class FeedbackMessage(LeapP2PMessage):
         self.success = success
         self.target_image = target_image
         self.chosen_image = chosen_image
+        self.data = {"success":success, "target":target_image, "chosen":chosen_image}
 
 class InitMessage(LeapP2PMessage):
     """
@@ -53,6 +54,7 @@ class ImageListMessage(LeapP2PMessage):
         self.data = images
         assert self.data is not None
         assert len(self.data) != 0
+        # assert len(self.data[0]) != 0
 
 
 class StartRoundMessage(LeapP2PMessage):
