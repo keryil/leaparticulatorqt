@@ -154,9 +154,18 @@ class LeapP2PClientUI(object):
 
 
     def setup_play_button(self, button, signal):
-        def enable():
+        # this is a flag which is only true if the associated
+        # audio has been played at least once.
+        self.played = False
+
+        def enable(button=button):
+            # button = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
+            self.played = True
             button.setEnabled(True)
             self.unique_connect(button, "clicked()", play)
+            if self.picked_choice:
+                button = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
+                button.setEnabled(True)
 
         def play():
             button.setEnabled(False)
@@ -224,6 +233,9 @@ class LeapP2PClientUI(object):
         # close previous windows
         self.close_all()
         self.wait_over()
+        # this is a flag which is only true if one of the options is 
+        # chosen
+        self.picked_choice = False
         def submit():
             image_ = None
             for i, image in zip(range(1,5), images):
@@ -237,7 +249,9 @@ class LeapP2PClientUI(object):
         btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
         connect(btnSubmit, "clicked()", submit)
         def enable():
-            btnSubmit.setEnabled(True)
+            self.picked_choice = True
+            if self.played:
+                btnSubmit.setEnabled(True)
 
         button = self.testWin.findChildren(QPushButton, "btnPlay")[0]
         self.setup_play_button(button, self.factory.last_response_data.signal)

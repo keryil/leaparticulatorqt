@@ -106,6 +106,9 @@ class LeapP2PSession(object):
         self.round_data.append(LeapP2PRoundSummary())
         self.notify()
 
+    def setImage(self, image):
+        self.image = image
+
     def setParticipants(self, speaker, hearer):
         self.getLastRound().set_participants(speaker, hearer)
         self.notify()

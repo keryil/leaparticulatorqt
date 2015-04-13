@@ -126,11 +126,11 @@ class LeapP2PServerUI(object):
         # else:
             # print "Signal:", rnd.signal
         if rnd.image != None:
-            self.lblExpected.setPixmap(QPixmap(rnd.image))
+            self.lblExpected.setPixmap(rnd.image.pixmap())
         else:
             self.lblExpected.setPixmap(QPixmap(Constants.question_mark_path))
         if rnd.guess != None:
-            self.lblGiven.setPixmap(QPixmap(rnd.guess))
+            self.lblGiven.setPixmap(rnd.guess.pixmap())
         else:
             self.lblGiven.setPixmap(QPixmap(Constants.question_mark_path))
         
