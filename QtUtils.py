@@ -9,6 +9,7 @@ from collections import defaultdict, namedtuple
 
 
 slots = defaultdict(list)
+loadFromRes = lambda path: open(join(getcwd(), "res", path + ".txt")).read()
 
 def setButtonIcon(button, pixmap):
     """
@@ -33,6 +34,7 @@ def loadUiWidget(uifilename,
     w.setParent(parent)
     return w
 
+loadWidget = loadUiWidget
 
 def connect(widget, signal, slot, old_syntax=False, widget2=None):
     if isinstance(signal, str) or isinstance(slot, str):

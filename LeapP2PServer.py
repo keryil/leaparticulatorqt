@@ -49,15 +49,6 @@ from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
 from Meaning import P2PMeaning
 import os
 
-
-# class LeapP2PRoundData(object):
-#     hearer = None
-#     speaker = None
-#     speakers_response_data = None
-#     hearers_response_data = None
-#     test_images = []
-
-
 class LeapP2PRoundSummary(object):
 
     def __init__(self):
@@ -81,17 +72,15 @@ class LeapP2PRoundSummary(object):
         self.success = (str(self.guess) == str(self.image))
 
 
-def notifies(f):
-    def notifies_(arg):
-        def notifier(self, *args):
-            f(self, *args)
-            getattr(self, notify)()
-        return notifier
-    return notifies_
+# def notifies(f):
+#     def notifies_(arg):
+#         def notifier(self, *args):
+#             f(self, *args)
+#             getattr(self, notify)()
+#         return notifier
+#     return notifies_
 
 class LeapP2PSession(object):
-    # round_data = []
-    # participants = []
     def __init__(self, participants, condition):
         self.round_data = []
         self.participants = list(participants)
@@ -171,12 +160,7 @@ class LeapP2PServer(basic.LineReceiver):
             from glob import glob
             from random import shuffle
             log.msg("Found image files: %s" % glob(self.image_mask))
-            # self.factory.images[0] = glob(self.image_mask_1)
-            # self.factory.images[1] = glob(self.image_mask_2)
-            # self.factory.images[2] = glob(self.image_mask_3)
-            # shuffle(self.factory.images[0])
-            # shuffle(self.factory.images[1])
-            # shuffle(self.factory.images[2])
+
             images = glob(self.image_mask)
             self.factory.images = [[P2PMeaning.FromFile(i) for i in images] for a in range(3)]
             shuffle(self.factory.images)
