@@ -1,6 +1,6 @@
  
 You are now going to do the first session for phase 3! 
 
-You will be creating signals for different squares.
+You will be creating signals for 15 different images.
 
 The signals work in exactly the same way. 
