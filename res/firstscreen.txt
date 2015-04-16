@@ -4,7 +4,7 @@ And welcome to the experiment.
 
 Please read all of the text throughout the experiment. 
 
-Throughout, you will see squares which you need to create signals for. Make sure you can remember your signal for each square as you will be asked to recognise your signals during the experiment as well!
+Throughout, you will see images which you need to create signals for. Make sure you can remember your signal for each image as you will be asked to recognise your signals during the experiment as well!
 
 In the experiment there are 3 phases, each phase has 2 sessions, and each session has a signal creation task and a signal recognition task. 
 

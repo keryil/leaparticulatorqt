@@ -1,5 +1,5 @@
 You are now going to do the first session for phase 2. 
 
-You will be creating signals for different squares.
+You will be creating signals for 10 different images (below).
 
 The signals work in exactly the same way. 

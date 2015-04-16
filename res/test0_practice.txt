@@ -2,7 +2,7 @@ Welcome to the first test round!
 
 You will be able to hear a signal you have created by pressing Play.
 
-You must then choose which square you think this signal refers to. 
+You must then choose which image you think this signal refers to. 
 
 You can then press Submit.
 
