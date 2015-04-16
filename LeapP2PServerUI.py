@@ -3,22 +3,24 @@
 
 # simple.py
 import sys
-from PySide.QtCore import *
-from PySide.QtGui import *
-from PySide.QtDeclarative import QDeclarativeView
+from PyQt4.QtGui import *
 
-from PySide import QtCore, QtGui, QtUiTools
+app = QApplication.instance()
+if app is None:
+    app = QApplication(sys.argv)
+    print "LeapP2PServerUI new QApp: %s" % app
+else:
+    print "LeapP2PServerUI existing QApp: %s" % app
+
+from PyQt4.QtCore import *
+from PyQt4.QtDeclarative import QDeclarativeView
+
+from PyQt4 import QtCore, QtGui
 from LeapTheremin import ThereminPlayback
 import Constants
+from QtUtils import connect, disconnect 
+from QtUtils import loadUiWidget 
 
-
-def loadUiWidget(uifilename, parent=None):
-        loader = QtUiTools.QUiLoader()
-        uifile = QFile("qt_interface/" + uifilename)
-        uifile.open(QFile.ReadOnly)
-        ui = loader.load(uifile, parent)
-        uifile.close()
-        return ui
 def fn(self, event):
         event.ignore()
 
@@ -37,6 +39,7 @@ class LeapP2PServerUI(object):
         self.lstRounds = self.mainWin.findChildren(QListView, "lstRounds")[0]
         self.roundModel = QStandardItemModel(self.lstRounds)
         self.lstRounds.setModel(self.roundModel)
+
         self.lstRounds.activated.connect(self.displayRoundData)
 
         self.lblExpected = self.mainWin.findChildren(QLabel, "lblExpected")[0]
@@ -123,11 +126,11 @@ class LeapP2PServerUI(object):
         # else:
             # print "Signal:", rnd.signal
         if rnd.image != None:
-            self.lblExpected.setPixmap(QPixmap(rnd.image))
+            self.lblExpected.setPixmap(rnd.image.pixmap())
         else:
             self.lblExpected.setPixmap(QPixmap(Constants.question_mark_path))
         if rnd.guess != None:
-            self.lblGiven.setPixmap(QPixmap(rnd.guess))
+            self.lblGiven.setPixmap(rnd.guess.pixmap())
         else:
             self.lblGiven.setPixmap(QPixmap(Constants.question_mark_path))
         
@@ -138,10 +141,11 @@ class LeapP2PServerUI(object):
 
 
     def first_screen(self):
-        self.close_all()
+        # self.close_all()
         # button = self.mainWin.findChildren(QPushButton, "btnOkay")[0]
         self.mainWin.show()
         # button.clicked.connect(self.creation_screen)
+        print("olee")
         return self.mainWin
 
 
@@ -169,8 +173,9 @@ class LeapP2PServerUI(object):
 
         # Create Qt application and the QDeclarative view
         # self.app = QApplication.instance()
-        if not self.app:
-            self.app = QApplication(sys.argv)
+        # self.app = app
+        # if not self.app:
+        #     self.app = QApplication(sys.argv)
         # mainWin = loadUiWidget('qt_interface/mainWindow.ui')
         # button = mainWin.findChildren(QPushButton, "btnOkay")[0]
         # button.clicked.connect(mainWin.close)
@@ -184,8 +189,9 @@ class LeapP2PServerUI(object):
         # # Set the QML file and show
         # view.setSource(url)
         # Enter Qt main loop
-        sys.exit(self.app.exec_())
 
 if __name__ == "__main__":
-    gui = LeapP2PClientUI()
+    gui = LeapP2PServerUI(app)
+    print "About to go..."
     gui.go()
+    sys.exit(app.exec_())
