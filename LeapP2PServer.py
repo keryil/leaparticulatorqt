@@ -2,10 +2,20 @@
 
 once = False
 qapplication = None
+
+from PyQt4.QtGui import QApplication
 import sys
+print "LeapP2PServer QApp check...",
+app = QApplication.instance()
+if app is None:
+    app = QApplication(sys.argv)
+    print "LeapP2PServer new QApp: %s" % app
+else:
+    print "LeapP2PServer existing QApp: %s" % app
+
+
 from Constants import install_reactor
-from PySide.QtGui import QApplication
-qapplication = QApplication(sys.argv)
+qapplication = app
 install_reactor()
 # import sys, platform
 # if "qt4reactor" not in sys.modules:
@@ -36,15 +46,8 @@ import TestQuestion
 from LeapFrame import LeapFrame
 from P2PMessaging import *
 from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
-
-
-# class LeapP2PRoundData(object):
-#     hearer = None
-#     speaker = None
-#     speakers_response_data = None
-#     hearers_response_data = None
-#     test_images = []
-
+from Meaning import P2PMeaning
+import os
 
 class LeapP2PRoundSummary(object):
 
@@ -66,20 +69,18 @@ class LeapP2PRoundSummary(object):
 
     def set_hearers_contribution(self, response_message):
         self.guess = response_message.data.image
-        self.success = (self.guess == self.image)
+        self.success = (str(self.guess) == str(self.image))
 
 
-def notifies(f):
-    def notifies_(arg):
-        def notifier(self, *args):
-            f(self, *args)
-            getattr(self, notify)()
-        return notifier
-    return notifies_
+# def notifies(f):
+#     def notifies_(arg):
+#         def notifier(self, *args):
+#             f(self, *args)
+#             getattr(self, notify)()
+#         return notifier
+#     return notifies_
 
 class LeapP2PSession(object):
-    # round_data = []
-    # participants = []
     def __init__(self, participants, condition):
         self.round_data = []
         self.participants = list(participants)
@@ -93,6 +94,9 @@ class LeapP2PSession(object):
                                 rnd.image, rnd.guess, rnd.success)
         self.round_data.append(LeapP2PRoundSummary())
         self.notify()
+
+    def setImage(self, image):
+        self.image = image
 
     def setParticipants(self, speaker, hearer):
         self.getLastRound().set_participants(speaker, hearer)
@@ -137,10 +141,9 @@ class LeapP2PServer(basic.LineReceiver):
     MAX_LENGTH = 1024*1024*10
     response = []
     phase = 0
-    image_mask_1 = "./img/meanings/5_*.png"
-    image_mask_2 = "./img/meanings/*_[135].png"
-    image_mask_3 = "./img/meanings/*_[135].png"
-    image_mask = "./img/meanings/[135]_[12345].png"
+   
+    image_mask = os.path.join(Constants.MEANING_DIR, "[135]_[12345].%s" % 
+                              Constants.IMG_EXTENSION)
     recording = False
     n_of_test_questions = [5,9,9]
     n_of_options = [4,4,4]
@@ -157,13 +160,9 @@ class LeapP2PServer(basic.LineReceiver):
             from glob import glob
             from random import shuffle
             log.msg("Found image files: %s" % glob(self.image_mask))
-            # self.factory.images[0] = glob(self.image_mask_1)
-            # self.factory.images[1] = glob(self.image_mask_2)
-            # self.factory.images[2] = glob(self.image_mask_3)
-            # shuffle(self.factory.images[0])
-            # shuffle(self.factory.images[1])
-            # shuffle(self.factory.images[2])
-            self.factory.images = glob(self.image_mask)
+
+            images = glob(self.image_mask)
+            self.factory.images = [[P2PMeaning.FromFile(i) for i in images] for a in range(3)]
             shuffle(self.factory.images)
             print "Images in place!"
             log.msg(self.factory.images)
@@ -225,7 +224,10 @@ class LeapP2PServer(basic.LineReceiver):
                 self.factory.session.addCallback(self.factory.ui.onSessionChange)
                 # self.factory.session_data = LeapP2PSession(self.factory.clients)
                 self.send_all(StartMessage())
-                self.send_all(ImageListMessage(self.factory.images))
+                img_list = ImageListMessage(self.factory.images)
+                # print self.factory.images
+                # print img_list
+                self.send_all(img_list)
             self.choose_speaker_and_topic()
 
     def choose_speaker_and_topic(self):
@@ -241,7 +243,7 @@ class LeapP2PServer(basic.LineReceiver):
 
         # choose an image
         # TODO: we need a strategy for this
-        image = choice(self.factory.images)
+        image = choice(self.factory.images[self.factory.phase])
         log.msg("The chosen image is: %s" % image)
         log.msg("Speaker: %s; Hearer: %s" % (self.factory.clients[speaker], 
                                              self.factory.clients[hearer]))
@@ -344,6 +346,7 @@ class LeapP2PServerFactory(protocol.Factory):
         log.startLogging(sys.stdout)
         if not no_log:
             log.addObserver(FileLogObserver(open("logs/%s.log" % self.uid,'w')).emit)
+        self.phase = 0
         log.msg("Condition: %s" % condition)
 
     def buildProtocol(self, addr):
@@ -408,7 +411,7 @@ class LeapP2PClient(basic.LineReceiver):
             assert self.factory.mode == Constants.LISTENER
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
-            options = sample(list(set(self.factory.images) - set([message.data.image])),3) + [message.data.image]
+            options = sample(list(set(self.factory.images[self.factory.phase]) - set([message.data.image])),3) + [message.data.image]
             shuffle(options)
             self.ui.wait_over()
             self.ui.test_screen(options)
@@ -459,6 +462,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
         self.theremin = leap_listener
         self.ui = ui
         self.uid = uid
+        self.phase = 0
     
     # def start_recording(self):
     #     self.resetSignal()
@@ -511,9 +515,12 @@ if __name__ == '__main__':
     from LeapP2PServerUI import LeapP2PServerUI
     try:
         assert len(sys.argv) > 2
+        no_ui = sys.argv[-1] == "no_ui"
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
+            print "Init UI object..."
             ui = LeapP2PClientUI(qapplication)
+            print "Init theremin..."
             theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1, 
                                                                           default_volume=None,#Constants.default_amplitude, 
                                                                           ui=ui, realtime=False, 
@@ -526,14 +533,20 @@ if __name__ == '__main__':
             connection_def = endpoint.connect(factory)
             connection_def.addCallback(ui.setClient)
             # ui.setClient(connection)
+            print "Starting reactor..."
             reactor.runReturn()
+            print "Starting UI..."
             ui.go()
         elif sys.argv[2] == "server":
             try:
-                ui = LeapP2PServerUI(qapplication)
-                get_server_instance(condition=sys.argv[1], ui=ui)
-                reactor.runReturn()
-                ui.go()
+                if no_ui:
+                    get_server_instance(condition=sys.argv[1], ui=None)
+                    reactor.run()
+                else:
+                    ui = LeapP2PServerUI(qapplication)
+                    get_server_instance(condition=sys.argv[1], ui=ui)
+                    reactor.runReturn()
+                    ui.go()
             except IndexError, e:
                 import traceback
                 traceback.print_exc()
@@ -542,3 +555,5 @@ if __name__ == '__main__':
     except AssertionError:
                 print "USAGE: LeapP2PServer {condition} {client/server} [client_id]."
                 sys.exit(-1)
+
+    sys.exit(app.exec_())

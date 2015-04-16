@@ -11,10 +11,12 @@ class LeapP2PMessage(object):
     the module Constants) with their associated data for easy, one-step
     transmission. 
     """
-    data = None
-    instruction = None
     def __init__(self):
-        pass
+        self.data = None
+        self.instruction = None
+
+    def __str__(self):
+        return "%s(%s)" % (self.__class__.__name__, self.data)
 
 class FeedbackMessage(LeapP2PMessage):
     """
@@ -25,6 +27,7 @@ class FeedbackMessage(LeapP2PMessage):
         self.success = success
         self.target_image = target_image
         self.chosen_image = chosen_image
+        self.data = {"success":success, "target":target_image, "chosen":chosen_image}
 
 class InitMessage(LeapP2PMessage):
     """
@@ -51,6 +54,8 @@ class ImageListMessage(LeapP2PMessage):
         self.data = images
         assert self.data is not None
         assert len(self.data) != 0
+        # assert len(self.data[0]) != 0
+
 
 class StartRoundMessage(LeapP2PMessage):
     """

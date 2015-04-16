@@ -10,4 +10,4 @@ You may play your signal back by pressing Play. You may rerecord your signal if 
 
 When you have finished press Submit.
 
-You will be creating signals for different squares. 
+You will be creating signals for different images. These are the 5 images from the first phase:

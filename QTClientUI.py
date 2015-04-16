@@ -18,7 +18,7 @@ from QtUtils import connect, disconnect, loadWidget, loadFromRes, setButtonIcon
 from jsonpickle import decode, encode
 from collections import namedtuple
 from TestQuestion import TestQuestion
-from QtUtils import Meaning
+from Meaning import Meaning
 import LeapFrame
 
 

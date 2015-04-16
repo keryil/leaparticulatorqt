@@ -2,7 +2,7 @@ This is second test round for phase 2.
 
 You can hear a signal you have created by pressing Play.
 
-You must choose which square you think this signal is for. 
+You must choose which image you think this signal is for. 
 
 Then press Submit.
 
