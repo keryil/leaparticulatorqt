@@ -1,6 +1,6 @@
 import os.path
-from Constants import IMG_EXTENSION, MEANING_DIR
-from PyQt4 import QtGui
+from Constants import IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY, FALSE_OVERLAY
+from PyQt4 import QtGui, QtCore
 import os
 from os import getcwd
 from os.path import join

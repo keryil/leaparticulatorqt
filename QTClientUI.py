@@ -289,6 +289,7 @@ class ClientUI(AbstractClientUI):
             given_answer = self.current_question.given_answer
             if given_answer is None:
                 print "Cannot submit before participant chooses an answer."
+                get(QtGui.QPushButton, "btnPlay").setEnabled(True)
                 return
             success = (self.target_meaning == self.given_meaning)
             assert given_answer is not None

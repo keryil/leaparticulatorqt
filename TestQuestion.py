@@ -27,20 +27,21 @@ def produce_questions(client_responses, qty=4, n_of_images=3):
 
 
 class TestQuestion(object):
-    n_of_images = 4
-    # dict from pics to signals
-    # as in response[pic] = signal
-    responses = {}
-    pics = []
-    # signal = []
-    answer = None
-    given_answer = None
 
     def __init__(self, client_responses, n_of_images=3, answer=None):
         """
         Receives a dict of response[pic]=signal, and
         constructs test question. 
         """
+        # n_of_images = 4
+        # dict from pics to signals
+        # as in response[pic] = signal
+        responses = {}
+        # pics = []
+        # signal = []
+        # answer = None
+        # given_answer = None
+
         self.n_of_images = n_of_images
         assert len(client_responses) == len(set(client_responses))
         images = client_responses.keys()
@@ -60,6 +61,7 @@ class TestQuestion(object):
             self.answer = answer
         shuffle(self.pics)
         self.signal = client_responses[self.answer]
+        self.given_answer = None
         assert self.signal is not None
 
 
