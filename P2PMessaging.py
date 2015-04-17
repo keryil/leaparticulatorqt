@@ -1,8 +1,19 @@
 from collections import namedtuple
 import Constants
 
-RoundData = namedtuple("RoundData", ["isSpeaker", "image"]) 
-ResponseData = namedtuple("ResponseData", ["signal", "image"])
+class RoundData(object):
+    def __init__(self, isSpeaker, image):
+        assert isSpeaker in (True, False)
+        self.isSpeaker = isSpeaker
+        self.image = image
+
+class ResponseData(object):
+    def __init__(self, signal, image):
+        self.signal = signal
+        self.image = image
+
+# RoundData = namedtuple("RoundData", ["isSpeaker", "image"]) 
+# ResponseData = namedtuple("ResponseData", ["signal", "image"])
 
 class LeapP2PMessage(object):
     """
