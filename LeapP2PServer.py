@@ -142,7 +142,7 @@ class LeapP2PServer(basic.LineReceiver):
     response = []
     phase = 0
    
-    image_mask = os.path.join(Constants.MEANING_DIR, "[135]_[12345].%s" % 
+    image_mask = os.path.join(Constants.MEANING_DIR_P2P, "[135]_[12345].%s" % 
                               Constants.IMG_EXTENSION)
     recording = False
     n_of_test_questions = [5,9,9]

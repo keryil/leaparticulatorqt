@@ -1,5 +1,5 @@
 import os.path
-from Constants import IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY, FALSE_OVERLAY
+from Constants import IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY, FALSE_OVERLAY, MEANING_DIR_P2P
 from PyQt4 import QtGui, QtCore
 import os
 from os import getcwd
@@ -21,6 +21,7 @@ class AbstractMeaning(object):
         assert set(feature_order) == set(feature_dict)
         self.feature_order = feature_order
         self.feature_dict = feature_dict
+        self.MEANING_DIR = MEANING_DIR
 
     def filename(self):
         """
@@ -35,7 +36,7 @@ class AbstractMeaning(object):
         # print tuples
         import sys;sys.stdout.flush()
         tuples.append(IMG_EXTENSION)
-        fn = join(MEANING_DIR, format_txt %
+        fn = join(self.MEANING_DIR, format_txt %
                              tuple(tuples))
         print join(getcwd(), fn) 
         assert os.path.isfile(join(getcwd(), fn))
@@ -86,6 +87,9 @@ class AbstractMeaning(object):
 
 class P2PMeaning(AbstractMeaning):
     feature_sep = "_"
+    def __init__(self, feature_dict,  feature_order):
+        super(P2PMeaning, self).__init__(feature_dict, feature_order)
+        self.MEANING_DIR = MEANING_DIR_P2P
     @classmethod
     def FromFile(cls, filename):
         # print "Feature separator is: %s" % cls.feature_sep
