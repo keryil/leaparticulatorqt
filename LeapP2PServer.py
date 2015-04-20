@@ -17,19 +17,6 @@ else:
 from Constants import install_reactor
 qapplication = app
 install_reactor()
-# import sys, platform
-# if "qt4reactor" not in sys.modules:
-#     from PySide.QtGui import QApplication
-#     qapplication = QApplication(sys.argv)
-#     if platform.system() == "Darwin":
-#         from twisted.internet import cfreactor
-#         cfreactor.install()    
-#     else:   
-#         import qt4reactor
-#         qt4reactor.install()
-#         # from twisted.internet import gtk2reactor
-#         # gtk2reactor.install()
-#         once = True
 
 from twisted.internet import protocol, reactor
 from twisted.internet.endpoints import TCP4ServerEndpoint, TCP4ClientEndpoint
@@ -71,14 +58,6 @@ class LeapP2PRoundSummary(object):
         self.guess = response_message.data.image
         self.success = (str(self.guess) == str(self.image))
 
-
-# def notifies(f):
-#     def notifies_(arg):
-#         def notifier(self, *args):
-#             f(self, *args)
-#             getattr(self, notify)()
-#         return notifier
-#     return notifies_
 
 class LeapP2PSession(object):
     def __init__(self, participants, condition):
@@ -360,6 +339,11 @@ class LeapP2PServerFactory(protocol.Factory):
         #     server.addListenerConnectionMade(self.ui.connectionMade)
         return server
 
+    def stopFactory(self):
+        for lst in self.clients.values():
+            for client in lst:
+                client.transport.loseConnection()
+
 class LeapP2PClient(basic.LineReceiver):
     delimiter = "\n\n"
     MAX_LENGTH = 1024*1024*10
@@ -505,53 +489,75 @@ def get_server_instance(condition, ui=None):
     from Constants.py
     """
     endpoint = TCP4ServerEndpoint(reactor, Constants.leap_port)
-    endpoint.listen(LeapP2PServerFactory(ui=ui,condition=condition, no_log=True))
-    return endpoint
+    factory = LeapP2PServerFactory(ui=ui,condition=condition, no_log=True)
+    listener = endpoint.listen(factory)
+    factory.endpoint = endpoint
+    factory.listener = listener
+    return factory
+
+def start_client(qapplication, uid):
+    from LeapP2PClientUI import LeapP2PClientUI
+    print "Init UI object..."
+    ui = LeapP2PClientUI(qapplication)
+    print "Init theremin..."
+    theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1, 
+                                                                  default_volume=None,#Constants.default_amplitude, 
+                                                                  ui=ui, realtime=False, 
+                                                                  factory=LeapP2PClientFactory,
+                                                                  ip = None)
+    endpoint = TCP4ClientEndpoint(reactor, Constants.leap_server, Constants.leap_port)
+    factory = LeapP2PClientFactory(theremin, ui=ui, uid=uid)
+    theremin.factory = factory
+    # ui.setClientFactory(factory)
+    connection_def = endpoint.connect(factory)
+    connection_def.addCallback(ui.setClient)
+    factory.connection_def = connection_def
+    factory.endpoint = endpoint
+    # ui.setClient(connection)
+    if not reactor.running:
+        print "Starting reactor..."
+        reactor.runReturn()
+    print "Starting UI..."
+    return theremin, reactor, controller, connection
+
+def start_server(qapplication, condition='1', no_ui=False):
+    from LeapP2PServerUI import LeapP2PServerUI
+    factory = None
+    assert condition in ['1','1r','2','2r','master']
+    try:
+        if no_ui:
+            print "Headless mode..."
+            sys.stdout.flush()
+            factory = get_server_instance(condition=condition, ui=None)
+            if not reactor.running:
+                print "Starting reactor..."
+                reactor.runReturn()
+        else:
+            print "Normal GUI mode..."
+            sys.stdout.flush()
+            ui = LeapP2PServerUI(qapplication)
+            factory = get_server_instance(condition=condition, ui=ui)
+            if not reactor.running:
+                reactor.runReturn()
+            ui.go()
+        return factory
+    except IndexError, e:
+        import traceback
+        traceback.print_exc()
+        print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
+        sys.exit(-1)
 
 
 if __name__ == '__main__':
     import sys
-    from LeapP2PClientUI import LeapP2PClientUI
-    from LeapP2PServerUI import LeapP2PServerUI
     try:
         assert len(sys.argv) > 2
         no_ui = sys.argv[-1] == "no_ui"
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
-            print "Init UI object..."
-            ui = LeapP2PClientUI(qapplication)
-            print "Init theremin..."
-            theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1, 
-                                                                          default_volume=None,#Constants.default_amplitude, 
-                                                                          ui=ui, realtime=False, 
-                                                                          factory=LeapP2PClientFactory,
-                                                                          ip = None)
-            endpoint = TCP4ClientEndpoint(reactor, Constants.leap_server, Constants.leap_port)
-            factory = LeapP2PClientFactory(theremin, ui=ui, uid=sys.argv[3])
-            theremin.factory = factory
-            # ui.setClientFactory(factory)
-            connection_def = endpoint.connect(factory)
-            connection_def.addCallback(ui.setClient)
-            # ui.setClient(connection)
-            print "Starting reactor..."
-            reactor.runReturn()
-            print "Starting UI..."
-            ui.go()
+            start_client(qapplication, uid=sys.argv[3])
         elif sys.argv[2] == "server":
-            try:
-                if no_ui:
-                    get_server_instance(condition=sys.argv[1], ui=None)
-                    reactor.run()
-                else:
-                    ui = LeapP2PServerUI(qapplication)
-                    get_server_instance(condition=sys.argv[1], ui=ui)
-                    reactor.runReturn()
-                    ui.go()
-            except IndexError, e:
-                import traceback
-                traceback.print_exc()
-                print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
-                sys.exit(-1)
+            start_server(qapplication, condition=sys.argv[1],no_ui=no_ui)
     except AssertionError:
                 print "USAGE: LeapP2PServer {condition} {client/server} [client_id]."
                 sys.exit(-1)
