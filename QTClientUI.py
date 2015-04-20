@@ -104,6 +104,13 @@ class ClientUI(AbstractClientUI):
         record = get(QtGui.QPushButton, 'btnRecord')
         submit = get(QtGui.QPushButton, 'btnSubmit')
 
+        # shortcuts
+        def shortcuts():
+            play.setShortcut(QtGui.QKeySequence.fromString("P"))
+            if record:
+                record.setShortcut(QtGui.QKeySequence.fromString("R"))
+            submit.setShortcut(QtGui.QKeySequence.fromString("S"))
+
         # disable submit button until the first recording
         # or until an image is chosen for a signal
         submit.setEnabled(False)
@@ -122,6 +129,7 @@ class ClientUI(AbstractClientUI):
                 connect(play, "clicked()", fn_play)
                 if not record:
                     submit.setEnabled(True)
+                shortcuts()
             play.setText("Stop")
             disconnect(play)
             last_submit_state = submit.isEnabled()
@@ -129,6 +137,7 @@ class ClientUI(AbstractClientUI):
             if record is not None:
                 record.setEnabled(False)
             submit.setEnabled(False)
+            shortcuts()
             self.playback_player.start(self.last_signal, callback=fn_done)
 
         connect(play, "clicked()", fn_play)
@@ -145,6 +154,7 @@ class ClientUI(AbstractClientUI):
                     submit.setEnabled(True)
                     disconnect(record)
                     connect(record, "clicked()", fn_record)
+                    shortcuts()
 
                 self.start_recording()
                 # self.send(Constants.START_REC)
@@ -155,6 +165,7 @@ class ClientUI(AbstractClientUI):
                 play.setEnabled(False)
                 submit.setEnabled(False)
                 record.setText("Stop")
+                shortcuts()
 
             connect(record, "clicked()", fn_record)
 
