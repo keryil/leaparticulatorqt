@@ -358,9 +358,11 @@ class LeapP2PServerFactory(protocol.Factory):
         return server
 
     def stopFactory(self):
-        for lst in self.clients.values():
-            for client in lst:
-                client.transport.loseConnection()
+        # for lst in self.clients.values():
+        #     for client in lst:
+        #         client.transport.loseConnection()
+        for client in self.clients:
+            client.transport.loseConnection()
 
 
 class LeapP2PClient(basic.LineReceiver):
@@ -521,7 +523,7 @@ def get_server_instance(condition, ui=None):
     return factory
 
 
-def start_client(qapplication, uid, run=True):
+def start_client(qapplication, uid):
     assert uid is not None
     from LeapP2PClientUI import LeapP2PClientUI
     print "Init UI object..."
@@ -543,7 +545,7 @@ def start_client(qapplication, uid, run=True):
     connection_def.addCallback(ui.setClient)
     factory.connection_def = connection_def
     factory.endpoint = endpoint
-    if not reactor.running and run:
+    if not (Constants.TEST or reactor.running):
         print "Starting reactor..."
         reactor.runReturn()
         print "Starting UI..."
@@ -551,7 +553,7 @@ def start_client(qapplication, uid, run=True):
     return theremin, reactor, controller, connection, factory
 
 
-def start_server(qapplication, condition='1', no_ui=False, run=True):
+def start_server(qapplication, condition='1', no_ui=False):
     from LeapP2PServerUI import LeapP2PServerUI
     factory = None
     assert condition in ['1', '1r', '2', '2r', 'master']
@@ -560,7 +562,7 @@ def start_server(qapplication, condition='1', no_ui=False, run=True):
             print "Headless mode..."
             sys.stdout.flush()
             factory = get_server_instance(condition=condition, ui=None)
-            if not reactor.running and run:
+            if not (Constants.TEST or reactor.running):
                 print "Starting reactor..."
                 reactor.runReturn()
         else:
@@ -568,7 +570,8 @@ def start_server(qapplication, condition='1', no_ui=False, run=True):
             sys.stdout.flush()
             ui = LeapP2PServerUI(qapplication)
             factory = get_server_instance(condition=condition, ui=ui)
-            if not reactor.running and run:
+            if not (Constants.TEST or reactor.running):
+                print "Starting reactor..."
                 reactor.runReturn()
             ui.go()
         return factory

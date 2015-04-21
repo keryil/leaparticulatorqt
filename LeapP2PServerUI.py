@@ -81,9 +81,14 @@ class LeapP2PServerUI(object):
         client_id = client.other_end_alias
         client_ip = client.other_end
         item = "%s (%s)" % (client_ip, client_id)
-        item = self.clientModel.findItems(item, Qt.MatchExactly)[0]
-        item = item.row()
-        self.clientModel.removeRow(item)
+        item = self.clientModel.findItems(item, Qt.MatchExactly)
+        # this prevents a race condition
+        # where if the connect/disconnect
+        # is too fast, there might never be
+        # a QStandardItem added.
+        if item != []:
+            item = item[0].row()
+            self.clientModel.removeRow(item)
         
     def flicker(self):
         """

@@ -4,7 +4,7 @@ from PyQt4.QtCore import QFile
 from os.path import join, basename
 from os import getcwd, sep, path
 from importlib import import_module
-from Constants import QT_DIR, MEANING_DIR, IMG_EXTENSION, TRUE_OVERLAY, FALSE_OVERLAY
+from Constants import QT_DIR, MEANING_DIR, IMG_EXTENSION, TRUE_OVERLAY, FALSE_OVERLAY, TEST
 from collections import defaultdict, namedtuple
 
 
@@ -28,6 +28,9 @@ def loadUiWidget(uifilename,
     Convenience method to load and setup
     and widget, a QMainWindow by default.
     """
+    if TEST:
+        import os
+        root = os.path.expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")
     ui_file = join(root, QT_DIR, uifilename)
     print "Loading ui file: %s" %ui_file
     w = uic.loadUi(ui_file)

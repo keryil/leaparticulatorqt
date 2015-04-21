@@ -47,9 +47,6 @@ from Constants import freqToMel, palmToAmpAndFreq, palmToAmpAndMel, palmToFreq
 signal = []
 
 
-
-
-
 class ThereminPlayer(object):
 
     """
@@ -224,7 +221,7 @@ class ThereminPlayback(object):
         # for f in self.score:
         #   print f.current_frames_per_second
         fps = (f.current_frames_per_second for f in self.score)
-        average_fps =  float(sum(fps)) / len(self.score)
+        average_fps = float(sum(fps)) / len(self.score)
         self.rate = 1. / average_fps
         # self.rate = 1. / min([f.current_frames_per_second for f in self.score])
         self.player.unmute()
@@ -337,7 +334,7 @@ class ThereminListener(Leap.Listener):
                 # else:
                 #     log.msg("Extending signal...")
                 if self.protocol.factory.ui:
-                        self.protocol.factory.ui.extend_last_signal(pickled)
+                    self.protocol.factory.ui.extend_last_signal(pickled)
                     # self.protocol.factory.extendSignal(pickled)
             else:
                 if not self.realtime:
@@ -382,8 +379,9 @@ def main(ip=Constants.leap_server):
         theremin, reactor, controller, connection = gimmeSomeTheremin(
             n_of_notes=1, default_volume=.5, ip=ip)
         reactor.callLater(100, stop)
-        print "Starting reactor"
-        reactor.run()
+        if not Constants.TEST:
+            print "Starting reactor"
+            reactor.run()
 
     finally:
         for f in signal:
@@ -413,7 +411,8 @@ if __name__ == "__main__":
 
     theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1, default_volume=.5,
                                                                   ip=None)
-    reactor.runReturn()
+    if not Constants.TEST:
+        reactor.runReturn()
     app = QtGui.QApplication.instance()
     sys.exit(app.exec_())
     # class Frame(object):
