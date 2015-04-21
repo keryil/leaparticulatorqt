@@ -49,6 +49,5 @@ class P2PClientTestWithServer(unittest.TestCase):
 
     def test_connect(self):
         theremin, reactor, controller, connection, factory = start_client(
-            self.app, uid="test1", run=True)
-        factory.ui.go()
+            self.app, uid="test1")
         return factory.connection_def
