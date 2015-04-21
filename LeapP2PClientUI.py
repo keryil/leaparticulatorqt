@@ -19,13 +19,13 @@ else:
 
 from LeapTheremin import ThereminPlayback
 from P2PMessaging import EndRoundMessage
-from QtUtils import connect, disconnect 
+from QtUtils import connect, disconnect , loadUiWidget
 # from QtUtils import loadWidget as loadUiWidget
 
-def loadUiWidget(name, parent=None):
-    widget = uic.loadUi("qt_generated/%s" % name)
-    widget.setParent(parent)
-    return widget
+# def loadUiWidget(name, parent=None):
+#     widget = uic.loadUi("qt_generated/%s" % name)
+#     widget.setParent(parent)
+#     return widget
      
 def fn(self, event):
         event.ignore()

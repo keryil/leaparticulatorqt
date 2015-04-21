@@ -23,8 +23,8 @@ class P2PServerTest(unittest.TestCase):
             self.factory.listener.result.stopListening()
             self.factory.stopFactory()
         # self.app.quit()
-        from time import sleep
-        sleep(1)
+        # from time import sleep
+        # sleep(1)
 
     def setUp(self):
         prep(self)
@@ -43,3 +43,26 @@ class P2PServerTest(unittest.TestCase):
             self.app, condition='1', no_ui=True)
         self.assertIsNotNone(self.factory)
         self.assertIsNone(self.factory.ui)
+
+
+class P2PServerTestWithClient(unittest.TestCase):
+
+    def tearDown(self):
+        self.factory.listener.result.stopListening()
+        self.factory.stopFactory()
+
+    def setUp(self):
+        prep(self)
+        self.factory = start_server(
+            self.app, condition='1', no_ui=True)
+
+    def test_connect(self):
+        client_ip = "127.0.0.1"
+        client_id = "test1"
+        theremin, reactor, controller, connection, factory = start_client(
+            self.app, uid=client_id, run=False)
+        return factory.connection_def
+        # defer.gatherResults([factory.connection_def])
+        # item = "%s (%s)" % (client_ip, client_id)
+        # item = self.factory.ui.clientModel.findItems(item, Qt.MatchExactly)
+        # print item
