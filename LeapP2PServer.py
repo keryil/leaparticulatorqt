@@ -142,13 +142,13 @@ class LeapP2PServer(basic.LineReceiver):
         if len(self.factory.images[0]) == 0:
             from glob import glob
             from random import shuffle
-            root = os.getcwd()
-            if "_trial_temp" in root:
-                root = root[:-11]
-            log.msg("Found image files: %s" % glob(os.path.join(root, 
+            # root = os.getcwd()
+            # if "_trial_temp" in root:
+            #     root = root[:-11]
+            log.msg("Found image files: %s" % glob(os.path.join(Constants.ROOT_DIR, 
                                                 self.image_mask)))
 
-            images = glob(self.image_mask)
+            images = glob(os.path.join(Constants.ROOT_DIR, self.image_mask))
             self.factory.images = [
                 [P2PMeaning.FromFile(i) for i in images] for a in range(3)]
             shuffle(self.factory.images)

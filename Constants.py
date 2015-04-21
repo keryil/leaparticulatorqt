@@ -4,11 +4,15 @@ Created on Feb 21, 2014
 @author: kerem
 '''
 
-from os.path import join
+from os.path import expanduser, join
+from os import getcwd
+
+
+ROOT_DIR = getcwd()
 
 # units
-default_pitch=440.
-default_amplitude=.5
+default_pitch = 440.
+default_amplitude = .5
 
 leap_port = 9999
 leap_server = "127.0.0.1"
@@ -22,11 +26,11 @@ fadeout_call_rate = 0.005
 # number of options each test question has
 n_of_options = [4, 4, 4]
 # number of total available images per phase
-n_of_meanings = [5,10,15]
+n_of_meanings = [5, 10, 15]
 # number of test questions per phase
 n_of_test_questions = n_of_meanings
 
-question_mark_path = join("img","question_mark.jpg")
+question_mark_path = join("img", "question_mark.jpg")
 
 # signals
 SUBMIT = "Submit"
@@ -88,7 +92,6 @@ RESPONSE = "Response"
 XY, AMP_AND_FREQ, AMP_AND_MEL = "xy", "amp_and_freq", "amp_and_mel"
 
 
-
 # GUI Stuff for the new experiment
 
 # Folder for .ui files and .py files generated
@@ -112,13 +115,14 @@ MOD_PRETEST = "mod_pretest"
 MOD_EXIT = "mod_exit"
 MOD_FIRSTSCREEN = "mod_firstscreen"
 
-# delay between submitting a test answer and 
+# delay between submitting a test answer and
 # the presentation of the next question in msec
 DELAY_TEST = 1000
 
 TEST = False
 
 import math
+
 
 def install_reactor():
     # https://github.com/ghtdak/qtreactor/issues/21
@@ -128,6 +132,7 @@ def install_reactor():
     if 'qt4reactor' not in sys.modules:
         import qt4reactor
         qt4reactor.install()
+
 
 def freqToMel(freq):
     return 2595 * math.log10(1 + freq / 700.)
@@ -158,3 +163,10 @@ def palmToFreq(palmPosition):
         return 0, 0
 
     return 110 * (3 ** (abs(x + 200) / 200.))
+
+
+def setupTest():
+    global leap_server, TEST, ROOT_DIR
+    leap_server = "127.0.0.1"
+    TEST = True
+    ROOT_DIR = expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")

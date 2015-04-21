@@ -6,25 +6,39 @@ from PyQt4.QtCore import Qt
 
 from LeapP2PServer import start_server, start_client
 from twisted.internet import defer
+from collections import namedtuple
 
 
 def prep(self):
     import Constants
-    Constants.leap_server = "127.0.0.1"
-    Constants.TEST = True
+    Constants.setupTest()
     self.app = QApplication.instance()
     if not self.app:
         self.app = QApplication(sys.argv)
 
+ClientData = namedtuple(
+    "ClientData",
+    "theremin controller connection factory client_id client_ip".split())
+
 
 class P2PTestCase(unittest.TestCase):
+
+    def click(self, widget):
+        QTest.mouseClick(widget, Qt.LeftButton)
 
     def startClient(self, id):
         client_ip = "127.0.0.1"
         client_id = "test%d" % id
         theremin, self.reactor, controller, connection, factory = start_client(
             self.app, uid=client_id)
-        return (theremin, controller, connection, factory), (client_id, client_ip)
+        factory.ui.go()
+        return ClientData(theremin, controller, connection, factory, client_id, client_ip)
+
+    def startClients(self, qty):
+        res = []
+        for i in range(qty):
+            res.append(self.startClient(i))
+        return res
 
     def startServer(self):
         self.factory = start_server(
@@ -53,7 +67,7 @@ class P2PServerTest(P2PTestCase):
     def test_invalidCondition(self):
         self.assertRaises(
             Exception, lambda: startServer(self.app, condition=1,
-                                            no_ui=False))
+                                           no_ui=False))
 
     def test_headlessStartup(self):
         self.factory = start_server(
@@ -72,9 +86,11 @@ class P2PServerTestWithClient(P2PTestCase):
         self.startServer()
 
     def test_connect(self):
-        stuff, (client_id, client_ip) = self.startClient(1)
-        self.reactor.iterate(1)
-        item = "%s (%s)" % (client_ip, client_id)
+        data = self.startClient(1)
+        self.reactor.iterate(2)
+        item = "%s (%s)" % (data.client_ip, data.client_id)
+        print "Looking for: ", item
         item = self.factory.ui.clientModel.findItems(item, Qt.MatchExactly)
+        print "Rows: ", self.factory.ui.clientModel.rowCount()
+        print "Found: ", item
         self.assertTrue(item)
-        self.assertEqual(item[0].text(), '%s (%s)' % (client_ip, client_id))
