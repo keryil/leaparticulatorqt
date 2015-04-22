@@ -195,7 +195,7 @@ class LeapP2PServer(basic.LineReceiver):
         assert client in self.factory.clients.keys()
         message = jsonpickle.encode(message)
         nline = "<{}@{}> {}".format(
-            self.factory.clients[client], client.transport.getPeer().host, message[:100])
+            self.factory.clients[client], client.transport.getPeer().host, message[:300])
         log.msg("Sending %s" % nline)
         client.sendLine(message)
 
@@ -397,9 +397,11 @@ class LeapP2PClient(basic.LineReceiver):
             self.factory.mode = Constants.INIT
             # self.ui.wait_over()
         elif isinstance(message, ImageListMessage):
+            assert self.factory.mode == Constants.INIT
             self.factory.mode = Constants.IMAGE_LIST
             self.factory.images = message.data
         elif isinstance(message, StartRoundMessage):
+            print "ClientFactory mode: ", self.factory.mode
             assert self.factory.mode in (Constants.IMAGE_LIST,
                                          Constants.FEEDBACK)
             self.factory.current_image = message.data.image

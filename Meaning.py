@@ -47,6 +47,8 @@ class AbstractMeaning(object):
 
     @classmethod
     def FromFile(cls, filename):
+        assert os.path.isfile(filename)
+        print "New meaning from: %s" % filename
         # print "Feature separator is: %s" % cls.feature_sep
         name = filename.split(os.path.sep)[-1].split('.')[0]
         args = name.split(cls.feature_sep)
