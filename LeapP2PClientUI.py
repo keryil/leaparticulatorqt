@@ -113,6 +113,7 @@ class LeapP2PClientUI(object):
 
         button = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
         connect(button, "clicked()", submit_and_proceed)
+        button.setEnabled(False)
 
         button = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
         self.unique_connect(button, "clicked()", self.start_recording)
@@ -190,6 +191,9 @@ class LeapP2PClientUI(object):
             btnPlay = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
             btnPlay.setEnabled(True)
 
+            btnSubmit = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
+            btnSubmit.setEnabled(True)
+
             self.setup_play_button(btnPlay, self.getSignal())
             self.flicker()
             print "Signal is %d frames long." % len(self.getSignal())
@@ -228,6 +232,9 @@ class LeapP2PClientUI(object):
             self.waitDialog.parent().setEnabled(True)
             self.waitDialog.close()
             self.waitDialog = None
+
+    def is_waiting(self):
+        return self.waitDialog and self.waitDialog.isVisible()
 
     def test_screen(self,images=None):
         # close previous windows
