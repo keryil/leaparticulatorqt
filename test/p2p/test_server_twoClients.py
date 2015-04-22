@@ -11,37 +11,163 @@ import Constants
 from twisted.internet import defer
 
 
-class P2PServerTestWithClient(P2PTestCase):
+class TwoClientsInit(P2PTestCase):
 
     def tearDown(self):
         self.stopServer()
+        self.clients = []
 
     def setUp(self):
+        from twisted.internet import reactor
+        self.reactor = reactor
         prep(self)
+        self.timeout = 7
         self.startServer()
 
     def test_connect(self):
         self.startClient(1)
         button = self.factory.ui.mainWin.btnStart
-        # print "Button enabled? ",  button.isEnabled()
+        print "Button enabled? ",  button.isEnabled()
         self.assertFalse(button.isEnabled())
         self.startClient(2)
 
     def test_enableStart(self):
         self.startClients(2)
-        self.reactor.iterate(1)
+        # self.reactor.iterate(1)
+        d = defer.Deferred()
         button = self.factory.ui.mainWin.btnStart
-        # print "Button enabled? ",  button.isEnabled()
-        self.assertTrue(button.isEnabled())
 
-    def test_OkayButtonsAfterStart(self):
-        clients = self.startClients(2)
-        self.reactor.iterate(1)
-        self.factory.ui.mainWin.btnStart
-        for client in clients:
+        def fn():
+            print "Button enabled? ",  button.isEnabled()
+            d.callback(self.assertTrue(button.isEnabled()))
+        self.reactor.callLater(.1, fn)
+        return d
+
+    def test_OkayButtonsBeforeStart(self):
+        self.clients = self.startClients(2)
+        # self.reactor.iterate(1)
+        # self.factory.ui.mainWin.btnStart
+        d = defer.Deferred()
+        # d2 = defer.Deferred()
+        # d1.chainDeferred(d2)
+        for client in self.clients:
             button = client.factory.ui.firstWin.findChildren(
                 QtGui.QPushButton, "btnOkay")[0]
             self.click(button)
+
+        def fn():
+            lst = [self.assertTrue(client.factory.ui.is_waiting()) for client in self.clients]
+            d.callback(lst)
+        self.reactor.callLater(.1, fn)
+        return d
+
+class TwoClientsFirstRound(P2PTestCase):
+
+    def tearDown(self):
+        self.stopServer()
+        self.clients = []
+
+    def setUp(self):
+        from twisted.internet import reactor
+        self.reactor = reactor
+        prep(self)
+        self.startServer()
+        self.timeout = 3
+
+        self.clients = self.startClients(2)
+        for client in self.clients:
+            button = client.factory.ui.firstWin.findChildren(
+                QtGui.QPushButton, "btnOkay")[0]
+            self.click(button)
+        d = defer.Deferred()
+        def fn():
+            d.callback('setUp')
+        self.reactor.callLater(.1, fn)
+        return d
+
+
+    def test_FirstImage(self):
         self.click(self.factory.ui.mainWin.btnStart)
-        self.reactor.iterate(1)
-        
+        d = defer.Deferred()
+        def fn():
+            print self.factory.mode
+            self.assertEqual(self.factory.mode, Constants.SPEAKERS_TURN)
+            speaker = False
+            listener = False
+            for client in self.clients:
+                if client.factory.mode == Constants.SPEAKER:
+                    print "Speaker: ", client
+                    speaker = client
+                else:
+                    print "Listener: ", client
+                    listener = client
+            ui_speaker = speaker.factory.ui
+            ui_listener = listener.factory.ui
+            
+            self.assertTrue(speaker)
+            self.assertEqual(speaker.factory.mode, Constants.SPEAKER)
+            self.assertTrue(listener)
+            self.assertEqual(listener.factory.mode, Constants.LISTENER)
+            self.assertEqual(
+                ui_speaker.get_active_window(), ui_speaker.creationWin)
+            self.assertEqual(ui_listener.get_active_window(), ui_listener.firstWin)
+            self.assertTrue(ui_listener.is_waiting())
+            self.assertFalse(ui_speaker.is_waiting())
+
+            image = ui_speaker.creationWin.findChildren(
+                QtGui.QLabel, "lblImage")[0]
+            self.assertEqual(
+                speaker.factory.current_image.pixmap().toImage(), image.pixmap().toImage())
+            d.callback('FirstImage')
+        self.reactor.callLater(.1, fn)
+        return d
+
+    def test_createFirstSignal(self):
+        self.click(self.factory.ui.mainWin.btnStart)
+        d = defer.Deferred()
+        def fn():
+            speaker = False
+            listener = False
+            for client in self.clients:
+                if client.factory.mode == Constants.SPEAKER:
+                    print "Speaker"
+                    speaker = client
+                else:
+                    print "Listener"
+                    listener = client
+            ui_speaker = speaker.factory.ui
+            ui_listener = listener.factory.ui
+            win_speaker = ui_speaker.creationWin
+            get_btn = lambda name: win_speaker.findChildren(QtGui.QPushButton, name)[0]
+
+            record_btn = get_btn("btnRecord")
+            play_btn = get_btn("btnPlay")
+            submit_btn = get_btn("btnSubmit")
+            image = ui_speaker.creationWin.findChildren(
+                QtGui.QLabel, "lblImage")[0]
+
+            # submit and play start off disabled
+            self.assertFalse(play_btn.isEnabled())
+            self.assertFalse(submit_btn.isEnabled())
+
+            # record something
+            from LeapFrame import generateRandomSignal
+            self.click(record_btn); self.click(record_btn)
+            ui_speaker.theremin.last_signal = generateRandomSignal(10)
+
+            # now things should be enabled
+            self.assertTrue(play_btn.isEnabled())
+            self.assertTrue(submit_btn.isEnabled())
+            d.callback(("FirstSignal"))
+        self.reactor.callLater(.1, fn)
+        return d
+
+
+#     def test_askFirstQuestion(self):
+#         pass
+
+#     def test_answerFirstQuestion(self):
+#         pass
+
+#     def test_endOfFirstRoundServerUI(self):
+#         pass

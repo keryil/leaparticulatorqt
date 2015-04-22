@@ -373,6 +373,7 @@ class LeapP2PClient(basic.LineReceiver):
         self.factory = factory
         self.ui = self.factory.ui
         self.factory.theremin.mute()
+        self.mode = None
         # self.ui.show_wait()
         # self.ui.go()
 
@@ -482,6 +483,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
         self.ui = ui
         self.uid = uid
         self.phase = 0
+        self.mode = None
 
     # def start_recording(self):
     #     self.resetSignal()

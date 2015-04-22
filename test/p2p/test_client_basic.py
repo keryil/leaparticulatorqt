@@ -35,7 +35,7 @@ class P2PClientTest(unittest.TestCase):
             self.app, uid=None))
 
 
-class P2PClientTestWithServer(unittest.TestCase):
+class ClientTestWithServer(unittest.TestCase):
 
     def tearDown(self):
         if hasattr(self, 'factory'):
