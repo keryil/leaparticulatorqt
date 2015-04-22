@@ -32,6 +32,9 @@ n_of_test_questions = n_of_meanings
 
 question_mark_path = join("img", "question_mark.jpg")
 
+AUDIO_FRAMERATE = 44100
+FRAMES_PER_BUFFER = 1024
+
 # signals
 SUBMIT = "Submit"
 
@@ -120,6 +123,7 @@ MOD_FIRSTSCREEN = "mod_firstscreen"
 DELAY_TEST = 1000
 
 TEST = False
+NO_SOUND = False
 
 import math
 
@@ -165,8 +169,11 @@ def palmToFreq(palmPosition):
     return 110 * (3 ** (abs(x + 200) / 200.))
 
 
-def setupTest():
-    global leap_server, TEST, ROOT_DIR
+def setupTest(no_sound=False):
+    global leap_server, NO_SOUND, TEST, ROOT_DIR
     leap_server = "127.0.0.1"
     TEST = True
     ROOT_DIR = expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")
+    if no_sound:
+        NO_SOUND = True
+
