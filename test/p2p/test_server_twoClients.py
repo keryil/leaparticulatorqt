@@ -80,9 +80,7 @@ class TwoClientsFirstRound(P2PTestCase):
                 QtGui.QPushButton, "btnOkay")[0]
             self.click(button)
         d = defer.Deferred()
-        def fn():
-            d.callback('setUp')
-        self.reactor.callLater(.1, fn)
+        self.reactor.callLater(.2, lambda : d.callback('setUp'))
         return d
 
 
@@ -122,51 +120,10 @@ class TwoClientsFirstRound(P2PTestCase):
         self.reactor.callLater(.1, fn)
         return d
 
-    def test_createFirstSignal(self):
-        self.click(self.factory.ui.mainWin.btnStart)
-        d = defer.Deferred()
-        def fn():
-            speaker = False
-            listener = False
-            for client in self.clients:
-                if client.factory.mode == Constants.SPEAKER:
-                    print "Speaker"
-                    speaker = client
-                else:
-                    print "Listener"
-                    listener = client
-            ui_speaker = speaker.factory.ui
-            ui_listener = listener.factory.ui
-            win_speaker = ui_speaker.creationWin
-            get_btn = lambda name: win_speaker.findChildren(QtGui.QPushButton, name)[0]
 
-            record_btn = get_btn("btnRecord")
-            play_btn = get_btn("btnPlay")
-            submit_btn = get_btn("btnSubmit")
-            image = ui_speaker.creationWin.findChildren(
-                QtGui.QLabel, "lblImage")[0]
-
-            # submit and play start off disabled
-            self.assertFalse(play_btn.isEnabled())
-            self.assertFalse(submit_btn.isEnabled())
-
-            # record something
-            from LeapFrame import generateRandomSignal
-            self.click(record_btn); self.click(record_btn)
-            ui_speaker.theremin.last_signal = generateRandomSignal(10)
-
-            # now things should be enabled
-            self.assertTrue(play_btn.isEnabled())
-            self.assertTrue(submit_btn.isEnabled())
-            d.callback(("FirstSignal"))
-        self.reactor.callLater(.1, fn)
-        return d
 
 
 #     def test_askFirstQuestion(self):
-#         pass
-
-#     def test_answerFirstQuestion(self):
 #         pass
 
 #     def test_endOfFirstRoundServerUI(self):
