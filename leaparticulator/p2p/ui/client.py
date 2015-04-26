@@ -2,14 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # simple.py
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtDeclarative import QDeclarativeView
-
-from PyQt4 import QtCore, QtGui, uic
-
-
 import sys
+
+from PyQt4.QtGui import *
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
@@ -18,7 +13,7 @@ else:
     print "LeapP2PClient existing QApp: %s" % app
 
 from LeapTheremin import ThereminPlayback
-from P2PMessaging import EndRoundMessage
+from leaparticulator.p2p.messaging import EndRoundMessage
 from QtUtils import connect, disconnect , loadUiWidget
 # from QtUtils import loadWidget as loadUiWidget
 

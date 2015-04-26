@@ -3,8 +3,11 @@
 once = False
 qapplication = None
 
-from PyQt4.QtGui import QApplication
 import sys
+
+from PyQt4.QtGui import QApplication
+
+
 print "LeapP2PServer QApp check...",
 app = QApplication.instance()
 if app is None:
@@ -20,20 +23,13 @@ install_reactor()
 
 from twisted.internet import protocol, reactor
 from twisted.internet.endpoints import TCP4ServerEndpoint, TCP4ClientEndpoint
-from twisted.internet.protocol import ClientFactory
-import Leap
-import sys
 from twisted.python import log
 from twisted.python.log import FileLogObserver
 from twisted.protocols import basic
-from datetime import datetime
 from random import choice, sample, shuffle
-import Constants
 import jsonpickle
-import TestQuestion
-from LeapFrame import LeapFrame
-from P2PMessaging import *
-from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
+from leaparticulator.p2p.messaging import *
+from LeapTheremin import gimmeSomeTheremin
 from Meaning import P2PMeaning
 import os
 
@@ -462,7 +458,6 @@ class LeapP2PClient(basic.LineReceiver):
         print "Listening"
         self.factory.current_hearer_image = image
         # print self.factory.last_response_data
-        from random import choice
         self.send_to_server(ResponseMessage(
                             signal=self.factory.last_response_data.signal,
                             image=image)  # choice(self.factory.images))
@@ -539,7 +534,8 @@ def get_server_instance(condition, ui=None):
 
 def start_client(qapplication, uid):
     assert uid is not None
-    from LeapP2PClientUI import LeapP2PClientUI
+    from leaparticulator.p2p.ui.LeapP2PClientUI import LeapP2PClientUI
+
     print "Init UI object..."
     ui = LeapP2PClientUI(qapplication)
     print "Init theremin..."
@@ -568,7 +564,8 @@ def start_client(qapplication, uid):
 
 
 def start_server(qapplication, condition='1', no_ui=False):
-    from LeapP2PServerUI import LeapP2PServerUI
+    from leaparticulator.p2p.ui.LeapP2PServerUI import LeapP2PServerUI
+
     factory = None
     assert condition in ['1', '1r', '2', '2r', 'master']
     try:
