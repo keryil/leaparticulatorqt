@@ -77,14 +77,7 @@ class P2PTestCase(unittest.TestCase):
 
     def getClients(self):
         last_round = self.factory.session.getLastRound()
-        speaker, listener = None, None
-        for client in self.clients:
-            print "Client uid we're looking for: ", last_round.speaker.factory.uid
-            if client.client_id == last_round.speaker.factory.uid:
-                speaker = client
-            else:
-                self.assertEqual(client.client_id, last_round.hearer.factory.uid)
-                listener = client
+        speaker, listener = last_round.speaker, last_round.hearer
         return speaker, listener
     
 
