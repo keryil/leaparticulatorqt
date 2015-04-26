@@ -413,12 +413,13 @@ class LeapP2PClient(basic.LineReceiver):
                     return
                 else:
                     raise err
-            self.factory.current_image = message.data.image
+            # self.factory.current_image = message.data.image
             if message.data.isSpeaker:
                 self.factory.mode = Constants.SPEAKER
                 self.factory.theremin.unmute()
                 self.ui.wait_over()
-                self.ui.creation_screen(self.factory.current_image)
+                self.factory.current_speaker_image = message.data.image
+                self.ui.creation_screen(self.factory.current_speaker_image)
                 # self.speak()
                 # self.factory.theremin.mute()
             else:
@@ -450,7 +451,7 @@ class LeapP2PClient(basic.LineReceiver):
         # from time import sleep
         # sleep(2)
         message = ResponseMessage(signal=self.ui.getSignal(),
-                                  image=self.factory.current_image)
+                                  image=self.factory.current_speaker_image)
         self.send_to_server(message)
         self.ui.resetSignal()
         # self.factory.last_signal = []
@@ -459,6 +460,7 @@ class LeapP2PClient(basic.LineReceiver):
 
     def listen(self, image):
         print "Listening"
+        self.factory.current_hearer_image = image
         # print self.factory.last_response_data
         from random import choice
         self.send_to_server(ResponseMessage(

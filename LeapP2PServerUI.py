@@ -40,7 +40,7 @@ class LeapP2PServerUI(object):
         self.roundModel = QStandardItemModel(self.lstRounds)
         self.lstRounds.setModel(self.roundModel)
 
-        self.lstRounds.activated.connect(self.displayRoundData)
+        self.lstRounds.selectionModel().selectionChanged.connect(self.displayRoundData)
 
         self.lblExpected = self.mainWin.findChildren(QLabel, "lblExpected")[0]
         self.lblGiven = self.mainWin.findChildren(QLabel, "lblGiven")[0]
@@ -116,8 +116,8 @@ class LeapP2PServerUI(object):
                 item = QStandardItem(title)
                 self.roundModel.appendRow(item)
 
-    def displayRoundData(self, model_index):
-        row = int(model_index.row())
+    def displayRoundData(self, old, new):
+        row = self.lstRounds.selectedIndexes()[0].row()
         rnd = self.session.round_data[row]
         print "Selected round #%d" % row
         print "Speaker: %s, Hearer: %s\nImage: %s, Guess: %s" % (rnd.speaker,

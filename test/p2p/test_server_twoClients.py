@@ -40,7 +40,7 @@ class TwoClientsInit(P2PTestCase):
         def fn():
             print "Button enabled? ",  button.isEnabled()
             d.callback(self.assertTrue(button.isEnabled()))
-        self.reactor.callLater(.1, fn)
+        self.reactor.callLater(.2, fn)
         return d
 
     def test_OkayButtonsBeforeStart(self):
@@ -75,56 +75,53 @@ class TwoClientsFirstRound(P2PTestCase):
         self.timeout = 3
 
         self.clients = self.startClients(2)
-        for client in self.clients:
-            button = client.factory.ui.firstWin.findChildren(
-                QtGui.QPushButton, "btnOkay")[0]
-            self.click(button)
         d = defer.Deferred()
-        self.reactor.callLater(.2, lambda : d.callback('setUp'))
-        return d
-
-
-    def test_FirstImage(self):
-        self.click(self.factory.ui.mainWin.btnStart)
-        d = defer.Deferred()
-        def fn():
-            print self.factory.mode
-            self.assertEqual(self.factory.mode, Constants.SPEAKERS_TURN)
-            speaker = False
-            listener = False
+        def clickOkay():
             for client in self.clients:
-                if client.factory.mode == Constants.SPEAKER:
-                    print "Speaker: ", client
-                    speaker = client
-                else:
-                    print "Listener: ", client
-                    listener = client
-            ui_speaker = speaker.factory.ui
-            ui_listener = listener.factory.ui
-            
-            self.assertTrue(speaker)
-            self.assertEqual(speaker.factory.mode, Constants.SPEAKER)
-            self.assertTrue(listener)
-            self.assertEqual(listener.factory.mode, Constants.LISTENER)
-            self.assertEqual(
-                ui_speaker.get_active_window(), ui_speaker.creationWin)
-            self.assertEqual(ui_listener.get_active_window(), ui_listener.firstWin)
-            self.assertTrue(ui_listener.is_waiting())
-            self.assertFalse(ui_speaker.is_waiting())
-
-            image = ui_speaker.creationWin.findChildren(
-                QtGui.QLabel, "lblImage")[0]
-            self.assertEqual(
-                speaker.factory.current_image.pixmap().toImage(), image.pixmap().toImage())
-            d.callback('FirstImage')
-        self.reactor.callLater(.1, fn)
+                button = client.factory.ui.firstWin.findChildren(
+                    QtGui.QPushButton, "btnOkay")[0]
+                self.click(button)
+            def clickStart():
+                self.click(self.factory.ui.mainWin.btnStart)
+                # dd = defer.Deferred()
+                self.reactor.callLater(.3, lambda : d.callback("setUp"))
+                # return dd
+            self.reactor.callLater(.3, clickStart)
+        self.reactor.callLater(.3, clickOkay)
         return d
 
+    def test_roundList(self):
+        items = self.factory.ui.roundModel.findItems("Round #0")
+        self.failIfEqual(items, [])
 
+    def test_roundDisplayForSpeaker(self):
+        speaker, listener = self.getClients()
 
+        view = self.factory.ui.lstRounds
+        index = view.model().index(0,0)
+        view.setCurrentIndex(index)
+        self.click(view)
+        d = defer.Deferred()
+        def test():
+            client_id = str(self.factory.ui.lblSpeaker.text()).split()[-1]
+            self.assertEqual(speaker.client_id, client_id)
+            
+            client_id = str(self.factory.ui.lblHearer.text()).split()[-1]
+            self.assertEqual(listener.client_id, client_id)
 
-#     def test_askFirstQuestion(self):
-#         pass
+            speaker_img = speaker.factory.current_speaker_image
+
+            # compare speaker's original image and the one displayed 
+            self.assertEqual(speaker_img.pixmap().toImage(), 
+                             self.factory.ui.lblExpected.pixmap().toImage())
+            self.assertEqual(self.factory.ui.lblGiven.pixmap().toImage(), 
+                             QtGui.QPixmap(Constants.question_mark_path).toImage())
+            d.callback(client_id)
+        self.reactor.callLater(.2, test)
+        return d
+
+    def test_askFirstQuestion(self):
+        pass
 
 #     def test_endOfFirstRoundServerUI(self):
 #         pass

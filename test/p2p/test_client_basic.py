@@ -8,9 +8,10 @@ from LeapP2PServer import start_server, start_client
 from test_server_basic import prep
 import Constants
 from twisted.internet import defer
+from test_server_basic import P2PTestCase
 
 
-class P2PClientTest(unittest.TestCase):
+class P2PClientTest(P2PTestCase):
 
     # def tearDown(self):
     #     if hasattr(self, 'factory'):
@@ -35,7 +36,7 @@ class P2PClientTest(unittest.TestCase):
             self.app, uid=None))
 
 
-class ClientTestWithServer(unittest.TestCase):
+class ClientTestWithServer(P2PTestCase):
 
     def tearDown(self):
         if hasattr(self, 'factory'):

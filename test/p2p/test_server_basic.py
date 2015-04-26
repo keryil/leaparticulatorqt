@@ -3,6 +3,7 @@ from twisted.trial import unittest
 from PyQt4.QtGui import QApplication
 from PyQt4.QtTest import QTest
 from PyQt4.QtCore import Qt
+import Constants
 
 from LeapP2PServer import start_server, start_client
 from twisted.internet import defer, base
@@ -24,6 +25,10 @@ ClientData = namedtuple(
 
 
 class P2PTestCase(unittest.TestCase):
+    def __init__(self, *args, **kwargs):
+        super(P2PTestCase, self).__init__(*args, **kwargs)
+        self.timeout=6
+
     def runTest(self):
         pass
 
@@ -38,13 +43,15 @@ class P2PTestCase(unittest.TestCase):
             from random import randint
             id = randint(0,10000)
         client_ip = "127.0.0.1"
-        client_id = "test%d" % id
+        client_id = "test%d" % int(id)
+
+        print "Starting client with id %s" % client_id
         theremin, self.reactor, controller, connection, factory = start_client(
             self.app, uid=client_id)
         factory.ui.go()
         data = ClientData(theremin, controller, connection, factory, client_id, client_ip)
         self.clients[id] = data
-        return data 
+        return data
 
     def stopClient(self, id):
         del self.clients[id]
@@ -67,6 +74,19 @@ class P2PTestCase(unittest.TestCase):
     def stopServer(self):
         self.factory.listener.result.stopListening()
         self.factory.stopFactory()
+
+    def getClients(self):
+        last_round = self.factory.session.getLastRound()
+        speaker, listener = None, None
+        for client in self.clients:
+            print "Client uid we're looking for: ", last_round.speaker.factory.uid
+            if client.client_id == last_round.speaker.factory.uid:
+                speaker = client
+            else:
+                self.assertEqual(client.client_id, last_round.hearer.factory.uid)
+                listener = client
+        return speaker, listener
+    
 
 
 class ServerTest(P2PTestCase):
@@ -114,6 +134,6 @@ class ServerTestWithClient(P2PTestCase):
             item = self.factory.ui.clientModel.findItems(item, Qt.MatchExactly)
             print "Rows: ", self.factory.ui.clientModel.rowCount()
             print "Found: ", item
-            d.callback(self.assertTrue(item))
+            d.callback(self.assertIsNotNone(item))
         self.reactor.callLater(.1,fn)
         return d
