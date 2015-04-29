@@ -1,9 +1,11 @@
-import os.path
-from Constants import (IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY,
-                       FALSE_OVERLAY, MEANING_DIR_P2P, TEST, ROOT_DIR)
-from PyQt4 import QtGui, QtCore
 import os
 from os.path import join
+
+from PyQt4 import QtGui, QtCore
+
+from leaparticulator.constants import (IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY,
+                       FALSE_OVERLAY, MEANING_DIR_P2P, ROOT_DIR)
+
 
 loadFromRes = lambda path: open(join(ROOT_DIR, "res", path + ".txt")).read()
 
@@ -114,7 +116,6 @@ class FeaturelessMeaning(AbstractMeaning):
     def __init__(self, id_no):
         super(FeaturelessMeaning, self).__init__(feature_dict={"id_no": id_no},
                                                  feature_order=['id_no'])
-        from os.path import join
         assert 0 < id_no < 16
         self.id_no = id_no
 
@@ -122,7 +123,6 @@ class FeaturelessMeaning(AbstractMeaning):
 class Meaning(object):
 
     def __init__(self, size, color, shade):
-        from os.path import join
         for dim in (size, color, shade):
             assert 1 <= dim <= 6
         self.size = size

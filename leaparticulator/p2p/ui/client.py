@@ -41,6 +41,14 @@ class LeapP2PClientUI(object):
         self.playback_player = ThereminPlayback(default_volume=None)
         self.last_signal = []
         self.recording = False
+        # from Leap import Controller
+        # from twisted.internet.task import LoopingCall
+        # import jsonpickle
+        # def f():
+        #     self.playback_player.player.newPosition(Controller().frame())
+        #     print "Hello"
+        # self.c = LoopingCall(f) 
+        # self.c.start(.001)
         # self.go()
 
     def setClientFactory(self, factory):

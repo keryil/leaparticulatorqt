@@ -1,11 +1,10 @@
+from os.path import join
+from os import getcwd
+from collections import defaultdict
+
 from PyQt4 import QtCore, QtGui, uic
-from PyQt4.uic import compileUi
-from PyQt4.QtCore import QFile
-from os.path import join, basename
-from os import getcwd, sep, path
-from importlib import import_module
-from Constants import QT_DIR, MEANING_DIR, IMG_EXTENSION, TRUE_OVERLAY, FALSE_OVERLAY, TEST
-from collections import defaultdict, namedtuple
+
+from leaparticulator.constants import QT_DIR, TEST
 
 
 slots = defaultdict(list)

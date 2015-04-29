@@ -9,11 +9,11 @@
 
 import ExperimentalData
 reload(ExperimentalData)
-from ExperimentalData import fromFile, toCSV, HMM
+from ExperimentalData import toCSV
 import pandas as pd
 import jsonpickle
 import numpy as np
-import Constants
+from leaparticulator import constants
 
 colors = [(x/10.,y/20.,z/40.) for x, y, z in zip(range(10), range(10), range(10))]
 colors.extend([(x/40.,y/20.,z/10.) for x, y, z in zip(range(1,10), range(1,10), range(1,10))])
@@ -176,7 +176,7 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
 
 from matplotlib.colors import colorConverter
 from matplotlib.patches import Ellipse
-from matplotlib.pyplot import scatter, annotate, quiver, legend, gca, gcf
+from matplotlib.pyplot import scatter, annotate, quiver, legend, gcf
 from numpy import log
 # figure()
 # means = []
@@ -297,12 +297,10 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
 
 # <codecell>
 
-import Constants
 def fn(args):
     from ExperimentalData import reduce_hmm
     from GHmmWrapper import train_hmm_on_set_of_obs
 #     import dill
-    from pickle import dumps
     data,nstates,range_x,range_y = args
     hmm = train_hmm_on_set_of_obs(data,nstates,range_x,range_y)
 #     print type(hmm)
@@ -310,7 +308,7 @@ def fn(args):
     return reduce_hmm(hmm)[1]
         
 def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True, 
-                      phase=2, cond=None, units=Constants.XY, parallel=True):
+                      phase=2, cond=None, units=constants.XY, parallel=True):
     """
     Trains multiple HMM's (as many as trials parameter per nstate) and chooses the one with the 
     lowest BIC, so as to avoid local optima. units parameter can be "xy", "amp_and_freq", or
@@ -335,9 +333,9 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
     
     import GHmmWrapper
     reload(GHmmWrapper)
-    from GHmmWrapper import train_hmm_on_set_of_obs, bic, aic, get_range_of_multiple_traj
+    from GHmmWrapper import get_range_of_multiple_traj
 #     reload(ExperimentalData)
-    from ExperimentalData import fromFile, reduce_hmm, reconstruct_hmm
+    from ExperimentalData import fromFile, reconstruct_hmm
     from LeapTheremin import palmToAmpAndFreq,palmToAmpAndMel
     
     
@@ -361,21 +359,21 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
     formatData = None
             
     if multivariate:
-        if units == Constants.XY:
+        if units == constants.XY:
             formatData = lambda r, phase: [[frame.get_stabilized_position()[:2][::interval] for frame in rr] for rr in r["127.0.0.1"][str(phase)].values()]
-        elif units == Constants.AMP_AND_FREQ:
+        elif units == constants.AMP_AND_FREQ:
             # -interval, because amp_and_freq returns y,x and not x,y. 
             formatData = lambda r, phase: [[palmToAmpAndFreq(frame.get_stabilized_position())[::-interval] for frame in rr] for rr in r["127.0.0.1"][str(phase)].values()]
-        elif units == Constants.AMP_AND_MEL:
+        elif units == constants.AMP_AND_MEL:
             # -interval, because amp_and_freq returns y,x and not x,y. 
             formatData = lambda r, phase: [[palmToAmpAndMel(frame.get_stabilized_position())[::-interval] for frame in rr] for rr in r["127.0.0.1"][str(phase)].values()]
     else:
-        if units == Constants.XY:
+        if units == constants.XY:
             formatData = lambda r, phase: [[frame.get_stabilized_position()[pick_var] for frame in rr] for rr in r["127.0.0.1"][str(phase)].values()]
-        elif units == Constants.AMP_AND_FREQ:
+        elif units == constants.AMP_AND_FREQ:
             # -interval, because amp_and_freq returns y,x and not x,y. 
             formatData = lambda r, phase: [[palmToAmpAndFreq(frame.get_stabilized_position())[::-interval][pick_var] for frame in rr] for rr in r["127.0.0.1"][str(phase)].values()]
-        elif units == Constants.AMP_AND_MEL:
+        elif units == constants.AMP_AND_MEL:
             # -interval, because amp_and_freq returns y,x and not x,y. 
             formatData = lambda r, phase: [[palmToAmpAndMel(frame.get_stabilized_position())[::-interval][pick_var] for frame in rr] for rr in r["127.0.0.1"][str(phase)].values()]
     
@@ -391,7 +389,7 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
         from IPython.utils.pickleutil import can_map
 
         can_map.pop(FunctionType, None)
-        import dill, pickle
+        import pickle
         from IPython.kernel.zmq import serialize
         serialize.pickle = pickle
 
@@ -424,7 +422,7 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
         pickle_results(to_return, nstates, trials, iter, id_to_log(file_id), phase, units=units)
     return to_return
         
-def pickle_results(results, nstates, trials, iter, filename_log, phase=None, units=Constants.XY):
+def pickle_results(results, nstates, trials, iter, filename_log, phase=None, units=constants.XY):
     import ExperimentalData
     hmms, ds = zip(*[ExperimentalData.reduce_hmm(hmm)[1] for hmm in results])
     assert any(hmms)
@@ -578,7 +576,7 @@ def analyze_log_file_in_phases(file_id, nstates, trials, iter):
         results[i] = train_hmm_n_times(file_id, nstates=nstates, trials=trials, iter=iter, phase=i)
     return results
 
-def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, units=Constants.XY, parallel=True, 
+def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, units=constants.XY, parallel=True,
                                             prefix="logs/", skip_phases=[]):
     import gc
     print_n_flush( "Starting phase by phase analysis, controlled for conditions (units: %s)..." % units)
@@ -589,9 +587,8 @@ def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, unit
     cond = file_id.split('.')[-1]
     print_n_flush( "Condition", cond)
     responses, tests, responses_t, tests_t, images = toCSV(filename_log)
-    from IPython.parallel import Client
-    
-#     client = Client(profile="default")
+
+    #     client = Client(profile="default")
     # client[:].push(dict(initr=initr))
     # client[:].apply_sync(lambda: initr())
 #     lview = client.load_balanced_view() # default load-balanced view
@@ -779,11 +776,10 @@ def draw():
 
 def stationary(transmat):
 		from rpy2.robjects import r, globalenv
-		from itertools import product
-		import pandas as pd
+        import pandas as pd
 		import pandas.rpy.common as com
-		from scipy.special import xlogy
-		r("library('DTMCPack')")
+
+        r("library('DTMCPack')")
 		globalenv['transmat'] = com.convert_to_r_dataframe(pd.DataFrame(transmat))
 		stationary_dist = r("statdistr(transmat)")
 		# long_as = lambda x: range(len(x)) 

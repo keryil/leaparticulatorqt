@@ -7,11 +7,13 @@
 
 # <codecell>
 
+import csv
+
 import pandas as pd
 import numpy as np
-import csv
-from Constants import palmToAmpAndFreq, palmToFreq, freqToMel
-from StreamlinedDataAnalysis import id_to_log
+
+from Constants import palmToAmpAndFreq, freqToMel
+
 
 # <codecell>
 
@@ -19,9 +21,10 @@ from StreamlinedDataAnalysis import id_to_log
 # end of steal
 
 def calculate_amp_and_freq(f, delimiter="|"):
-    import Constants
-    default_volume = Constants.default_amplitude
-    default_pitch = Constants.default_pitch
+    from leaparticulator import constants
+
+    default_volume = constants.default_amplitude
+    default_pitch = constants.default_pitch
     freqs = []
     amps = []
     mels = []

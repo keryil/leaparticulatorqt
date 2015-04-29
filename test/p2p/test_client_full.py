@@ -1,14 +1,8 @@
-import sys
-from twisted.trial import unittest
-from PyQt4.QtGui import QApplication
-from PyQt4.QtTest import QTest
-from PyQt4.QtCore import Qt
 from PyQt4 import QtGui
-
-from LeapP2PServer import start_server, start_client
-from test_server_basic import prep, P2PTestCase
-import Constants
 from twisted.internet import defer
+
+from test_server_basic import prep, P2PTestCase
+from leaparticulator import constants
 
 
 class TwoClientsFirstRound(P2PTestCase):
@@ -78,16 +72,16 @@ class TwoClientsFirstRound(P2PTestCase):
 
         def fn():
             print self.factory.mode
-            self.assertEqual(self.factory.mode, Constants.SPEAKERS_TURN)
+            self.assertEqual(self.factory.mode, constants.SPEAKERS_TURN)
             speaker, listener = self.getClients()
 
             ui_speaker = speaker.factory.ui
             ui_listener = listener.factory.ui
 
             self.assertIsNotNone(speaker)
-            self.assertEqual(speaker.factory.mode, Constants.SPEAKER)
+            self.assertEqual(speaker.factory.mode, constants.SPEAKER)
             self.assertIsNotNone(listener)
-            self.assertEqual(listener.factory.mode, Constants.LISTENER)
+            self.assertEqual(listener.factory.mode, constants.LISTENER)
 
             self.assertEqual(
                 ui_speaker.get_active_window(), ui_speaker.creationWin)

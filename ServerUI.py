@@ -1,10 +1,13 @@
-import Constants, sys
+import sys
+
+from leaparticulator import constants
 from LeapServer import LeapServerFactory
+
 if "twisted.internet.reactor" not in sys.modules:
     from twisted.internet import gtk2reactor
     gtk2reactor.install()
     # from twisted.internet import reactor
-from twisted.internet import protocol, reactor
+from twisted.internet import reactor
 
 from twisted.internet.endpoints import TCP4ServerEndpoint
 # from twisted.internet.protocol import ServerFactory
@@ -28,7 +31,7 @@ class ServerUI(object):
         tree.append_column(column)
         self.mainWindow.show_all()
 
-        self.endpoint = endpoint = TCP4ServerEndpoint(reactor, Constants.leap_port)
+        self.endpoint = endpoint = TCP4ServerEndpoint(reactor, constants.leap_port)
         endpoint.listen(LeapServerFactory(ui=self))
 
     def connectionMade(self, server):

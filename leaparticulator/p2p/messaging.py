@@ -1,5 +1,5 @@
-from collections import namedtuple
-import Constants
+from leaparticulator import constants
+
 
 class RoundData(object):
     def __init__(self, isSpeaker, image):
@@ -33,7 +33,7 @@ class FeedbackMessage(LeapP2PMessage):
     """
     Signals the success/failure of the round
     """
-    instruction = Constants.FEEDBACK
+    instruction = constants.FEEDBACK
     def __init__(self, target_image, chosen_image, success):
         self.success = success
         self.target_image = target_image
@@ -45,7 +45,7 @@ class InitMessage(LeapP2PMessage):
     Informs the server of client parameters.
     """
     client_id = None
-    instruction = Constants.INIT
+    instruction = constants.INIT
     def __init__(self, client_id):
         self.client_id = client_id
 
@@ -54,14 +54,14 @@ class StartMessage(LeapP2PMessage):
     Starts the session.
     """
     def __init__(self):
-        self.instruction = Constants.START
+        self.instruction = constants.START
 
 class ImageListMessage(LeapP2PMessage):
     """
     Contains a list of images to be used in the session
     """
     def __init__(self, images):
-        self.instruction = Constants.IMAGE_LIST
+        self.instruction = constants.IMAGE_LIST
         self.data = images
         assert self.data is not None
         assert len(self.data) != 0
@@ -75,7 +75,7 @@ class StartRoundMessage(LeapP2PMessage):
     """
     def __init__(self, isSpeaker, image):
         self.data = RoundData(isSpeaker, image)
-        self.instruction = Constants.START_ROUND
+        self.instruction = constants.START_ROUND
 
 class EndRoundMessage(LeapP2PMessage):
     """
@@ -83,7 +83,7 @@ class EndRoundMessage(LeapP2PMessage):
     user mode.
     """
     def __init__(self):
-        self.instruction = Constants.END_ROUND
+        self.instruction = constants.END_ROUND
 
 class ResponseMessage(LeapP2PMessage):
     """
@@ -95,5 +95,5 @@ class ResponseMessage(LeapP2PMessage):
     image field to send it back to the server.
     """
     def __init__(self, signal, image):
-        self.instruction = Constants.RESPONSE
+        self.instruction = constants.RESPONSE
         self.data = ResponseData(signal=signal, image=image)

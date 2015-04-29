@@ -1,11 +1,13 @@
 import math
 import array
-import pyaudio
 import threading
-import Constants
-
 import contextlib
 from ctypes import cdll, c_char_p, c_int, CFUNCTYPE
+
+import pyaudio
+
+from leaparticulator import constants
+
 
 ERROR_HANDLER_FUNC = CFUNCTYPE(
     None,
@@ -36,8 +38,8 @@ def noalsaerr():
         yield
 
 class Tone(object):
-    def __init__(self, rate = Constants.AUDIO_FRAMERATE, frequency = Constants.default_pitch, 
-                                     amplitude = Constants.default_amplitude):
+    def __init__(self, rate = constants.AUDIO_FRAMERATE, frequency = constants.default_pitch,
+                                     amplitude = constants.default_amplitude):
         self.rate = rate
         self.freq = frequency
         self.amp = amplitude
@@ -48,7 +50,7 @@ class Tone(object):
             self.p = pyaudio.PyAudio()
         self.stream = self.p.open(rate=int(self.rate), channels=1, 
                                   format=pyaudio.paFloat32, output=True, 
-                                  frames_per_buffer=Constants.FRAMES_PER_BUFFER)
+                                  frames_per_buffer=constants.FRAMES_PER_BUFFER)
 
 
     def close(self):
@@ -82,7 +84,7 @@ class Tone(object):
                 if self.phase > math.pi:
                     self.phase -= 2. * math.pi
 
-        if not Constants.TEST:
+        if not constants.TEST:
             while self.running:
                 buf = array.array('f', gen()).tostring()
                 self.stream.write(buf)

@@ -1,13 +1,5 @@
-import sys
-from twisted.trial import unittest
-from PyQt4.QtGui import QApplication
-from PyQt4.QtTest import QTest
-from PyQt4.QtCore import Qt
-
-from LeapP2PServer import start_server, start_client
+from leaparticulator.p2p.server import start_server, start_client
 from test_server_basic import prep
-import Constants
-from twisted.internet import defer
 from test_server_basic import P2PTestCase
 
 

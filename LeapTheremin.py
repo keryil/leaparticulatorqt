@@ -1,17 +1,17 @@
 #!/usr/bin/python
 import sys
+from collections import deque
+
+from twisted.python import log
+import jsonpickle
+
 import Leap
 from Tone import Tone
-from itertools import izip
-from twisted.python import log
-from platform import system
-import Constants
-import math
-import jsonpickle
-from LeapFrame import LeapFrame, LeapHand
-from collections import deque
+from leaparticulator import constants
+from LeapFrame import LeapFrame
+
 # from PySide import QtCore, QtGui, QtUiTools
-from Constants import install_reactor
+from leaparticulator.constants import install_reactor
 install_reactor()
 
 # if "qt4reactor" not in sys.modules:
@@ -32,13 +32,10 @@ install_reactor()
 #     from twisted.internet import gtk2reactor
 #     gtk2reactor.install()
 from twisted.internet import reactor
-import twisted
 from twisted.internet.task import LoopingCall
 
-import math
-from twisted.internet.endpoints import connectProtocol, TCP4ClientEndpoint
-from LeapServer import LeapClient, LeapClientFactory
-from Constants import freqToMel, palmToAmpAndFreq, palmToAmpAndMel, palmToFreq
+from LeapServer import LeapClientFactory
+from leaparticulator.constants import palmToAmpAndFreq
 # import pygtk
 # pygtk.require("2.0")
 
@@ -88,7 +85,7 @@ class ThereminPlayer(object):
             #                                                       Constants.fadeout_multiplier))
             # print("Next call at %s" % self.fadeout_call._expectNextCallAt)
             if amp > 0.005:
-                amp *= Constants.fadeout_multiplier
+                amp *= constants.fadeout_multiplier
             else:
                 amp = 0
                 self.resetFadeout()
@@ -125,7 +122,7 @@ class ThereminPlayer(object):
                 self.fadeout_call = LoopingCall(f=self.fadeOut)
                 # self.fadeout_call.addErrback(twisted.python.log.err)
                 self.fadeout_call_def = self.fadeout_call.start(
-                    Constants.fadeout_call_rate)
+                    constants.fadeout_call_rate)
                 self.fadeout_call_def.addErrback(on_error)
                 # print self.fadeout_call
             # else:
@@ -245,7 +242,7 @@ class ThereminPlayback(object):
             print "Stopped"
 
 
-def gimmeSomeTheremin(n_of_notes, default_volume, ip=Constants.leap_server,
+def gimmeSomeTheremin(n_of_notes, default_volume, ip=constants.leap_server,
                       ui=None, factory=LeapClientFactory, realtime=True,
                       uid=None):
     """
@@ -260,14 +257,14 @@ def gimmeSomeTheremin(n_of_notes, default_volume, ip=Constants.leap_server,
     print "Done"
     connection = None
     if ip != None:
-        log.msg("Connecting to server at %s:%s" % (ip, Constants.leap_port))
+        log.msg("Connecting to server at %s:%s" % (ip, constants.leap_port))
         connection = None
         if uid is None:
             connection = reactor.connectTCP(
-                ip, Constants.leap_port, factory(audio_listener, ui))
+                ip, constants.leap_port, factory(audio_listener, ui))
         else:
             connection = reactor.connectTCP(
-                ip, Constants.leap_port, factory(audio_listener, ui, uid))
+                ip, constants.leap_port, factory(audio_listener, ui, uid))
 
     # point = TCP4ClientEndpoint(reactor, ip, Constants.leap_port)
     # connection = point.connect(LeapClientFactory(audio_listener, ui))
@@ -366,7 +363,7 @@ class ThereminListener(Leap.Listener):
         self.player.setVolume(value)
 
 
-def main(ip=Constants.leap_server):
+def main(ip=constants.leap_server):
     tones = []
     theremin = None
     connection = None
@@ -379,7 +376,7 @@ def main(ip=Constants.leap_server):
         theremin, reactor, controller, connection = gimmeSomeTheremin(
             n_of_notes=1, default_volume=.5, ip=ip)
         reactor.callLater(100, stop)
-        if not Constants.TEST:
+        if not constants.TEST:
             print "Starting reactor"
             reactor.run()
 
@@ -411,7 +408,7 @@ if __name__ == "__main__":
 
     theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1, default_volume=.5,
                                                                   ip=None)
-    if not Constants.TEST:
+    if not constants.TEST:
         reactor.runReturn()
     app = QtGui.QApplication.instance()
     sys.exit(app.exec_())

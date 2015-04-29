@@ -1,14 +1,8 @@
-import sys
-from twisted.trial import unittest
-from PyQt4.QtGui import QApplication
-from PyQt4.QtTest import QTest
-from PyQt4.QtCore import Qt
 from PyQt4 import QtGui
-
-from LeapP2PServer import start_server, start_client
-from test_server_basic import prep, P2PTestCase
-import Constants
 from twisted.internet import defer
+
+from test_server_basic import prep, P2PTestCase
+from leaparticulator import constants
 
 
 class TwoClientsInit(P2PTestCase):
@@ -120,7 +114,7 @@ class TwoClientsFirstRound(P2PTestCase):
             self.assertEqual(speaker_img.pixmap().toImage(),
                              self.factory.ui.lblExpected.pixmap().toImage())
             self.assertEqual(self.factory.ui.lblGiven.pixmap().toImage(),
-                             QtGui.QPixmap(Constants.question_mark_path).toImage())
+                             QtGui.QPixmap(constants.question_mark_path).toImage())
             d.callback(client_id)
         self.reactor.callLater(.2, test)
         return d

@@ -1,20 +1,20 @@
 import sys
+from collections import namedtuple
+
 from twisted.trial import unittest
 from PyQt4.QtGui import QApplication
 from PyQt4.QtTest import QTest
 from PyQt4.QtCore import Qt
-import Constants
+from twisted.internet import defer
 
-from LeapP2PServer import start_server, start_client
-from twisted.internet import defer, base
-from collections import namedtuple
+from leaparticulator.p2p.server import start_server, start_client
 
 
 def prep(self):
-    import Constants
+    from leaparticulator import constants
 
     # base.DelayedCall.debug = True
-    Constants.setupTest()
+    constants.setupTest()
     self.app = QApplication.instance()
     if not self.app:
         self.app = QApplication(sys.argv)

@@ -3,7 +3,9 @@
 
 # simple.py
 import sys
+
 from PyQt4.QtGui import *
+
 
 app = QApplication.instance()
 if app is None:
@@ -13,13 +15,10 @@ else:
     print "LeapP2PServerUI existing QApp: %s" % app
 
 from PyQt4.QtCore import *
-from PyQt4.QtDeclarative import QDeclarativeView
 
-from PyQt4 import QtCore, QtGui
 from LeapTheremin import ThereminPlayback
-import Constants
-from QtUtils import connect, disconnect 
-from QtUtils import loadUiWidget 
+from leaparticulator import constants
+from QtUtils import loadUiWidget
 
 def fn(self, event):
         event.ignore()
@@ -133,11 +132,11 @@ class LeapP2PServerUI(object):
         if rnd.image != None:
             self.lblExpected.setPixmap(rnd.image.pixmap())
         else:
-            self.lblExpected.setPixmap(QPixmap(Constants.question_mark_path))
+            self.lblExpected.setPixmap(QPixmap(constants.question_mark_path))
         if rnd.guess != None:
             self.lblGiven.setPixmap(rnd.guess.pixmap())
         else:
-            self.lblGiven.setPixmap(QPixmap(Constants.question_mark_path))
+            self.lblGiven.setPixmap(QPixmap(constants.question_mark_path))
         
         if rnd.signal != None and rnd.signal != []:
             def play_back():

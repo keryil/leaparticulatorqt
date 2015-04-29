@@ -1,7 +1,7 @@
 import sys
 def do_it(file_id=sys.argv[1], units=sys.argv[2], parallel=sys.argv[3], skip_phases=sys.argv[4:]):
     from StreamlinedDataAnalysisGhmm import analyze_log_file_in_phases_by_condition
-    import Constants
+
     try:
         print "skip_phase=%s" % skip_phases
         print "parallel? %s" % parallel

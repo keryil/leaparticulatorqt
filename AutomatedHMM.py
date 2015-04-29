@@ -4,11 +4,9 @@
 # <codecell>
 
 %%writefile AnalyzeOnCluster.py
-import timeit, traceback
-from datetime import datetime
 from StreamlinedDataAnalysis import *
 
-import subprocess, time
+
 def start_cluster(working_dir):
     p = subprocess.Popen("ipcluster start".split(), stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                          cwd=working_dir)
@@ -91,7 +89,7 @@ if __name__ == "__main__":
 # <codecell>
 
 # %%script ipython
-import Constants
+from leaparticulator import constants
 import subprocess, sys, time
 from glob import glob
 import timeit
@@ -120,7 +118,7 @@ files = filter(lambda x: x[0] == '1', files)
 nstates = range(2,31)
 trials = 1
 iterations = 1000
-units = Constants.AMP_AND_MEL
+units = constants.AMP_AND_MEL
 # files.index("13202126514.2")
 # files = ["123R0126514.1r"]
 print files

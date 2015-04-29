@@ -12,7 +12,7 @@ files
 import sys
 def do_it(file_id=sys.argv[1], units=sys.argv[2]):
     from StreamlinedDataAnalysisGhmm import analyze_log_file_in_phases_by_condition
-    import Constants
+
     try:
         analyze_log_file_in_phases_by_condition(file_id, nstates=range(2,30), trials=100, iter=1000, parallel=False, units=units,
                                             skip_phases=[0,1])
@@ -23,12 +23,12 @@ if __name__ == "__main__":
 
 # <codecell>
 
-from StreamlinedDataAnalysisGhmm import analyze_log_file_in_phases_by_condition
-import Constants, GHmmWrapper, gc
+import gc
+from leaparticulator import constants
 from itertools import product
-from subprocess import Popen, PIPE, os
+from subprocess import os
 from ProfileStreamlineNugget import do_it
-files_n_units = product(files, [Constants.XY, Constants.AMP_AND_FREQ, Constants.AMP_AND_MEL])
+files_n_units = product(files, [constants.XY, constants.AMP_AND_FREQ, constants.AMP_AND_MEL])
 dd = os.getcwd()
 
 for i, (f, unit) in enumerate(files_n_units):

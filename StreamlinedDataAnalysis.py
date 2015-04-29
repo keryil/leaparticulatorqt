@@ -7,10 +7,12 @@
 
 # <codecell>
 
-from ExperimentalData import fromFile, toCSV, HMM
 import pandas as pd
 import jsonpickle
 import numpy as np
+
+from ExperimentalData import toCSV, HMM
+
 
 colors = [(x/10.,y/20.,z/40.) for x, y, z in zip(range(10), range(10), range(10))]
 colors.extend([(x/40.,y/20.,z/10.) for x, y, z in zip(range(1,10), range(1,10), range(1,10))])
@@ -154,7 +156,7 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
 
 from matplotlib.colors import colorConverter
 from matplotlib.patches import Ellipse
-from matplotlib.pyplot import scatter, annotate, quiver, legend, gca, gcf
+from matplotlib.pyplot import scatter, annotate, quiver, legend, gcf
 from numpy import log
 # figure()
 # means = []
@@ -282,8 +284,10 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
 # # client[:].apply_sync(lambda: initr())
 # lview = client.load_balanced_view() # default load-balanced view
 # lview.block = True
-import Constants
-def train_hmm_once(file_id, nstates, iter=1000, phase=2, cond=None, units=Constants.XY):
+from leaparticulator import constants
+
+
+def train_hmm_once(file_id, nstates, iter=1000, phase=2, cond=None, units=constants.XY):
     """
     Trains a Gaussian HMM using the data from an experimental log file, 
     using the specified number of states. When condition is unspecified,
@@ -294,11 +298,11 @@ def train_hmm_once(file_id, nstates, iter=1000, phase=2, cond=None, units=Consta
     cond_text = None
     phase = int(phase)
     x, y = None, None
-    if units == Constants.AMP_AND_FREQ:
+    if units == constants.AMP_AND_FREQ:
         x, y = "frequency", "amplitude"
-    elif units == Constants.AMP_AND_MEL:
+    elif units == constants.AMP_AND_MEL:
         x, y = "mel", "amplitude"
-    elif units == Constants.XY:
+    elif units == constants.XY:
         x, y = "x", "y"
     print_n_flush( "Units: %s, x: %s, y: %s" % (units, x, y))
     cond_text = "c('%s','%s')" % (x,y)
@@ -332,8 +336,7 @@ def train_hmm_once(file_id, nstates, iter=1000, phase=2, cond=None, units=Consta
 #     initr()
 #     %load_ext rpy2.ipython
     from rpy2.robjects import r, globalenv
-    from rpy2 import robjects
-#     initr()
+    #     initr()
     r("rm(list = setdiff(ls(), lsf.str()))")
     r("source(\"~/Dropbox/ABACUS/Workspace/LeapArticulator/SampleHMM.R\")")
 #     %R source("~/Dropbox/ABACUS/Workspace/LeapArticulator/SampleHMM.R")
@@ -393,7 +396,7 @@ def train_hmm_once(file_id, nstates, iter=1000, phase=2, cond=None, units=Consta
         success = True
 
 def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True, 
-                      phase=2, cond=None, units=Constants.XY, parallel=True):
+                      phase=2, cond=None, units=constants.XY, parallel=True):
     """
     Trains multiple HMM's (as many as trials parameter per nstate) and chooses the one with the 
     lowest BIC, so as to avoid local optima. units parameter can be "xy", "amp_and_freq", or
@@ -463,8 +466,7 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
         pickle_results(to_return, nstates, trials, iter, id_to_log(file_id), phase, units=units)
     return to_return
         
-def pickle_results(results, nstates, trials, iter, filename_log, phase=None, units=Constants.XY):
-    import ExperimentalData
+def pickle_results(results, nstates, trials, iter, filename_log, phase=None, units=constants.XY):
     hmms, ds = zip(*results)
     print_n_flush( hmms)
 #     results_pickled = jsonpickle.encode((hmms, ds, nstates, trials, iter))
@@ -617,7 +619,7 @@ def analyze_log_file_in_phases(file_id, nstates, trials, iter):
         results[i] = train_hmm_n_times(file_id, nstates=nstates, trials=trials, iter=iter, phase=i)
     return results
 
-def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, units=Constants.XY, parallel=True):
+def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, units=constants.XY, parallel=True):
     print_n_flush( "Starting phase by phase analysis, controlled for conditions (units: %s)..." % units)
     d = pd.read_csv("/shared/AudioData/ThereminData/surfacedata.csv", na_values=["NaN"])
     
@@ -627,7 +629,6 @@ def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, unit
     print_n_flush( "Condition", cond)
     responses, tests, responses_t, tests_t, images = toCSV(filename_log)
     from IPython.parallel import Client
-    import rpy2
     from rpy2 import rinterface
     try:
         rinterface.set_initoptions(("--max-ppsize=500000","--vanilla"))

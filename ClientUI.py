@@ -4,15 +4,17 @@ Created on Feb 24, 2014
 @author: kerem
 '''
 
-import pygtk
-from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
-import Constants
 from collections import deque
+
+import pygtk
+
+from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
+from leaparticulator import constants
+
 pygtk.require("2.0")
 
 import gtk
 
-from glob import glob
 from twisted.python import log
 import jsonpickle
 from AbstractClientUI import AbstractClientUI
@@ -178,7 +180,7 @@ class ClientUI(AbstractClientUI):
         self.reset_last_signal()
         if self.theremin.protocol.factory.ui == None:
             self.theremin.protocol.factory.ui = self
-        self.send(Constants.REQ_NEXT_PIC)
+        self.send(constants.REQ_NEXT_PIC)
 
     def on_new_test_question(self, question):
         grid = self.builder.get_object("testGrid")
@@ -356,9 +358,9 @@ class ClientUI(AbstractClientUI):
         if not self.btnSubmitTest.get_sensitive():
             log.msg("Why did you click an object right then?")
             return
-        self.send(Constants.START_RESPONSE)
+        self.send(constants.START_RESPONSE)
         self.send(jsonpickle.encode(self.question.given_answer))
-        self.send(Constants.END_RESPONSE)
+        self.send(constants.END_RESPONSE)
 
         # change color of buttons for feedback
         correct_answer = self.question.answer
@@ -375,7 +377,7 @@ class ClientUI(AbstractClientUI):
         self.btnSubmitTest.set_sensitive(False)
         self.btnReplayTest.set_sensitive(False)
         # self.learningWindow.queue_draw()
-        self.reactor.callLater(2, self.send, Constants.REQ_NEXT_PIC)
+        self.reactor.callLater(2, self.send, constants.REQ_NEXT_PIC)
 
     ## START
     # First screen
@@ -549,14 +551,14 @@ class ClientUI(AbstractClientUI):
             self.builder.get_object("btnSubmit").set_sensitive(False)
             self.reset_last_signal()
             widget.set_label("Stop")
-            self.send(Constants.START_REC)
+            self.send(constants.START_REC)
             self.recording = True
             self.theremin.player.unmute()
             print "Record"
         else:
             self.builder.get_object("btnSubmit").set_sensitive(True)
             widget.set_label("Re-record")
-            self.send(Constants.END_REC)
+            self.send(constants.END_REC)
             self.recording = False
             self.theremin.player.mute()
 

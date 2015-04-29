@@ -1,8 +1,11 @@
 # IPython log file
 
-from StreamlinedDataAnalysis import *
 from glob import glob
-import timeit, traceback
+import traceback
+
+from StreamlinedDataAnalysis import *
+from leaparticulator import constants
+
 working_dir = get_ipython().getoutput(u'pwd')
 working_dir = str(working_dir[0])
 print working_dir
@@ -63,7 +66,7 @@ for i, f in enumerate(files):
             start = timeit.default_timer()
             try:
                 analyze_log_file_in_phases_by_condition(f, nstates=nstates, trials=trials, iter=iter, 
-                                                        units=Constants.AMP_AND_MEL, parallel=False)
+                                                        units=constants.AMP_AND_MEL, parallel=False)
 
                 stop = timeit.default_timer()
                 print "Analysis of %s done (%f seconds)" % (f, stop-start)

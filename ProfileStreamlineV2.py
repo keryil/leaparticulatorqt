@@ -3,8 +3,7 @@
 
 # <codecell>
 
-from StreamlinedDataAnalysisGhmm import analyze_log_file_in_phases_by_condition
-import Constants, GHmmWrapper, gc
+from leaparticulator import constants
 
 # <codecell>
 
@@ -23,7 +22,7 @@ files
 import subprocess
 from itertools import product
 directory = !pwd
-files_n_units = product(files[:1], [Constants.XY, Constants.AMP_AND_FREQ, Constants.AMP_AND_MEL])
+files_n_units = product(files[:1], [constants.XY, constants.AMP_AND_FREQ, constants.AMP_AND_MEL])
 p = subprocess.Popen("python ProfileStreamline.py".split(), 
                      stdout=subprocess.PIPE, 
                      stderr=subprocess.PIPE,
