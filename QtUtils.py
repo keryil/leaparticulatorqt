@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from PyQt4 import QtCore, QtGui, uic
 
-from leaparticulator.constants import QT_DIR, TEST
+from leaparticulator.constants import QT_DIR, TEST, ROOT_DIR
 
 
 slots = defaultdict(list)
@@ -22,7 +22,7 @@ def setButtonIcon(button, pixmap):
 
 def loadUiWidget(uifilename,
                parent=None,
-               root=getcwd()):
+               root=ROOT_DIR):
     """
     Convenience method to load and setup
     and widget, a QMainWindow by default.
@@ -31,7 +31,7 @@ def loadUiWidget(uifilename,
         import os
         root = os.path.expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")
     ui_file = join(root, QT_DIR, uifilename)
-    print "Loading ui file: %s" %ui_file
+    print "Loading ui file: %s" % ui_file
     w = uic.loadUi(ui_file)
     w.setParent(parent)
     return w
