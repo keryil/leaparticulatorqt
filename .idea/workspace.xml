@@ -2,16 +2,59 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="73c7c7d7-b792-4c51-aa11-e921013076b9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/leaparticulator/leap/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/leaparticulator/data/functions.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/leaparticulator/data/hmm.py" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/leaparticulator/theremin/tone.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LeapFrame.py" afterPath="$PROJECT_DIR$/leaparticulator/leap/frame.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Tone.py" afterPath="$PROJECT_DIR$/leaparticulator/theremin/tone.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ExperimentalData.py" afterPath="$PROJECT_DIR$/ExperimentalData.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ExperimentalData.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/util/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/util/functions.py" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/leaparticulator/leap/__init__.py" afterPath="$PROJECT_DIR$/leaparticulator/data/__init__.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/leaparticulator/leap/frame.py" afterPath="$PROJECT_DIR$/leaparticulator/data/frame.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AbstractClientUI.py" afterPath="$PROJECT_DIR$/AbstractClientUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AnalyzeOnCluster.py" afterPath="$PROJECT_DIR$/AnalyzeOnCluster.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AutomatedHMM.py" afterPath="$PROJECT_DIR$/AutomatedHMM.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BICComparison.py" afterPath="$PROJECT_DIR$/BICComparison.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ClientUI.py" afterPath="$PROJECT_DIR$/ClientUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DataAnalysis.py" afterPath="$PROJECT_DIR$/DataAnalysis.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GHmmWrapper.py" afterPath="$PROJECT_DIR$/GHmmWrapper.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HMMPlotting.py" afterPath="$PROJECT_DIR$/HMMPlotting.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HandTrajectory2SignalTrajectory.py" afterPath="$PROJECT_DIR$/HandTrajectory2SignalTrajectory.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Leap.py" afterPath="$PROJECT_DIR$/Leap.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapServer.py" afterPath="$PROJECT_DIR$/LeapServer.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapTheremin.py" afterPath="$PROJECT_DIR$/LeapTheremin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/constants.py" afterPath="$PROJECT_DIR$/leaparticulator/constants.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Meaning.py" afterPath="$PROJECT_DIR$/Meaning.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Optimize fromFile.py" afterPath="$PROJECT_DIR$/Optimize fromFile.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Pandas Port.py" afterPath="$PROJECT_DIR$/Pandas Port.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamline-Copy0.py" afterPath="$PROJECT_DIR$/ProfileStreamline-Copy0.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamline.py" afterPath="$PROJECT_DIR$/ProfileStreamline.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamlineNugget.py" afterPath="$PROJECT_DIR$/ProfileStreamlineNugget.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamlineV2.py" afterPath="$PROJECT_DIR$/ProfileStreamlineV2.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QTClientUI.py" afterPath="$PROJECT_DIR$/QTClientUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QtUtils.py" afterPath="$PROJECT_DIR$/QtUtils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SampleTrajectory.py" afterPath="$PROJECT_DIR$/SampleTrajectory.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ServerUI.py" afterPath="$PROJECT_DIR$/ServerUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SignalDistanceMatrix.py" afterPath="$PROJECT_DIR$/SignalDistanceMatrix.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StreamlinedDataAnalysis.py" afterPath="$PROJECT_DIR$/StreamlinedDataAnalysis.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py" afterPath="$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TestQuestion.py" afterPath="$PROJECT_DIR$/TestQuestion.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Untitled0.py" afterPath="$PROJECT_DIR$/Untitled0.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Untitled1.py" afterPath="$PROJECT_DIR$/Untitled1.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/delete_me.py" afterPath="$PROJECT_DIR$/delete_me.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/delete_me_anytime.py" afterPath="$PROJECT_DIR$/delete_me_anytime.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/glade_toyclass.py" afterPath="$PROJECT_DIR$/glade_toyclass.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helloworld.py" afterPath="$PROJECT_DIR$/helloworld.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ipython_log.py" afterPath="$PROJECT_DIR$/ipython_log.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/learningWindow.py" afterPath="$PROJECT_DIR$/res/learningWindow.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/poll_io.py" afterPath="$PROJECT_DIR$/poll_io.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pyhsmm_stuff.py" afterPath="$PROJECT_DIR$/pyhsmm_stuff.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/qt.qrc" afterPath="$PROJECT_DIR$/res/qt.qrc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simpleserv.py" afterPath="$PROJECT_DIR$/simpleserv.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_client_full.py" afterPath="$PROJECT_DIR$/test/p2p/test_client_full.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" afterPath="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/trajectory.py" afterPath="$PROJECT_DIR$/trajectory.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zmq_server.py" afterPath="$PROJECT_DIR$/zmq_server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/zmq_stuff.py" afterPath="$PROJECT_DIR$/zmq_stuff.py" />
     </list>
     <ignored path="LeapArticulatorQt.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,12 +100,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Sample.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Sample.py" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Build/LeapSDK/samples/Sample.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6462396" vertical-offset="2048" max-vertical-offset="2595">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2048" max-vertical-offset="2595">
               <caret line="153" column="37" selection-start-line="153" selection-start-column="37" selection-end-line="153" selection-end-column="37" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="functions.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4890">
+              <caret line="319" column="38" selection-start-line="319" selection-start-column="38" selection-end-line="319" selection-end-column="38" />
+              <folding>
+                <element signature="e#0#17#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="hmm.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/leaparticulator/data/hmm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="14.177331" vertical-offset="0" max-vertical-offset="7920">
+              <caret line="517" column="32" selection-start-line="517" selection-start-column="32" selection-end-line="517" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,11 +159,9 @@
       <file leaf-file-name="LeapServer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LeapServer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="7275">
-              <caret line="453" column="26" selection-start-line="453" selection-start-column="26" selection-end-line="453" selection-end-column="26" />
-              <folding>
-                <element signature="e#48#58#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="7380">
+              <caret line="457" column="26" selection-start-line="457" selection-start-column="26" selection-end-line="457" selection-end-column="26" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -104,11 +169,9 @@
       <file leaf-file-name="LeapTheremin.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="6825">
-              <caret line="53" column="7" selection-start-line="53" selection-start-column="7" selection-end-line="60" selection-end-column="13" />
-              <folding>
-                <element signature="e#18#28#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="6795">
+              <caret line="51" column="7" selection-start-line="51" selection-start-column="7" selection-end-line="58" selection-end-column="13" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -146,6 +209,9 @@
         <option value="$PROJECT_DIR$/leaparticulator/theremin/common.py" />
         <option value="$PROJECT_DIR$/leaparticulator/constants.py" />
         <option value="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" />
+        <option value="$PROJECT_DIR$/ExperimentalData.py" />
+        <option value="$PROJECT_DIR$/leaparticulator/data/ExperimentalData.py" />
+        <option value="$PROJECT_DIR$/leaparticulator/data/hmm.py" />
       </list>
     </option>
   </component>
@@ -334,25 +400,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="theremin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leaparticulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leap" />
+              <option name="myItemId" value="data" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -368,7 +416,7 @@
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="LayoutCode.rearrangeEntriesPython" value="true" />
+    <property name="LayoutCode.rearrangeEntriesPython" value="false" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -383,11 +431,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/leaparticulator/data/" />
       <recent name="$PROJECT_DIR$/leaparticulator/leap/" />
       <recent name="$PROJECT_DIR$/leaparticulator/theremin/" />
       <recent name="$PROJECT_DIR$/leaparticulator" />
       <recent name="$PROJECT_DIR$/leaparticulator/p2p/ui" />
-      <recent name="$PROJECT_DIR$/leaparticulator/p2p" />
     </key>
   </component>
   <component name="RunManager" selected="Python.theremin">
@@ -649,7 +697,13 @@
       <option name="project" value="LOCAL" />
       <updated>1430432940884</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="-A lot of refactoring.&#10;-Implemented a leaner theremin.&#10;-Implemented a constant frame rate theremin.">
+      <created>1430436132925</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1430436132925</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -663,7 +717,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3269565" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -705,41 +759,11 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/leaparticulator/theremin/tone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="1455">
-          <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Leap.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="16185">
-          <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
-          <folding>
-            <element signature="e#207#235#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="9405">
-          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-          <folding>
-            <element signature="e#55#65#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LeapServer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7245">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#48#58#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -747,9 +771,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3525" max-vertical-offset="6675">
           <caret line="244" column="4" selection-start-line="244" selection-start-column="4" selection-end-line="244" selection-end-column="4" />
-          <folding>
-            <element signature="e#18#28#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -790,7 +812,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="17264">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
           <folding>
-            <element signature="e#207#235#0" expanded="true" />
+            <element signature="e#207#235#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -809,9 +831,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3681" max-vertical-offset="7152">
           <caret line="247" column="4" selection-start-line="247" selection-start-column="4" selection-end-line="247" selection-end-column="4" />
-          <folding>
-            <element signature="e#18#28#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -852,7 +872,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="17264">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
           <folding>
-            <element signature="e#207#235#0" expanded="true" />
+            <element signature="e#207#235#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -871,9 +891,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3681" max-vertical-offset="7152">
           <caret line="247" column="4" selection-start-line="247" selection-start-column="4" selection-end-line="247" selection-end-column="4" />
-          <folding>
-            <element signature="e#18#28#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -914,7 +932,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="37134">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
           <folding>
-            <element signature="e#207#235#0" expanded="true" />
+            <element signature="e#207#235#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -933,9 +951,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2736" max-vertical-offset="8586">
           <caret line="162" column="12" selection-start-line="162" selection-start-column="12" selection-end-line="162" selection-end-column="12" />
-          <folding>
-            <element signature="e#18#28#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -976,7 +992,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="22770" max-vertical-offset="31020">
           <caret line="1519" column="0" selection-start-line="1519" selection-start-column="0" selection-end-line="1519" selection-end-column="0" />
           <folding>
-            <element signature="e#207#235#0" expanded="true" />
+            <element signature="e#207#235#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -995,9 +1011,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3885" max-vertical-offset="7155">
           <caret line="303" column="21" selection-start-line="303" selection-start-column="21" selection-end-line="303" selection-end-column="21" />
-          <folding>
-            <element signature="e#18#28#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1065,7 +1079,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="31065">
           <caret line="31" column="50" selection-start-line="31" selection-start-column="50" selection-end-line="31" selection-end-column="50" />
           <folding>
-            <element signature="e#207#235#0" expanded="true" />
+            <element signature="e#207#235#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1088,11 +1102,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="735" max-vertical-offset="6825">
-          <caret line="53" column="7" selection-start-line="53" selection-start-column="7" selection-end-line="60" selection-end-column="13" />
-          <folding>
-            <element signature="e#18#28#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="6795">
+          <caret line="51" column="7" selection-start-line="51" selection-start-column="7" selection-end-line="58" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1108,11 +1120,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LeapServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="7275">
-          <caret line="453" column="26" selection-start-line="453" selection-start-column="26" selection-end-line="453" selection-end-column="26" />
-          <folding>
-            <element signature="e#48#58#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="7380">
+          <caret line="457" column="26" selection-start-line="457" selection-start-column="26" selection-end-line="457" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1134,11 +1144,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/zmq_stuff.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zmq_client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="547">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/Build/LeapSDK/samples/Sample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6462396" vertical-offset="2048" max-vertical-offset="2595">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2048" max-vertical-offset="2595">
           <caret line="153" column="37" selection-start-line="153" selection-start-column="37" selection-end-line="153" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4193" max-vertical-offset="4890">
+          <caret line="319" column="38" selection-start-line="319" selection-start-column="38" selection-end-line="319" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/data/hmm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="14.177331" vertical-offset="0" max-vertical-offset="7920">
+          <caret line="517" column="32" selection-start-line="517" selection-start-column="32" selection-end-line="517" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

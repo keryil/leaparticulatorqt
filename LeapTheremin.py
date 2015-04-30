@@ -4,19 +4,18 @@ from collections import deque
 
 from twisted.python import log
 import jsonpickle
-from PySide import QtGui #, QtUiTools
+from PySide import QtGui  # , QtUiTools
 
 import Leap
 from leaparticulator.theremin import tone
 from leaparticulator import constants
-from leaparticulator.leap import frame
 from leaparticulator.constants import install_reactor
 
 
 install_reactor()
 
 # if "qt4reactor" not in sys.modules:
-#     import qt4reactor
+# import qt4reactor
 #     from PySide.QtGui import QApplication
 #     qapplication = QApplication(sys.argv)
 #     qt4reactor.install()
@@ -46,7 +45,6 @@ signal = []
 
 
 class ThereminPlayer(object):
-
     """
     This is the main class used to play the theremin. 
     It takes LeapFrame objects and produces sound using 
@@ -103,7 +101,7 @@ class ThereminPlayer(object):
             if self.fadeout_call.running:
                 self.fadeout_call.stop()
             self.fadeout_counter = 0
-        # self.fadeout_call = None
+            # self.fadeout_call = None
 
     def newPosition(self, frame):
         """
@@ -126,8 +124,8 @@ class ThereminPlayer(object):
                     constants.fadeout_call_rate)
                 self.fadeout_call_def.addErrback(on_error)
                 # print self.fadeout_call
-            # else:
-            #   [tone.setAmplitude(0) for tone in self.tones]
+                # else:
+                #   [tone.setAmplitude(0) for tone in self.tones]
         elif len(self.tones) == 1:
             self.resetFadeout()
             self.fadeout_call = None
@@ -149,11 +147,11 @@ class ThereminPlayer(object):
             self.tones[0].setFrequency(freq)
             self.tones[0].setAmplitude(amp * self.volume_coefficient)
 
-#           print frame.timestamp
-            # log.msg("Playing: freq=%s, amp=%s, mel=%s, timestamp=%s" % (freq,
-            #                                                   amp,
-            #                                                   freqToMel(freq),
-            #                                                   frame.timestamp))
+        #           print frame.timestamp
+        # log.msg("Playing: freq=%s, amp=%s, mel=%s, timestamp=%s" % (freq,
+        #                                                   amp,
+        #                                                   freqToMel(freq),
+        #                                                   frame.timestamp))
         return amp, freq
 
     def mute(self):
@@ -170,7 +168,6 @@ class ThereminPlayer(object):
 
 
 class ThereminPlayback(object):
-
     """
     This class is used to replay sounds produced by LeapTheremin from
     recorded frames of the Leap controller. The recorded frames are given
@@ -202,7 +199,7 @@ class ThereminPlayback(object):
             # print e
             # print "Ran out of frames, stopping playback..."
             self.stop()
-        # finally:
+            # finally:
 
     def start(self, score, callback=None):
         if self.call:
@@ -267,16 +264,15 @@ def gimmeSomeTheremin(n_of_notes, default_volume, ip=constants.leap_server,
             connection = reactor.connectTCP(
                 ip, constants.leap_port, factory(audio_listener, ui, uid))
 
-    # point = TCP4ClientEndpoint(reactor, ip, Constants.leap_port)
-    # connection = point.connect(LeapClientFactory(audio_listener, ui))
-    # log.msg("Connected")
-        # Have the audio_listener receive events from the controller
+            # point = TCP4ClientEndpoint(reactor, ip, Constants.leap_port)
+            # connection = point.connect(LeapClientFactory(audio_listener, ui))
+            # log.msg("Connected")
+            # Have the audio_listener receive events from the controller
     controller.add_listener(audio_listener)
     return audio_listener, reactor, controller, connection
 
 
 class ThereminListener(Leap.Listener):
-
     """
     This class is used to listen to Leap Motion input and 
     use an ThereminPlayer instance to play the corresponding 
@@ -299,10 +295,11 @@ class ThereminListener(Leap.Listener):
         self.player = ThereminPlayer(n_of_tones=n_of_tones,
                                      default_volume=default_volume,
                                      ui=ui)
-#       self.tones = tones
-#       self.default_volume = default_volume
+        #       self.tones = tones
+        #       self.default_volume = default_volume
         log.startLogging(sys.stdout)
-#       self.protocol = protocol
+
+    #       self.protocol = protocol
 
     def on_frame(self, controller):
         """
@@ -324,7 +321,7 @@ class ThereminListener(Leap.Listener):
             self.callback((amp, freq))
 
         if (not self.player.muted) \
-                and (amp != 0)\
+                and (amp != 0) \
                 and (freq != 0):
             if self.protocol:
                 if self.realtime:
@@ -337,10 +334,9 @@ class ThereminListener(Leap.Listener):
             else:
                 if not self.realtime:
                     if self.recording:
-
                         # log.msg("Extending signal...")
                         self.last_signal.append(pickled)
-                    # self.factory.ui.extendSignal(pickled)
+                        # self.factory.ui.extendSignal(pickled)
 
     def record(self):
         self.recording = True
@@ -373,6 +369,7 @@ def main(ip=constants.leap_server):
     def stop():
         reactor.stop()
         controller.remove_listener(theremin)
+
     try:
         theremin, reactor, controller, connection = gimmeSomeTheremin(
             n_of_notes=1, default_volume=.5, ip=ip)
@@ -384,6 +381,7 @@ def main(ip=constants.leap_server):
     finally:
         for f in signal:
             print f
+
 
 if __name__ == "__main__":
     #   lines = open("frames.list").read().split("\n")[:-1]

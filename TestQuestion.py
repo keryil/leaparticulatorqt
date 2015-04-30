@@ -14,7 +14,7 @@ def produce_questions(client_responses, qty=4, n_of_images=3):
         assert q.answer == answer
 
     # for i, response in enumerate(client_responses):
-    #     q = TestQuestion(
+    # q = TestQuestion(
     #         client_responses, n_of_images=n_of_images, answer=response)
     #     questions.append(q)
     #     assert q.answer == response
@@ -27,7 +27,6 @@ def produce_questions(client_responses, qty=4, n_of_images=3):
 
 
 class TestQuestion(object):
-
     def __init__(self, client_responses, n_of_images=3, answer=None):
         """
         Receives a dict of response[pic]=signal, and
@@ -89,6 +88,7 @@ def test_uniqueness(questions):
             print q.answer, "is duplicate in set",
             print[q.answer for q in questions]
             import sys
+
             sys.exit(-1)
         answers.add(q.answer)
 
@@ -97,7 +97,9 @@ def test_arr_unique(arr):
     if len(arr) != len(set(arr)):
         print "Duplicate in", arr
         import sys
+
         sys.exit(-1)
+
 
 if __name__ == "__main__":
     test()

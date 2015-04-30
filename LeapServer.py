@@ -16,7 +16,7 @@ else:
 
 once = False
 # if "twisted.internet.reactor" not in sys.modules:
-#     from twisted.internet import gtk2reactor
+# from twisted.internet import gtk2reactor
 #     gtk2reactor.install()
 #     once = True
 
@@ -34,7 +34,7 @@ from Meaning import FeaturelessMeaning
 class LeapServer(basic.LineReceiver):
     other_end = ""
     delimiter = "\n\n"
-#     MAX_LENGTH = 1024*1024*10
+    #     MAX_LENGTH = 1024*1024*10
     response = []
     phase = 0
     # image_mask_1 = "./img/meanings/5_*.png"
@@ -58,7 +58,7 @@ class LeapServer(basic.LineReceiver):
         self.factory = factory
         from random import shuffle, sample
 
-        files_ = set(range(1,16))
+        files_ = set(range(1, 16))
         files = [None, None, None]
         files[0] = set(sample(files_, 5))
         files[1] = files[0].union(set(sample(files_.difference(files[0]), 5)))
@@ -170,10 +170,11 @@ class LeapServer(basic.LineReceiver):
             # if questions are not prepared
             if not self.factory.questions_by_phase[self.phase]:
                 # self.factory.questions_by_phase[self.phase] = [TestQuestion(self.factory.responses[self.other_end]) for i in range(self.n_of_test_questions)]
-                self.factory.questions_by_phase[self.phase] = TestQuestion.produce_questions(self.factory.responses[self.other_end][self.phase],
-                                                                                             qty=self.n_of_test_questions[
-                                                                                                 self.phase],
-                                                                                             n_of_images=self.n_of_options[self.phase])
+                self.factory.questions_by_phase[self.phase] = TestQuestion.produce_questions(
+                    self.factory.responses[self.other_end][self.phase],
+                    qty=self.n_of_test_questions[
+                        self.phase],
+                    n_of_images=self.n_of_options[self.phase])
                 print "Generated questions (%d): %s" % (len(self.factory.questions_by_phase[self.phase]),
                                                         self.factory.questions_by_phase[self.phase])
             for q in self.factory.questions_by_phase[self.phase]:
@@ -217,6 +218,7 @@ class LeapServer(basic.LineReceiver):
                             log.msg("End of experiment.")
                             self.send_all(constants.EXIT)
                             import time
+
                             session_id = self.factory.uid
                             with open("logs/%s.%s.exp.log" % (session_id, self.factory.condition), "w") as f:
                                 f.write(jsonpickle.encode(self.factory.images))
@@ -260,8 +262,10 @@ class LeapServer(basic.LineReceiver):
                             self.send_all(constants.EXIT)
                             import time
                             from os.path import join
+
                             session_id = self.factory.uid
-                            with open(join("logs", self.factory.log_prefix, "%s.%s.exp.log" % (session_id, self.factory.condition)), "w") as f:
+                            with open(join("logs", self.factory.log_prefix,
+                                           "%s.%s.exp.log" % (session_id, self.factory.condition)), "w") as f:
                                 f.write(jsonpickle.encode(self.factory.images))
                                 f.write("\n")
                                 f.write(
@@ -282,7 +286,7 @@ class LeapServer(basic.LineReceiver):
         # if len(nline) < 300:
         log.msg("Received: %s" % nline)
 
-#         if line=
+        #         if line=
         if line == constants.START_REC:
             self.recording = True
             self.response = []
@@ -291,7 +295,7 @@ class LeapServer(basic.LineReceiver):
             self.factory.responses[self.other_end][self.phase][
                 self.factory.image_index] = self.response
             # self.nextPicture()
-#             print self.response
+        #             print self.response
         elif line == constants.REQ_NEXT_PIC:
             self.nextPicture()
             return
@@ -460,8 +464,10 @@ def get_server_instance():
     endpoint.listen(LeapServerFactory())
     return endpoint
 
+
 if __name__ == '__main__':
     import sys
+
     endpoint = TCP4ServerEndpoint(reactor, constants.leap_port)
     if len(sys.argv) < 2:
         print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
@@ -472,6 +478,7 @@ if __name__ == '__main__':
             prefix = sys.argv[2]
         from os.path import join
         from os import getcwd
+
         print "**** IMPORTANT: Log folder is %s ****" % join(getcwd(), "logs", prefix)
         endpoint.listen(
             LeapServerFactory(condition=sys.argv[1], prefix=prefix))

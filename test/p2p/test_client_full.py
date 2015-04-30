@@ -50,7 +50,7 @@ class TwoClientsFirstRound(P2PTestCase):
             self.assertFalse(submit_btn.isEnabled())
 
             # record something
-            from leaparticulator.leap.frame import generateRandomSignal
+            from leaparticulator.data.frame import generateRandomSignal
             self.click(record_btn)
             self.click(record_btn)
             ui_speaker.theremin.last_signal = generateRandomSignal(10)
@@ -115,7 +115,7 @@ class TwoClientsFirstRound(P2PTestCase):
             image = ui_speaker.creationWin.findChildren(
                 QtGui.QLabel, "lblImage")[0]
             # record something
-            from leaparticulator.leap.frame import generateRandomSignal
+            from leaparticulator.data.frame import generateRandomSignal
             self.click(record_btn)
             self.click(record_btn)
             ui_speaker.theremin.last_signal = generateRandomSignal(10)
@@ -142,7 +142,7 @@ class TwoClientsFirstRound(P2PTestCase):
                 QtGui.QLabel, "lblImage")[0]
 
             # record something
-            from leaparticulator.leap.frame import generateRandomSignal
+            from leaparticulator.data.frame import generateRandomSignal
             self.click(record_btn)
             self.click(record_btn)
             ui_speaker.theremin.last_signal = generateRandomSignal(10)
