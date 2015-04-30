@@ -4,11 +4,11 @@ Created on Feb 21, 2014
 @author: kerem
 '''
 
-from os.path import expanduser, join
-from os import getcwd
+from os.path import expanduser, join, sep
 
-
-ROOT_DIR = getcwd()
+if "ROOT_DIR" not in globals():
+    import leaparticulator
+    ROOT_DIR = sep.join(leaparticulator.__file__.split(sep)[:-2])
 
 # units
 default_pitch = 440.

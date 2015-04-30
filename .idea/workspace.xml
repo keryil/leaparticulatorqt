@@ -2,39 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="73c7c7d7-b792-4c51-aa11-e921013076b9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res.tar.gz" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Constants.py" afterPath="$PROJECT_DIR$/leaparticulator/constants.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/LeapPython.so" afterPath="$PROJECT_DIR$/LeapPython11.so" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AutomatedHMM.py" afterPath="$PROJECT_DIR$/AutomatedHMM.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.ipynb_checkpoints/BICComparison-checkpoint.ipynb" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/BICComparison-checkpoint.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BICComparison.ipynb" afterPath="$PROJECT_DIR$/BICComparison.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BICComparison.py" afterPath="$PROJECT_DIR$/BICComparison.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ClientUI.py" afterPath="$PROJECT_DIR$/ClientUI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HandTrajectory2SignalTrajectory.py" afterPath="$PROJECT_DIR$/HandTrajectory2SignalTrajectory.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Leap.py" afterPath="$PROJECT_DIR$/Leap.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/LeapArticulatorQt.iml" afterPath="$PROJECT_DIR$/.idea/LeapArticulatorQt.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapServer.py" afterPath="$PROJECT_DIR$/LeapServer.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapTheremin.py" afterPath="$PROJECT_DIR$/LeapTheremin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Meaning.py" afterPath="$PROJECT_DIR$/Meaning.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamline-Copy0.py" afterPath="$PROJECT_DIR$/ProfileStreamline-Copy0.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamline.py" afterPath="$PROJECT_DIR$/ProfileStreamline.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamlineNugget.py" afterPath="$PROJECT_DIR$/ProfileStreamlineNugget.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ProfileStreamlineV2.py" afterPath="$PROJECT_DIR$/ProfileStreamlineV2.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QTClientUI.py" afterPath="$PROJECT_DIR$/QTClientUI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QtUtils.py" afterPath="$PROJECT_DIR$/QtUtils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ServerUI.py" afterPath="$PROJECT_DIR$/ServerUI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StreamlinedDataAnalysis.py" afterPath="$PROJECT_DIR$/StreamlinedDataAnalysis.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py" afterPath="$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tone.py" afterPath="$PROJECT_DIR$/Tone.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/ui/client.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/ui/client.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ipython_log.py" afterPath="$PROJECT_DIR$/ipython_log.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/messaging.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/messaging.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/constants.py" afterPath="$PROJECT_DIR$/leaparticulator/constants.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libLeap.dylib" afterPath="$PROJECT_DIR$/libLeap.dylib" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/server.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/server.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/ui/server.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/ui/server.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_client_basic.py" afterPath="$PROJECT_DIR$/test/p2p/test_client_basic.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_client_full.py" afterPath="$PROJECT_DIR$/test/p2p/test_client_full.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_server_basic.py" afterPath="$PROJECT_DIR$/test/p2p/test_server_basic.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_server_twoClients.py" afterPath="$PROJECT_DIR$/test/p2p/test_server_twoClients.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="LeapArticulatorQt.iws" />
@@ -62,11 +35,9 @@
       <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2960">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#49#85#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2775">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -74,7 +45,7 @@
       <file leaf-file-name="QtUtils.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/QtUtils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1328">
+            <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="1155">
               <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding />
             </state>
@@ -84,20 +55,20 @@
       <file leaf-file-name="Tone.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Tone.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="926" max-vertical-offset="1680">
+            <state vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="1455">
               <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Leap.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Leap.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Leap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="17264">
-              <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.75" vertical-offset="195" max-vertical-offset="31065">
+              <caret line="31" column="50" selection-start-line="31" selection-start-column="50" selection-end-line="31" selection-end-column="50" />
               <folding>
-                <marker date="1430130661063" expanded="true" signature="57833:57834" placeholder="..." />
+                <element signature="e#207#235#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,7 +77,7 @@
       <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="16" max-vertical-offset="10032">
+            <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="9405">
               <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
               <folding>
                 <element signature="e#55#65#0" expanded="true" />
@@ -115,12 +86,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LeapServer.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LeapServer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LeapServer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4547391" vertical-offset="6789" max-vertical-offset="7728">
+            <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="7275">
               <caret line="453" column="26" selection-start-line="453" selection-start-column="26" selection-end-line="453" selection-end-column="26" />
-              <folding />
+              <folding>
+                <element signature="e#48#58#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -128,9 +101,11 @@
       <file leaf-file-name="LeapTheremin.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3793" max-vertical-offset="7264">
-              <caret line="244" column="4" selection-start-line="244" selection-start-column="4" selection-end-line="244" selection-end-column="4" />
-              <folding />
+            <state vertical-scroll-proportion="-11.111111" vertical-offset="0" max-vertical-offset="6810">
+              <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+              <folding>
+                <element signature="e#18#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -138,7 +113,7 @@
       <file leaf-file-name="client.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="752" max-vertical-offset="5424">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5085">
               <caret line="49" column="34" selection-start-line="40" selection-start-column="63" selection-end-line="40" selection-end-column="67" />
               <folding />
             </state>
@@ -158,22 +133,21 @@
         <option value="$PROJECT_DIR$/leaparticulator/p2p/ui/server.py" />
         <option value="$PROJECT_DIR$/leaparticulator/p2p/client.py" />
         <option value="$PROJECT_DIR$/leaparticulator/ui/qtutils.py" />
-        <option value="$PROJECT_DIR$/leaparticulator/constants.py" />
         <option value="$PROJECT_DIR$/LeapP2PServer.py" />
         <option value="$PROJECT_DIR$/leaparticulator/p2p/LeapP2PServer.py" />
         <option value="$PROJECT_DIR$/Tone.py" />
-        <option value="$PROJECT_DIR$/Leap.py" />
-        <option value="$PROJECT_DIR$/LeapTheremin.py" />
         <option value="$PROJECT_DIR$/leaparticulator/p2p/server.py" />
         <option value="$PROJECT_DIR$/LeapServer.py" />
+        <option value="$PROJECT_DIR$/LeapTheremin.py" />
+        <option value="$PROJECT_DIR$/leaparticulator/constants.py" />
+        <option value="$PROJECT_DIR$/Leap.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="44" />
-    <option name="y" value="-3" />
-    <option name="width" value="1878" />
-    <option name="height" value="1087" />
+    <option name="y" value="23" />
+    <option name="width" value="1152" />
+    <option name="height" value="693" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -337,20 +311,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="qt_generated" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="leaparticulator" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -398,7 +358,7 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/leaparticulator" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
+    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="restartRequiresConfirmation" value="true" />
@@ -424,8 +384,8 @@
       <recent name="$PROJECT_DIR$/leaparticulator/ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.server">
-    <configuration default="false" name="server" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.client">
+    <configuration default="false" name="server" type="PythonConfigurationType" factoryName="Python" singleton="true" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -659,29 +619,29 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="44" y="-3" width="1878" height="1087" extended-state="6" />
+    <frame x="0" y="23" width="1152" height="693" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284553" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32712215" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42946708" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1670224" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16622458" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42946708" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32815734" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3275563" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32712215" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3273906" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -709,11 +669,81 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2944">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2775">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QtUtils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="420" max-vertical-offset="1155">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tone.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="1455">
+          <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Leap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="16185">
+          <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
+          <folding>
+            <element signature="e#207#235#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="9405">
+          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
+          <folding>
+            <element signature="e#55#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LeapServer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7245">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#49#85#0" expanded="true" />
+            <element signature="e#48#58#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3525" max-vertical-offset="6675">
+          <caret line="244" column="4" selection-start-line="244" selection-start-column="4" selection-end-line="244" selection-end-column="4" />
+          <folding>
+            <element signature="e#18#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="5085">
+          <caret line="49" column="34" selection-start-line="40" selection-start-column="63" selection-end-line="40" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2944">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -738,7 +768,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="17264">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
           <folding>
-            <marker date="1430130661063" expanded="true" signature="57833:57834" placeholder="..." />
+            <element signature="e#207#235#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -757,7 +787,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3681" max-vertical-offset="7152">
           <caret line="247" column="4" selection-start-line="247" selection-start-column="4" selection-end-line="247" selection-end-column="4" />
-          <folding />
+          <folding>
+            <element signature="e#18#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -773,9 +805,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2944">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#49#85#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -800,7 +830,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="17264">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
           <folding>
-            <marker date="1430130661063" expanded="true" signature="57833:57834" placeholder="..." />
+            <element signature="e#207#235#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -819,7 +849,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3681" max-vertical-offset="7152">
           <caret line="247" column="4" selection-start-line="247" selection-start-column="4" selection-end-line="247" selection-end-column="4" />
-          <folding />
+          <folding>
+            <element signature="e#18#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -835,9 +867,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3312">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#49#85#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -862,7 +892,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="37134">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
           <folding>
-            <marker date="1430130661063" expanded="true" signature="57833:57834" placeholder="..." />
+            <element signature="e#207#235#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -881,7 +911,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2736" max-vertical-offset="8586">
           <caret line="162" column="12" selection-start-line="162" selection-start-column="12" selection-end-line="162" selection-end-column="12" />
-          <folding />
+          <folding>
+            <element signature="e#18#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -897,9 +929,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2760">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#49#85#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -924,7 +954,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="22770" max-vertical-offset="31020">
           <caret line="1519" column="0" selection-start-line="1519" selection-start-column="0" selection-end-line="1519" selection-end-column="0" />
           <folding>
-            <marker date="1430130661063" expanded="true" signature="57833:57834" placeholder="..." />
+            <element signature="e#207#235#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -943,7 +973,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3885" max-vertical-offset="7155">
           <caret line="303" column="21" selection-start-line="303" selection-start-column="21" selection-end-line="303" selection-end-column="21" />
-          <folding />
+          <folding>
+            <element signature="e#18#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -983,63 +1015,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/QtUtils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1328">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Leap.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="30945">
-          <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
-          <folding>
-            <marker date="1430130661063" expanded="true" signature="57833:57834" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="926" max-vertical-offset="1680">
-          <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="5115">
-          <caret line="49" column="34" selection-start-line="40" selection-start-column="63" selection-end-line="40" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3793" max-vertical-offset="7264">
-          <caret line="244" column="4" selection-start-line="244" selection-start-column="4" selection-end-line="244" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/automated_2014-09-29_10:33:34.060200.log">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="622">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2760">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#49#85#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1053,11 +1032,73 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/libLeap.dylib">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.389049" vertical-offset="0" max-vertical-offset="324045">
+          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tone.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="926" max-vertical-offset="1680">
+          <caret line="52" column="27" selection-start-line="52" selection-start-column="27" selection-end-line="52" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/QtUtils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1328">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LeapServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4547391" vertical-offset="6789" max-vertical-offset="7728">
+        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="7275">
           <caret line="453" column="26" selection-start-line="453" selection-start-column="26" selection-end-line="453" selection-end-column="26" />
+          <folding>
+            <element signature="e#48#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.111111" vertical-offset="0" max-vertical-offset="6810">
+          <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+          <folding>
+            <element signature="e#18#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="5115">
+          <caret line="49" column="34" selection-start-line="40" selection-start-column="63" selection-end-line="40" selection-end-column="67" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2775">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Leap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75" vertical-offset="195" max-vertical-offset="31065">
+          <caret line="31" column="50" selection-start-line="31" selection-start-column="50" selection-end-line="31" selection-end-column="50" />
+          <folding>
+            <element signature="e#207#235#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

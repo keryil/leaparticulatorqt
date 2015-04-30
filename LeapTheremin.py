@@ -10,7 +10,7 @@ from Tone import Tone
 from leaparticulator import constants
 from LeapFrame import LeapFrame
 
-# from PySide import QtCore, QtGui, QtUiTools
+from PySide import QtCore, QtGui #, QtUiTools
 from leaparticulator.constants import install_reactor
 install_reactor()
 
