@@ -4,7 +4,7 @@ from os.path import join
 from PyQt4 import QtGui, QtCore
 
 from leaparticulator.constants import (IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY,
-                       FALSE_OVERLAY, MEANING_DIR_P2P, ROOT_DIR)
+                                       FALSE_OVERLAY, MEANING_DIR_P2P, ROOT_DIR)
 
 
 loadFromRes = lambda path: open(join(ROOT_DIR, "res", path + ".txt")).read()
@@ -14,7 +14,7 @@ class AbstractMeaning(object):
     # separates the feature values in the filename
     feature_sep = "-"
 
-    def __init__(self, feature_dict,  feature_order):
+    def __init__(self, feature_dict, feature_order):
         """
         feature_dict holds the features a specific implementation 
         may net such as size, color etc., and feature_order is a
@@ -38,6 +38,7 @@ class AbstractMeaning(object):
         # print format_txt
         # print tuples
         import sys
+
         sys.stdout.flush()
         tuples.append(IMG_EXTENSION)
         fn = join(self.MEANING_DIR, format_txt %
@@ -96,7 +97,7 @@ class AbstractMeaning(object):
 class P2PMeaning(AbstractMeaning):
     feature_sep = "_"
 
-    def __init__(self, feature_dict,  feature_order):
+    def __init__(self, feature_dict, feature_order):
         super(P2PMeaning, self).__init__(feature_dict, feature_order)
         self.MEANING_DIR = MEANING_DIR_P2P
 
@@ -112,7 +113,6 @@ class P2PMeaning(AbstractMeaning):
 
 
 class FeaturelessMeaning(AbstractMeaning):
-
     def __init__(self, id_no):
         super(FeaturelessMeaning, self).__init__(feature_dict={"id_no": id_no},
                                                  feature_order=['id_no'])
@@ -121,7 +121,6 @@ class FeaturelessMeaning(AbstractMeaning):
 
 
 class Meaning(object):
-
     def __init__(self, size, color, shade):
         for dim in (size, color, shade):
             assert 1 <= dim <= 6

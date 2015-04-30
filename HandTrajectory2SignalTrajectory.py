@@ -33,36 +33,34 @@ def calculate_amp_and_freq(f, delimiter="|"):
     print "File: %s, Condition: %s" % (f, cond)
     data = pd.read_csv(f, delimiter=delimiter, na_values=["NaN"])
     new_file = ".".join(f.split(".")[:-1]) + ".freq_and_amp.csv"
-    
-    
+
     series = lambda x: pd.Series(x, index=data.index)
     normalize = lambda x: (x - np.average(x)) / np.std(x)
     norm_series = lambda x: series(normalize(x))
     doublequote = lambda x: "\"%s\"" % x
-    
+
     print new_file
-    oldx,oldy = -1,-1
-    for row in data[['x','y', 'phase', 'image']].iterrows():
-        x,y = row[1][0], row[1][1]
+    oldx, oldy = -1, -1
+    for row in data[['x', 'y', 'phase', 'image']].iterrows():
+        x, y = row[1][0], row[1][1]
         phase = int(row[1][2])
         image = row[1][3]
         if cond in ('1r', '2r'):
             x, y = y, x
-        amp, freq = palmToAmpAndFreq((x,y,0))
-        
-        
+        amp, freq = palmToAmpAndFreq((x, y, 0))
+
         if cond[-1] == 'r' and cond[-2] != 'e':
             if (cond in ('1', 'master') and phase == 1) or \
-                ('2' in cond and phase == 2) or \
-                phase ==0:
-                    freq = default_pitch
-        else: 
+                    ('2' in cond and phase == 2) or \
+                            phase == 0:
+                freq = default_pitch
+        else:
             if (cond in ('1', 'master') and phase == 1) or \
-                ('2' in cond and phase == 2) or \
-                phase ==0:
-                    amp = default_volume
+                    ('2' in cond and phase == 2) or \
+                            phase == 0:
+                amp = default_volume
         mel = freqToMel(freq)
-#         print phase, amp, freq, mel
+        # print phase, amp, freq, mel
         freqs.append(freq)
         amps.append(amp)
         mels.append(mel)
@@ -75,15 +73,16 @@ def calculate_amp_and_freq(f, delimiter="|"):
     data["mel_n"] = norm_series(mels)
     data["image"] = series(images)
     data.to_csv(new_file, sep=delimiter, na_rep="NaN", quoting=csv.QUOTE_NONE)
-    
+
+
 def doit():
-#     files = []
+    # files = []
     for f in files:
         calculate_amp_and_freq(f)
-    
-#         print amp, freq
-#         print phase
-            #             print palmToAmpAndFreq((x,y,z))
+
+    #         print amp, freq
+    #         print phase
+    #             print palmToAmpAndFreq((x,y,z))
 
 # <codecell>
 

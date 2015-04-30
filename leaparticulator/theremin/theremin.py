@@ -4,7 +4,7 @@ from twisted.python import log
 import jsonpickle
 
 import Leap
-from leaparticulator.leap.frame import LeapFrame
+from leaparticulator.data.frame import LeapFrame
 from leaparticulator.constants import install_reactor, palmToAmpAndFreq, freqToMel
 import leaparticulator.constants as constants
 from leaparticulator.theremin.tone import Tone

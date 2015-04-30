@@ -1,5 +1,8 @@
-import zmq
 from time import sleep
+
+import zmq
+
+
 context = zmq.Context()
 
 socket = context.socket(zmq.REP)

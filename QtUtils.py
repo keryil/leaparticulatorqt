@@ -10,6 +10,7 @@ from leaparticulator.constants import QT_DIR, TEST, ROOT_DIR
 slots = defaultdict(list)
 loadFromRes = lambda path: open(join(getcwd(), "res", path + ".txt")).read()
 
+
 def setButtonIcon(button, pixmap):
     """
     Sets the icon of a QPushButton to the given pixmap, and 
@@ -20,15 +21,17 @@ def setButtonIcon(button, pixmap):
         button.setIconSize(pixmap.rect().size())
     button.setText("")
 
+
 def loadUiWidget(uifilename,
-               parent=None,
-               root=ROOT_DIR):
+                 parent=None,
+                 root=ROOT_DIR):
     """
     Convenience method to load and setup
     and widget, a QMainWindow by default.
     """
     if TEST:
         import os
+
         root = os.path.expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")
     ui_file = join(root, QT_DIR, uifilename)
     print "Loading ui file: %s" % ui_file
@@ -36,7 +39,9 @@ def loadUiWidget(uifilename,
     w.setParent(parent)
     return w
 
+
 loadWidget = loadUiWidget
+
 
 def connect(widget, signal, slot, old_syntax=False, widget2=None):
     if isinstance(signal, str) or isinstance(slot, str):
@@ -54,7 +59,6 @@ def connect(widget, signal, slot, old_syntax=False, widget2=None):
         else:
             assert isinstance(slot, str)
             QtCore.QObject.connect(widget, QtCore.SIGNAL(signal), widget2, QtCore.SLOT(slot))
-
 
     if signal not in slots[widget]:
         slots[widget].append((signal, slot, old_syntax, widget2))

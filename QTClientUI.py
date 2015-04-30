@@ -22,6 +22,7 @@ def getFunction(widget):
     """
     Shortcut for widget.findChildren(type,label)[0]
     """
+
     def get(type, label):
         try:
             return widget.findChildren(type, label)[0]
@@ -33,7 +34,6 @@ def getFunction(widget):
 
 
 class ClientUI(AbstractClientUI):
-
     def __init__(self, condition):
         # super(QObject, self).__init__()
         assert condition in ('1', '2', '1r', '2r')
@@ -126,6 +126,7 @@ class ClientUI(AbstractClientUI):
                 if not record:
                     submit.setEnabled(True)
                 shortcuts()
+
             play.setText("Stop")
             disconnect(play)
             last_submit_state = submit.isEnabled()
@@ -241,20 +242,21 @@ class ClientUI(AbstractClientUI):
             from shlex import split
             from os.path import join
             from os import remove
+
             images = self.images[self.phase]
             filename = join(constants.MEANING_DIR, "montage.png")
             command = "montage \"%s\" \"%s\"" % ("\" \"".join([i.filename() for i in images]),
-                                         filename)
+                                                 filename)
             print "Montage creation command: %s" % command
             out, err = Popen(split(command)).communicate()
             print "Montage creation output: %s\t,\t%s" % (out, err)
-            command = "convert -resize 550x550 \"%s\" \"%s\"" % tuple([filename]*2)
+            command = "convert -resize 550x550 \"%s\" \"%s\"" % tuple([filename] * 2)
             print "Montage resize command: %s" % command
             out, err = Popen(split(command)).communicate()
             print "Montage resize output: %s\t,\t%s" % (out, err)
-            
+
             # filename = os.path.join(os.getcwd(), Constants.MEANING_DIR,
-            #                         "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
+            # "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
             # print "Image: %s" % filename
             pixmap = QtGui.QPixmap(filename)
             # print "Pixmap: %s" % pixmap
@@ -325,6 +327,7 @@ class ClientUI(AbstractClientUI):
             def next():
                 get(QtGui.QPushButton, "btnPlay").setEnabled(True)
                 self.next_question()
+
             # self.next_question)
             QtCore.QTimer.singleShot(constants.DELAY_TEST, next)
 
@@ -344,6 +347,7 @@ class ClientUI(AbstractClientUI):
 
         def enable_submit():
             btn.setEnabled(True)
+
         connect(play, "clicked()", enable_submit)
 
     def on_new_picture(self, data):
@@ -377,7 +381,7 @@ class ClientUI(AbstractClientUI):
         else:
             window.show()
 
-        # print self.connection.factory.mode
+            # print self.connection.factory.mode
 
     def start_recording(self):
         self.last_signal = []
@@ -465,7 +469,7 @@ class ClientUI(AbstractClientUI):
             if meaning == question.answer:
                 self.correct_button = btn
                 self.target_meaning = self.images[self.phase][meaning]
-            # btn.setStyleSheet("background-color: rgb(255, 255, 255);")
+                # btn.setStyleSheet("background-color: rgb(255, 255, 255);")
         disconnect(self.buttonSignalMapper)
         connect(self.buttonSignalMapper, signal="mapped(int)", slot=on_select)
         self.last_signal = question.signal
@@ -478,8 +482,10 @@ class ClientUI(AbstractClientUI):
         on the first call when using qt4reactor on linux.
         """
         from platform import system
+
         if (self.activeWindow is not None) and system() == "Linux":
             from pymouse import PyMouse
+
             m = PyMouse()
             x, y = m.position()
             m.move(x + 1, y)
@@ -499,6 +505,7 @@ class ClientUI(AbstractClientUI):
 
 if __name__ == "__main__":
     import sys
+
     ui = ClientUI('1')
     print "Running the reactor"
     ui.reactor.runReturn()
