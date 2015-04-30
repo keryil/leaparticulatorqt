@@ -21,6 +21,7 @@ ERROR_HANDLER_FUNC = CFUNCTYPE(
 def py_error_handler(filename, line, function, err, fmt):
     pass
 
+
 c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
 
 
@@ -37,9 +38,10 @@ def noalsaerr():
     except OSError:
         yield
 
+
 class Tone(object):
-    def __init__(self, rate = constants.AUDIO_FRAMERATE, frequency = constants.default_pitch,
-                                     amplitude = constants.default_amplitude):
+    def __init__(self, rate=constants.AUDIO_FRAMERATE, frequency=constants.default_pitch,
+                 amplitude=constants.default_amplitude):
         self.rate = rate
         self.freq = frequency
         self.amp = amplitude
@@ -48,8 +50,8 @@ class Tone(object):
     def open(self):
         with noalsaerr():
             self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(rate=int(self.rate), channels=1, 
-                                  format=pyaudio.paFloat32, output=True, 
+        self.stream = self.p.open(rate=int(self.rate), channels=1,
+                                  format=pyaudio.paFloat32, output=True,
                                   frames_per_buffer=constants.FRAMES_PER_BUFFER)
 
 
@@ -89,9 +91,11 @@ class Tone(object):
                 buf = array.array('f', gen()).tostring()
                 self.stream.write(buf)
 
+
 if __name__ == '__main__':
     import time
-    t = Tone(frequency = 462)
+
+    t = Tone(frequency=462)
     t.open()
     t.start()
     time.sleep(2)

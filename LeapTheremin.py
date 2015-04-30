@@ -4,14 +4,15 @@ from collections import deque
 
 from twisted.python import log
 import jsonpickle
+from PySide import QtGui #, QtUiTools
 
 import Leap
-from Tone import Tone
+from leaparticulator.theremin import tone
 from leaparticulator import constants
-from LeapFrame import LeapFrame
-
-from PySide import QtCore, QtGui #, QtUiTools
+from leaparticulator.leap import frame
 from leaparticulator.constants import install_reactor
+
+
 install_reactor()
 
 # if "qt4reactor" not in sys.modules:
@@ -64,7 +65,7 @@ class ThereminPlayer(object):
         tones = []
         self.ui = ui
         for i in range(n_of_tones):
-            t = Tone()
+            t = tone()
             t.open()
             t.setAmplitude(0)
             t.start()
@@ -309,7 +310,7 @@ class ThereminListener(Leap.Listener):
         """
         # Get the most recent frame and report some basic information
         frame = controller.frame()
-        pickled = jsonpickle.encode(LeapFrame(frame))
+        pickled = jsonpickle.encode(frame(frame))
         # print "Frame:", frame
         timestamp = 0
         if self.last_timestamp != -1:

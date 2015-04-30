@@ -23,6 +23,10 @@ leap_server = "127.0.0.1"
 fadeout_multiplier = 0.95
 fadeout_call_rate = 0.005
 
+# the rate at which we sample the leap info
+# for constant rate theremins
+theremin_rate = 1./120
+
 # number of options each test question has
 n_of_options = [4, 4, 4]
 # number of total available images per phase

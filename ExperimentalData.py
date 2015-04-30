@@ -1,6 +1,4 @@
 import jsonpickle
-import LeapFrame
-import TestQuestion
 import numpy as np
 import pandas as pd
 import ghmm
@@ -609,8 +607,7 @@ class HMM(object):
 		Helper method to compute Bj(Ot) = sum(1...M){Wjm*Bjm(Ot)}
 		'''
 		from scipy.stats import multivariate_normal
-		from scipy.spatial.distance import euclidean
-		# print "Mean:", self.means[j]
+        # print "Mean:", self.means[j]
 		# print "Covariance:", self.variances[j]
 		# print "Observation:", Ot
 		# print "Distance:", euclidean(self.means[j], Ot)
