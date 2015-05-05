@@ -103,12 +103,12 @@ class TwoClientsFirstRound(P2PTestCase):
 
         def test():
             client_id = str(self.factory.ui.lblSpeaker.text()).split()[-1]
-            self.assertEqual(speaker.client_id, client_id)
+            self.assertEqual(speaker.factory.clients[speaker], client_id)
 
             client_id = str(self.factory.ui.lblHearer.text()).split()[-1]
-            self.assertEqual(listener.client_id, client_id)
+            self.assertEqual(listener.factory.clients[listener], client_id)
 
-            speaker_img = speaker.factory.current_speaker_image
+            speaker_img = speaker.factory.session.getLastRound().image
 
             # compare speaker's original image and the one displayed
             self.assertEqual(speaker_img.pixmap().toImage(),
