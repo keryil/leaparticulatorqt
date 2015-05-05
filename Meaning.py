@@ -26,6 +26,9 @@ class AbstractMeaning(object):
         self.feature_dict = feature_dict
         self.MEANING_DIR = MEANING_DIR
 
+        # _ready holds the untinted QPixmap once it is generated
+        self._ready = None
+
     def filename(self):
         """
         Generates the filename of the image dynamically using the 
@@ -63,8 +66,12 @@ class AbstractMeaning(object):
         """
         Tint is a tuple (r,g,b,a).
         """
+        if tint is None and self._ready:
+            return self._ready
         base = QtGui.QPixmap(self.filename())
         px = base
+        self._ready = px
+
         if tint is not None:
             px = QtGui.QPixmap(250, 250)
             px.fill(QtCore.Qt.transparent)
@@ -92,6 +99,9 @@ class AbstractMeaning(object):
         features = [str(self.feature_dict[f]) for f in self.feature_order]
         s = self.feature_sep.join(features)
         return "%s(%s.%s)" % (self.__class__.__name__, s, IMG_EXTENSION)
+
+    def __eq__(self, other):
+        return str(self) == str(other)
 
 
 class P2PMeaning(AbstractMeaning):
@@ -148,8 +158,10 @@ class Meaning(object):
         """
         Tint is a tuple (r,g,b,a).
         """
+        if tint is None and self._ready:
+            return self._ready
         base = QtGui.QPixmap(self.filename())
-        px = base
+        self._ready = px = base
         if tint is not None:
             px = QtGui.QPixmap(250, 250)
             px.fill(QtCore.Qt.transparent)

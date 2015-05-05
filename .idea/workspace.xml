@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="73c7c7d7-b792-4c51-aa11-e921013076b9" name="Default" comment="">
+    <list default="true" id="73c7c7d7-b792-4c51-aa11-e921013076b9" name="Default" comment="More fixes, 7/20 tests fail.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Meaning.py" afterPath="$PROJECT_DIR$/Meaning.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/ui/server.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/ui/server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_client_full.py" afterPath="$PROJECT_DIR$/test/p2p/test_client_full.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_server_basic.py" afterPath="$PROJECT_DIR$/test/p2p/test_server_basic.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/p2p/test_server_twoClients.py" afterPath="$PROJECT_DIR$/test/p2p/test_server_twoClients.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -27,6 +31,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="constants.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1171" max-vertical-offset="2835">
+              <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="theremin.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/theremin/theremin.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -34,6 +48,18 @@
               <caret line="146" column="59" selection-start-line="146" selection-start-column="59" selection-end-line="146" selection-end-column="59" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="test_client_full.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/p2p/test_client_full.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.5185184" vertical-offset="1435" max-vertical-offset="2490">
+              <caret line="102" column="54" selection-start-line="102" selection-start-column="54" selection-end-line="102" selection-end-column="54" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -52,18 +78,18 @@
       <file leaf-file-name="Meaning.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Meaning.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="811" max-vertical-offset="2685">
-              <caret line="61" column="11" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="2865">
+              <caret line="103" column="38" selection-start-line="103" selection-start-column="38" selection-end-line="103" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_client_basic.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/p2p/test_client_basic.py">
+      <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.0740743" vertical-offset="100" max-vertical-offset="735">
-              <caret line="16" column="38" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="38" />
+            <state vertical-scroll-proportion="3.148148" vertical-offset="2035" max-vertical-offset="3105">
+              <caret line="132" column="14" selection-start-line="132" selection-start-column="14" selection-end-line="132" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -72,8 +98,8 @@
       <file leaf-file-name="test_server_basic.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/p2p/test_server_basic.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1185" max-vertical-offset="2400">
-              <caret line="98" column="44" selection-start-line="98" selection-start-column="44" selection-end-line="98" selection-end-column="44" />
+            <state vertical-scroll-proportion="-6.148148" vertical-offset="1409" max-vertical-offset="2550">
+              <caret line="105" column="26" selection-start-line="105" selection-start-column="26" selection-end-line="105" selection-end-column="26" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -84,22 +110,10 @@
       <file leaf-file-name="test_server_twoClients.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/p2p/test_server_twoClients.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60445684" vertical-offset="1433" max-vertical-offset="1980">
-              <caret line="110" column="70" selection-start-line="110" selection-start-column="70" selection-end-line="110" selection-end-column="70" />
+            <state vertical-scroll-proportion="0.33147633" vertical-offset="1711" max-vertical-offset="2160">
+              <caret line="122" column="34" selection-start-line="122" selection-start-column="34" selection-end-line="122" selection-end-column="34" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="functions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4530" max-vertical-offset="4890">
-              <caret line="319" column="38" selection-start-line="319" selection-start-column="38" selection-end-line="319" selection-end-column="38" />
-              <folding>
-                <element signature="e#0#17#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -113,28 +127,6 @@
               <folding>
                 <element signature="e#21#32#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.0740743" vertical-offset="3025" max-vertical-offset="9435">
-              <caret line="209" column="36" selection-start-line="209" selection-start-column="29" selection-end-line="209" selection-end-column="36" />
-              <folding>
-                <element signature="e#55#65#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.740741" vertical-offset="1705" max-vertical-offset="3075">
-              <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -163,12 +155,14 @@
         <option value="$PROJECT_DIR$/leaparticulator/data/ExperimentalData.py" />
         <option value="$PROJECT_DIR$/leaparticulator/data/hmm.py" />
         <option value="$PROJECT_DIR$/leaparticulator/theremin/tone.py" />
-        <option value="$PROJECT_DIR$/leaparticulator/p2p/ui/server.py" />
         <option value="$PROJECT_DIR$/test/p2p/test_client_basic.py" />
         <option value="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" />
         <option value="$PROJECT_DIR$/leaparticulator/p2p/ui/client.py" />
-        <option value="$PROJECT_DIR$/test/p2p/test_server_basic.py" />
         <option value="$PROJECT_DIR$/leaparticulator/p2p/server.py" />
+        <option value="$PROJECT_DIR$/test/p2p/test_client_full.py" />
+        <option value="$PROJECT_DIR$/leaparticulator/p2p/ui/server.py" />
+        <option value="$PROJECT_DIR$/Meaning.py" />
+        <option value="$PROJECT_DIR$/test/p2p/test_server_basic.py" />
         <option value="$PROJECT_DIR$/test/p2p/test_server_twoClients.py" />
       </list>
     </option>
@@ -439,7 +433,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/test/p2p/test_server_twoClients.py" />
     <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="options.splitter.main.proportions" value="0.3" />
@@ -447,6 +441,22 @@
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
     <property name="LayoutCode.rearrangeEntriesPython" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="75" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="77" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="80" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="869" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="75" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="77" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="80" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="869" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -774,6 +784,54 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
+    <configuration default="false" name="test_client_full" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/bin/python2.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LeapArticulatorQt" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/p2p/test_client_full.py" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="--processes=0" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test_client_TwoClients" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="/usr/local/Cellar/python/2.7.9/Frameworks/Python.framework/Versions/2.7/bin/python2.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LeapArticulatorQt" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/p2p/test_server_twoClients.py" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PARAMS" value="--processes=0" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="false" name="BasicServerTest1" type="tests" factoryName="Nosetests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -797,7 +855,7 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <list size="11">
+    <list size="13">
       <item index="0" class="java.lang.String" itemvalue="Multirun.ServerAndClients" />
       <item index="1" class="java.lang.String" itemvalue="Python.client1" />
       <item index="2" class="java.lang.String" itemvalue="Python.client2" />
@@ -806,15 +864,17 @@
       <item index="5" class="java.lang.String" itemvalue="Python.theremin" />
       <item index="6" class="java.lang.String" itemvalue="Python tests.All Tests" />
       <item index="7" class="java.lang.String" itemvalue="Python tests.BasicServerTests" />
-      <item index="8" class="java.lang.String" itemvalue="Python tests.BasicServerTest1" />
-      <item index="9" class="java.lang.String" itemvalue="Python tests.Unittests in test_client_basic" />
-      <item index="10" class="java.lang.String" itemvalue="Python tests.Unittests in TwoClientsFirstRound" />
+      <item index="8" class="java.lang.String" itemvalue="Python tests.test_client_full" />
+      <item index="9" class="java.lang.String" itemvalue="Python tests.test_client_TwoClients" />
+      <item index="10" class="java.lang.String" itemvalue="Python tests.BasicServerTest1" />
+      <item index="11" class="java.lang.String" itemvalue="Python tests.Unittests in test_client_basic" />
+      <item index="12" class="java.lang.String" itemvalue="Python tests.Unittests in TwoClientsFirstRound" />
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in TwoClientsFirstRound" />
-        <item index="1" class="java.lang.String" itemvalue="Python.theremin" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittests in test_client_basic" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in test_client_basic" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in TwoClientsFirstRound" />
+        <item index="2" class="java.lang.String" itemvalue="Python.theremin" />
       </list>
     </recent_temporary>
   </component>
@@ -865,7 +925,13 @@
       <option name="project" value="LOCAL" />
       <updated>1430838052186</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="More fixes, 7/20 tests fail.">
+      <created>1430851508747</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1430851508747</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -875,10 +941,10 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42946708" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42782608" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869565" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -916,23 +982,23 @@
     <MESSAGE value="The new theremin is complete.&#10;Now we are trying to get the tests to pass with all this new stuff." />
     <MESSAGE value="Fixed the &quot;Clients not displaying images&quot; bug, it turns out it was a working directory setting mishap, again." />
     <MESSAGE value="Some fixes, 9/20 tests fail." />
-    <option name="LAST_COMMIT_MESSAGE" value="Some fixes, 9/20 tests fail." />
+    <MESSAGE value="More fixes, 7/20 tests fail." />
+    <option name="LAST_COMMIT_MESSAGE" value="More fixes, 7/20 tests fail." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/test/p2p/test_server_twoClients.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3525" max-vertical-offset="6675">
-          <caret line="244" column="4" selection-start-line="244" selection-start-column="4" selection-end-line="244" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="5085">
@@ -1182,14 +1248,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="137" max-vertical-offset="2835">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/zmq_stuff.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
@@ -1246,8 +1304,16 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="4193" max-vertical-offset="4890">
           <caret line="319" column="38" selection-start-line="319" selection-start-column="38" selection-end-line="319" selection-end-column="38" />
           <folding>
-            <element signature="e#0#17#0" expanded="true" />
+            <element signature="e#0#17#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/p2p/test_client_basic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.0740743" vertical-offset="100" max-vertical-offset="735">
+          <caret line="16" column="38" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1261,26 +1327,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/p2p/test_client_basic.py">
+    <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.0740743" vertical-offset="100" max-vertical-offset="735">
-          <caret line="16" column="38" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Meaning.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="661" max-vertical-offset="2685">
-          <caret line="61" column="11" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-66.111115" vertical-offset="0" max-vertical-offset="4995">
-          <caret line="121" column="52" selection-start-line="121" selection-start-column="52" selection-end-line="121" selection-end-column="52" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1171" max-vertical-offset="2835">
+          <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
           <folding />
         </state>
       </provider>
@@ -1295,38 +1345,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/p2p/test_server_basic.py">
+    <entry file="file://$PROJECT_DIR$/test/p2p/test_client_full.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1185" max-vertical-offset="2400">
-          <caret line="98" column="44" selection-start-line="98" selection-start-column="44" selection-end-line="98" selection-end-column="44" />
+        <state vertical-scroll-proportion="-3.5185184" vertical-offset="1435" max-vertical-offset="2490">
+          <caret line="102" column="54" selection-start-line="102" selection-start-column="54" selection-end-line="102" selection-end-column="54" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/server.py">
+    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.740741" vertical-offset="1705" max-vertical-offset="3075">
-          <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
+        <state vertical-scroll-proportion="-66.111115" vertical-offset="0" max-vertical-offset="4995">
+          <caret line="121" column="52" selection-start-line="121" selection-start-column="52" selection-end-line="121" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.0740743" vertical-offset="3025" max-vertical-offset="9435">
-          <caret line="209" column="36" selection-start-line="209" selection-start-column="29" selection-end-line="209" selection-end-column="36" />
+        <state vertical-scroll-proportion="12.349398" vertical-offset="790" max-vertical-offset="9435">
+          <caret line="326" column="20" selection-start-line="326" selection-start-column="18" selection-end-line="326" selection-end-column="20" />
           <folding>
             <element signature="e#55#65#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Meaning.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="2865">
+          <caret line="103" column="38" selection-start-line="103" selection-start-column="38" selection-end-line="103" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.148148" vertical-offset="2035" max-vertical-offset="3105">
+          <caret line="132" column="14" selection-start-line="132" selection-start-column="14" selection-end-line="132" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/p2p/test_server_basic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.148148" vertical-offset="1409" max-vertical-offset="2550">
+          <caret line="105" column="26" selection-start-line="105" selection-start-column="26" selection-end-line="105" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/p2p/test_server_twoClients.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60445684" vertical-offset="1433" max-vertical-offset="1980">
-          <caret line="110" column="70" selection-start-line="110" selection-start-column="70" selection-end-line="110" selection-end-column="70" />
+        <state vertical-scroll-proportion="0.33147633" vertical-offset="1711" max-vertical-offset="2160">
+          <caret line="122" column="34" selection-start-line="122" selection-start-column="34" selection-end-line="122" selection-end-column="34" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>

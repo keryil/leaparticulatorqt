@@ -9,7 +9,7 @@ class TwoClientsInit(P2PTestCase):
 
     def tearDown(self):
         self.stopServer()
-        self.clients = []
+        self.clients = {}
 
     def setUp(self):
         from twisted.internet import reactor
@@ -70,11 +70,11 @@ class TwoClientsFirstRound(P2PTestCase):
         self.startServer()
         self.timeout = 3
 
-        self.clients = self.startClients(2)
+        self.clients = {c.client_id:c for c in self.startClients(2)}
         d = defer.Deferred()
 
         def clickOkay():
-            for client in self.clients:
+            for client_id, client in self.clients.items():
                 button = client.factory.ui.firstWin.findChildren(
                     QtGui.QPushButton, "btnOkay")[0]
                 self.click(button)
@@ -92,8 +92,8 @@ class TwoClientsFirstRound(P2PTestCase):
         items = self.factory.ui.roundModel.findItems("Round #0")
         self.failIfEqual(items, [])
 
-    def test_roundDisplayForSpeaker(self):
-        speaker, listener = self.getClients()
+    def test_roundSpeakerHearerDisplay(self):
+        speaker, listener = self.getServerClients(rnd_no=0)
 
         view = self.factory.ui.lstRounds
         index = view.model().index(0, 0)
@@ -103,20 +103,32 @@ class TwoClientsFirstRound(P2PTestCase):
 
         def test():
             client_id = str(self.factory.ui.lblSpeaker.text()).split()[-1]
-            self.assertEqual(speaker.factory.clients[speaker], client_id)
+            self.assertEqual(client_id, speaker.other_end_alias)
 
             client_id = str(self.factory.ui.lblHearer.text()).split()[-1]
-            self.assertEqual(listener.factory.clients[listener], client_id)
-
-            speaker_img = speaker.factory.session.getLastRound().image
-
-            # compare speaker's original image and the one displayed
-            self.assertEqual(speaker_img.pixmap().toImage(),
-                             self.factory.ui.lblExpected.pixmap().toImage())
-            self.assertEqual(self.factory.ui.lblGiven.pixmap().toImage(),
-                             QtGui.QPixmap(constants.question_mark_path).toImage())
+            self.assertEqual(client_id, listener.other_end_alias)
             d.callback(client_id)
-        self.reactor.callLater(.2, test)
+        self.reactor.callLater(.3, test)
+        return d
+
+    def test_roundSpeakerHearerImage(self):
+        view = self.factory.ui.lstRounds
+        index = view.model().index(0, 0)
+        view.setCurrentIndex(index)
+        self.click(view)
+        d = defer.Deferred()
+
+        def test():
+            # from time import sleep;sleep(30)
+            speaker_img = self.getRound(rnd_no=0).image
+
+            # hearer's image should be displayed as a question mark
+            self.assertFalse(hasattr(self.factory.ui.lblGiven, 'meaning'))
+            # compare speaker's original image and the one displayed
+            self.assertEqual(speaker_img,
+                             self.factory.ui.lblExpected.meaning)
+            d.callback("Images")
+        self.reactor.callLater(.3, test)
         return d
 
     def test_askFirstQuestion(self):

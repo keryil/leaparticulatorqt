@@ -3,13 +3,14 @@ from twisted.internet import defer
 
 from test_server_basic import prep, P2PTestCase
 from leaparticulator import constants
+from leaparticulator.p2p.ui.client import LeapP2PClientUI
 
 
 class TwoClientsFirstRound(P2PTestCase):
 
     def tearDown(self):
         self.stopServer()
-        self.clients = []
+        self.clients = {}
 
     def setUp(self):
         from twisted.internet import reactor
@@ -18,8 +19,10 @@ class TwoClientsFirstRound(P2PTestCase):
         self.startServer()
         self.timeout = 3
 
-        self.clients = self.startClients(2)
-        for client in self.clients:
+        clients = self.startClients(2)
+
+        for client in clients:
+            self.clients[client.client_id] = client
             button = client.factory.ui.firstWin.findChildren(
                 QtGui.QPushButton, "btnOkay")[0]
             self.click(button)
@@ -32,7 +35,7 @@ class TwoClientsFirstRound(P2PTestCase):
         d = defer.Deferred()
 
         def fn():
-            speaker, listener = self.getClients()
+            speaker, listener = self.getServerClients()
             ui_speaker = speaker.factory.ui
             ui_listener = listener.factory.ui
             win_speaker = ui_speaker.creationWin
@@ -73,15 +76,20 @@ class TwoClientsFirstRound(P2PTestCase):
         def fn():
             print self.factory.mode
             self.assertEqual(self.factory.mode, constants.SPEAKERS_TURN)
-            speaker, listener = self.getClients()
+            speaker, listener = self.getServerClients()
+            speaker_id, listener_id = [c.factory.clients[c] for c in (speaker, listener)]
+            print self.clients
+            assert isinstance(self.clients, dict)
+            ui_speaker = self.clients[speaker_id].factory.ui
+            ui_listener = self.clients[listener_id].factory.ui
+            self.assertIsInstance(ui_listener, LeapP2PClientUI)
 
-            ui_speaker = speaker.factory.ui
-            ui_listener = listener.factory.ui
-
+            self.assertEqual(speaker.factory.mode, constants.SPEAKERS_TURN)
             self.assertIsNotNone(speaker)
-            self.assertEqual(speaker.factory.mode, constants.SPEAKER)
             self.assertIsNotNone(listener)
-            self.assertEqual(listener.factory.mode, constants.LISTENER)
+
+            # ui_speaker = speaker.factory.ui
+            # ui_listener = listener.factory.ui
 
             self.assertEqual(
                 ui_speaker.get_active_window(), ui_speaker.creationWin)
@@ -92,8 +100,7 @@ class TwoClientsFirstRound(P2PTestCase):
 
             image = ui_speaker.creationWin.findChildren(
                 QtGui.QLabel, "lblImage")[0]
-            self.assertEqual(
-                speaker.factory.current_speaker_image.pixmap().toImage(), image.pixmap().toImage())
+            self.assertEqual(self.getLastRound().image.pixmap().toImage(), image.pixmap().toImage())
             d.callback('FirstImage')
         self.reactor.callLater(.1, fn)
         return d
@@ -103,7 +110,7 @@ class TwoClientsFirstRound(P2PTestCase):
         d_create = defer.Deferred()
 
         def create():
-            speaker, listener = self.getClients()
+            speaker, listener = self.getServerClients()
             ui_speaker = speaker.factory.ui
             ui_listener = listener.factory.ui
 
@@ -127,7 +134,7 @@ class TwoClientsFirstRound(P2PTestCase):
         d_answer = defer.Deferred()
 
         def answer():
-            speaker, listener = self.getClients()
+            speaker, listener = self.getServerClients()
 
             ui_speaker = speaker.factory.ui
             ui_listener = listener.factory.ui

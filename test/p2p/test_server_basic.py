@@ -8,7 +8,7 @@ from PyQt4.QtTest import QTest
 from PyQt4.QtCore import Qt
 from twisted.internet import defer
 
-from leaparticulator.p2p.server import start_server, start_client, LeapP2PServerFactory
+from leaparticulator.p2p.server import start_server, start_client, LeapP2PServerFactory, LeapP2PClientFactory
 
 
 def prep(self):
@@ -30,6 +30,7 @@ class P2PTestCase(unittest.TestCase):
         super(P2PTestCase, self).__init__(*args, **kwargs)
         self.timeout=6
         self.factories = []
+        self.clients = {}
 
     def runTest(self):
         pass
@@ -39,8 +40,6 @@ class P2PTestCase(unittest.TestCase):
         QTest.mouseClick(widget, Qt.LeftButton)
 
     def startClient(self, id=None):
-        if not hasattr(self, "clients"):
-            self.clients = {}
         if id is None:
             from random import randint
             id = randint(0,10000)
@@ -53,6 +52,7 @@ class P2PTestCase(unittest.TestCase):
         factory = theremin.factory
         self.factories.append(factory)
         factory.ui.go()
+        assert isinstance(factory, LeapP2PClientFactory)
         data = ClientData(theremin, theremin.controller, None, factory, client_id, client_ip)
         self.clients[id] = data
         self.reactor = theremin.reactor
@@ -76,6 +76,12 @@ class P2PTestCase(unittest.TestCase):
         for id in list(self.clients):
             del self.clients[id]
 
+    def getLastRound(self):
+        return self.factory.session.getLastRound()
+
+    def getRound(self, rnd_no):
+        return self.factory.session.round_data[rnd_no]
+
     def startClients(self, qty):
         res = []
         for i in range(qty):
@@ -95,9 +101,13 @@ class P2PTestCase(unittest.TestCase):
         del factory.listener
         factory.stopFactory()
 
-    def getClients(self):
-        last_round = self.factory.session.getLastRound()
-        speaker, listener = last_round.speaker, last_round.hearer
+    def getServerClients(self, rnd_no=None):
+        round = None
+        if rnd_no is None:
+            round = self.getLastRound()
+        else:
+            round = self.getRound(rnd_no=rnd_no)
+        speaker, listener = round.speaker, round.hearer
         return speaker, listener
     
 

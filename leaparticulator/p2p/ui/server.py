@@ -120,8 +120,8 @@ class LeapP2PServerUI(object):
         row = self.lstRounds.selectedIndexes()[0].row()
         rnd = self.session.round_data[row]
         print "Selected round #%d" % row
-        print "Speaker: %s, Hearer: %s\nImage: %s, Guess: %s" % (rnd.speaker,
-                                                                 rnd.hearer,
+        print "Speaker: %s, Hearer: %s\nImage: %s, Guess: %s" % (rnd.speaker.other_end_alias,
+                                                                 rnd.hearer.other_end_alias,
                                                                  rnd.image,
                                                                  rnd.guess)
         self.lblSpeaker.setText("Speaker: %s" % rnd.speaker.other_end_alias)
@@ -132,10 +132,12 @@ class LeapP2PServerUI(object):
             # print "Signal:", rnd.signal
         if rnd.image != None:
             self.lblExpected.setPixmap(rnd.image.pixmap())
+            self.lblExpected.meaning = rnd.image
         else:
             self.lblExpected.setPixmap(QPixmap(constants.question_mark_path))
         if rnd.guess != None:
             self.lblGiven.setPixmap(rnd.guess.pixmap())
+            self.lblGiven.meaning = rnd.guess
         else:
             self.lblGiven.setPixmap(QPixmap(constants.question_mark_path))
         
