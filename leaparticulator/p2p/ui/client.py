@@ -119,9 +119,8 @@ class LeapP2PClientUI(object):
 
         label = self.creationWin.findChildren(QLabel, "lblImage")[0]
         px = image.pixmap()
-        print "Displaying pixmap: %s" % px
+        print "Displaying pixmap: %s" % px.toImage()
         label.setPixmap(px)
-        assert label.pixmap().toImage() == px.toImage()
 
         slider = self.creationWin.findChildren(QSlider, "sldVolume")[0]
         slider.setRange(1,100)
