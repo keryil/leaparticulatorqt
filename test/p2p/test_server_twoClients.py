@@ -93,7 +93,7 @@ class TwoClientsFirstRound(P2PTestCase):
         self.failIfEqual(items, [])
 
     def test_roundSpeakerHearerDisplay(self):
-        speaker, listener = self.getServerClients(rnd_no=0)
+        speaker, listener = self.getClientsAsServerConnections(rnd_no=0)
 
         view = self.factory.ui.lstRounds
         index = view.model().index(0, 0)

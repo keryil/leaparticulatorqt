@@ -101,7 +101,7 @@ class P2PTestCase(unittest.TestCase):
         del factory.listener
         factory.stopFactory()
 
-    def getServerClients(self, rnd_no=None):
+    def getClientsAsServerConnections(self, rnd_no=None):
         round = None
         if rnd_no is None:
             round = self.getLastRound()
@@ -109,6 +109,16 @@ class P2PTestCase(unittest.TestCase):
             round = self.getRound(rnd_no=rnd_no)
         speaker, listener = round.speaker, round.hearer
         return speaker, listener
+
+    def getClientsAsClientData(self, rnd_no=None):
+        speaker, listener = self.getClientsAsServerConnections(rnd_no)
+        speaker_id, listener_id = [c.factory.clients[c] for c in (speaker, listener)]
+        return self.clients[speaker_id], self.clients[listener_id]
+
+    def getClientsAsUi(self, rnd_no=None):
+        speaker, listener = self.getClientsAsClientData(rnd_no)
+        return speaker.factory.ui, listener.factory.ui
+
     
 
 

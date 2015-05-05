@@ -35,7 +35,7 @@ class TwoClientsFirstRound(P2PTestCase):
         d = defer.Deferred()
 
         def fn():
-            speaker, listener = self.getServerClients()
+            speaker, listener = self.getClientsAsUi(0)
             ui_speaker = speaker.factory.ui
             ui_listener = listener.factory.ui
             win_speaker = ui_speaker.creationWin
@@ -76,12 +76,13 @@ class TwoClientsFirstRound(P2PTestCase):
         def fn():
             print self.factory.mode
             self.assertEqual(self.factory.mode, constants.SPEAKERS_TURN)
-            speaker, listener = self.getServerClients()
+            speaker, listener = self.getClientsAsServerConnections(0)
             speaker_id, listener_id = [c.factory.clients[c] for c in (speaker, listener)]
             print self.clients
             assert isinstance(self.clients, dict)
-            ui_speaker = self.clients[speaker_id].factory.ui
-            ui_listener = self.clients[listener_id].factory.ui
+            ui_speaker, ui_listener = self.getClientsAsUi(0)
+            # ui_speaker = self.clients[speaker_id].factory.ui
+            # ui_listener = self.clients[listener_id].factory.ui
             self.assertIsInstance(ui_listener, LeapP2PClientUI)
 
             self.assertEqual(speaker.factory.mode, constants.SPEAKERS_TURN)
@@ -100,7 +101,7 @@ class TwoClientsFirstRound(P2PTestCase):
 
             image = ui_speaker.creationWin.findChildren(
                 QtGui.QLabel, "lblImage")[0]
-            self.assertEqual(self.getLastRound().image.pixmap().toImage(), image.pixmap().toImage())
+            self.assertEqual(self.getRound(0).image.pixmap().toImage(), image.pixmap().toImage())
             d.callback('FirstImage')
         self.reactor.callLater(.1, fn)
         return d
@@ -110,9 +111,9 @@ class TwoClientsFirstRound(P2PTestCase):
         d_create = defer.Deferred()
 
         def create():
-            speaker, listener = self.getServerClients()
-            ui_speaker = speaker.factory.ui
-            ui_listener = listener.factory.ui
+            # speaker, listener = self.getClientsAsClientData()
+
+            ui_speaker, ui_listener = self.getClientsAsUi(rnd_no=0)
 
             submit_btn = ui_speaker.creationWin.findChildren(
                 QtGui.QPushButton, "btnSubmit")[0]
@@ -134,25 +135,19 @@ class TwoClientsFirstRound(P2PTestCase):
         d_answer = defer.Deferred()
 
         def answer():
-            speaker, listener = self.getServerClients()
+            # speaker, listener = self.getClientsAsClientData()
 
-            ui_speaker = speaker.factory.ui
-            ui_listener = listener.factory.ui
+            ui_speaker, ui_listener = self.getClientsAsUi(0)
             get_btn = lambda name: ui_listener.testWin.findChildren(
                 QtGui.QPushButton, name)[0]
 
             play_btn = get_btn("btnPlay")
             submit_btn = get_btn("btnSubmit")
+            # record_btn = get_btn("btnRecord")
             choices = [get_btn("btnImage%d" % i) for i in range(1, 5)]
 
             image = ui_speaker.creationWin.findChildren(
                 QtGui.QLabel, "lblImage")[0]
-
-            # record something
-            from leaparticulator.data.frame import generateRandomSignal
-            self.click(record_btn)
-            self.click(record_btn)
-            ui_speaker.theremin.last_signal = generateRandomSignal(10)
 
             self.click(submit_btn)
             d_answer.callback("FirstAnswer")

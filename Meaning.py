@@ -66,11 +66,11 @@ class AbstractMeaning(object):
         """
         Tint is a tuple (r,g,b,a).
         """
-        if tint is None and self._ready:
-            return self._ready
+        # if tint is None and self._ready:
+        #     return self._ready
         base = QtGui.QPixmap(self.filename())
         px = base
-        self._ready = px
+        # self._ready = px
 
         if tint is not None:
             px = QtGui.QPixmap(250, 250)
@@ -158,10 +158,10 @@ class Meaning(object):
         """
         Tint is a tuple (r,g,b,a).
         """
-        if tint is None and self._ready:
-            return self._ready
+        # if tint is None and self._ready:
+        #     return self._ready
         base = QtGui.QPixmap(self.filename())
-        self._ready = px = base
+        # self._ready = px = base
         if tint is not None:
             px = QtGui.QPixmap(250, 250)
             px.fill(QtCore.Qt.transparent)
