@@ -9,7 +9,6 @@ from PyQt4.QtCore import Qt
 from twisted.internet import defer
 
 from leaparticulator.p2p.server import start_server, start_client, LeapP2PServerFactory
-from leaparticulator.p2p.ui.server import LeapP2PServerUI
 
 
 def prep(self):
@@ -51,7 +50,7 @@ class P2PTestCase(unittest.TestCase):
         print "Starting client with id %s" % client_id
         theremin = start_client(
             self.app, uid=client_id)
-        self.factory = factory = theremin.factory
+        factory = theremin.factory
         self.factories.append(factory)
         factory.ui.go()
         data = ClientData(theremin, theremin.controller, None, factory, client_id, client_ip)
@@ -67,6 +66,7 @@ class P2PTestCase(unittest.TestCase):
                 server = f
             else:
                 clients.append(f)
+        assert server == self.factory
         return server, clients
 
     def stopClient(self, id):
@@ -89,7 +89,7 @@ class P2PTestCase(unittest.TestCase):
         return self.factory
 
     def stopServer(self):
-        factory = self.getFactories()[0]
+        factory = self.factory
         if not isinstance(factory.listener.result, Failure):
             factory.listener.result.stopListening()
         del factory.listener
