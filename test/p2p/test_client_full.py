@@ -35,9 +35,7 @@ class TwoClientsFirstRound(P2PTestCase):
         d = defer.Deferred()
 
         def fn():
-            speaker, listener = self.getClientsAsUi(0)
-            ui_speaker = speaker.factory.ui
-            ui_listener = listener.factory.ui
+            ui_speaker, ui_listener = self.getClientsAsUi(0)
             win_speaker = ui_speaker.creationWin
             get_btn = lambda name: win_speaker.findChildren(
                 QtGui.QPushButton, name)[0]
@@ -130,7 +128,7 @@ class TwoClientsFirstRound(P2PTestCase):
 
             self.click(submit_btn)
             d_create.callback(("FirstAnswer"))
-        self.reactor.callLater(.1, create)
+        self.reactor.callLater(.2, create)
 
         d_answer = defer.Deferred()
 
