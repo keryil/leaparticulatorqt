@@ -12,9 +12,10 @@ if app is None:
 else:
     print "LeapP2PClient existing QApp: %s" % app
 
-from LeapTheremin import ThereminPlayback
+from leaparticulator.theremin.theremin import ThereminPlayback
+# from LeapTheremin import ThereminPlayback
 from leaparticulator.p2p.messaging import EndRoundMessage
-from QtUtils import connect, disconnect , loadUiWidget
+from QtUtils import connect, disconnect, loadUiWidget
 # from QtUtils import loadWidget as loadUiWidget
 
 # def loadUiWidget(name, parent=None):
@@ -41,15 +42,6 @@ class LeapP2PClientUI(object):
         self.playback_player = ThereminPlayback(default_volume=None)
         self.last_signal = []
         self.recording = False
-        # from Leap import Controller
-        # from twisted.internet.task import LoopingCall
-        # import jsonpickle
-        # def f():
-        #     self.playback_player.player.newPosition(Controller().frame())
-        #     print "Hello"
-        # self.c = LoopingCall(f) 
-        # self.c.start(.001)
-        # self.go()
 
     def setClientFactory(self, factory):
         self.factory = factory
@@ -126,7 +118,10 @@ class LeapP2PClientUI(object):
         # self.setup_play_button(button, self.getSignal())
 
         label = self.creationWin.findChildren(QLabel, "lblImage")[0]
-        label.setPixmap(image.pixmap())
+        px = image.pixmap()
+        print "Displaying pixmap: %s" % px
+        label.setPixmap(px)
+        assert label.pixmap().toImage() == px.toImage()
 
         slider = self.creationWin.findChildren(QSlider, "sldVolume")[0]
         slider.setRange(1,100)
@@ -167,7 +162,7 @@ class LeapP2PClientUI(object):
             self.played = True
             button.setEnabled(True)
             self.unique_connect(button, "clicked()", play)
-            if self.picked_choice:
+            if (self.get_active_window() == self.testWin) and self.picked_choice:
                 button = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
                 button.setEnabled(True)
 

@@ -16,7 +16,8 @@ else:
 
 from PyQt4.QtCore import *
 
-from LeapTheremin import ThereminPlayback
+# from LeapTheremin import ThereminPlayback
+from leaparticulator.theremin.theremin import ThereminPlayback
 from leaparticulator import constants
 from QtUtils import loadUiWidget
 

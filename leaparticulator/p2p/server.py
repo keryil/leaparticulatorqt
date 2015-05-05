@@ -29,7 +29,8 @@ from twisted.protocols import basic
 from random import choice, sample, shuffle
 import jsonpickle
 from leaparticulator.p2p.messaging import *
-from LeapTheremin import gimmeSomeTheremin#, gimmeSimpleTheremin
+from leaparticulator.theremin.theremin import Theremin
+# from LeapTheremin import gimmeSomeTheremin#, gimmeSimpleTheremin
 from Meaning import P2PMeaning
 import os
 
@@ -543,13 +544,13 @@ def start_client(qapplication, uid):
     #                                                               # Constants.default_amplitude,
     #                                                               default_volume=None,
     #                                                               ui=ui, realtime=True)
-    theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1,
-                                                                  # Constants.default_amplitude,
-                                                                  default_volume=None,
-                                                                  ui=ui, realtime=False,
-                                                                  factory=None,
-                                                                  ip=None)
-    
+    # theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1,
+    #                                                               # Constants.default_amplitude,
+    #                                                               default_volume=None,
+    #                                                               ui=ui, realtime=False,
+    #                                                               factory=None,
+    #                                                               ip=None)
+    theremin = Theremin(ui=ui)
     factory = LeapP2PClientFactory(theremin, ui=ui, uid=uid)
     theremin.factory = factory
     # theremin.call = call
@@ -560,6 +561,7 @@ def start_client(qapplication, uid):
         reactor, constants.leap_server, constants.leap_port)
     theremin.factory = factory
     # ui.setClientFactory(factory)
+    theremin.endpoint = endpoint
     connection_def = endpoint.connect(factory)
     connection_def.addCallback(ui.setClient)
     factory.connection_def = connection_def
@@ -570,7 +572,7 @@ def start_client(qapplication, uid):
         print "Starting UI..."
         ui.go()
     connection = None
-    return theremin, reactor, controller, connection, factory
+    return theremin
 
 
 def start_server(qapplication, condition='1', no_ui=False):

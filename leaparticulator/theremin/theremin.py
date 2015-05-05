@@ -5,9 +5,10 @@ import jsonpickle
 
 import Leap
 from leaparticulator.data.frame import LeapFrame
-from leaparticulator.constants import install_reactor, palmToAmpAndFreq, freqToMel
+from leaparticulator.constants import install_reactor, palmToAmpAndFreq
 import leaparticulator.constants as constants
 from leaparticulator.theremin.tone import Tone
+from collections import deque
 
 install_reactor()
 from twisted.internet.task import LoopingCall
@@ -15,6 +16,9 @@ from twisted.internet import reactor
 
 
 class ThereminPlayer(object):
+    """
+    This is what produces the sounds of the theremin.
+    """
     def __init__(self, n_of_tones, default_volume=constants.default_amplitude, default_pitch=None,
                  ui=None):
         tones = []
@@ -39,8 +43,8 @@ class ThereminPlayer(object):
         self.fadeout_counter += 1
         for tone in self.tones:
             amp = tone.getAmplitude()
-            print("Fadeout call %i: new amp is %f, with delta %f" % (self.fadeout_counter,
-                amp, constants.fadeout_multiplier))
+            # print("Fadeout call %i: new amp is %f, with delta %f" % (self.fadeout_counter,
+            #     amp, constants.fadeout_multiplier))
 
             if amp > 0.005:
                 amp *= constants.fadeout_multiplier
@@ -101,10 +105,10 @@ class ThereminPlayer(object):
             self.tones[0].setFrequency(freq)
             self.tones[0].setAmplitude(amp * self.volume_coefficient)
 
-            log.msg("Playing: freq=%s, amp=%s, mel=%s, timestamp=%s" % (freq,
-                                                                        amp,
-                                                                        freqToMel(freq),
-                                                                        frame.timestamp))
+            # log.msg("Playing: freq=%s, amp=%s, mel=%s, timestamp=%s" % (freq,
+            #                                                             amp,
+            #                                                             freqToMel(freq),
+            #                                                             frame.timestamp))
         return amp, freq
 
     def mute(self):
@@ -137,14 +141,15 @@ class Theremin(Leap.Listener):
     last_signal = []
     callback = None
 
-    def __init__(self, n_of_tones=1, default_volume=.5, realtime=True, ui=None):
+    def __init__(self, n_of_tones=1, default_volume=.5, ui=None):
         Leap.Listener.__init__(self)
-        self.realtime = realtime
+        # self.realtime = realtime
         self.player = ThereminPlayer(n_of_tones=n_of_tones,
                                      default_volume=default_volume,
                                      ui=ui)
         self.controller = Leap.Controller()
         self.controller.add_listener(self)
+        self.reactor = reactor
         log.startLogging(sys.stdout)
 
     def on_init(self, controller):
@@ -182,7 +187,7 @@ class Theremin(Leap.Listener):
         if (not self.player.muted) \
                 and (amp != 0) \
                 and (freq != 0):
-            if not self.realtime and self.recording:
+            if self.recording:
                 self.last_signal.append(pickled)
 
     def record(self):
@@ -221,7 +226,81 @@ class ConstantRateTheremin(Theremin):
     def stop(self):
         self.call.stop()
 
+class ThereminPlayback(object):
+    """
+    This class is used to replay sounds produced by LeapTheremin from
+    recorded frames of the Leap controller. The recorded frames are given
+    to the constructor as the parameter "score", and is expected to be an
+    iterable of LeapFrame objects. It uses the average frame rate (per second)
+    for playback.
+    """
 
+    player = None
+    rate = None
+    score = None
+    counter = 0
+    call = None
+
+    def __init__(self, n_of_tones=1, default_volume=.5, default_rate=None):
+        self.player = ThereminPlayer(n_of_tones, default_volume)
+        self.player.mute()
+        self.default_rate = default_rate
+
+    def setVolume(self, value):
+        self.player.setVolume(value)
+
+    def play(self):
+        # log.msg("Frame %s of this recording." % self.counter)
+        try:
+            f = self.score[self.counter]
+            self.player.newPosition(f)
+            self.counter += 1
+        except IndexError, e:
+            # print e
+            # print "Ran out of frames, stopping playback..."
+            self.stop()
+            # finally:
+
+    def start(self, score, callback=None):
+        if self.call:
+            if self.call.running:
+                self.stop()
+            else:
+                self.call = None
+        self.callback = callback
+        # self.call = QtCore.QTimer()
+
+        self.call = LoopingCall(self.play)  # , self)
+        # print "Score is something like: ", score
+        self.score = deque([jsonpickle.decode(f) for f in score])
+        # for f in self.score:
+        #   print f.current_frames_per_second
+        if self.default_rate:
+            self.rate = self.default_rate
+        else:
+            fps = (f.current_frames_per_second for f in self.score)
+            average_fps = float(sum(fps)) / len(self.score)
+            self.rate = 1. / average_fps
+
+        self.player.unmute()
+        self.call.start(self.rate, now=True).addErrback(log.err)
+
+    def stop(self):
+        # try:
+        if self.call:
+            if self.call.running:
+                self.call.stop()
+            self.call = None
+            if self.callback:
+                self.callback()
+            # except AssertionError, err:
+            #   print err
+            # raise err
+            # finally:
+            self.player.mute()
+            self.counter = 0
+            # self.call = None
+            print "Stopped"
 
 if __name__ == "__main__":
     # theremin = Theremin()
