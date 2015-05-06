@@ -85,7 +85,7 @@ class LeapFrame(object):
         if random:
             self.id = randint(0,100)
             self.timestamp = randint(0,10000)
-            self.hands = LeapHand(None, None, random=random)
+            self.hands = [LeapHand(None, None, random=random)]
             self.interaction_box = InteractionBox()
             self.interaction_box.center = (randint(0,100),randint(0,100),randint(0,100))
             self.interaction_box.width = randint(0,100)
@@ -128,8 +128,9 @@ def generateRandomSignal(duration):
     Returns a randomly generated list of LeapFrame objects
     for testing purposes.
     """
+    from jsonpickle import encode
     lst = []
     for i in range(duration):
-        lst.append(LeapFrame(None, random=True))
+        lst.append(encode(LeapFrame(None, random=True)))
     return lst
         
