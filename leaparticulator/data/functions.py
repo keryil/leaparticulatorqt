@@ -1,14 +1,22 @@
 import jsonpickle
 import pandas as pd
 
-from leaparticulator.data.hmm import HMM, reconstruct_hmm, reduce_hmm
+# this is a list of refactored classes which need to be
+# replaced with their new FQ names for jsonpickle to be
+# able to unpickle them.
+to_replace = [
+    ("LeapFrame.", "leaparticulator.data.frame."),
+    ("TestQuestion.", "leaparticulator.question."),
+    ("QtUtils.Meaning", "leaparticulator.data.meaning.Meaning"),
+    ("QtUtils.", "leaparticulator.question.")
+]
+
 
 def refactor_old_references(string):
-    string = string.replace("LeapFrame.", "leaparticulator.data.frame.")
-    string = string.replace("TestQuestion.", "leaparticulator.question.")
-    string = string.replace("QtUtils.Meaning", "leaparticulator.data.meaning.Meaning")
-    string = string.replace("QtUtils.", "leaparticulator.question.")
+    for stuff in to_replace:
+        string = string.replace(*stuff)
     return string
+
 
 def recursive_decode(lst, verbose=False):
     if verbose:
@@ -43,19 +51,13 @@ toStr = lambda x: map(str, x)
 
 def fromFile(filename):
     lines = open(filename).readlines()
-    lines_n = []
-    for line in lines:
-        lines_n.append(refactor_old_references(line))
-    lines = lines_n
+    lines = [refactor_old_references(line) for line in lines]
     images = jsonpickle.decode(lines[0])
     responses = recursive_decode(lines[1])
     test_results = jsonpickle.decode(lines[2])
     responses_practice = recursive_decode(lines[3])
     test_results_practice = jsonpickle.decode(lines[4])
-    # return _expandResponses(responses, images), _expandTestResults(test_results, images)
 
-    # print images
-    # tests, res = convertToPandas(images, responses, test_results)
     test_results = _expandTestResults(test_results, images)
     test_results_practice = _expandTestResults(test_results_practice, images)
     responses_practice = _expandResponsesNew(responses_practice, images)
