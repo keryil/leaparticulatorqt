@@ -1,6 +1,6 @@
 import sys
-def do_it(file_id=sys.argv[1], units=sys.argv[2], parallel=sys.argv[3], skip_phases=sys.argv[4:],
-         prefix=sys.argv[5:]):
+def do_it(file_id=sys.argv[1], units=sys.argv[2], parallel=sys.argv[3], skip_phases=sys.argv[4:-1],
+         prefix=sys.argv[-1]):
     from leaparticulator.notebooks.StreamlinedDataAnalysisGhmm import analyze_log_file_in_phases_by_condition
     from leaparticulator import constants
     try:

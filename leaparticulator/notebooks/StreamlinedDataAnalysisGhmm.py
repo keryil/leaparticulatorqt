@@ -6,7 +6,8 @@
 # In[1]:
 
 import leaparticulator.data.functions as ExperimentalData
-from leaparticulator.data.functions import fromFile, toCSV, HMM
+from leaparticulator.data.functions import fromFile, toCSV
+from leaparticulator.data.hmm import HMM
 import pandas as pd
 import jsonpickle
 import numpy as np
