@@ -9,7 +9,6 @@ from leaparticulator.constants import (IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY,
 
 loadFromRes = lambda path: open(join(ROOT_DIR, "res", path + ".txt")).read()
 
-
 class AbstractMeaning(object):
     # separates the feature values in the filename
     feature_sep = "-"
