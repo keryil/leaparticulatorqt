@@ -3,6 +3,12 @@ import pandas as pd
 
 from leaparticulator.data.hmm import HMM, reconstruct_hmm, reduce_hmm
 
+def refactor_old_references(string):
+    string = string.replace("LeapFrame.", "leaparticulator.data.frame.")
+    string = string.replace("TestQuestion.", "leaparticulator.question.")
+    string = string.replace("QtUtils.Meaning", "leaparticulator.data.meaning.Meaning")
+    string = string.replace("QtUtils.", "leaparticulator.question.")
+    return string
 
 def recursive_decode(lst, verbose=False):
     if verbose:
@@ -37,6 +43,10 @@ toStr = lambda x: map(str, x)
 
 def fromFile(filename):
     lines = open(filename).readlines()
+    lines_n = []
+    for line in lines:
+        lines_n.append(refactor_old_references(line))
+    lines = lines_n
     images = jsonpickle.decode(lines[0])
     responses = recursive_decode(lines[1])
     test_results = jsonpickle.decode(lines[2])
@@ -72,10 +82,20 @@ def fromFile_old(filename):
 
 
 def _expandResponsesNew(responses, images):
+    # d = {}
+    # for client in responses:
+    #     d[client] = {}
+    #     for phase in responses[client]:
+    #         d[client][phase] = {}
+    #         for image in responses[client][phase]:
+    #             # print images[int(phase)][int(image)]
+    #             d[client][phase][images[int(phase)][int(image)]] = responses[client][phase][image]
+
     return {client: {phase: {images[int(phase)][int(image)]: responses[client][phase][image] \
                              for image in responses[client][phase]} \
                      for phase in responses[client]} \
             for client in responses}
+    # return d
 
 
 def _expandResponses(responses, images):
@@ -171,7 +191,7 @@ def toCSV(filename, delimiter="|", data=None):
                         csv.write("\n")
 
     # calculate the amplitudes and frequencies
-    from HandTrajectory2SignalTrajectory import calculate_amp_and_freq
+    from leaparticulator.notebooks.HandTrajectory2SignalTrajectory import calculate_amp_and_freq
 
     calculate_amp_and_freq(csv_filename, delimiter=delimiter)
 

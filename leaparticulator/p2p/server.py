@@ -31,7 +31,7 @@ import jsonpickle
 from leaparticulator.p2p.messaging import *
 from leaparticulator.theremin.theremin import Theremin
 # from LeapTheremin import gimmeSomeTheremin#, gimmeSimpleTheremin
-from Meaning import P2PMeaning
+from leaparticulator.data.meaning import P2PMeaning
 import os
 
 

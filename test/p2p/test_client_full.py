@@ -141,18 +141,15 @@ class TwoClientsFirstRound(P2PTestCase):
 
             play_btn = get_btn("btnPlay")
             submit_btn = get_btn("btnSubmit")
-            # record_btn = get_btn("btnRecord")
             choices = [get_btn("btnImage%d" % i) for i in range(1, 5)]
             self.click(play_btn)
             self.click(choices[0])
             print "Chosen the answer..."
+
             def submit():
                 self.assertTrue(submit_btn.isEnabled())
                 print "Clicking submit button, which is *enabled*"
                 self.click(submit_btn)
                 d_answer.callback("FirstAnswer")
             self.reactor.callLater(.4, submit)
-        # d_create.addCallback(answer)
-        # self.reactor.callLater(1, answer)
-        # return defer.DeferredList([d_answer, d_create])
         return d_answer

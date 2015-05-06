@@ -108,7 +108,7 @@ to_trajectory_file(trajectories, "%s.trajectories" % (".".join(filename_log.spli
 
 # <codecell>
 
-from trajectory import Trajectory
+from leaparticulator.data.trajectory import Trajectory
 
 all_trajectories = list(trajectories)
 all_trajectories.extend(trajectories_t)

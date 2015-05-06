@@ -25,10 +25,9 @@ from twisted.internet.endpoints import TCP4ServerEndpoint
 from twisted.python import log
 from twisted.python.log import FileLogObserver
 from twisted.protocols import basic
-from leaparticulator import constants
+from leaparticulator import constants, question
 import jsonpickle
-import TestQuestion
-from Meaning import FeaturelessMeaning
+from leaparticulator.data.meaning import FeaturelessMeaning
 
 
 class LeapServer(basic.LineReceiver):
@@ -170,7 +169,7 @@ class LeapServer(basic.LineReceiver):
             # if questions are not prepared
             if not self.factory.questions_by_phase[self.phase]:
                 # self.factory.questions_by_phase[self.phase] = [TestQuestion(self.factory.responses[self.other_end]) for i in range(self.n_of_test_questions)]
-                self.factory.questions_by_phase[self.phase] = TestQuestion.produce_questions(
+                self.factory.questions_by_phase[self.phase] = question.produce_questions(
                     self.factory.responses[self.other_end][self.phase],
                     qty=self.n_of_test_questions[
                         self.phase],
