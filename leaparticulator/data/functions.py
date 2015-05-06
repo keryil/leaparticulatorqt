@@ -102,8 +102,6 @@ def _expandResponses(responses, images):
     for client in responses:
         for phase in responses[client]:
             d = {}
-            firstTimeFrame = None
-            lastTimeFrame = None
             for image in responses[client][phase]:
                 # print phase, imaged
                 im = images[int(phase)][int(image)]
@@ -158,8 +156,7 @@ def toCSV(filename, delimiter="|", data=None):
     Format for responses is [client, is_practice, phase, image, data_index, x, y, z]
     Format for tests is [client, is_practice, phase, images, answer, given_answer]
     """
-    responses = test_results = responses_practice = test_results_practice = images = None
-    if data == None:
+    if data is None:
         data = fromFile(filename)
     responses, test_results, responses_practice, test_results_practice, images = data
 
@@ -311,13 +308,13 @@ from contextlib import contextmanager
 
 @contextmanager
 def stderr_redirected(to=os.devnull):
-    '''
+    """
     import os
 
     with stdout_redirected(to=filename):
         print("from Python")
         os.system("echo non-Python applications are also supported")
-    '''
+    """
     original_stderr = sys.stderr
     fd = sys.stderr.fileno()
 
@@ -330,8 +327,8 @@ def stderr_redirected(to=os.devnull):
         sys.stderr = os.fdopen(fd, 'w')  # Python writes to fd
 
     with os.fdopen(os.dup(fd), 'w') as old_stderr:
-        with open(to, 'w') as file:
-            _redirect_stderr(to=file)
+        with open(to, 'w') as f:
+            _redirect_stderr(to=f)
         try:
             yield  # allow code to be run with the redirected stdout
         finally:
