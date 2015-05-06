@@ -17,7 +17,7 @@ class TwoClientsFirstRound(P2PTestCase):
         self.reactor = reactor
         prep(self)
         self.startServer()
-        self.timeout = 3
+        self.timeout = 5
 
         clients = self.startClients(2)
 
@@ -106,7 +106,7 @@ class TwoClientsFirstRound(P2PTestCase):
 
     def test_answerFirstQuestion(self):
         self.click(self.factory.ui.mainWin.btnStart)
-        d_create = defer.Deferred()
+        # d_create = defer.Deferred()
 
         def create():
             # speaker, listener = self.getClientsAsClientData()
@@ -124,10 +124,10 @@ class TwoClientsFirstRound(P2PTestCase):
             from leaparticulator.data.frame import generateRandomSignal
             self.click(record_btn)
             self.click(record_btn)
-            ui_speaker.theremin.last_signal = generateRandomSignal(10)
+            ui_speaker.theremin.last_signal = generateRandomSignal(2)
 
             self.click(submit_btn)
-            d_create.callback(("FirstAnswer"))
+            self.reactor.callLater(.5, answer)
         self.reactor.callLater(.2, create)
 
         d_answer = defer.Deferred()
@@ -143,11 +143,13 @@ class TwoClientsFirstRound(P2PTestCase):
             submit_btn = get_btn("btnSubmit")
             # record_btn = get_btn("btnRecord")
             choices = [get_btn("btnImage%d" % i) for i in range(1, 5)]
-
-            image = ui_speaker.creationWin.findChildren(
-                QtGui.QLabel, "lblImage")[0]
-
-            self.click(submit_btn)
-            d_answer.callback("FirstAnswer")
-        self.reactor.callLater(.4, answer)
-        return defer.DeferredList([d_answer, d_create])
+            self.click(play_btn)
+            self.click(choices[0])
+            print "Chosen the answer..."
+            def submit():
+                submit_btn.setEnabled(True)
+                print "Clicking submit button, which is *enabled*"
+                self.click(submit_btn)
+                d_answer.callback("FirstAnswer")
+            self.reactor.callLater(.4, submit)
+        return d_answer

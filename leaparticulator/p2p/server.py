@@ -67,10 +67,13 @@ class LeapP2PSession(object):
         self.condition = condition
 
     def newRound(self):
-        if len(self.round_data) > 1:
+        if len(self.round_data) > 0:
             rnd = self.getLastRound()
-            assert None not in (rnd.speaker, rnd.hearer, rnd.signal,
-                                rnd.image, rnd.guess, rnd.success)
+            assert rnd.success is not None
+        #     assert None not in (rnd.speaker, rnd.hearer, rnd.signal,
+        #                         rnd.image, rnd.guess, rnd.success)
+        log.msg("New round: #%d" % len(self.round_data))
+        # from traceback import print_stack; print_stack()
         self.round_data.append(LeapP2PRoundSummary())
         self.notify()
 
@@ -127,7 +130,6 @@ class LeapP2PServer(basic.LineReceiver):
     recording = False
     n_of_test_questions = [5, 9, 9]
     n_of_options = [4, 4, 4]
-    end_round_msg_counter = 0
 
     # callbacks
     connectionMadeListeners = set()
@@ -135,6 +137,7 @@ class LeapP2PServer(basic.LineReceiver):
 
     def __init__(self, factory):  # , image_mask="./img/animals/*.png"):
         self.factory = factory
+        self.end_round_msg_counter = -1
         # self.factory.mode = Constants.INIT
         if len(self.factory.images[0]) == 0:
             from glob import glob
@@ -197,14 +200,19 @@ class LeapP2PServer(basic.LineReceiver):
         client.sendLine(message)
 
     def start(self, practice=False):
-        log.msg("Starting a new session with clients %s" %
-                ([c for c in self.factory.clients.values()]))
         self.factory.practice = practice
         self.factory.ui.disableStart()
         # self.factory.rounds.append(LeapP2PRoundSummary())
-        self.factory.end_round_msg_counter = 0
         # make sure we have exactly two clients
         if len(self.factory.clients) == 2:
+
+            if self.factory.end_round_msg_counter not in (-1, 2):
+                print 'Why the fuck are we restarting with %d end of round messages?! Ignoring...' % self.factory.end_round_msg_counter
+                return
+
+            self.factory.end_round_msg_counter = 0
+            log.msg("Starting a new session with clients %s" %
+                    ([c for c in self.factory.clients.values()]))
             # send the start signals and the image list
             if self.factory.mode == constants.INIT:
                 self.factory.session = LeapP2PSession(self.factory.clients,
@@ -311,7 +319,8 @@ class LeapP2PServerFactory(protocol.Factory):
     practice = False
     session_data = None
     clients = {}
-    end_round_msg_counter = 0
+    end_round_msg_counter = -1
+    logger = log
 
     # dict of dicts e.g. responses[client][phase][image] = response
     # responses = {}
@@ -423,7 +432,10 @@ class LeapP2PClient(basic.LineReceiver):
                 self.factory.mode = constants.LISTENER
                 self.ui.show_wait()
         elif isinstance(message, ResponseMessage):
-            assert self.factory.mode == constants.LISTENER
+            try:
+                assert self.factory.mode == constants.LISTENER
+            except AssertionError:
+                raise Exception("Mode not LISTENER: %s" % self.factory.mode)
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
             options = sample(list(set(self.factory.images[
