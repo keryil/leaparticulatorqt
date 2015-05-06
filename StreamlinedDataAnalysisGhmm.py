@@ -52,7 +52,7 @@ def print_n_flush(*args):
 # <codecell>
 
 # quiver_annotations = []
-from leaparticulator.data.trajectory import Trajectory
+from trajectory import Trajectory
 
 
 def plot_quiver2d(data, alpha=.75, C=[], path=None, *args, **kwargs):
@@ -513,6 +513,7 @@ def unpickle_results(filename_log, phase=None, units=None):
 # <codecell>
 
 def responses_to_traj_objs(responses, responses_t):
+    import trajectory
     # reload(trajectory)
     trajectories = responses_to_trajectories(responses)
     trajectories_t = responses_to_trajectories(responses_t)

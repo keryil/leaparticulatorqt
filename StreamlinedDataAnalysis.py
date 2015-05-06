@@ -29,7 +29,7 @@ id_to_log = lambda x: "logs/%s.exp.log" % x
 # <codecell>
 
 # quiver_annotations = []
-from leaparticulator.data.trajectory import Trajectory
+from trajectory import Trajectory
 
 
 def plot_quiver2d(data, alpha=.75, C=[], path=None, *args, **kwargs):
@@ -516,6 +516,7 @@ def pickle_results(results, nstates, trials, iter, filename_log, phase=None, uni
 
 
 def unpickle_results(filename_log, phase=None, units=None):
+    from leaparticulator.data import functions
     from collections import namedtuple
 
     extension = ".hmms"
@@ -543,7 +544,7 @@ def unpickle_results(filename_log, phase=None, units=None):
 # <codecell>
 
 def responses_to_traj_objs(responses, responses_t):
-    from leaparticulator.data import trajectory
+    import trajectory
     # reload(trajectory)
     trajectories = responses_to_trajectories(responses)
     trajectories_t = responses_to_trajectories(responses_t)

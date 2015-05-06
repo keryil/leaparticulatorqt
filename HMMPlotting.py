@@ -1,7 +1,7 @@
-from matplotlib.pylab import scatter, annotate, gca, quiver, gcf
+from matplotlib.pylab import scatter, annotate, gca, quiver, legend, gcf
 import numpy as np
 
-from leaparticulator.data.trajectory import Trajectory
+from trajectory import Trajectory
 
 
 annotations = []
