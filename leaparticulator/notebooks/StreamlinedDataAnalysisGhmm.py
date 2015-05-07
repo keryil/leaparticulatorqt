@@ -297,7 +297,7 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
 
 # import Constants
 def fn(args):
-    from leaparticulator.data.functions import reduce_hmm
+    from leaparticulator.data.hmm import reduce_hmm
     from leaparticulator.notebooks.GHmmWrapper import train_hmm_on_set_of_obs
 #     import dill
     from pickle import dumps

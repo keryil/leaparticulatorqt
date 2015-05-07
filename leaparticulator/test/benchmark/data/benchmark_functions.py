@@ -17,7 +17,7 @@ from leaparticulator.data.functions import refactor_old_references, \
 #     def test_comprehensionFromFile(self):
 #         fromFile_comp(self.filename)
 #
-class BenchMarkRefactorOldReferences(benchmark.Benchmark):
+class BenchmarkRefactorOldReferences(benchmark.Benchmark):
 
     each = 50
 
@@ -31,6 +31,21 @@ class BenchMarkRefactorOldReferences(benchmark.Benchmark):
     def test_regexRefactor(self):
         for line in self.string:
             refactor_old_references2(line)
+
+class BenchmarkFullAnalysis(benchmark.Benchmark):
+    from leaparticulator.notebooks.StreamlinedDataAnalysisGhmm import analyze_log_file_in_phases_by_condition as analyze
+    each = 3
+    def setUp(self):
+        self.file_id = "OS1.1"
+        self.prefix = "."
+
+    def tearDown(self):
+        from glob import glob
+
+
+    def test_regularRefactor(self):
+        for line in self.string:
+            refactor_old_references(line)
 
 
 if __name__ == '__main__':

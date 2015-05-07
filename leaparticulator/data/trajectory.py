@@ -8,7 +8,7 @@ from copy import deepcopy
 
 from numpy.random import randint, random, normal
 import numpy as np
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 from scipy.spatial.distance import euclidean
 
 
@@ -68,7 +68,7 @@ class Trajectory(object):
 
     def __create(self, leading_silence=False, trailing_silence=False):
         self.data = []
-        plt.clf()
+        # plt.clf()
         current_duration = 0
         first = self.randomPoint()
         change_dim = True
@@ -149,6 +149,7 @@ class Trajectory(object):
         # self.boundary_check()
 
     def plot2d(self, show=True, width=0.002, path=None, *args, **kwargs):
+        from matplotlib import pyplot as plt
         x, y = zip(*self.data)
         x, y = np.asarray(x), np.asarray(y)
         q = plt.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1,
@@ -255,6 +256,7 @@ class Trajectory(object):
         print(p)
         self.data[point] = tuple(p)
         if plot:
+            from matplotlib import pyplot as plt
             plt.plot(p[0], p[1], "go")
 
         # check for boundary conditions and correct them
@@ -292,6 +294,7 @@ class Trajectory(object):
     if __name__ == "__main__":
         import sys, os
 
+        from matplotlib import pyplot as plt
         sys.path.append(os.path.expanduser("~/Dropbox/ABACUS/Workspace/Abacus"))
         from abacus.experiments.artificial.trajectory import Trajectory
         from copy import deepcopy as copy
