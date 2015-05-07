@@ -19,7 +19,7 @@ files
 get_ipython().run_cell_magic(u'writefile', u'ProfileStreamlineNugget.py', u'import sys\ndef do_it(file_id=sys.argv[1], units=sys.argv[2], parallel=sys.argv[3], skip_phases=sys.argv[4:-1],\n         prefix=sys.argv[-1]):\n    from leaparticulator.notebooks.StreamlinedDataAnalysisGhmm import analyze_log_file_in_phases_by_condition\n    from leaparticulator import constants\n    try:\n        print "skip_phase=%s" % skip_phases\n        print "parallel? %s" % parallel\n        analyze_log_file_in_phases_by_condition(file_id, nstates=range(2,26), trials=100, iter=1000, \n                                                parallel=parallel, units=units,\n                                            skip_phases=skip_phases, prefix=prefix)\n    except Exception, err:\n        print err\nif __name__ == "__main__":\n    do_it()')
 
 
-# In[ ]:
+# In[3]:
 
 import warnings, sys
 warnings.filterwarnings('ignore')
@@ -44,7 +44,7 @@ p = None
 from datetime import datetime
 log_file = open("logs/StreamlineLog.%s.log" % datetime.now(), 'w', 0)
 for i, (f, unit, phase) in enumerate(files_n_units):
-        if i <= 4:
+        if i <= 70:
             continue
         print f
         ff = f.split("/")[-1][:-8]

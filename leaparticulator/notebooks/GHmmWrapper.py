@@ -161,7 +161,7 @@ class PickleableUnivariateHMM(ghmm.GaussianDistribution, PickleableSWIG):
 # In[1]:
 
 def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
-    from leaparticulator.data import functions 
+    from leaparticulator.data.hmm import HMM
     domain = ghmm.Float()
     multivariate = np.asarray(data[0]).ndim == 2
     data_np = []
@@ -189,14 +189,14 @@ def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
         B = [[list(mean)[0], variance] for mean in means]
         dist = ghmm.GaussianDistribution(domain)
     
-    hmm = ghmm.HMMFromMatrices(domain, 
+    hmm_g = ghmm.HMMFromMatrices(domain, 
                          dist, 
                          A=[prob_row(nstates) for i in range(nstates)],
                          B=B,#[[randint(*range_x),variance] for i in range(nstates)],
                          pi=prob_row(nstates))
-    hmm.baumWelch(obs)
-    hmm.obs = obs
-    return functions.HMM(hmm, obs, hmm_type="ghmm")
+    hmm_g.baumWelch(obs)
+    hmm_g.obs = obs
+    return HMM(hmm_g, obs, hmm_type="ghmm")
 
 
 # In[4]:

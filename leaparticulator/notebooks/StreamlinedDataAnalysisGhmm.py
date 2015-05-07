@@ -5,6 +5,19 @@
 
 # In[1]:
 
+# we are trying to add ../../ to the PYTHONPATH
+import os, sys
+path = os.getcwd()
+print path
+path = path.split(os.path.sep)[:-2]
+print path
+path = os.path.join(os.path.sep, *path)
+print path
+sys.path.append(path)
+
+
+# In[2]:
+
 import leaparticulator.data.functions as ExperimentalData
 from leaparticulator.data.functions import fromFile, toCSV
 from leaparticulator.data.hmm import HMM
@@ -44,7 +57,7 @@ def print_n_flush(*args):
 # responses, tests, responses_t, tests_t, images = toCSV(filename_log)
 
 
-# In[2]:
+# In[3]:
 
 # quiver_annotations = []
 from leaparticulator.data.trajectory import Trajectory
@@ -100,7 +113,7 @@ def to_trajectory_file(trajectories, filename):
             f.write("0.0 0.0 0.0\n")
 
 
-# In[3]:
+# In[4]:
 
 # r = responses["127.0.0.1"]
 # r = r['1']
@@ -129,7 +142,7 @@ def responses_to_trajectories(responses):
 
 # ## Plotting HMMs
 
-# In[4]:
+# In[5]:
 
 def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
     """
@@ -172,7 +185,7 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
     return ellip
 
 
-# In[5]:
+# In[6]:
 
 from matplotlib.colors import colorConverter
 from matplotlib.patches import Ellipse
@@ -253,7 +266,7 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
     cid = gcf().canvas.mpl_connect('pick_event', on_pick)
 
 
-# In[6]:
+# In[7]:
 
 def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
     global colors
@@ -293,7 +306,7 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
 # 
 # I tried to integrate this into ipcluster but for some reason source(blabla) doesn't work as expected, and even when it does, the returned HMM vector is a SexpVector instead of the expected ListVector.
 
-# In[7]:
+# In[13]:
 
 # import Constants
 def fn(args):
@@ -335,7 +348,8 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
 #     reload(GHmmWrapper)
     from leaparticulator.notebooks.GHmmWrapper import train_hmm_on_set_of_obs, bic, aic, get_range_of_multiple_traj
 #     reload(ExperimentalData)
-    from leaparticulator.data.functions import fromFile, reduce_hmm, reconstruct_hmm
+    from leaparticulator.data.functions import fromFile
+    from leaparticulator.data.hmm import reduce_hmm, reconstruct_hmm
     from leaparticulator.constants import palmToAmpAndFreq,palmToAmpAndMel
     
     
@@ -423,8 +437,8 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
     return to_return
         
 def pickle_results(results, nstates, trials, iter, filename_log, phase=None, units=Constants.XY):
-    from leaparticulator.data import functions
-    hmms, ds = zip(*[functions.reduce_hmm(hmm)[1] for hmm in results])
+    from leaparticulator.data import hmm as hmm_module
+    hmms, ds = zip(*[hmm_module.reduce_hmm(hmm)[1] for hmm in results])
     assert any(hmms)
     assert any(ds)
 #     print_n_flush(hmms)
@@ -449,7 +463,7 @@ def pickle_results(results, nstates, trials, iter, filename_log, phase=None, uni
             f.write("\n")
 
 def unpickle_results(filename_log, phase=None, units=None):
-    from leaparticulator.data import functions
+    from leaparticulator.data import hmm as hmm_module
     from collections import namedtuple
     extension = ".hmms"
     hmms = ds = nstates = trials = iter = None
@@ -464,7 +478,7 @@ def unpickle_results(filename_log, phase=None, units=None):
         hmms =  jsonpickle.decode(f.readline().rstrip())
         ds =  jsonpickle.decode(f.readline().rstrip())
 #         print ds
-        hmms = [functions.reconstruct_hmm(hmm, d) for hmm,d in zip(hmms,ds)]
+        hmms = [hmm_mpdule.reconstruct_hmm(hmm, d) for hmm,d in zip(hmms,ds)]
         nstates =  jsonpickle.decode(f.readline().rstrip())
         trials =  jsonpickle.decode(f.readline().rstrip())
         iter =  jsonpickle.decode(f.readline().rstrip())
@@ -472,7 +486,7 @@ def unpickle_results(filename_log, phase=None, units=None):
     return Results(hmms, ds, nstates, trials, iter)
 
 
-# In[8]:
+# In[9]:
 
 def responses_to_traj_objs(responses, responses_t):
     import trajectory
@@ -522,7 +536,7 @@ def pick_hmm_by_bic(hmms, responses, responses_t, plot=True):
     return hmm, d
 
 
-# In[9]:
+# In[10]:
 
 def analyze_log_file(file_id, nstates, trials, iter):
 #     id_to_log = lambda x: "logs/%s.exp.log" % x
@@ -614,7 +628,7 @@ def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, unit
     return results
 
 
-# In[10]:
+# In[11]:
 
 def pull_hmm_paths(d):
     globalenv['d'] = d
@@ -631,7 +645,7 @@ def pull_hmm_paths(d):
 #     analyze_log_file_in_phases_by_condition(f[5:-8], 5, 1, 100)
 
 
-# In[13]:
+# In[12]:
 
 # line = 'hmms = analyze_log_file_in_phases_by_condition("1320116514.2", nstates=range(2,30), trials=5, iter=100, parallel=True, units=Constants.XY)'
 # %lprun -f analyze_log_file_in_phases_by_condition analyze_log_file_in_phases_by_condition("1320116514.2", nstates=range(2,30), trials=5, iter=100, parallel=True, units=Constants.XY)
@@ -754,8 +768,6 @@ def draw():
 # responses, test_results, responses_p, test_p, images = fromFile(id_to_log(file_id))
 # data = responses["127.0.0.1"][str(1)].values()
 # data = [[frame.get_stabilized_position()[:2] for frame in response] for response in data]
-
-
 
 
 # In[19]:
