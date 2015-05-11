@@ -1,5 +1,4 @@
 class AbstractClientUI(object):
-    
     def go_test(self):
         """
         Virtual method to initiate the next test phase.
@@ -13,7 +12,7 @@ class AbstractClientUI(object):
         screen.
         """
         raise NotImplementedError()
-    
+
     def on_new_test_question(self, question):
         """
         Callback for when a new test question is received
@@ -27,13 +26,13 @@ class AbstractClientUI(object):
         the server.
         """
         raise NotImplementedError()
-    
+
     def extend_last_signal(self, pickled_data):
         """
         Callback for the arrival of a new Leap frame while 
         the theremin is recording.
         """
         raise NotImplementedError()
-    
+
     def exit(self):
         raise NotImplementedError()

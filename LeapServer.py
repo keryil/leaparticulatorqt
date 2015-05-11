@@ -3,9 +3,10 @@ Created on Feb 18, 2014
 
 @author: kerem
 '''
-from PyQt4 import QtGui
-from PyQt4.QtGui import QApplication
 import sys
+
+from PyQt4.QtGui import QApplication
+
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
@@ -15,29 +16,25 @@ else:
 
 once = False
 # if "twisted.internet.reactor" not in sys.modules:
-#     from twisted.internet import gtk2reactor
+# from twisted.internet import gtk2reactor
 #     gtk2reactor.install()
 #     once = True
 
 from twisted.internet import protocol, reactor
 from twisted.internet.endpoints import TCP4ServerEndpoint
-from twisted.internet.protocol import ClientFactory
-import Leap
 from twisted.python import log
 from twisted.python.log import FileLogObserver
 from twisted.protocols import basic
-from datetime import datetime
-import Constants
+from leaparticulator import constants
 import jsonpickle
 import TestQuestion
-from LeapFrame import LeapFrame
 from Meaning import FeaturelessMeaning
 
 
 class LeapServer(basic.LineReceiver):
     other_end = ""
     delimiter = "\n\n"
-#     MAX_LENGTH = 1024*1024*10
+    #     MAX_LENGTH = 1024*1024*10
     response = []
     phase = 0
     # image_mask_1 = "./img/meanings/5_*.png"
@@ -47,11 +44,11 @@ class LeapServer(basic.LineReceiver):
     recording = False
 
     # number of test questions per phase
-    n_of_test_questions = Constants.n_of_test_questions
+    n_of_test_questions = constants.n_of_test_questions
     # number of options each test question has
-    n_of_options = Constants.n_of_options
+    n_of_options = constants.n_of_options
     # number of total available images per phase
-    n_of_meanings = Constants.n_of_meanings
+    n_of_meanings = constants.n_of_meanings
 
     # callbacks
     connectionMadeListeners = set()
@@ -59,11 +56,9 @@ class LeapServer(basic.LineReceiver):
 
     def __init__(self, factory):  # , image_mask="./img/animals/*.png"):
         self.factory = factory
-        from glob import glob
         from random import shuffle, sample
-        from itertools import product
 
-        files_ = set(range(1,16))
+        files_ = set(range(1, 16))
         files = [None, None, None]
         files[0] = set(sample(files_, 5))
         files[1] = files[0].union(set(sample(files_.difference(files[0]), 5)))
@@ -116,15 +111,15 @@ class LeapServer(basic.LineReceiver):
     def start(self, practice=False):
         self.factory.practice = practice
         if self.phase == 0:
-            self.send_all(Constants.IMAGE_LIST)
+            self.send_all(constants.IMAGE_LIST)
             self.send_all(jsonpickle.encode(self.factory.images))
 
-        self.send_all(Constants.START)
+        self.send_all(constants.START)
         if not practice:
-            self.send_all(Constants.START_PHASE)
+            self.send_all(constants.START_PHASE)
         else:
-            self.send_all(Constants.START_PRACTICE_PHASE)
-        self.factory.mode = Constants.LEARN
+            self.send_all(constants.START_PRACTICE_PHASE)
+        self.factory.mode = constants.LEARN
 
     def send_all(self, message):
         """
@@ -144,7 +139,7 @@ class LeapServer(basic.LineReceiver):
         """
         log.msg("nextPicture() called")
         # if we are in the learning phase
-        if self.factory.mode == Constants.LEARN:
+        if self.factory.mode == constants.LEARN:
             # print self.factory.image_index,
             # self.factory.responses[self.other_end][self.phase]
             if self.factory.image_index in self.factory.responses[self.other_end][self.phase]:
@@ -158,27 +153,28 @@ class LeapServer(basic.LineReceiver):
                         log.msg("End of pictures for this phase.")
                         self.factory.image_index = 0
                         log.msg("End of practice; now for the testing phase")
-                        self.factory.mode = Constants.TEST
-                        self.send_all(Constants.TEST)
+                        self.factory.mode = constants.TEST
+                        self.send_all(constants.TEST)
             else:
                 log.msg("No response submitted, sending the same picture")
-            if self.factory.mode == Constants.LEARN:
+            if self.factory.mode == constants.LEARN:
                 log.msg("Sending next picture: %s" %
                         self.factory.images[self.phase][self.factory.image_index])
-                self.send_all(Constants.START_NEXT_PIC)
+                self.send_all(constants.START_NEXT_PIC)
                 pic = jsonpickle.encode(
                     self.factory.images[self.phase][self.factory.image_index])
                 self.send_all(pic)
-                self.send_all(Constants.END_NEXT_PIC)
+                self.send_all(constants.END_NEXT_PIC)
 
-        if self.factory.mode == Constants.TEST:
+        if self.factory.mode == constants.TEST:
             # if questions are not prepared
             if not self.factory.questions_by_phase[self.phase]:
                 # self.factory.questions_by_phase[self.phase] = [TestQuestion(self.factory.responses[self.other_end]) for i in range(self.n_of_test_questions)]
-                self.factory.questions_by_phase[self.phase] = TestQuestion.produce_questions(self.factory.responses[self.other_end][self.phase],
-                                                                                             qty=self.n_of_test_questions[
-                                                                                                 self.phase],
-                                                                                             n_of_images=self.n_of_options[self.phase])
+                self.factory.questions_by_phase[self.phase] = TestQuestion.produce_questions(
+                    self.factory.responses[self.other_end][self.phase],
+                    qty=self.n_of_test_questions[
+                        self.phase],
+                    n_of_images=self.n_of_options[self.phase])
                 print "Generated questions (%d): %s" % (len(self.factory.questions_by_phase[self.phase]),
                                                         self.factory.questions_by_phase[self.phase])
             for q in self.factory.questions_by_phase[self.phase]:
@@ -195,15 +191,15 @@ class LeapServer(basic.LineReceiver):
                     continue
                 # send the question
                 else:
-                    self.send_all(Constants.START_QUESTION)
+                    self.send_all(constants.START_QUESTION)
                     encoded = jsonpickle.encode(q)
                     # log.msg("Sending question of length %i" % len(encoded))
                     self.send_all(encoded)
-                    self.send_all(Constants.START_SIGNAL)
+                    self.send_all(constants.START_SIGNAL)
                     for s in self.factory.responses[self.other_end][self.phase][q.answer]:
                         self.send_all(jsonpickle.encode(s))
                         q.signal.append(s)
-                    self.send_all(Constants.END_QUESTION)
+                    self.send_all(constants.END_QUESTION)
                     # log.msg("Number of newlines is %i" % encoded.count("\n"))
                     self.factory.test_results[
                         self.other_end][self.phase].append(q)
@@ -214,14 +210,15 @@ class LeapServer(basic.LineReceiver):
                     if self.phase < 3:
                         self.factory.image_index = 0
                         self.phase += 1
-                        self.send_all(Constants.END_OF_PHASE)
+                        self.send_all(constants.END_OF_PHASE)
                         self.factory.practice = True
                         if self.phase < 3:
                             self.start(practice=True)
                         else:
                             log.msg("End of experiment.")
-                            self.send_all(Constants.EXIT)
+                            self.send_all(constants.EXIT)
                             import time
+
                             session_id = self.factory.uid
                             with open("logs/%s.%s.exp.log" % (session_id, self.factory.condition), "w") as f:
                                 f.write(jsonpickle.encode(self.factory.images))
@@ -262,11 +259,13 @@ class LeapServer(basic.LineReceiver):
                             self.start()
                         else:
                             log.msg("End of experiment.")
-                            self.send_all(Constants.EXIT)
+                            self.send_all(constants.EXIT)
                             import time
                             from os.path import join
+
                             session_id = self.factory.uid
-                            with open(join("logs", self.factory.log_prefix, "%s.%s.exp.log" % (session_id, self.factory.condition)), "w") as f:
+                            with open(join("logs", self.factory.log_prefix,
+                                           "%s.%s.exp.log" % (session_id, self.factory.condition)), "w") as f:
                                 f.write(jsonpickle.encode(self.factory.images))
                                 f.write("\n")
                                 f.write(
@@ -287,26 +286,26 @@ class LeapServer(basic.LineReceiver):
         # if len(nline) < 300:
         log.msg("Received: %s" % nline)
 
-#         if line=
-        if line == Constants.START_REC:
+        #         if line=
+        if line == constants.START_REC:
             self.recording = True
             self.response = []
-        elif line == Constants.END_REC:
+        elif line == constants.END_REC:
             self.recording = False
             self.factory.responses[self.other_end][self.phase][
                 self.factory.image_index] = self.response
             # self.nextPicture()
-#             print self.response
-        elif line == Constants.REQ_NEXT_PIC:
+        #             print self.response
+        elif line == constants.REQ_NEXT_PIC:
             self.nextPicture()
             return
-        elif line == Constants.START_RESPONSE:
-            assert self.factory.mode == Constants.TEST
-            self.factory.mode = Constants.INCOMING_RESPONSE
-        elif line == Constants.END_RESPONSE:
-            assert self.factory.mode == Constants.INCOMING_RESPONSE
-            self.factory.mode = Constants.TEST
-        elif self.factory.mode == Constants.INCOMING_RESPONSE:
+        elif line == constants.START_RESPONSE:
+            assert self.factory.mode == constants.TEST
+            self.factory.mode = constants.INCOMING_RESPONSE
+        elif line == constants.END_RESPONSE:
+            assert self.factory.mode == constants.INCOMING_RESPONSE
+            self.factory.mode = constants.TEST
+        elif self.factory.mode == constants.INCOMING_RESPONSE:
             q = self.factory.test_results[self.other_end][self.phase][-1]
             assert q.given_answer is None
             answer = jsonpickle.decode(line)
@@ -322,7 +321,7 @@ class LeapServerFactory(protocol.Factory):
     numConnections = 0
     protocol = LeapServer
     # Mode is either play or listen
-    mode = Constants.LEARN
+    mode = constants.LEARN
     image_index = 0
     images = [[], [], []]
     questions_by_phase = [[], [], []]
@@ -386,51 +385,51 @@ class LeapClient(basic.LineReceiver):
 
     def lineReceived(self, data):
         log.msg("Received: %s" % data)
-        if data == Constants.START:
-            self.factory.mode = Constants.LEARN
+        if data == constants.START:
+            self.factory.mode = constants.LEARN
             return
-        elif data == Constants.EXIT:
+        elif data == constants.EXIT:
             self.factory.ui.exit()
-        elif data == Constants.IMAGE_LIST:
-            self.factory.mode = Constants.IMAGE_LIST
+        elif data == constants.IMAGE_LIST:
+            self.factory.mode = constants.IMAGE_LIST
             return
-        elif data == Constants.START_NEXT_PIC:
+        elif data == constants.START_NEXT_PIC:
             self.factory.prev_mode = self.factory.mode
-            self.factory.mode = Constants.RECEIVE_PIC
+            self.factory.mode = constants.RECEIVE_PIC
             return
-        elif data == Constants.END_NEXT_PIC:
+        elif data == constants.END_NEXT_PIC:
             self.factory.mode = self.factory.prev_mode
             return
-        elif data == Constants.TEST:
-            self.factory.mode = Constants.TEST
+        elif data == constants.TEST:
+            self.factory.mode = constants.TEST
             self.factory.ui.go_test()
-        elif data == Constants.START_PHASE:
+        elif data == constants.START_PHASE:
             self.factory.ui.next_phase()
-        elif data == Constants.START_PRACTICE_PHASE:
+        elif data == constants.START_PRACTICE_PHASE:
             self.factory.ui.next_phase(True)
-        elif data == Constants.START_QUESTION:
-            assert self.factory.mode == Constants.TEST
-            self.factory.mode = Constants.START_QUESTION
+        elif data == constants.START_QUESTION:
+            assert self.factory.mode == constants.TEST
+            self.factory.mode = constants.START_QUESTION
             return
-        elif data == Constants.END_QUESTION:
-            self.factory.mode = Constants.TEST
+        elif data == constants.END_QUESTION:
+            self.factory.mode = constants.TEST
             self.factory.ui.on_new_test_question(self.factory.ui.question)
-        elif data == Constants.START_SIGNAL:
-            self.factory.mode = Constants.INCOMING_RESPONSE
+        elif data == constants.START_SIGNAL:
+            self.factory.mode = constants.INCOMING_RESPONSE
             return
 
-        if self.factory.mode == Constants.RECEIVE_PIC:
+        if self.factory.mode == constants.RECEIVE_PIC:
             log.msg("New picture received: %s" % data)
             self.factory.current_image = data
             self.factory.ui.on_new_picture(data)
-        elif self.factory.mode == Constants.IMAGE_LIST:
+        elif self.factory.mode == constants.IMAGE_LIST:
             log.msg("Image list received: %s" % data)
             self.factory.ui.images = jsonpickle.decode(data)
-        elif self.factory.mode == Constants.START_QUESTION:
+        elif self.factory.mode == constants.START_QUESTION:
             log.msg("New question received: %s" % jsonpickle.decode(data))
-            self.factory.mode = Constants.INCOMING_RESPONSE
+            self.factory.mode = constants.INCOMING_RESPONSE
             self.factory.ui.question = jsonpickle.decode(data)
-        elif self.factory.mode == Constants.INCOMING_RESPONSE:
+        elif self.factory.mode == constants.INCOMING_RESPONSE:
             self.factory.ui.question.signal.append(jsonpickle.decode(data))
 
 
@@ -459,15 +458,17 @@ class LeapClientFactory(protocol.ReconnectingClientFactory):
 def get_server_instance():
     """
     Returns a default server instance, reading settings 
-    from Constants.py
+    from constants.py
     """
-    endpoint = TCP4ServerEndpoint(reactor, Constants.leap_port)
+    endpoint = TCP4ServerEndpoint(reactor, constants.leap_port)
     endpoint.listen(LeapServerFactory())
     return endpoint
 
+
 if __name__ == '__main__':
     import sys
-    endpoint = TCP4ServerEndpoint(reactor, Constants.leap_port)
+
+    endpoint = TCP4ServerEndpoint(reactor, constants.leap_port)
     if len(sys.argv) < 2:
         print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
         sys.exit(-1)
@@ -477,6 +478,7 @@ if __name__ == '__main__':
             prefix = sys.argv[2]
         from os.path import join
         from os import getcwd
+
         print "**** IMPORTANT: Log folder is %s ****" % join(getcwd(), "logs", prefix)
         endpoint.listen(
             LeapServerFactory(condition=sys.argv[1], prefix=prefix))

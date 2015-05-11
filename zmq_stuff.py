@@ -3,9 +3,13 @@
 
 # <codecell>
 
-%%writefile zmq_server.py
-import zmq
+% % writefile
+zmq_server.py
 from time import sleep
+
+import zmq
+
+
 context = zmq.Context()
 
 socket = context.socket(zmq.REP)
@@ -18,7 +22,8 @@ while True:
 
 # <codecell>
 
-%%writefile zmq_client.py
+% % writefile
+zmq_client.py
 import zmq
 
 context = zmq.Context()
@@ -39,7 +44,8 @@ for request in range(10):
 
 # <codecell>
 
-%run zmq_server.py
+% run
+zmq_server.py
 
 # <codecell>
 

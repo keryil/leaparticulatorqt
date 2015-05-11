@@ -18,7 +18,10 @@
     <item row="0" column="0">
      <widget class="QLabel" name="lblImage">
       <property name="text">
-       <string/>
+       <string>AAAAA</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -29,6 +32,9 @@
       </property>
       <property name="scaledContents">
        <bool>false</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -133,7 +139,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>16</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

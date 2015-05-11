@@ -3,26 +3,31 @@
 
 # <codecell>
 
+from random import random, randint
+
 import ghmm
 import numpy as np
-import pandas as pd
-from random import random, randint, choice
-import itertools
 from sklearn.cluster import KMeans
+
 
 # <codecell>
 
 # domain = ghmm.Float()
+from leaparticulator.data.hmm import HMM
+
 
 class GHMMWrapper(object):
     """
     This wrapper exists solely to enable pickling.
     """
     hmm = None
+
     def __get_state__():
         pass
+
     def __set_state__():
         pass
+
 
 def get_range_of_multiple_traj(data):
     """
@@ -35,28 +40,32 @@ def get_range_of_multiple_traj(data):
         xs = []
         ys = []
         for seq in data:
-            for x,y in seq:
+            for x, y in seq:
                 xs.append(x)
                 ys.append(y)
-        return ((int(min(xs)),int(max(xs))),(int(min(ys)),int(max(ys))))
+        return ((int(min(xs)), int(max(xs))), (int(min(ys)), int(max(ys))))
     else:
         xs = []
         for seq in data:
             xs.extend(seq)
-        return ((int(min(xs)),int(max(xs))),(int(min(xs)),int(max(xs))))
+        return ((int(min(xs)), int(max(xs))), (int(min(xs)), int(max(xs))))
+
 
 def flatten_to_emission(arr, domain=ghmm.Float()):
     arr = np.array(arr).flatten().tolist()
     return ghmm.EmissionSequence(domain, arr)
 
+
 def nest(arr, domain=ghmm.Float()):
     assert len(arr) % 2 == 0
-    arr = np.array(arr).reshape((len(arr)/2,2))
+    arr = np.array(arr).reshape((len(arr) / 2, 2))
     return arr.tolist()
-    
+
+
 def prob_row(n):
     r = [random() for i in range(n)]
-    return  np.divide(r,sum(r))
+    return np.divide(r, sum(r))
+
 
 def check_two_nonzeroes(vector):
     nonzero = 0
@@ -67,6 +76,7 @@ def check_two_nonzeroes(vector):
                 return True
     return False
 
+
 def nparams(hmm):
     """
     Returns the number of (free) parameters in an HMM. I copied this from the ghmm 
@@ -76,13 +86,13 @@ def nparams(hmm):
     df = 0
     done_pi = False
     matrix = hmm.asMatrices()
-    transition,means,initial = matrix
+    transition, means, initial = matrix
     for state in range(len(means)):
         # state transitions
         if check_two_nonzeroes(transition[state]):
             df += hmm.cmodel.cos * (len(means) - 1)
         # initial probs
-        if initial[state] not in (0,1):
+        if initial[state] not in (0, 1):
             df += 1
             done_pi = True
         # the mean and variance of the state
@@ -91,26 +101,29 @@ def nparams(hmm):
         df -= 1
     return df
 
+
 def posteriorProbOfPath(hmm, obs, path):
     prob = 1.
     assert isinstance(obs, ghmm.EmissionSequence)
     posteriors = hmm.posterior(obs)
-    for i,state in enumerate(path):
+    for i, state in enumerate(path):
         prob *= posteriors[i][state]
     return prob
+
 
 def posteriorProbOfPaths(hmm, observations, paths):
     prob = 1.
     assert isinstance(observations, ghmm.SequenceSet)
-#     print "Paths:", paths
-    return [posteriorProbOfPath(hmm, obs, path) for obs, path in zip(observations,paths)]
+    # print "Paths:", paths
+    return [posteriorProbOfPath(hmm, obs, path) for obs, path in zip(observations, paths)]
+
 
 def _score(hmm, obs):
     """
     Calculates the common terms of BIC and AIC. 
     """
     df = nparams(hmm)
-    is_multivariate = isinstance(hmm.asMatrices()[1][0][0],list)
+    is_multivariate = isinstance(hmm.asMatrices()[1][0][0], list)
 
     # we need to treat observations and observation sets 
     # separately
@@ -119,47 +132,53 @@ def _score(hmm, obs):
         n = len(obs)
         if is_multivariate:
             n = n / 2
-#         print "Found N as %f" % n
+            # print "Found N as %f" % n
     else:
         for seq in obs:
             nn = len(seq)
             if is_multivariate:
                 nn = nn / 2
             n += nn
-#         print "Found N as %f" % n
+            # print "Found N as %f" % n
     llg = hmm.loglikelihood(obs)
     return llg, df, n
-    
+
+
 def bic(hmm, obs):
-    llg, df, n = _score(hmm,obs)
+    llg, df, n = _score(hmm, obs)
     return -2 * llg + df * np.log(n)
 
+
 def aic(hmm, obs):
-    llg, df, n = _score(hmm,obs)
+    llg, df, n = _score(hmm, obs)
     return -2 * llg + df * 2
 
-class PickleableSWIG(object):
 
+class PickleableSWIG(object):
     def __setstate__(self, state):
         self.__init__(*state['args'])
 
     def __getstate__(self):
         return {'args': self.args}
-    
+
+
 class PickleableMultivariateHMM(ghmm.MultivariateGaussianDistribution, PickleableSWIG):
     def __init__(self, *args):
         self.args = args
         ghmm.MultivariateGaussianDistribution.__init__(self, *args)
-        
+
+
 class PickleableUnivariateHMM(ghmm.GaussianDistribution, PickleableSWIG):
     def __init__(self, *args):
         self.args = args
         ghmm.GaussianDistribution.__init__(self, *args)
 
+
 # <codecell>
 
 def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
-    import ExperimentalData
+    from leaparticulator.data import functions
+
     domain = ghmm.Float()
     multivariate = np.asarray(data[0]).ndim == 2
     data_np = []
@@ -167,34 +186,36 @@ def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
         for f in traj:
             data_np.append(f)
     data_np = np.asarray(data_np)
-    
-#     print "Is multivariate?", multivariate
-    import sys;sys.stdout.flush()
+
+    # print "Is multivariate?", multivariate
+    import sys;
+
+    sys.stdout.flush()
     variance = means = B = dist = None
-    
+
     if multivariate:
         obs = [flatten_to_emission(d) for d in data]
         obs = ghmm.SequenceSet(domain, obs)
-        rand_obs = randint(0,len(obs)-1)
-        variance = np.cov(list(obs[rand_obs])[::2],list(obs[rand_obs])[1::2]).flatten()
+        rand_obs = randint(0, len(obs) - 1)
+        variance = np.cov(list(obs[rand_obs])[::2], list(obs[rand_obs])[1::2]).flatten()
         means = list(KMeans(n_clusters=nstates).fit(data_np).cluster_centers_)
         B = [[list(mean), variance] for mean in means]
         dist = ghmm.MultivariateGaussianDistribution(domain)
     else:
         obs = ghmm.SequenceSet(domain, [ghmm.EmissionSequence(domain, d) for d in data])
         variance = np.var([item for seq in data for item in seq])
-        means = KMeans(n_clusters=nstates).fit(data_np.reshape((len(data_np),1))).cluster_centers_
+        means = KMeans(n_clusters=nstates).fit(data_np.reshape((len(data_np), 1))).cluster_centers_
         B = [[list(mean)[0], variance] for mean in means]
         dist = ghmm.GaussianDistribution(domain)
-    
-    hmm = ghmm.HMMFromMatrices(domain, 
-                         dist, 
-                         A=[prob_row(nstates) for i in range(nstates)],
-                         B=B,#[[randint(*range_x),variance] for i in range(nstates)],
-                         pi=prob_row(nstates))
+
+    hmm = ghmm.HMMFromMatrices(domain,
+                               dist,
+                               A=[prob_row(nstates) for i in range(nstates)],
+                               B=B,  #[[randint(*range_x),variance] for i in range(nstates)],
+                               pi=prob_row(nstates))
     hmm.baumWelch(obs)
     hmm.obs = obs
-    return ExperimentalData.HMM(hmm, obs, hmm_type="ghmm")
+    return HMM(hmm, obs, hmm_type="ghmm")
 
 # <codecell>
 
@@ -207,7 +228,7 @@ def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
 # # print variance
 # import sys;sys.stdout.flush()
 # hmm = ghmm.HMMFromMatrices(domain, 
-#                      ghmm.MultivariateGaussianDistribution(domain), 
+# ghmm.MultivariateGaussianDistribution(domain),
 #                      A=[prob_row(nstates) for i in range(nstates)],
 #                      B=[[[i,i],variance] for i in range(nstates)],
 #                      pi=prob_row(nstates))
@@ -238,7 +259,7 @@ def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
 #     domain = ghmm.Float()
 #     dist = ghmm.MultivariateGaussianDistribution(domain)
 #     return ghmm.MultivariateGaussianMixtureHMM, (domain,dist,a,b,pi)
-    
+
 # def unpickleish(matrix,):
 #     print "UNPICKLING"
 #     print matrix
@@ -260,7 +281,7 @@ def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
 
 
 # def getstate(self):
-    
+
 # def setstate(self):
 #     pass
 # hmm.__get_state__ = 
@@ -275,7 +296,7 @@ def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
 
 # print hmm2.asMatrices()
 #         if transition[state]
-    
+
 # range_x=(-300,300) 
 # range_y=(0,550)
 # # state1 = [randint(*range_x) for i in range(100)]

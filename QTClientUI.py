@@ -1,8 +1,9 @@
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import QObject
 import sys
-import os
-import Constants
+
+from PyQt4 import QtCore, QtGui
+
+from leaparticulator import constants
+
 
 app = QtGui.QApplication.instance()
 if app is None:
@@ -13,19 +14,15 @@ else:
 # from PySide.QtCore import QFile
 from AbstractClientUI import AbstractClientUI
 from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
-from random import randint
 from QtUtils import connect, disconnect, loadWidget, loadFromRes, setButtonIcon
 from jsonpickle import decode, encode
-from collections import namedtuple
-from TestQuestion import TestQuestion
-from Meaning import Meaning
-import LeapFrame
 
 
 def getFunction(widget):
     """
     Shortcut for widget.findChildren(type,label)[0]
     """
+
     def get(type, label):
         try:
             return widget.findChildren(type, label)[0]
@@ -37,7 +34,6 @@ def getFunction(widget):
 
 
 class ClientUI(AbstractClientUI):
-
     def __init__(self, condition):
         # super(QObject, self).__init__()
         assert condition in ('1', '2', '1r', '2r')
@@ -70,9 +66,9 @@ class ClientUI(AbstractClientUI):
         self.isRecording = False
 
         self.activeWindow = None
-        self.learningWindow = loadWidget(Constants.LEARNING_WIN)
-        self.infoWindow = loadWidget(Constants.INFO_WIN)
-        self.testWindow = loadWidget(Constants.TEST_WIN)
+        self.learningWindow = loadWidget(constants.LEARNING_WIN)
+        self.infoWindow = loadWidget(constants.INFO_WIN)
+        self.testWindow = loadWidget(constants.TEST_WIN)
 
         # this is to map clicked() signals of each button
         # to the same function with different arguments
@@ -104,6 +100,13 @@ class ClientUI(AbstractClientUI):
         record = get(QtGui.QPushButton, 'btnRecord')
         submit = get(QtGui.QPushButton, 'btnSubmit')
 
+        # shortcuts
+        def shortcuts():
+            play.setShortcut(QtGui.QKeySequence.fromString("P"))
+            if record:
+                record.setShortcut(QtGui.QKeySequence.fromString("R"))
+            submit.setShortcut(QtGui.QKeySequence.fromString("S"))
+
         # disable submit button until the first recording
         # or until an image is chosen for a signal
         submit.setEnabled(False)
@@ -122,6 +125,8 @@ class ClientUI(AbstractClientUI):
                 connect(play, "clicked()", fn_play)
                 if not record:
                     submit.setEnabled(True)
+                shortcuts()
+
             play.setText("Stop")
             disconnect(play)
             last_submit_state = submit.isEnabled()
@@ -129,6 +134,7 @@ class ClientUI(AbstractClientUI):
             if record is not None:
                 record.setEnabled(False)
             submit.setEnabled(False)
+            shortcuts()
             self.playback_player.start(self.last_signal, callback=fn_done)
 
         connect(play, "clicked()", fn_play)
@@ -145,6 +151,7 @@ class ClientUI(AbstractClientUI):
                     submit.setEnabled(True)
                     disconnect(record)
                     connect(record, "clicked()", fn_record)
+                    shortcuts()
 
                 self.start_recording()
                 # self.send(Constants.START_REC)
@@ -155,6 +162,7 @@ class ClientUI(AbstractClientUI):
                 play.setEnabled(False)
                 submit.setEnabled(False)
                 record.setText("Stop")
+                shortcuts()
 
             connect(record, "clicked()", fn_record)
 
@@ -190,27 +198,27 @@ class ClientUI(AbstractClientUI):
         connect(button, "clicked()", self.next_question)
         self.unmute()
 
-    def setupInfoWindow(self, mode=Constants.MOD_PREPHASE):
+    def setupInfoWindow(self, mode=constants.MOD_PREPHASE):
         """
         Sets up the info window for whatever purpose, purposes
         are given with the parameter 'modes',
         """
         if mode is None:
-            mode = Constants.MOD_PREPHASE
+            mode = constants.MOD_PREPHASE
 
         # set the info text
-        if mode == Constants.MOD_PREPHASE:
+        if mode == constants.MOD_PREPHASE:
             res_name = "phase%d" % self.phase
-        elif mode == Constants.MOD_PRETEST:
+        elif mode == constants.MOD_PRETEST:
             res_name = "test%d" % self.phase
-        elif mode == Constants.MOD_EXIT:
+        elif mode == constants.MOD_EXIT:
             res_name = "final"
-        elif mode == Constants.MOD_FIRSTSCREEN:
+        elif mode == constants.MOD_FIRSTSCREEN:
             res_name = "firstscreen"
 
-        first_or_last = mode in (Constants.MOD_EXIT, Constants.MOD_FIRSTSCREEN)
+        first_or_last = mode in (constants.MOD_EXIT, constants.MOD_FIRSTSCREEN)
         first_or_last_or_pretest = mode in (
-            Constants.MOD_EXIT, Constants.MOD_FIRSTSCREEN, Constants.MOD_PRETEST)
+            constants.MOD_EXIT, constants.MOD_FIRSTSCREEN, constants.MOD_PRETEST)
 
         if self.isPractice and not first_or_last:
             res_name += "_practice"
@@ -234,20 +242,21 @@ class ClientUI(AbstractClientUI):
             from shlex import split
             from os.path import join
             from os import remove
+
             images = self.images[self.phase]
-            filename = join(Constants.MEANING_DIR, "montage.png")
+            filename = join(constants.MEANING_DIR, "montage.png")
             command = "montage \"%s\" \"%s\"" % ("\" \"".join([i.filename() for i in images]),
-                                         filename)
+                                                 filename)
             print "Montage creation command: %s" % command
             out, err = Popen(split(command)).communicate()
             print "Montage creation output: %s\t,\t%s" % (out, err)
-            command = "convert -resize 550x550 \"%s\" \"%s\"" % tuple([filename]*2)
+            command = "convert -resize 550x550 \"%s\" \"%s\"" % tuple([filename] * 2)
             print "Montage resize command: %s" % command
             out, err = Popen(split(command)).communicate()
             print "Montage resize output: %s\t,\t%s" % (out, err)
-            
+
             # filename = os.path.join(os.getcwd(), Constants.MEANING_DIR,
-            #                         "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
+            # "%d%s_resized.%s" % (self.phase + 1, dimension, Constants.IMG_EXTENSION))
             # print "Image: %s" % filename
             pixmap = QtGui.QPixmap(filename)
             # print "Pixmap: %s" % pixmap
@@ -260,23 +269,23 @@ class ClientUI(AbstractClientUI):
         disconnect(button)
 
         # self.connection.factory.mode == Constants.LEARN:
-        if mode == Constants.MOD_PREPHASE:
-            assert self.connection.factory.mode == Constants.LEARN
+        if mode == constants.MOD_PREPHASE:
+            assert self.connection.factory.mode == constants.LEARN
             connect(
-                button, "clicked()", lambda: self.send(Constants.REQ_NEXT_PIC))
+                button, "clicked()", lambda: self.send(constants.REQ_NEXT_PIC))
             # connect(button, "clicked()", lambda : self.show_window(self.learningWindow))
         # self.connection.factory.mode == Constants.TEST:
-        elif mode == Constants.MOD_PRETEST:
-            assert self.connection.factory.mode == Constants.TEST
+        elif mode == constants.MOD_PRETEST:
+            assert self.connection.factory.mode == constants.TEST
             connect(
                 button, "clicked()", lambda: self.show_window(self.testWindow))
-        elif mode == Constants.MOD_EXIT:
+        elif mode == constants.MOD_EXIT:
             connect(
                 button, "clicked()", lambda: QtCore.QCoreApplication.exit())
-        elif mode == Constants.MOD_FIRSTSCREEN:
+        elif mode == constants.MOD_FIRSTSCREEN:
             connect(
                 button, "clicked()", lambda: self.show_window(self.infoWindow,
-                                                              mode=Constants.MOD_PREPHASE))
+                                                              mode=constants.MOD_PREPHASE))
 
     def setupTestWindow(self):
         get = getFunction(self.testWindow)
@@ -298,10 +307,10 @@ class ClientUI(AbstractClientUI):
             print "Given:", given_answer, "Expected:", self.images[self.phase].index(self.given_meaning)
             assert given_answer == self.images[
                 self.phase].index(self.given_meaning)
-            self.send(Constants.START_RESPONSE)
+            self.send(constants.START_RESPONSE)
             print "Sending the answer %d" % self.current_question.given_answer
             self.send(encode(self.current_question.given_answer))
-            self.send(Constants.END_RESPONSE)
+            self.send(constants.END_RESPONSE)
             # get(QtGui.QGroupBox, "groupBox").setEnabled(False)
             if not success:
                 btn = self.getCheckedButton()
@@ -318,8 +327,9 @@ class ClientUI(AbstractClientUI):
             def next():
                 get(QtGui.QPushButton, "btnPlay").setEnabled(True)
                 self.next_question()
+
             # self.next_question)
-            QtCore.QTimer.singleShot(Constants.DELAY_TEST, next)
+            QtCore.QTimer.singleShot(constants.DELAY_TEST, next)
 
         disconnect(btn)
         connect(btn, "clicked()", submit)
@@ -337,6 +347,7 @@ class ClientUI(AbstractClientUI):
 
         def enable_submit():
             btn.setEnabled(True)
+
         connect(play, "clicked()", enable_submit)
 
     def on_new_picture(self, data):
@@ -370,7 +381,7 @@ class ClientUI(AbstractClientUI):
         else:
             window.show()
 
-        # print self.connection.factory.mode
+            # print self.connection.factory.mode
 
     def start_recording(self):
         self.last_signal = []
@@ -380,10 +391,10 @@ class ClientUI(AbstractClientUI):
     def stop_recording(self):
         self.isRecording = False
         self.theremin.stop_record()
-        self.send(Constants.START_REC)
+        self.send(constants.START_REC)
         for frame in self.last_signal:
             self.send(frame)
-        self.send(Constants.END_REC)
+        self.send(constants.END_REC)
 
     def next_phase(self, practice=False):
         self.isPractice = practice
@@ -391,9 +402,9 @@ class ClientUI(AbstractClientUI):
             self.phase += 1
         print "Phase %d" % self.phase
         if self.phase == 0 and practice:
-            self.show_window(self.infoWindow, mode=Constants.MOD_FIRSTSCREEN)
+            self.show_window(self.infoWindow, mode=constants.MOD_FIRSTSCREEN)
         else:
-            self.show_window(self.infoWindow, mode=Constants.MOD_PREPHASE)
+            self.show_window(self.infoWindow, mode=constants.MOD_PREPHASE)
 
     def extend_last_signal(self, pickled_frame):
         if self.isRecording:
@@ -401,10 +412,10 @@ class ClientUI(AbstractClientUI):
 
     def next_question(self):
         self.last_signal = []
-        self.send(Constants.REQ_NEXT_PIC)
+        self.send(constants.REQ_NEXT_PIC)
 
     def go_test(self):
-        self.show_window(self.infoWindow, mode=Constants.MOD_PRETEST)
+        self.show_window(self.infoWindow, mode=constants.MOD_PRETEST)
         # self.show_window(self.testWindow)
 
     def getCheckedButton(self):
@@ -458,7 +469,7 @@ class ClientUI(AbstractClientUI):
             if meaning == question.answer:
                 self.correct_button = btn
                 self.target_meaning = self.images[self.phase][meaning]
-            # btn.setStyleSheet("background-color: rgb(255, 255, 255);")
+                # btn.setStyleSheet("background-color: rgb(255, 255, 255);")
         disconnect(self.buttonSignalMapper)
         connect(self.buttonSignalMapper, signal="mapped(int)", slot=on_select)
         self.last_signal = question.signal
@@ -471,8 +482,10 @@ class ClientUI(AbstractClientUI):
         on the first call when using qt4reactor on linux.
         """
         from platform import system
+
         if (self.activeWindow is not None) and system() == "Linux":
             from pymouse import PyMouse
+
             m = PyMouse()
             x, y = m.position()
             m.move(x + 1, y)
@@ -487,11 +500,12 @@ class ClientUI(AbstractClientUI):
             print "Sent: %s" % msg
 
     def exit(self):
-        self.show_window(window=self.infoWindow, mode=Constants.MOD_EXIT)
+        self.show_window(window=self.infoWindow, mode=constants.MOD_EXIT)
 
 
 if __name__ == "__main__":
     import sys
+
     ui = ClientUI('1')
     print "Running the reactor"
     ui.reactor.runReturn()
