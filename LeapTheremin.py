@@ -7,7 +7,7 @@ import jsonpickle
 from PySide import QtGui  # , QtUiTools
 
 import Leap
-from leaparticulator.theremin import tone
+from leaparticulator.theremin.tone import Tone
 from leaparticulator import constants
 from leaparticulator.constants import install_reactor
 
@@ -63,7 +63,7 @@ class ThereminPlayer(object):
         tones = []
         self.ui = ui
         for i in range(n_of_tones):
-            t = tone()
+            t = Tone()
             t.open()
             t.setAmplitude(0)
             t.start()
@@ -307,7 +307,7 @@ class ThereminListener(Leap.Listener):
         """
         # Get the most recent frame and report some basic information
         frame = controller.frame()
-        pickled = jsonpickle.encode(frame(frame))
+        pickled = jsonpickle.encode(frame)
         # print "Frame:", frame
         timestamp = 0
         if self.last_timestamp != -1:
