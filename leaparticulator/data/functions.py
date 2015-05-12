@@ -8,7 +8,8 @@ to_replace = [
     ("LeapFrame.", "leaparticulator.data.frame."),
     ("TestQuestion.", "leaparticulator.question."),
     ("QtUtils.Meaning", "leaparticulator.data.meaning.Meaning"),
-    ("QtUtils.", "leaparticulator.question.")
+    ("QtUtils.", "leaparticulator.question."),
+    ("leaparticulator.question.FeaturelessMeaning", "leaparticulator.data.meaning.FeaturelessMeaning")
 ]
 
 
@@ -27,9 +28,9 @@ def recursive_decode(lst, verbose=False):
     except TypeError:
         pass
     if isinstance(lst, dict):
-        if "py/objects" in lst.keys():
+        if "py/object" in lst.keys():
             if verbose:
-                print "Unpickle obj..."
+                print "Unpickle obj (type: %s)..." % lst['py/object']
             lst = jsonpickle.decode(lst)
         else:
             if verbose:
@@ -84,20 +85,20 @@ def fromFile_old(filename):
 
 
 def _expandResponsesNew(responses, images):
-    # d = {}
-    # for client in responses:
-    #     d[client] = {}
-    #     for phase in responses[client]:
-    #         d[client][phase] = {}
-    #         for image in responses[client][phase]:
-    #             # print images[int(phase)][int(image)]
-    #             d[client][phase][images[int(phase)][int(image)]] = responses[client][phase][image]
+    d = {}
+    for client in responses:
+        d[client] = {}
+        for phase in responses[client]:
+            d[client][phase] = {}
+            for image in responses[client][phase]:
+                print images[int(phase)][int(image)]
+                d[client][phase][images[int(phase)][int(image)]] = responses[client][phase][image]
 
-    return {client: {phase: {images[int(phase)][int(image)]: responses[client][phase][image] \
-                             for image in responses[client][phase]} \
-                     for phase in responses[client]} \
-            for client in responses}
-    # return d
+    # return {client: {phase: {images[int(phase)][int(image)]: responses[client][phase][image] \
+    #                          for image in responses[client][phase]} \
+    #                  for phase in responses[client]} \
+    #         for client in responses}
+    return d
 
 
 def _expandResponses(responses, images):
