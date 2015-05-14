@@ -25,7 +25,7 @@ fadeout_call_rate = 0.005
 
 # the rate at which we sample the leap info
 # for constant rate theremins
-theremin_rate = 1./100
+THEREMIN_RATE = 1./100
 
 # maximum duration of a signal in seconds
 MAX_SIGNAL_DURATION = 2.

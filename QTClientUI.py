@@ -64,7 +64,7 @@ class ClientUI(AbstractClientUI):
             n_of_tones=1, default_volume=.5, ui=self, realtime=False)
         self.reactor = reactor
         self.connection = self.theremin.protocol
-        self.playback_player = ThereminPlayback()
+        self.playback_player = ThereminPlayback(default_rate=constants.THEREMIN_RATE)
         self.default_volume = 0.5
         self.default_pitch = 440.
         self.last_signal = []
@@ -90,6 +90,7 @@ class ClientUI(AbstractClientUI):
         corresponding window setup method.
         """
         get = getFunction(window)
+        duration_limited = constants.MAX_SIGNAL_DURATION > 0
         # setup the volume dial
         dial = get(QtGui.QDial, 'volumeDial')
         dial.setValue(self.volume * 100)
@@ -134,11 +135,19 @@ class ClientUI(AbstractClientUI):
                 if not record:
                     submit.setEnabled(True)
                 shortcuts()
+                play.setEnabled(True)
 
-            play.setText("Stop")
-            disconnect(play)
+            if duration_limited:
+                play.setText("<Playing>")
+                play.setEnabled(False)
+            else:
+                play.setText("Stop")
+                play.setEnabled(False)
+                reactor.callLater(.5, lambda: play.setEnabled(True))
+                disconnect(play)
+                connect(play, "clicked()", fn_done)
+
             last_submit_state = submit.isEnabled()
-            connect(play, "clicked()", fn_done)
             if record is not None:
                 record.setEnabled(False)
             submit.setEnabled(False)
@@ -150,7 +159,6 @@ class ClientUI(AbstractClientUI):
         # setup the recording if there is a record button
         if record is not None:
             self.theremin.mute()
-            duration_limited = constants.MAX_SIGNAL_DURATION > 0
             if duration_limited and not self.progressbar:
                 layout = get(QtGui.QVBoxLayout, 'verticalLayout_2')
                 self.progressLabel = QtGui.QLabel()

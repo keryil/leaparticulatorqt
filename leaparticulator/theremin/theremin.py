@@ -227,7 +227,7 @@ class Theremin(Leap.Listener):
 
 class ConstantRateTheremin(Theremin):
     def __init__(self, n_of_tones=1, default_volume=.5, realtime=True, ui=None,
-                 rate=constants.theremin_rate, factory=LeapClientFactory):
+                 rate=constants.THEREMIN_RATE, factory=LeapClientFactory):
         Leap.Listener.__init__(self)
         self.realtime = realtime
         self.rate = rate
@@ -268,6 +268,7 @@ class ThereminPlayback(object):
     score = None
     counter = 0
     call = None
+    stopping = False
 
     def __init__(self, n_of_tones=1, default_volume=.5, default_rate=None):
         self.player = ThereminPlayer(n_of_tones, default_volume)
@@ -284,10 +285,7 @@ class ThereminPlayback(object):
             self.player.newPosition(f)
             self.counter += 1
         except IndexError, e:
-            # print e
-            # print "Ran out of frames, stopping playback..."
             self.stop()
-            # finally:
 
     def start(self, score, callback=None):
         if self.call:
@@ -311,24 +309,36 @@ class ThereminPlayback(object):
             self.rate = 1. / average_fps
 
         self.player.unmute()
+        self.counter = 0
         self.call.start(self.rate, now=True).addErrback(log.err)
 
     def stop(self):
         # try:
-        if self.call:
+        if self.call and not self.stopping:
+            # submit a fake frame to trigger the fadeout
+            fake_frame = LeapFrame(None, random=True)
+            fake_frame.hands = []
+            self.player.newPosition(fake_frame)
             if self.call.running:
                 self.call.stop()
-            self.call = None
-            if self.callback:
-                self.callback()
-            # except AssertionError, err:
-            #   print err
-            # raise err
-            # finally:
-            self.player.mute()
+
             self.counter = 0
-            # self.call = None
-            print "Stopped"
+
+            def finalize():
+                self.call = None
+                # except AssertionError, err:
+                #   print err
+                # raise err
+                # finally:
+                self.player.mute()
+                # self.call = None
+                self.stopping = False
+                print "Stopped"
+                if self.callback:
+                    self.callback()
+            self.stopping = True
+            # allow a short time for the fadeout to end
+            reactor.callLater(.5, finalize)
 
 if __name__ == "__main__":
     # theremin = Theremin()
