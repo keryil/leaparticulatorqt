@@ -45,6 +45,8 @@ class ClientUI(AbstractClientUI):
         self.phase = -1
         self.isPractice = False
 
+        self.progressbar = None
+
         # this is a dict of responses, in the form
         # dict[phase][image] = [frame1, frame2,...]
         self.responses = {phase: {} for phase in range(3)}
@@ -147,14 +149,33 @@ class ClientUI(AbstractClientUI):
 
         # setup the recording if there is a record button
         if record is not None:
+            self.theremin.mute()
+            duration_limited = constants.MAX_SIGNAL_DURATION > 0
+            if duration_limited and not self.progressbar:
+                layout = get(QtGui.QVBoxLayout, 'verticalLayout_2')
+                self.progressLabel = QtGui.QLabel()
+                self.progressLabel.setTextFormat(QtCore.Qt.RichText)
+                txt =  "<b>Important:</b> Your signal cannot exceed %.01f seconds.<br/>" %\
+                                           constants.MAX_SIGNAL_DURATION
+                # txt += "<b>Countdown:</b>"
+                self.progressLabel.setText(txt)
+                self.progressLabel.setAlignment(QtCore.Qt.AlignCenter)
+                self.progressbar = QtGui.QProgressBar()
+                self.progressbar.setRange(0, 100)
+                layout.insertWidget(0, self.progressbar)
+                layout.insertWidget(0, self.progressLabel)
+
             def fn_record():
+                self.theremin.unmute()
                 def fn_done():
                     self.stop_recording()
+                    self.theremin.mute()
                     # self.send(Constants.END_REC)
                     # self.isRecording = False
                     record.setText("Record")
                     play.setEnabled(True)
                     submit.setEnabled(True)
+                    record.setEnabled(True)
                     disconnect(record)
                     connect(record, "clicked()", fn_record)
                     shortcuts()
@@ -163,11 +184,25 @@ class ClientUI(AbstractClientUI):
                 # self.send(Constants.START_REC)
                 # self.last_signal = []
                 # self.isRecording = True
-                disconnect(record)
-                connect(record, "clicked()", fn_done)
                 play.setEnabled(False)
                 submit.setEnabled(False)
-                record.setText("Stop")
+                if duration_limited:
+                    record.setEnabled(False)
+                    reactor.callLater(constants.MAX_SIGNAL_DURATION,
+                                      fn_done)
+                    delay = constants.MAX_SIGNAL_DURATION / 100.
+
+                    def tick_progressbar(i):
+                        self.progressbar.setValue(i)
+                        if i < self.progressbar.maximum():
+                            reactor.callLater(delay, lambda: tick_progressbar(i+1))
+                        else:
+                            self.progressbar.setValue(0)
+                    reactor.callLater(delay, lambda: tick_progressbar(1))
+                else:
+                    disconnect(record)
+                    connect(record, "clicked()", fn_done)
+                    record.setText("Stop")
                 shortcuts()
 
             connect(record, "clicked()", fn_record)

@@ -27,6 +27,9 @@ fadeout_call_rate = 0.005
 # for constant rate theremins
 theremin_rate = 1./100
 
+# maximum duration of a signal in seconds
+MAX_SIGNAL_DURATION = 2.
+
 # number of options each test question has
 n_of_options = [4, 4, 4]
 # number of total available images per phase
