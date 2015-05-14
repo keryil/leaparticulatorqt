@@ -130,7 +130,7 @@ class LeapServer(basic.LineReceiver):
 
     def sendLine(self, line):
         print "Sending line: %s" % line
-        basic.LineReceiver.sendLine(self, line)
+        basic.LineReceiver.sendLine(self, str(line))
 
     def nextPicture(self):
         """

@@ -13,10 +13,12 @@ else:
 
 # from PySide.QtCore import QFile
 from AbstractClientUI import AbstractClientUI
-from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
+# from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
 from QtUtils import connect, disconnect, loadWidget, loadFromRes, setButtonIcon
 from jsonpickle import decode, encode
-
+from leaparticulator.constants import install_reactor
+install_reactor()
+from twisted.internet import reactor
 
 def getFunction(widget):
     """
@@ -54,8 +56,12 @@ class ClientUI(AbstractClientUI):
         self.test_results_practice = {phase: [] for phase in range(3)}
 
         # theremin stuff
-        self.theremin, self.reactor, self.controller, self.connection = gimmeSomeTheremin(
-            n_of_notes=1, default_volume=.5, ui=self, realtime=False)
+        from leaparticulator.theremin.theremin import Theremin, ThereminPlayback
+        self.theremin = Theremin(
+        # self.theremin, self.reactor, self.controller, self.connection = gimmeSomeTheremin(
+            n_of_tones=1, default_volume=.5, ui=self, realtime=False)
+        self.reactor = reactor
+        self.connection = self.theremin.protocol
         self.playback_player = ThereminPlayback()
         self.default_volume = 0.5
         self.default_pitch = 440.

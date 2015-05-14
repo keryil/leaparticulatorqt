@@ -415,7 +415,7 @@ class LeapP2PClient(basic.LineReceiver):
                 assert self.factory.mode in (constants.IMAGE_LIST,
                                              constants.FEEDBACK)
             except AssertionError, err:
-                if constants.TEST:
+                if constants.TESTING:
                     return
                 else:
                     raise err
@@ -578,7 +578,7 @@ def start_client(qapplication, uid):
     connection_def.addCallback(ui.setClient)
     factory.connection_def = connection_def
     factory.endpoint = endpoint
-    if not (constants.TEST or reactor.running):
+    if not (constants.TESTING or reactor.running):
         print "Starting reactor..."
         reactor.runReturn()
         print "Starting UI..."
@@ -597,7 +597,7 @@ def start_server(qapplication, condition='1', no_ui=False):
             print "Headless mode..."
             sys.stdout.flush()
             factory = get_server_instance(condition=condition, ui=None)
-            if not (constants.TEST or reactor.running):
+            if not (constants.TESTING or reactor.running):
                 print "Starting reactor..."
                 reactor.runReturn()
         else:
@@ -605,7 +605,7 @@ def start_server(qapplication, condition='1', no_ui=False):
             sys.stdout.flush()
             ui = LeapP2PServerUI(qapplication)
             factory = get_server_instance(condition=condition, ui=ui)
-            if not (constants.TEST or reactor.running):
+            if not (constants.TESTING or reactor.running):
                 print "Starting reactor..."
                 reactor.runReturn()
             ui.go()

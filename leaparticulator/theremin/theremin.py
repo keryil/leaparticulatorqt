@@ -8,6 +8,7 @@ from leaparticulator.data.frame import LeapFrame
 from leaparticulator.constants import install_reactor, palmToAmpAndFreq
 import leaparticulator.constants as constants
 from leaparticulator.theremin.tone import Tone
+from LeapServer import LeapClientFactory
 from collections import deque
 
 install_reactor()
@@ -141,15 +142,22 @@ class Theremin(Leap.Listener):
     last_signal = []
     callback = None
 
-    def __init__(self, n_of_tones=1, default_volume=.5, ui=None):
+    def __init__(self, n_of_tones=1, default_volume=.5, ui=None,
+                 factory=LeapClientFactory, realtime=False):
         Leap.Listener.__init__(self)
-        # self.realtime = realtime
+        self.realtime = realtime
         self.player = ThereminPlayer(n_of_tones=n_of_tones,
                                      default_volume=default_volume,
                                      ui=ui)
         self.controller = Leap.Controller()
+        self.controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
         self.controller.add_listener(self)
-        self.reactor = reactor
+        print "Connecting to: %s:%s" % (constants.leap_server,
+                                        constants.leap_port)
+        self.protocol = reactor.connectTCP(constants.leap_server,
+                                           constants.leap_port,
+                                           factory(self, ui))
+        # self.reactor = reactor
         log.startLogging(sys.stdout)
 
     def on_init(self, controller):
@@ -187,8 +195,14 @@ class Theremin(Leap.Listener):
         if (not self.player.muted) \
                 and (amp != 0) \
                 and (freq != 0):
-            if self.recording:
-                self.last_signal.append(pickled)
+            if self.protocol:
+                if self.realtime:
+                    self.protocol.sendLine(pickled)
+                if self.protocol.factory.ui:
+                    self.protocol.factory.ui.extend_last_signal(pickled)
+            else:
+                if not self.realtime and self.recording:
+                        self.last_signal.append(pickled)
 
     def record(self):
         self.recording = True
@@ -212,16 +226,22 @@ class Theremin(Leap.Listener):
         self.player.setVolume(value)
 
 class ConstantRateTheremin(Theremin):
-    def __init__(self, n_of_tones=1, default_volume=.5, realtime=True, ui=None):
+    def __init__(self, n_of_tones=1, default_volume=.5, realtime=True, ui=None,
+                 rate=constants.theremin_rate):
         Leap.Listener.__init__(self)
         self.realtime = realtime
+        self.rate = rate
         self.player = ThereminPlayer(n_of_tones=n_of_tones,
                                      default_volume=default_volume,
                                      ui=ui)
         self.controller = Leap.Controller()
+        # self.reactor = reactor
         log.startLogging(sys.stdout)
         self.call = LoopingCall(self.on_frame, self.controller)
-        self.call.start(interval=constants.theremin_rate)
+
+    def start(self):
+        if not self.call.running:
+            self.call.start(interval=self.rate)
 
     def stop(self):
         self.call.stop()
@@ -304,5 +324,6 @@ class ThereminPlayback(object):
 
 if __name__ == "__main__":
     # theremin = Theremin()
+    print "theremin.py test code init..."
     theremin = ConstantRateTheremin()
     reactor.run()
