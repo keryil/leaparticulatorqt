@@ -56,8 +56,8 @@ class ClientUI(AbstractClientUI):
         self.test_results_practice = {phase: [] for phase in range(3)}
 
         # theremin stuff
-        from leaparticulator.theremin.theremin import Theremin, ThereminPlayback
-        self.theremin = Theremin(
+        from leaparticulator.theremin.theremin import ConstantRateTheremin, ThereminPlayback
+        self.theremin = ConstantRateTheremin(
         # self.theremin, self.reactor, self.controller, self.connection = gimmeSomeTheremin(
             n_of_tones=1, default_volume=.5, ui=self, realtime=False)
         self.reactor = reactor

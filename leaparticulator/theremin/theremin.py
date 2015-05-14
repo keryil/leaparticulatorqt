@@ -227,7 +227,7 @@ class Theremin(Leap.Listener):
 
 class ConstantRateTheremin(Theremin):
     def __init__(self, n_of_tones=1, default_volume=.5, realtime=True, ui=None,
-                 rate=constants.theremin_rate):
+                 rate=constants.theremin_rate, factory=LeapClientFactory):
         Leap.Listener.__init__(self)
         self.realtime = realtime
         self.rate = rate
@@ -235,9 +235,17 @@ class ConstantRateTheremin(Theremin):
                                      default_volume=default_volume,
                                      ui=ui)
         self.controller = Leap.Controller()
+        self.controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
+
+        print "Connecting to: %s:%s" % (constants.leap_server,
+                                        constants.leap_port)
+        self.protocol = reactor.connectTCP(constants.leap_server,
+                                           constants.leap_port,
+                                           factory(self, ui))
         # self.reactor = reactor
         log.startLogging(sys.stdout)
         self.call = LoopingCall(self.on_frame, self.controller)
+        self.start()
 
     def start(self):
         if not self.call.running:
