@@ -122,14 +122,15 @@ class ClientUI(AbstractClientUI):
 
         # handle play/stop plus label changes
         def fn_play():
-            last_submit_state = None
-
+            last_submit_state = submit.isEnabled()
             def fn_done():
                 self.playback_player.stop()
                 play.setText("Play")
                 if record is not None:
                     record.setEnabled(True)
                 submit.setEnabled(last_submit_state)
+                if self.activeWindow == self.learningWindow:
+                    submit.setEnabled(True)
                 disconnect(play)
                 connect(play, "clicked()", fn_play)
                 if not record:
@@ -147,7 +148,6 @@ class ClientUI(AbstractClientUI):
                 disconnect(play)
                 connect(play, "clicked()", fn_done)
 
-            last_submit_state = submit.isEnabled()
             if record is not None:
                 record.setEnabled(False)
             submit.setEnabled(False)
