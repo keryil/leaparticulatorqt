@@ -25,7 +25,13 @@ the test questions along with the answers, encoded in JSON using jsonpickle. Cur
 
 ### Preparation ###
 
-You should change Constants.py file on client-side to specify the server ip/port. Same goes for the port when starting a server. 
+You should change Constants.py file on client-side to specify the server ip/port. Same goes for the port when starting a server. Also:
+
+- **constants.MAX_SIGNAL_DURATION**: If positive, sets a limit on the duration of signals. In seconds.
+
+- **constants.THEREMIN_RATE**: If using a ConstantRateTheremin object, this property sets the rate at which new Leap data is transformed into sound i.e. the effective frame rate of the hand sensor. In 1/seconds i.e. Hertz. 
+
+- **constants.MEANING_DIR**: Specifies the subfolder of IMG_DIR under which meanings are to be found. Change this to use different meaning spaces. 
 
 ### Execution ###
 
