@@ -290,7 +290,7 @@ class ThereminPlayback(object):
     def start(self, score, callback=None):
         if self.call:
             if self.call.running:
-                self.stop()
+                self.call.stop()
             else:
                 self.call = None
         self.callback = callback
