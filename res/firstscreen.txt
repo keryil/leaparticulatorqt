@@ -10,6 +10,4 @@ In the experiment there are 3 phases, each phase has 2 sessions, and each sessio
 
 You will create signals throughout using the Leap Motion detector in front of you. This is an infrared sensor which can sense where your hand above of it. You should move your hand either left or right to manipulate the signal. You can try this now.
 
-Signals can not be more than 1 second long. When you press record, a timer at the top of the screen will show the second passing. You can play the signal back, you can rerecord the signal if you would like to. 
-
 Please press Okay when you are ready to start the experiment.
