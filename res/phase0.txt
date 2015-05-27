@@ -6,6 +6,8 @@ To generate a signal is the same:
 2. create your signal
 3. press Stop
 
+Signals can not be more than 1 second long. When you press record, a timer at the top of the screen will show the second passing.
+
 If you pause within your signal, the silent period will be deleted in the recorded signal. 
 
 You may play your signal back by pressing Play. You may rerecord your signal if you are not happy. 
