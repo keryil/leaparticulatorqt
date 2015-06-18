@@ -5,10 +5,174 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73c7c7d7-b792-4c51-aa11-e921013076b9" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/BartPilot.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL1.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL1.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL3.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL3.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL4.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL4.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS1.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS1.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS1.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS10.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS10.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS10.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS10.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS10.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS10.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS11.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS11.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS11.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS11.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS11.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS11.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS12.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS12.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS12.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS12.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS13.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS13.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS13.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS13.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS13.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS13.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS14.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS14.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS14.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS14.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS15.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS15.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS15.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS15.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS15.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS15.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS16.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS16.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS16.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS16.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS16.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS16.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS17.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS17.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS17.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS17.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS17.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS17.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS18.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS18.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS18.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS18.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS18.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS18.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS19.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS19.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS19.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS19.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS19.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS19.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS2.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS2.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS2.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS20.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS20.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS20.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS20.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS20.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS20.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS21.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS21.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS21.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS21.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS21.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS21.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS22.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS22.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS22.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS22.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS22.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS22.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS23.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS23.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS23.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS23.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS23.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS23.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS24.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS24.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS24.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS24.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS24.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS24.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS25.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS25.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS25.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS25.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS25.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS25.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS3.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS3.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS3.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS3.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS3.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS3.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS4.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS4.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS4.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS5.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS5.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS5.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS5.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS5.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS5.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS6.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS6.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS6.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS6.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS6.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS6.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS7.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS7.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS7.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS7.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS7.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS7.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS8.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS8.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS8.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS8.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS8.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS8.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.1.exp.images.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.1.exp.responses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.1.exp.responses.freq_and_amp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.1.exp.tests.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/SO15.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/ftest.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/ftest.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os12.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os12.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os14.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os14.log" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/DataAnalysis.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/DataAnalysis.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/LeapArticulatorQt.iml" afterPath="$PROJECT_DIR$/.idea/LeapArticulatorQt.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapTheremin.py" afterPath="$PROJECT_DIR$/LeapTheremin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapServer.py" afterPath="$PROJECT_DIR$/LeapServer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QTClientUI.py" afterPath="$PROJECT_DIR$/QTClientUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QtUtils.py" afterPath="$PROJECT_DIR$/QtUtils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.markdown" afterPath="$PROJECT_DIR$/README.markdown" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/.ipynb_checkpoints/StreamlinedDataAnalysisGhmm-checkpoint.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/.ipynb_checkpoints/StreamlinedDataAnalysisGhmm-checkpoint.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/ui/client.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/ui/client.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/constants.py" afterPath="$PROJECT_DIR$/leaparticulator/constants.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/phase0.txt" afterPath="$PROJECT_DIR$/res/phase0.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/phase0_practice.txt" afterPath="$PROJECT_DIR$/res/phase0_practice.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/server.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/server.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" afterPath="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/theremin/tone.py" afterPath="$PROJECT_DIR$/leaparticulator/theremin/tone.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="LeapArticulatorQt.iws" />
@@ -24,9 +188,6 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="DaemonCodeAnalyzer">
-    <disable_hints />
-  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="LeapArticulatorQt" />
@@ -36,7 +197,7 @@
       <file leaf-file-name="benchmark_functions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/test/benchmark/data/benchmark_functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="413" max-vertical-offset="885">
+            <state vertical-scroll-proportion="0.0">
               <caret line="35" column="120" selection-start-line="35" selection-start-column="120" selection-end-line="35" selection-end-column="120" />
               <folding>
                 <element signature="e#22#38#0" expanded="true" />
@@ -45,23 +206,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="theremin.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/leaparticulator/theremin/theremin.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1170" max-vertical-offset="4695">
-              <caret line="78" column="25" selection-start-line="78" selection-start-column="21" selection-end-line="78" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="hmm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/data/hmm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2361" max-vertical-offset="7890">
-              <caret line="169" column="45" selection-start-line="169" selection-start-column="45" selection-end-line="169" selection-end-column="45" />
+            <state vertical-scroll-proportion="-4.7222223">
+              <caret line="408" column="35" selection-start-line="408" selection-start-column="35" selection-end-line="408" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -70,7 +219,7 @@
       <file leaf-file-name="functions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2466" max-vertical-offset="5175">
+            <state vertical-scroll-proportion="-3.851852">
               <caret line="311" column="14" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="14" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
@@ -82,9 +231,11 @@
       <file leaf-file-name="StreamlinedDataAnalysisGhmm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4485" max-vertical-offset="12870">
-              <caret line="299" column="26" selection-start-line="299" selection-start-column="26" selection-end-line="299" selection-end-column="26" />
-              <folding />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="356" column="0" selection-start-line="356" selection-start-column="0" selection-end-line="356" selection-end-column="0" />
+              <folding>
+                <marker date="1434468211000" expanded="true" signature="22241:22653" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -92,7 +243,7 @@
       <file leaf-file-name="QTClientUI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/QTClientUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="704" max-vertical-offset="7830">
+            <state vertical-scroll-proportion="0.0">
               <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
@@ -104,11 +255,19 @@
       <file leaf-file-name="LeapTheremin.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36682242" vertical-offset="4493" max-vertical-offset="6795">
-              <caret line="310" column="31" selection-start-line="310" selection-start-column="31" selection-end-line="310" selection-end-column="31" />
-              <folding>
-                <element signature="e#18#28#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.15384616">
+              <caret line="333" column="0" selection-start-line="333" selection-start-column="0" selection-end-line="333" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StreamlinedDataAnalysisGhmm.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="249" column="21" selection-start-line="249" selection-start-column="21" selection-end-line="249" selection-end-column="21" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -116,8 +275,8 @@
       <file leaf-file-name="pydev_import_hook.py" pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydev_import_hook.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="600">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -135,7 +294,7 @@
       <file leaf-file-name="trajectory.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/data/trajectory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="4785">
+            <state vertical-scroll-proportion="0.0">
               <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
               <folding>
                 <element signature="e#49#74#0" expanded="true" />
@@ -184,13 +343,18 @@
         <option value="$PROJECT_DIR$/leaparticulator/data/functions.py" />
         <option value="$PROJECT_DIR$/leaparticulator/data/trajectory.py" />
         <option value="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.ipynb" />
-        <option value="$PROJECT_DIR$/leaparticulator/data/hmm.py" />
         <option value="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py" />
         <option value="$PROJECT_DIR$/leaparticulator/notebooks/leaparticulator/data/hmm.py" />
         <option value="$PROJECT_DIR$/leaparticulator/test/benchmark/data/benchmark_functions.py" />
         <option value="$PROJECT_DIR$/LeapTheremin.py" />
+        <option value="$PROJECT_DIR$/leaparticulator/data/hmm.py" />
       </list>
     </option>
+  </component>
+  <component name="NamedScopeManager">
+    <order>
+      <scope name="Scope1" />
+    </order>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
@@ -349,124 +513,9 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leaparticulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leaparticulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leaparticulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="benchmark" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leaparticulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="benchmark" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leaparticulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="p2p" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="LeapArticulatorQt" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="leaparticulator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -494,6 +543,8 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="869" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -627,7 +678,27 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="true" type="tests" factoryName="py.test">
+    <configuration default="true" type="Multirun" factoryName="Multirun" separateTabs="true" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0">
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LeapArticulatorQt" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -644,11 +715,25 @@
       <option name="TEST_TYPE" value="TEST_SCRIPT" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
-      <option name="testToRun" value="" />
-      <option name="keywords" value="" />
-      <option name="params" value="" />
-      <option name="USE_PARAM" value="false" />
-      <option name="USE_KEYWORD" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="LeapArticulatorQt" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Nosetests">
@@ -670,23 +755,6 @@
       <option name="USE_PATTERN" value="false" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="LeapArticulatorQt" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -711,10 +779,7 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="Multirun" factoryName="Multirun" separateTabs="true" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="0">
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
+    <configuration default="true" type="tests" factoryName="py.test">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs />
@@ -731,25 +796,11 @@
       <option name="TEST_TYPE" value="TEST_SCRIPT" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Attests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="LeapArticulatorQt" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
+      <option name="testToRun" value="" />
+      <option name="keywords" value="" />
+      <option name="params" value="" />
+      <option name="USE_PARAM" value="false" />
+      <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
     <configuration default="false" name="Unnamed" type="Multirun" factoryName="Multirun" separateTabs="true" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="1">
@@ -995,15 +1046,15 @@
       <item index="4" class="java.lang.String" itemvalue="Python.sampleLeap" />
       <item index="5" class="java.lang.String" itemvalue="Python.server" />
       <item index="6" class="java.lang.String" itemvalue="Python.OldServer" />
-      <item index="7" class="java.lang.String" itemvalue="Python.theremin" />
-      <item index="8" class="java.lang.String" itemvalue="Python.benchmark_functions" />
-      <item index="9" class="java.lang.String" itemvalue="Python.QTClientUI" />
-      <item index="10" class="java.lang.String" itemvalue="Python tests.All Tests (Linux)" />
-      <item index="11" class="java.lang.String" itemvalue="Python tests.BasicServerTests" />
-      <item index="12" class="java.lang.String" itemvalue="Python tests.test_client_full" />
-      <item index="13" class="java.lang.String" itemvalue="Python tests.test_client_TwoClients" />
-      <item index="14" class="java.lang.String" itemvalue="Python tests.BasicServerTest1" />
-      <item index="15" class="java.lang.String" itemvalue="Python tests.All Tests" />
+      <item index="7" class="java.lang.String" itemvalue="Python tests.All Tests (Linux)" />
+      <item index="8" class="java.lang.String" itemvalue="Python tests.BasicServerTests" />
+      <item index="9" class="java.lang.String" itemvalue="Python tests.test_client_full" />
+      <item index="10" class="java.lang.String" itemvalue="Python tests.test_client_TwoClients" />
+      <item index="11" class="java.lang.String" itemvalue="Python tests.BasicServerTest1" />
+      <item index="12" class="java.lang.String" itemvalue="Python tests.All Tests" />
+      <item index="13" class="java.lang.String" itemvalue="Python.theremin" />
+      <item index="14" class="java.lang.String" itemvalue="Python.benchmark_functions" />
+      <item index="15" class="java.lang.String" itemvalue="Python.QTClientUI" />
       <item index="16" class="java.lang.String" itemvalue="Python tests.Unittests in test_client_basic" />
       <item index="17" class="java.lang.String" itemvalue="Python tests.Unittests in TwoClientsFirstRound" />
     </list>
@@ -1166,24 +1217,24 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="773" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1280" height="773" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869565" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32267883" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2494043" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24225576" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24146147" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42782608" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35312024" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2648402" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26381648" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869565" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3242009" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1203,9 +1254,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="myTodoPanelSettings">
-      <TodoPanelSettings />
-    </option>
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="false" />
     <MESSAGE value="Fixed the ROOT path issue. &#10;Fixed parts of the Theremin issue." />
     <MESSAGE value="-A lot of refactoring.&#10;-Implemented a leaner theremin.&#10;-Implemented a constant frame rate theremin." />
@@ -1238,114 +1286,107 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="846" max-vertical-offset="6102">
-          <caret line="49" column="34" selection-start-line="40" selection-start-column="63" selection-end-line="40" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2760">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/QtUtils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="312" max-vertical-offset="1155">
+        <state vertical-scroll-proportion="0.0">
           <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Leap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="22770" max-vertical-offset="31020">
+        <state vertical-scroll-proportion="0.0">
           <caret line="1519" column="0" selection-start-line="1519" selection-start-column="0" selection-end-line="1519" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="8700" max-vertical-offset="9405">
+        <state vertical-scroll-proportion="0.0">
           <caret line="551" column="4" selection-start-line="551" selection-start-column="4" selection-end-line="551" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3885" max-vertical-offset="7155">
+        <state vertical-scroll-proportion="0.0">
           <caret line="303" column="21" selection-start-line="303" selection-start-column="21" selection-end-line="303" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="705" max-vertical-offset="5085">
+        <state vertical-scroll-proportion="0.0">
           <caret line="49" column="34" selection-start-line="40" selection-start-column="63" selection-end-line="40" selection-end-column="67" />
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="33066" max-vertical-offset="33375">
+        <state vertical-scroll-proportion="0.0">
           <caret line="2216" column="0" selection-start-line="2216" selection-start-column="0" selection-end-line="2216" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/nosetests.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="464205">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="24482" max-vertical-offset="33375">
+        <state vertical-scroll-proportion="0.0">
           <caret line="1642" column="0" selection-start-line="1642" selection-start-column="0" selection-end-line="1642" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/automated_2014-09-29_10:33:34.060200.log">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="622">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/libLeap.dylib">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.389049" vertical-offset="0" max-vertical-offset="324045">
+        <state vertical-scroll-proportion="0.389049">
           <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/QtUtils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="544" max-vertical-offset="1328">
+        <state vertical-scroll-proportion="0.0">
           <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Leap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="31065">
+        <state vertical-scroll-proportion="0.0">
           <caret line="31" column="50" selection-start-line="31" selection-start-column="50" selection-end-line="31" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/zmq_stuff.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/zmq_client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="547">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
@@ -1359,56 +1400,56 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LeapServer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="75" max-vertical-offset="7380">
+        <state vertical-scroll-proportion="0.0">
           <caret line="457" column="26" selection-start-line="457" selection-start-column="26" selection-end-line="457" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/theremin/tone.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1650">
+        <state vertical-scroll-proportion="0.0">
           <caret line="104" column="0" selection-start-line="104" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/test/p2p/test_client_basic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6385542" vertical-offset="403" max-vertical-offset="735">
+        <state vertical-scroll-proportion="0.6385542">
           <caret line="43" column="24" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/test/p2p/test_server_twoClients.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1888" max-vertical-offset="2304">
+        <state vertical-scroll-proportion="0.0">
           <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="448" max-vertical-offset="5328">
+        <state vertical-scroll-proportion="0.0">
           <caret line="30" column="28" selection-start-line="30" selection-start-column="28" selection-end-line="30" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/test/p2p/test_server_basic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2528" max-vertical-offset="2880">
+        <state vertical-scroll-proportion="0.0">
           <caret line="158" column="26" selection-start-line="158" selection-start-column="26" selection-end-line="158" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/ui/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2336" max-vertical-offset="3312">
+        <state vertical-scroll-proportion="0.0">
           <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ProfileStreamline.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.7692308" vertical-offset="480" max-vertical-offset="2832">
+        <state vertical-scroll-proportion="-0.7692308">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="23" />
         </state>
       </provider>
@@ -1429,108 +1470,98 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/logs/logs/orange_squares/OS1.1.exp.responses.csv">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.30769232" vertical-offset="528" max-vertical-offset="205200">
+        <state vertical-scroll-proportion="-0.30769232">
           <caret line="21" column="76" selection-start-line="21" selection-start-column="76" selection-end-line="21" selection-end-column="76" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/data/frame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="789" max-vertical-offset="2256">
+        <state vertical-scroll-proportion="0.0">
           <caret line="96" column="13" selection-start-line="96" selection-start-column="13" selection-end-line="96" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/logs/logs/orange_squares/OS1.1.exp.log">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="64" max-vertical-offset="160">
+        <state vertical-scroll-proportion="0.0">
           <caret line="4" column="63" selection-start-line="4" selection-start-column="63" selection-end-line="4" selection-end-column="63" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ProfileStreamlineV2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="752">
+        <state vertical-scroll-proportion="0.0">
           <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/messaging.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="1560">
+        <state vertical-scroll-proportion="0.0">
           <caret line="85" column="46" selection-start-line="85" selection-start-column="46" selection-end-line="85" selection-end-column="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/GHmmWrapper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.025641026" vertical-offset="0" max-vertical-offset="5472">
+        <state vertical-scroll-proportion="0.025641026">
           <caret line="1" column="26" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/p2p/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="495" max-vertical-offset="9615">
+        <state vertical-scroll-proportion="0.0">
           <caret line="33" column="30" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/test/p2p/test_client_full.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="435" max-vertical-offset="2460">
+        <state vertical-scroll-proportion="0.0">
           <caret line="90" column="42" selection-start-line="90" selection-start-column="42" selection-end-line="90" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/question.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="585" max-vertical-offset="1665">
+        <state vertical-scroll-proportion="0.0">
           <caret line="105" column="0" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/TestQuestion.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1665">
+        <state vertical-scroll-proportion="0.0">
           <caret line="11" column="27" selection-start-line="0" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/constants.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1456" max-vertical-offset="3024">
+        <state vertical-scroll-proportion="0.0">
           <caret line="103" column="46" selection-start-line="103" selection-start-column="46" selection-end-line="103" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/data/meaning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1216" max-vertical-offset="3136">
+        <state vertical-scroll-proportion="0.0">
           <caret line="76" column="29" selection-start-line="76" selection-start-column="29" selection-end-line="76" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/theremin/theremin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1170" max-vertical-offset="4695">
-          <caret line="78" column="25" selection-start-line="78" selection-start-column="21" selection-end-line="78" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="78" column="0" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/data/trajectory.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="4785">
+        <state vertical-scroll-proportion="0.0">
           <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
           <folding>
             <element signature="e#49#74#0" expanded="true" />
@@ -1538,36 +1569,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/data/hmm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2361" max-vertical-offset="7890">
-          <caret line="169" column="45" selection-start-line="169" selection-start-column="45" selection-end-line="169" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
         <state>
           <selected id="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33173078" vertical-offset="4692" max-vertical-offset="13230">
-          <caret line="323" column="40" selection-start-line="323" selection-start-column="40" selection-end-line="323" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2466" max-vertical-offset="5175">
-          <caret line="311" column="14" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1580,15 +1585,15 @@
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydev_import_hook.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/test/benchmark/data/benchmark_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="413" max-vertical-offset="885">
+        <state vertical-scroll-proportion="0.0">
           <caret line="35" column="120" selection-start-line="35" selection-start-column="120" selection-end-line="35" selection-end-column="120" />
           <folding>
             <element signature="e#22#38#0" expanded="true" />
@@ -1598,15 +1603,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4485" max-vertical-offset="12870">
-          <caret line="299" column="26" selection-start-line="299" selection-start-column="26" selection-end-line="299" selection-end-column="26" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="356" column="0" selection-start-line="356" selection-start-column="0" selection-end-line="356" selection-end-column="0" />
+          <folding>
+            <marker date="1434468211000" expanded="true" signature="22241:22653" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/QTClientUI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="704" max-vertical-offset="7830">
+        <state vertical-scroll-proportion="0.0">
           <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
@@ -1614,15 +1621,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
+    <entry file="file://$PROJECT_DIR$/leaparticulator/notebooks/DataAnalysis.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36682242" vertical-offset="4493" max-vertical-offset="6795">
-          <caret line="310" column="31" selection-start-line="310" selection-start-column="31" selection-end-line="310" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="249" column="21" selection-start-line="249" selection-start-column="21" selection-end-line="249" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.851852">
+          <caret line="311" column="14" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="14" />
           <folding>
-            <element signature="e#18#28#0" expanded="true" />
+            <element signature="e#0#17#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/leaparticulator/data/hmm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.7222223">
+          <caret line="408" column="35" selection-start-line="408" selection-start-column="35" selection-end-line="408" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15384616">
+          <caret line="333" column="0" selection-start-line="333" selection-start-column="0" selection-end-line="333" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>Scope1</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+          <order>
+            <scope name="Scope1" />
+          </order>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
