@@ -180,7 +180,7 @@ class LeapP2PClientUI(object):
             # self.factory.stop_recording()
             self.recording = False
             self.theremin.stop_record()
-            self.theremin.mute()
+            # self.theremin.mute()
             btnRec = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
             btnRec.setText("Re-record")
             self.unique_connect(btnRec, "clicked()", self.start_recording)

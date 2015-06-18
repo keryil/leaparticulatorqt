@@ -87,7 +87,7 @@ class Tone(object):
                 if self.phase > math.pi:
                     self.phase -= 2. * math.pi
 
-        if not constants.TEST:
+        if not constants.TESTING:
             while self.running:
                 buf = array.array('f', gen()).tostring()
                 self.stream.write(buf)

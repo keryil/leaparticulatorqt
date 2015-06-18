@@ -6,14 +6,17 @@
 # In[1]:
 
 # we are trying to add ../../ to the PYTHONPATH
-import os, sys
-path = os.getcwd()
-print path
-path = path.split(os.path.sep)[:-2]
-print path
-path = os.path.join(os.path.sep, *path)
-print path
-sys.path.append(path)
+if 'set_path_' not in globals():
+    import os, sys
+    path = os.getcwd()
+    print path
+    path = path.split(os.path.sep)[:-2]
+    path = os.path.join(os.path.sep, *path)
+    if path.endswith("LeapArticulatorQt"):
+        print path
+        sys.path.append(path)
+        global set_path_
+        set_path_ = True
 
 
 # In[2]:
@@ -73,7 +76,7 @@ def plot_quiver2d(data, alpha=.75, C=[], path=None, *args, **kwargs):
 #     print_n_flush(_n_flush( C))
     X, Y = X[:-1], Y[:-1]
 #     print_n_flush(_n_flush( X, Y, U, V))
-    patches = quiver(X, Y, U, V, *args, color=C, edgecolors=["black" for i in C], scale_units='xy',angles='xy', scale=1, width=0.005, alpha=alpha, **kwargs)
+    patches = quiver(X, Y, U, V, *args, edgecolors=["black" for i in C], scale_units='xy',angles='xy', scale=1, width=0.005, alpha=alpha, **kwargs)
     return patches    
     
 def find_bounding_box(trajectories):
@@ -188,9 +191,9 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
 # In[6]:
 
 from matplotlib.colors import colorConverter
-from matplotlib.patches import Ellipse
+from matplotlib.patches import Ellipse, ArrowStyle
 from matplotlib.pyplot import scatter, annotate, quiver, legend, gca, gcf
-from numpy import log
+from numpy import log, exp
 # figure()
 # means = []
 # annotations = []
@@ -217,26 +220,38 @@ def on_pick_means(event):
     annotations[means.index(event.artist)].set_visible(True)
     print_n_flush( annotations[means.index(event.artist)])
 
-# colors = ['red','green','yellow', 'magenta', 'orange', 'black', 'cyan', 'white']
 def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transition_arrows=True):
+    from matplotlib import pyplot as plt
+    from matplotlib.patches import FancyArrowPatch
     if axes != None:
-        axes(axes)
+        plt.axes(axes)
+    else:
+        axes = plt.gca()
 #     f, axes = subplots(2)#,sharex=True, sharey=True)
 #     sca(axes[0])
     global annotations
     annotations = []
     global means
     means = []
+    arrows = []
     colors=clr
-#     color_map = colors #[colorConverter.to_rgb(colors[i]) for i in range(len(means_))]
+    max_prob = 0
+    for i, row in enumerate(transmat):
+        for j, p in enumerate(row):
+            # ignore self-transitions
+            if i!= j:
+                max_prob = max(max_prob, p)
+            
+#     max_prob = max(transmat.flatten())
     for i, mean in enumerate(means_):
-#         print_n_flush( "MEAN:", tuple(mean))
-        means.append(scatter(*tuple(mean), color=colorConverter.to_rgb(colors[i]), picker=10, label="State%i"%i))
-        annotate(s="%d" % i, xy=mean, xytext=(-10,-10), xycoords="data",textcoords="offset points", 
-                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colorConverter.to_rgb(colors[i]), alpha=0.3))
+        print_n_flush( "MEAN:", tuple(mean))
+#         means.append(scatter(*tuple(mean), color=colorConverter.to_rgb(colors[i]), picker=10, label="State%i"%i))
+        means.append(axes.scatter(*tuple(mean), color=colors[i], picker=10, label="State%i"%i))
+        axes.annotate(s="%d" % i, xy=mean, xytext=(-10,-10), xycoords="data",textcoords="offset points", 
+                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colors[i], alpha=0.3))
 #         gca().add_patch(Ellipse(xy = means_[i], width = np.diag(covars[i])[0], height = np.diag(covars[i])[1],
 #                         alpha=.15, color=colorConverter.to_rgb(colors[i])))
-        plot_cov_ellipse(covars[i], mean, alpha=.15, color=colorConverter.to_rgb(colors[i]))
+        plot_cov_ellipse(covars[i], mean, alpha=.15, color=colors[i], ax=axes)
         x0, y0 = mean
         prob_string = "P(t0)=%f" % initProbs[i]
         for j, p in enumerate(transmat[i]):
@@ -250,29 +265,64 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
                     x1, y1 = means_[j]
                     # if transmat[i][j] is too low, we get an underflow here
     #                 q = quiver([x0], [y0], [x1-x0], [y1-y0], alpha = 10000 * (transmat[i][j]**2),
-                    alpha = 10 ** -300
-                    if p > 10 ** -100:
-                        alpha = (100 * p)**2
-                    q = quiver([x0], [y0], [x1-x0], [y1-y0], alpha = 1 / log(alpha), 
-                           scale_units='xy',angles='xy', scale=1, width=0.005, label="P(%d->%d)=%f" % (i,j,p))
+                    alpha = 0
+                    if p > 10 ** -300:
+                        alpha = (p*100000) / (max_prob * 100000)
+                    alpha = min(1.,(exp(2 * alpha / (len(means)*.5))) - 1)
+                    
+#                     alpha_in = 0
+#                     if transmat[j][i] > 10 ** -300:
+#                         alpha_in = (transmat[j][i]*100000) / (max_prob * 100000)
+#                     alpha_in = min(1.,(exp(alpha_in / (len(means)*.5))) - 1)
+                    
+#                     print alpha, old_alpha, p, max_prob
+#                     alpha = max(0, 1. / log(alpha))
+                    width = .55
+                    color = "red"
+                    if x1 > x0:
+                        color = "green"
+#                     if j > i:
+                    c_arrows = FancyArrowPatch(
+                        (x0, y0),
+                        (x1, y1),
+                        connectionstyle='arc3, rad=-.25',
+                        mutation_scale=10,
+                        # red is forward, green is backward prob
+                        color=color,
+                        alpha=alpha,
+                        linewidth=width,
+                        arrowstyle=ArrowStyle.Fancy(head_length=width*4, 
+                                                    head_width=width*2.5, 
+                                                    ))
+#                     c_arrows = FancyArrow(x0, y0, x1-x0, y1-y0, alpha=alpha, color="black",
+#                                          width=width, head_width=width * 2.5, head_length=width * 4.,
+#                                          overhang=1.)
+#                                             connectionstyle="angle3,angleA=0,angleB=-90")
+                    axes.add_patch(c_arrows)
+                    arrows.append(c_arrows)
+#                     q = axes.quiver([x0], [y0], [x1-x0], [y1-y0], alpha = alpha, 
+#                            scale_units='xy',angles='xy', scale=1, width=0.005, 
+#                             label="P(%d->%d)=%f" % (i,j,p))
 #         legend()
 
         annotations.append(annotate(s=prob_string, xy=mean, xytext=(0, 10), xycoords="data",textcoords="offset points", 
-                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colorConverter.to_rgb(colors[i]), alpha=0.3), picker=True,
+                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colors[i], alpha=0.3), picker=True,
                          visible=False))
 
 
 #         print_n_flush( "State%i is %s" % (i, colors[i]))
     cid = gcf().canvas.mpl_connect('pick_event', on_pick)
+    return annotations, means, arrows
 
 
 # In[7]:
 
 def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
+    from matplotlib import pyplot as plt
     global colors
-    print_n_flush( "Colors are:", colors)
+#     print_n_flush( "Colors are:", colors)
     for i, (trajectory, p) in enumerate(zip(trajectory_objs, paths)): 
-        print_n_flush( "Path:", p)
+#         print_n_flush( "Path:", p)
         tr_colors = [colors[int(state)] for state in p]
         t = trajectory.plot2d(color=tr_colors)
     #     t = plot_quiver2d(trajectory, color=tr_colors, path=p)
@@ -306,7 +356,7 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
 # 
 # I tried to integrate this into ipcluster but for some reason source(blabla) doesn't work as expected, and even when it does, the returned HMM vector is a SexpVector instead of the expected ListVector.
 
-# In[13]:
+# In[1]:
 
 # import Constants
 def fn(args):
@@ -329,13 +379,14 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
     """
     def pick_lowest_bic(models):
         hmm, d, bic = None, None, 9999999999
+        if not any(models):
+            print "There are no valid models, WTF?!? Returning 'None'..."
+            return None
         for hmm_ in models:
 #             hmm_ = HMM(hmm__, training_data=hmm__.obs, hmm_type="ghmm")
             if hmm_.bic < bic:
                 bic = hmm_.bic
                 hmm = hmm_
-        if hmm is None:
-            raise Exception("There are no valid models, WTF?!?")
 #             return None
 #         Hmm = HMM(hmm, training_data=d, hmm_type="hmmlearn")
 #         print_n_flush( "New hmm and data (%s)" % d)
@@ -408,7 +459,7 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
         serialize.pickle = pickle
 
         client[:].use_dill()
-        reg ="import copy_reg, ExperimentalData;copy_reg.constructor(ExperimentalData.reconstruct_hmm);copy_reg.pickle(ExperimentalData.HMM, ExperimentalData.reduce_hmm, ExperimentalData.reconstruct_hmm)"
+        reg ="import copy_reg;import leaparticulator.data.hmm;copy_reg.constructor(leaparticulator.data.hmm.reconstruct_hmm);copy_reg.pickle(leaparticulator.data.hmm.HMM, leaparticulator.data.hmm.reduce_hmm, leaparticulator.data.hmm.reconstruct_hmm)"
     #     print type(data), type(data[0])
 
         client[:].execute(reg)
@@ -433,11 +484,22 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
         to_return.append(pick_lowest_bic(hmms))
 
     if pickle:
+        print_n_flush("Moving on to the pickling of results...")
         pickle_results(to_return, nstates, trials, iter, id_to_log(file_id), phase, units=units)
     return to_return
         
 def pickle_results(results, nstates, trials, iter, filename_log, phase=None, units=Constants.XY):
     from leaparticulator.data import hmm as hmm_module
+    hmms, ds = [], []
+    for hmm in results:
+        if hmm is None:
+            hmms.append(hmm)
+            ds.append(None)
+        else:
+            hmm, d = hmm_module.reduce_hmm(hmm)[1]
+            hmms.append(hmm)
+            ds.append(d)
+        
     hmms, ds = zip(*[hmm_module.reduce_hmm(hmm)[1] for hmm in results])
     assert any(hmms)
     assert any(ds)
@@ -463,6 +525,13 @@ def pickle_results(results, nstates, trials, iter, filename_log, phase=None, uni
             f.write("\n")
 
 def unpickle_results(filename_log, phase=None, units=None):
+    """
+    Unpickles .hmms JSON files, given the name of the exp.log file, the
+    phase this hmm belongs to (given by the .hmms file's name as in 
+    blahblah.exp.log.phase0.amp_and_freq.hmms). Returns a named tuple 
+    of hmms, paths, number of states, trial and iteration numbers. If 
+    given an .hmms file, phase and units parameters are overridden by 
+    the filename."""
     from leaparticulator.data import hmm as hmm_module
     from collections import namedtuple
     extension = ".hmms"
@@ -474,11 +543,15 @@ def unpickle_results(filename_log, phase=None, units=None):
         # old pickle files
         else:
             extension = ".phase%d.hmms" % (phase)
-    with open(filename_log + extension, "r") as f:
+        filename_log = filename_log + extension
+    else:
+        assert filename_log.split('.')[-1] == "hmms"
+        
+    with open(filename_log, "r") as f:
         hmms =  jsonpickle.decode(f.readline().rstrip())
         ds =  jsonpickle.decode(f.readline().rstrip())
-#         print ds
-        hmms = [hmm_mpdule.reconstruct_hmm(hmm, d) for hmm,d in zip(hmms,ds)]
+#         print "D's: \n", ds
+        hmms = [hmm_module.reconstruct_hmm(hmm, d) for hmm,d in zip(hmms,ds)]
         nstates =  jsonpickle.decode(f.readline().rstrip())
         trials =  jsonpickle.decode(f.readline().rstrip())
         iter =  jsonpickle.decode(f.readline().rstrip())
@@ -488,12 +561,16 @@ def unpickle_results(filename_log, phase=None, units=None):
 
 # In[9]:
 
-def responses_to_traj_objs(responses, responses_t):
+def responses_to_traj_objs(responses, responses_t=None, to_file=False):
     import trajectory
     # reload(trajectory)
     trajectories = responses_to_trajectories(responses)
-    trajectories_t = responses_to_trajectories(responses_t)
-    to_trajectory_file(trajectories, "%s.trajectories" % (".".join(filename_log.split(".")[:-2])))
+    if responses_t:
+        trajectories_t = responses_to_trajectories(responses_t)
+    else:
+        trajectories_t = []
+    if to_file:
+        to_trajectory_file(trajectories, "%s.trajectories" % (".".join(filename_log.split(".")[:-2])))
 
     all_trajectories = list(trajectories)
     all_trajectories.extend(trajectories_t)
@@ -645,7 +722,7 @@ def pull_hmm_paths(d):
 #     analyze_log_file_in_phases_by_condition(f[5:-8], 5, 1, 100)
 
 
-# In[12]:
+# In[14]:
 
 # line = 'hmms = analyze_log_file_in_phases_by_condition("1320116514.2", nstates=range(2,30), trials=5, iter=100, parallel=True, units=Constants.XY)'
 # %lprun -f analyze_log_file_in_phases_by_condition analyze_log_file_in_phases_by_condition("1320116514.2", nstates=range(2,30), trials=5, iter=100, parallel=True, units=Constants.XY)

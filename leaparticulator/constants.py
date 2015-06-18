@@ -25,7 +25,10 @@ fadeout_call_rate = 0.005
 
 # the rate at which we sample the leap info
 # for constant rate theremins
-theremin_rate = 1./120
+THEREMIN_RATE = 1./100
+
+# maximum duration of a signal in seconds
+MAX_SIGNAL_DURATION = 2.
 
 # number of options each test question has
 n_of_options = [4, 4, 4]
@@ -126,7 +129,7 @@ MOD_FIRSTSCREEN = "mod_firstscreen"
 # the presentation of the next question in msec
 DELAY_TEST = 1000
 
-TEST = False
+TESTING = False
 NO_SOUND = False
 
 import math
@@ -140,6 +143,7 @@ def install_reactor():
     if 'qt4reactor' not in sys.modules:
         import qt4reactor
         qt4reactor.install()
+        print "Installed qt4reactor"
 
 
 def freqToMel(freq):

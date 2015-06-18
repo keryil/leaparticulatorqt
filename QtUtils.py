@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from PyQt4 import QtCore, QtGui, uic
 
-from leaparticulator.constants import QT_DIR, TEST, ROOT_DIR
+from leaparticulator.constants import QT_DIR, TESTING, ROOT_DIR
 
 
 slots = defaultdict(list)
@@ -29,7 +29,7 @@ def loadUiWidget(uifilename,
     Convenience method to load and setup
     and widget, a QMainWindow by default.
     """
-    if TEST:
+    if TESTING:
         import os
 
         root = os.path.expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")

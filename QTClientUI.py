@@ -13,10 +13,12 @@ else:
 
 # from PySide.QtCore import QFile
 from AbstractClientUI import AbstractClientUI
-from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
+# from LeapTheremin import gimmeSomeTheremin, ThereminPlayback
 from QtUtils import connect, disconnect, loadWidget, loadFromRes, setButtonIcon
 from jsonpickle import decode, encode
-
+from leaparticulator.constants import install_reactor
+install_reactor()
+from twisted.internet import reactor
 
 def getFunction(widget):
     """
@@ -43,6 +45,8 @@ class ClientUI(AbstractClientUI):
         self.phase = -1
         self.isPractice = False
 
+        self.progressbar = None
+
         # this is a dict of responses, in the form
         # dict[phase][image] = [frame1, frame2,...]
         self.responses = {phase: {} for phase in range(3)}
@@ -54,9 +58,13 @@ class ClientUI(AbstractClientUI):
         self.test_results_practice = {phase: [] for phase in range(3)}
 
         # theremin stuff
-        self.theremin, self.reactor, self.controller, self.connection = gimmeSomeTheremin(
-            n_of_notes=1, default_volume=.5, ui=self, realtime=False)
-        self.playback_player = ThereminPlayback()
+        from leaparticulator.theremin.theremin import ConstantRateTheremin, ThereminPlayback
+        self.theremin = ConstantRateTheremin(
+        # self.theremin, self.reactor, self.controller, self.connection = gimmeSomeTheremin(
+            n_of_tones=1, default_volume=.5, ui=self, realtime=False)
+        self.reactor = reactor
+        self.connection = self.theremin.protocol
+        self.playback_player = ThereminPlayback(default_rate=constants.THEREMIN_RATE)
         self.default_volume = 0.5
         self.default_pitch = 440.
         self.last_signal = []
@@ -82,6 +90,7 @@ class ClientUI(AbstractClientUI):
         corresponding window setup method.
         """
         get = getFunction(window)
+        duration_limited = constants.MAX_SIGNAL_DURATION > 0
         # setup the volume dial
         dial = get(QtGui.QDial, 'volumeDial')
         dial.setValue(self.volume * 100)
@@ -113,24 +122,32 @@ class ClientUI(AbstractClientUI):
 
         # handle play/stop plus label changes
         def fn_play():
-            last_submit_state = None
-
+            last_submit_state = submit.isEnabled()
             def fn_done():
                 self.playback_player.stop()
                 play.setText("Play")
                 if record is not None:
                     record.setEnabled(True)
                 submit.setEnabled(last_submit_state)
+                if self.activeWindow == self.learningWindow:
+                    submit.setEnabled(True)
                 disconnect(play)
                 connect(play, "clicked()", fn_play)
                 if not record:
                     submit.setEnabled(True)
                 shortcuts()
+                play.setEnabled(True)
 
-            play.setText("Stop")
-            disconnect(play)
-            last_submit_state = submit.isEnabled()
-            connect(play, "clicked()", fn_done)
+            if duration_limited:
+                play.setText("<Playing>")
+                play.setEnabled(False)
+            else:
+                play.setText("Stop")
+                play.setEnabled(False)
+                reactor.callLater(.5, lambda: play.setEnabled(True))
+                disconnect(play)
+                connect(play, "clicked()", fn_done)
+
             if record is not None:
                 record.setEnabled(False)
             submit.setEnabled(False)
@@ -141,14 +158,32 @@ class ClientUI(AbstractClientUI):
 
         # setup the recording if there is a record button
         if record is not None:
+            self.theremin.mute()
+            if duration_limited and not self.progressbar:
+                layout = get(QtGui.QVBoxLayout, 'verticalLayout_2')
+                self.progressLabel = QtGui.QLabel()
+                self.progressLabel.setTextFormat(QtCore.Qt.RichText)
+                txt =  "<b>Important:</b> Your signal cannot exceed %.01f seconds.<br/>" %\
+                                           constants.MAX_SIGNAL_DURATION
+                # txt += "<b>Countdown:</b>"
+                self.progressLabel.setText(txt)
+                self.progressLabel.setAlignment(QtCore.Qt.AlignCenter)
+                self.progressbar = QtGui.QProgressBar()
+                self.progressbar.setRange(0, 100)
+                layout.insertWidget(0, self.progressbar)
+                layout.insertWidget(0, self.progressLabel)
+
             def fn_record():
+                self.theremin.unmute()
                 def fn_done():
                     self.stop_recording()
+                    self.theremin.mute()
                     # self.send(Constants.END_REC)
                     # self.isRecording = False
                     record.setText("Record")
                     play.setEnabled(True)
                     submit.setEnabled(True)
+                    record.setEnabled(True)
                     disconnect(record)
                     connect(record, "clicked()", fn_record)
                     shortcuts()
@@ -157,11 +192,25 @@ class ClientUI(AbstractClientUI):
                 # self.send(Constants.START_REC)
                 # self.last_signal = []
                 # self.isRecording = True
-                disconnect(record)
-                connect(record, "clicked()", fn_done)
                 play.setEnabled(False)
                 submit.setEnabled(False)
-                record.setText("Stop")
+                if duration_limited:
+                    record.setEnabled(False)
+                    reactor.callLater(constants.MAX_SIGNAL_DURATION,
+                                      fn_done)
+                    delay = constants.MAX_SIGNAL_DURATION / 100.
+
+                    def tick_progressbar(i):
+                        self.progressbar.setValue(i)
+                        if i < self.progressbar.maximum():
+                            reactor.callLater(delay, lambda: tick_progressbar(i+1))
+                        else:
+                            self.progressbar.setValue(0)
+                    reactor.callLater(delay, lambda: tick_progressbar(1))
+                else:
+                    disconnect(record)
+                    connect(record, "clicked()", fn_done)
+                    record.setText("Stop")
                 shortcuts()
 
             connect(record, "clicked()", fn_record)
