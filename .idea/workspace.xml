@@ -5,13 +5,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="73c7c7d7-b792-4c51-aa11-e921013076b9" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/BartPilot.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL1.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL1.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL10.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL10.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL11.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL11.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL12.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL12.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL13.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL13.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL14.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL14.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL15.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL15.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL16.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL16.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL17.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL17.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL18.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL18.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL20.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL20.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL21.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL21.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL22.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL22.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL23.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL23.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL24.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL24.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL25.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL25.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL26.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL26.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL3.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL3.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL4.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL4.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL5.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL5.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL6.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL6.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL7.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL7.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL8.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL8.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL9.1.exp.log" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/FL9.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS1.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS1.1.exp.responses.csv" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS1.log" afterPath="" />
@@ -150,29 +191,17 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.1.exp.tests.csv" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/OS9.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/SO15.log" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/logs/ftest.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/ftest.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os12.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os12.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os14.1.exp.log" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/logs/os14.log" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/DataAnalysis.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/DataAnalysis.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/LeapArticulatorQt.iml" afterPath="$PROJECT_DIR$/.idea/LeapArticulatorQt.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapServer.py" afterPath="$PROJECT_DIR$/LeapServer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QTClientUI.py" afterPath="$PROJECT_DIR$/QTClientUI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QtUtils.py" afterPath="$PROJECT_DIR$/QtUtils.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.markdown" afterPath="$PROJECT_DIR$/README.markdown" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/.ipynb_checkpoints/BICComparisonOrangeSquares-checkpoint.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/.ipynb_checkpoints/BICComparisonOrangeSquares-checkpoint.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/BICComparisonOrangeSquares.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/BICComparisonOrangeSquares.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/BICComparisonOrangeSquares.py" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/BICComparisonOrangeSquares.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/.ipynb_checkpoints/StreamlinedDataAnalysisGhmm-checkpoint.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/.ipynb_checkpoints/StreamlinedDataAnalysisGhmm-checkpoint.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.ipynb" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py" afterPath="$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/ui/client.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/ui/client.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/constants.py" afterPath="$PROJECT_DIR$/leaparticulator/constants.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/phase0.txt" afterPath="$PROJECT_DIR$/res/phase0.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/phase0_practice.txt" afterPath="$PROJECT_DIR$/res/phase0_practice.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/p2p/server.py" afterPath="$PROJECT_DIR$/leaparticulator/p2p/server.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" afterPath="$PROJECT_DIR$/leaparticulator/theremin/theremin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/leaparticulator/theremin/tone.py" afterPath="$PROJECT_DIR$/leaparticulator/theremin/tone.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="LeapArticulatorQt.iws" />
@@ -209,7 +238,7 @@
       <file leaf-file-name="hmm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/data/hmm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.7222223">
+            <state vertical-scroll-proportion="0.0">
               <caret line="408" column="35" selection-start-line="408" selection-start-column="35" selection-end-line="408" selection-end-column="35" />
               <folding />
             </state>
@@ -219,7 +248,7 @@
       <file leaf-file-name="functions.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.851852">
+            <state vertical-scroll-proportion="0.0">
               <caret line="311" column="14" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="14" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
@@ -232,10 +261,8 @@
         <entry file="file://$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="356" column="0" selection-start-line="356" selection-start-column="0" selection-end-line="356" selection-end-column="0" />
-              <folding>
-                <marker date="1434468211000" expanded="true" signature="22241:22653" placeholder="..." />
-              </folding>
+              <caret line="355" column="0" selection-start-line="355" selection-start-column="0" selection-end-line="355" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -255,7 +282,7 @@
       <file leaf-file-name="LeapTheremin.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.15384616">
+            <state vertical-scroll-proportion="0.0">
               <caret line="333" column="0" selection-start-line="333" selection-start-column="0" selection-end-line="333" selection-end-column="0" />
               <folding />
             </state>
@@ -265,7 +292,7 @@
       <file leaf-file-name="StreamlinedDataAnalysisGhmm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/StreamlinedDataAnalysisGhmm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
+            <state vertical-scroll-proportion="0.0">
               <caret line="249" column="21" selection-start-line="249" selection-start-column="21" selection-end-line="249" selection-end-column="21" />
               <folding />
             </state>
@@ -286,7 +313,7 @@
         <entry file="file://$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.ipynb">
           <provider selected="true" editor-type-id="ipnb-editor">
             <state>
-              <selected id="10" />
+              <selected id="-1" />
             </state>
           </provider>
         </entry>
@@ -387,6 +414,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -515,7 +543,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1222,22 +1249,22 @@
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869565" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32267883" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2494043" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24146147" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42782608" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24146147" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35312024" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26381648" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32869565" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32267883" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42782608" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3269565" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26381648" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
@@ -1604,10 +1631,8 @@
     <entry file="file://$PROJECT_DIR$/leaparticulator/notebooks/StreamlinedDataAnalysisGhmm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="356" column="0" selection-start-line="356" selection-start-column="0" selection-end-line="356" selection-end-column="0" />
-          <folding>
-            <marker date="1434468211000" expanded="true" signature="22241:22653" placeholder="..." />
-          </folding>
+          <caret line="355" column="0" selection-start-line="355" selection-start-column="0" selection-end-line="355" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1638,7 +1663,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/data/functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.851852">
+        <state vertical-scroll-proportion="0.0">
           <caret line="311" column="14" selection-start-line="311" selection-start-column="11" selection-end-line="311" selection-end-column="14" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
@@ -1648,7 +1673,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/leaparticulator/data/hmm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.7222223">
+        <state vertical-scroll-proportion="0.0">
           <caret line="408" column="35" selection-start-line="408" selection-start-column="35" selection-end-line="408" selection-end-column="35" />
           <folding />
         </state>
@@ -1656,7 +1681,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/LeapTheremin.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15384616">
+        <state vertical-scroll-proportion="0.0">
           <caret line="333" column="0" selection-start-line="333" selection-start-column="0" selection-end-line="333" selection-end-column="0" />
           <folding />
         </state>

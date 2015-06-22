@@ -350,12 +350,6 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
     check.on_clicked(func)
 
 
-# # Now for R
-
-# **Note:** The cell below includes functions to train multiple HMMs using the same parameters, and to pick the one with the lowest BIC. Because Baum-Welch algorithm is an EM algorithm, so it is easy to get stuck at local optima if only a few runs are made.
-# 
-# I tried to integrate this into ipcluster but for some reason source(blabla) doesn't work as expected, and even when it does, the returned HMM vector is a SexpVector instead of the expected ListVector.
-
 # In[1]:
 
 # import Constants
@@ -536,17 +530,22 @@ def unpickle_results(filename_log, phase=None, units=None):
     from collections import namedtuple
     extension = ".hmms"
     hmms = ds = nstates = trials = iter = None
-    if phase is not None:
-        if units is not None:
-            extension = ".phase%d.%s.hmms" % (phase, units)
+    if filename_log.split('.')[-1] != 'hmms':
+        assert phase and units
+        extension = ".phase%d.%s.hmms" % (phase, units)
         # this clause is purely for backward compatibility with
         # old pickle files
-        else:
-            extension = ".phase%d.hmms" % (phase)
+#         else:
+#             extension = ".phase%d.hmms" % (phase)
         filename_log = filename_log + extension
-    else:
-        assert filename_log.split('.')[-1] == "hmms"
-        
+#     else:
+#         try:
+#             assert filename_log.split('.')[-1] == "hmms"
+#         except:
+#             print filename_log, "is an invalid hmms file."
+#             raise Exception()
+    
+#     print "Unpickle %s" % (filename_log)        
     with open(filename_log, "r") as f:
         hmms =  jsonpickle.decode(f.readline().rstrip())
         ds =  jsonpickle.decode(f.readline().rstrip())
@@ -876,20 +875,20 @@ def draw():
 # In[95]:
 
 # def stationary(transmat):
-# 		from rpy2.robjects import r, globalenv
-# 		from itertools import product
-# 		import pandas as pd
-# 		import pandas.rpy.common as com
-# 		from scipy.special import xlogy
-# 		r("library('DTMCPack')")
-# 		globalenv['transmat'] = com.convert_to_r_dataframe(pd.DataFrame(transmat))
-# 		stationary_dist = r("statdistr(transmat)")
-# 		# long_as = lambda x: range(len(x)) 
-# # 		rate = 0
-# # 		for s1, s2 in product(range(len(self.means)),range(len(self.means))):
-# # 			p = self.transmat[s1][s2]
-# # 			rate -= stationary_dist[s1] * xlogy(p,p)
-# 		return stationary_dist
+#         from rpy2.robjects import r, globalenv
+#         from itertools import product
+#         import pandas as pdnfds;
+#         import pandas.rpy.common as com
+#         from scipy.special import xlogy
+#         r("library('DTMCPack')")
+#         globalenv['transmat'] = com.convert_to_r_dataframe(pd.DataFrame(transmat))
+#         stationary_dist = r("statdistr(transmat)")
+#         # long_as = lambda x: range(len(x)) 
+#         rate = 0
+#         for s1, s2 in product(range(len(self.means)),range(len(self.means))):
+#             p = self.transmat[s1][s2]
+#             rate -= stationary_dist[s1] * xlogy(p,p)
+#         return stationary_dist
 # print stationary(results.hmms[1].transmat)
 
 
