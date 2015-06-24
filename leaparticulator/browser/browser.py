@@ -60,22 +60,35 @@ class BrowserWindow(object):
         # it takes the Canvas widget and a parent
         self.toolbar = NavigationToolbar(self.canvas, self.window)
 
-        # hard-wire no expansion
-        self.toolbar.setMinimumHeight(40)
-        self.toolbar.setMaximumHeight(40)
-
         # Just some button connected to `plot` method
-        self.btnPlotTrajectory = QtGui.QPushButton('Plot trajectory')
         self.chkMultivariate = QtGui.QCheckBox("Multivariate?")
         self.chkReversed = QtGui.QCheckBox("Reversed?")
-        connect(self.btnPlotTrajectory, "clicked()", lambda: self.plot())
+
+        self.btnPlotTrajectory = QtGui.QPushButton('Plot trajectory')
+        connect(self.btnPlotTrajectory, "clicked()", lambda: self.plot_trajectory())
+
+        self.btnPlotHmmAndTrajectory = QtGui.QPushButton('Plot trajectory with HMM')
+        connect(self.btnPlotTrajectory, "clicked()", lambda: self.plot_hmm_and_trajectory())
+
+        self.btnPlotHmm = QtGui.QPushButton('Plot HMM')
+        connect(self.btnPlotTrajectory, "clicked()", lambda: self.plot_hmm())
 
     def setup_splitter(self):
         self.layout.addWidget(self.splitter)
         widgets = [self.file_tree, self.log_tree, self.toolbar, self.canvas, self.chkMultivariate,
-                   self.chkReversed, self.btnPlotTrajectory]
+                   self.chkReversed, self.btnPlotTrajectory, self.btnPlotHmmAndTrajectory, self.btnPlotHmm]
         [self.splitter.addWidget(w) for w in widgets]
         self.splitter.setStretchFactor(widgets.index(self.toolbar), 0)
+        self.splitter.setStretchFactor(widgets.index(self.btnPlotHmm), 0)
+        self.splitter.setStretchFactor(widgets.index(self.btnPlotTrajectory), 0)
+        self.splitter.setStretchFactor(widgets.index(self.btnPlotHmmAndTrajectory), 0)
+
+        # hard-wire no expansion
+        widgets = [self.toolbar, self.btnPlotHmmAndTrajectory, self.btnPlotHmm, self.btnPlotTrajectory,
+                   self.chkMultivariate, self.chkReversed]
+        for w in widgets:
+            w.setMinimumHeight(30)
+            w.setMaximumHeight(30)
 
     def setup_file_model(self):
         print "Root folder is %s" % self.dir
@@ -173,7 +186,7 @@ class BrowserWindow(object):
         patches = axis.quiver(X, Y, u, v, C, scale_units='xy', angles='xy', scale=1, width=0.005, alpha=alpha, **kwargs)
         return patches
 
-    def plot(self):
+    def plot_trajectory(self):
         ''' plot some random stuff '''
         reversed = self.chkReversed.isChecked()
         multivariate = self.chkMultivariate.isChecked()
@@ -222,6 +235,12 @@ class BrowserWindow(object):
 
         # refresh canvas
         self.canvas.draw()
+
+    def plot_hmm_and_trajectory(self):
+        pass
+
+    def plot_hmm(self):
+        pass
 
     def show(self):
         self.window.show()
