@@ -24,6 +24,8 @@ def recursive_decode(lst, verbose=False):
         print "Decoding %s" % (str(lst)[:100])
     try:
         # the arg lst may or may not be a pickled obj itself
+        if not isinstance(lst, str):
+            raise TypeError
         lst = jsonpickle.decode(lst)
     except TypeError:
         pass
@@ -91,7 +93,6 @@ def _expandResponsesNew(responses, images):
         for phase in responses[client]:
             d[client][phase] = {}
             for image in responses[client][phase]:
-                print images[int(phase)][int(image)]
                 d[client][phase][images[int(phase)][int(image)]] = responses[client][phase][image]
 
     # return {client: {phase: {images[int(phase)][int(image)]: responses[client][phase][image] \
@@ -291,7 +292,55 @@ def convertToPandas(images, responses, test_results):
 
 # return test_results
 
+def logToPandasFrame(logfile):
+    from itertools import product
+    import pandas as pd
 
+    results = fromFile(logfile)
+
+    responses, test_results, responses_practice, test_results_practice, images = results
+    responses = responses['127.0.0.1']
+    responses_p = responses_practice['127.0.0.1']
+    phases = map(str, range(3))
+    meanings = responses[phases[0]].keys()
+    columns=['phase', 'meaning', 'frame_index', 'x', 'y', 'practice']
+    all_data = pd.DataFrame(columns=columns)
+#     print all_data
+    grand_index = 0
+    for phase, meaning in product(phases, meanings):
+        for response_dict in (responses, responses_p):
+            frame = pd.DataFrame(columns=columns)
+            if meaning not in response_dict[phase]:
+                continue
+            traj = []
+            for leapframe in response_dict[phase][meaning]:
+                traj.append(leapframe.get_stabilized_position()[:2])
+            # traj = [f.get_stabilized_position()[:2] if meaning in response_dict[phase] for f in response_dict[phase][meaning]]
+            # if response_dict == responses:
+            #     xy_lists.append(traj)
+            # else:
+            #     xy_lists_p.append(traj)
+            index0 = grand_index
+            index_f = grand_index + len(traj)
+            index = range(grand_index, index_f)
+            grand_index += len(traj)
+
+            phase_l = []
+            meaning_l = []
+            xs = []
+            ys = []
+            i_s = []
+            for i, (x, y) in enumerate(traj):
+                xs.append(x)
+                ys.append(y)
+                i_s.append(i)
+                phase_l.append(phase)
+                meaning_l.append(meaning)
+            practice = [response_dict == responses_p for _ in xs]
+            for field, lst in zip(columns, [phase_l, meaning_l, i_s, xs, ys, practice]):
+                frame[field] = pd.Series(name=field, data=lst, index=index)
+            all_data = all_data.append(frame)
+    return all_data
 
 
 

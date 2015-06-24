@@ -125,6 +125,8 @@ MOD_PRETEST = "mod_pretest"
 MOD_EXIT = "mod_exit"
 MOD_FIRSTSCREEN = "mod_firstscreen"
 
+BROWSER_UI = "BrowserMain.ui"
+
 # delay between submitting a test answer and
 # the presentation of the next question in msec
 DELAY_TEST = 1000
