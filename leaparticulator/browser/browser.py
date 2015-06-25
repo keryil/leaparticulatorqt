@@ -222,7 +222,6 @@ class BrowserWindow(object):
                 ax.set_xlabel("Y-coordinate")
         else:
             if not reversed:
-                print "Frames: %s" % item.data()
                 data = [f.get_stabilized_position()[0] for f in item.data()]
             else:
                 data = [f.get_stabilized_position()[1] for f in item.data()]
