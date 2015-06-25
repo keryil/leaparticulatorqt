@@ -188,7 +188,7 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
     return ellip
 
 
-# In[6]:
+# In[1]:
 
 from matplotlib.colors import colorConverter
 from matplotlib.patches import Ellipse, ArrowStyle
@@ -199,8 +199,8 @@ from numpy import log, exp
 # annotations = []
 
 def on_pick(event):
-    print_n_flush( event)
-    print_n_flush( annotations)
+    print_n_flush( str(event))
+    print_n_flush( str(annotations))
     if event.artist in annotations:
         on_pick_annotation(event)
     elif event.artist in means:
@@ -212,19 +212,29 @@ def on_pick_trajectory_event(event):
     pass
     
 def on_pick_annotation(event):
-    print_n_flush( "Annotation:", event.artist)
+    print_n_flush( "Annotation: %s" % event.artist)
     event.artist.set_visible(False)
 
 def on_pick_means(event):
-    print_n_flush( "Mean:", means.index(event.artist))
+    print_n_flush( "Mean: %s" % means.index(event.artist))
     annotations[means.index(event.artist)].set_visible(True)
-    print_n_flush( annotations[means.index(event.artist)])
-
+    print_n_flush( "%s" % annotations[means.index(event.artist)])
+    
 def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transition_arrows=True):
     from matplotlib import pyplot as plt
     from matplotlib.patches import FancyArrowPatch
+    univariate = False
+    try:
+        iter(means_[0])
+    except TypeError:
+        univariate = True
+        print_n_flush("Univariate HMM detected (%d states)." % len(means_))
+        means_ = [(0,m)for m in means_]
+        covars = [[[3,0],[0,covar]] for covar in covars]
+        
     if axes != None:
-        plt.axes(axes)
+        pass
+#         plt.axes(axes)
     else:
         axes = plt.gca()
 #     f, axes = subplots(2)#,sharex=True, sharey=True)
@@ -241,7 +251,7 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
             # ignore self-transitions
             if i!= j:
                 max_prob = max(max_prob, p)
-            
+    
 #     max_prob = max(transmat.flatten())
     for i, mean in enumerate(means_):
         print_n_flush( "MEAN:", tuple(mean))
@@ -249,8 +259,7 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
         means.append(axes.scatter(*tuple(mean), color=colors[i], picker=10, label="State%i"%i))
         axes.annotate(s="%d" % i, xy=mean, xytext=(-10,-10), xycoords="data",textcoords="offset points", 
                          alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colors[i], alpha=0.3))
-#         gca().add_patch(Ellipse(xy = means_[i], width = np.diag(covars[i])[0], height = np.diag(covars[i])[1],
-#                         alpha=.15, color=colorConverter.to_rgb(colors[i])))
+        print_n_flush( "COVARS: %s" % covars[i])
         plot_cov_ellipse(covars[i], mean, alpha=.15, color=colors[i], ax=axes)
         x0, y0 = mean
         prob_string = "P(t0)=%f" % initProbs[i]
@@ -307,11 +316,13 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
 
         annotations.append(annotate(s=prob_string, xy=mean, xytext=(0, 10), xycoords="data",textcoords="offset points", 
                          alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colors[i], alpha=0.3), picker=True,
-                         visible=False))
+                         visible=True))
 
 
 #         print_n_flush( "State%i is %s" % (i, colors[i]))
     cid = gcf().canvas.mpl_connect('pick_event', on_pick)
+    axes.legend()
+    print_n_flush("Returning from plot_hmm")
     return annotations, means, arrows
 
 

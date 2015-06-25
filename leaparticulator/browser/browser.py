@@ -36,6 +36,9 @@ def plot_quiver2d(data, axis, alpha=.75, C=[], path=None, label=None, *args, **k
         if not C:
             color_delta = 1. / (len(X) - 1)
             C = [(color_delta * i, color_delta * i, color_delta * i) for i in range(len(X) - 1)]
+        if path:
+            print "Path: %s" % path
+            C = [C[i] for i in path]
         X = X[:-1]
         Y = Y[:-1]
         # print map(len, [X, Y, u, v])
@@ -57,12 +60,12 @@ class BrowserWindow(object):
         print "Action:", action
         connect(action, action.triggered, self.new_figure)
         action.trigger()
-        action.trigger()
         print self.figures()
         # self.setup_splitter()
         
         self.dir = os.path.join(constants.ROOT_DIR, "logs")
         self.dir_model = QtGui.QFileSystemModel()
+        self.dir_model.setReadOnly(True)
         self.log_model = QtGui.QStandardItemModel()
         self.setup_file_model()
         
@@ -76,13 +79,16 @@ class BrowserWindow(object):
         tree_splitter = QtGui.QSplitter(Qt.Vertical)
         self.file_tree = QtGui.QTreeView()
         self.log_tree = QtGui.QTreeView()
-        self.log_tree.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.log_tree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.log_tree.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.log_tree.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         tree_splitter.addWidget(self.file_tree)
         tree_splitter.addWidget(self.log_tree)
 
-        self.file_dock = QtGui.QDockWidget("Files/Trajectories")
+        self.file_dock = QtGui.QDockWidget("Files and Trajectories")
         self.file_dock.setWidget(tree_splitter)
+        self.file_dock.setFeatures(QtGui.QDockWidget.DockWidgetFloatable |
+                 QtGui.QDockWidget.DockWidgetMovable)
         self.window.addDockWidget(Qt.LeftDockWidgetArea, self.file_dock)
 
     def figures(self):
@@ -101,11 +107,13 @@ class BrowserWindow(object):
 
         # a figure instance to plot on
         container.figure = plt.figure()
+        plt.style.use('ggplot')
 
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
         container.canvas = FigureCanvas(container.figure)
-        
+        container.canvas.hmm = None
+
         # this is the Navigation widget
         # it takes the Canvas widget and a parent
         toolbar = NavigationToolbar(container.canvas, container)
@@ -114,6 +122,7 @@ class BrowserWindow(object):
         container.chkMultivariate = QtGui.QCheckBox("Multivariate?")
         container.chkReversed = QtGui.QCheckBox("Reversed?")
         container.chkClear = QtGui.QCheckBox("Clear previous plot?")
+        container.chkClear.setChecked(True)
         
         container.btnPlotTrajectory = QtGui.QPushButton('Plot trajectory')
         connect(container.btnPlotTrajectory, "clicked()", lambda: self.plot_trajectory(container))
@@ -253,18 +262,21 @@ class BrowserWindow(object):
             # if len(indexes) == 1:
                 # discards the old graph
 
-        def do_plot(meaning_index, phase_index, color=None):
+        def do_plot(meaning_index, phase_index, hmm=None, color=None):
             phase = self.log_model.itemFromIndex(phase_index).text()
             item = self.log_model.itemFromIndex(meaning_index)
             meaning = item.text()
-            color = [color] * len(item.data())
             if multivariate:
                 data = [f.get_stabilized_position()[:2] for f in item.data()]
                 if reversed:
                     data = [(d1, d0) for d0, d1 in data]
                 # data0, data1 = zip(*data)
                 # ax.plot(data0, data1, '->')
-                self.plot_quiver2d(data, ax, C=color, label="%s @phase%s" % (meaning, phase))
+                path = None
+                if hmm:
+                    path = hmm.viterbi(data, flatten=True)[0]
+
+                self.plot_quiver2d(data, ax, C=color, path=path, label="%s @phase%s" % (meaning, phase))
                 if reversed:
                     ax.set_xlabel("Y-coordinate")
                     ax.set_xlabel("X-coordinate")
@@ -272,18 +284,22 @@ class BrowserWindow(object):
                     ax.set_xlabel("X-coordinate")
                     ax.set_xlabel("Y-coordinate")
             else:
+                path = None
                 if not reversed:
                     # print "Frames: %s" % item.data()
                     data = [f.get_stabilized_position()[0] for f in item.data()]
                 else:
                     data = [f.get_stabilized_position()[1] for f in item.data()]
-                self.plot_quiver2d([d for d in enumerate(data)], ax, C=color, label="%s @phase%s" % (meaning, phase))
+                if hmm:
+                    path = hmm.viterbi(data, flatten=True)[0]
+
+                self.plot_quiver2d([d for d in enumerate(data)], ax, path=path, C=color, label="%s @phase%s" % (meaning, phase))
                 # ax.plot(data, '->')
                 ax.set_xlabel("Time")
                 if reversed:
-                    ax.set_ylabel("X-coordinate")
-                else:
                     ax.set_ylabel("Y-coordinate")
+                else:
+                    ax.set_ylabel("X-coordinate")
             ax.legend()
             container.canvas.draw()
             print "Plotted index %s" % meaning_index
@@ -291,7 +307,11 @@ class BrowserWindow(object):
         for meaning_index, phase_index, c in zip(meanings, phases, constants.kelly_colors):
             print "Color: (%f, %f, %f)" % c
             ax.hold(True)
-            do_plot(meaning_index, phase_index, color=c)
+            hmm = None
+            if hasattr(container, "hmm") and container.hmm:
+                c = constants.kelly_colors
+                hmm = container.hmm
+            do_plot(meaning_index, phase_index, color=c, hmm=hmm)
             ax.hold(False)
 
 
@@ -299,11 +319,17 @@ class BrowserWindow(object):
         indexes = self.log_selection.selectedRows()
         print map(lambda x: x.text(), map(self.log_model.itemFromIndex, indexes))
 
-    def plot_hmm(self):
+    def plot_hmm(self, container):
         from leaparticulator.notebooks.StreamlinedDataAnalysisGhmm import plot_hmm, unpickle_results
         indexes = self.log_selection.selectedRows()
         phase = self.log_model.itemFromIndex(indexes[0]).text()
 
+        ax = container.figure.gca()
+        if container.chkClear.isChecked():
+            ax.hold(False)
+             # create an axis
+            ax = container.figure.add_subplot(111)
+            ax.cla()
         # which phase are we interested in?
 
         # first, ask the user which HMM they want to plot
@@ -328,14 +354,21 @@ class BrowserWindow(object):
             if hmm.bic > hmm.bic:
                 hmm = hmm_
 
-        # now for the actual plotting
-        # create an axis
-        ax = self.figure.add_subplot(111)
+        # # now for the actual plotting
+        # # create an axis
+        # ax = container.figure.add_subplot(111)
+        #
+        # # discards the old graph
+        ax.hold(True)
 
-        # discards the old graph
-        ax.hold(False)
-
-        plot_hmm(hmm.means, hmm.transmat, hmm.variances, hmm.initProb, axes=ax)
+        r = plot_hmm(hmm.means, hmm.transmat, hmm.variances, hmm.initProb, axes=ax,
+                 clr=constants.kelly_colors)
+        plt.autoscale(True)
+        container.canvas.draw()
+        container.hmm = hmm
+        container.hmm_file = hmm_file
+        self.update_status("Loaded HMMS from %s" % hmm_file)
+        return r
 
     def pick_hmm_file(self, filenames):
         dialog = loadUiWidget("HmmFilePickerDialog.ui")
