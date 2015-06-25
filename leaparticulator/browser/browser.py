@@ -65,36 +65,39 @@ class BrowserWindow(object):
     def setup_plotting_window(self):
         # a frame to hold everything
         container = QtGui.QFrame()
+        canvas_win = self.mdi.addSubWindow(container)
+        canvas_win.setWindowTitle("Plot #%d" % len(self.mdi.subWindowList()))
 
         # a figure instance to plot on
-        self.figure = plt.figure()
+        container.figure = plt.figure()
 
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
-        self.canvas = FigureCanvas(self.figure)
+        container.canvas = FigureCanvas(container.figure)
         
         # this is the Navigation widget
         # it takes the Canvas widget and a parent
-        self.toolbar = NavigationToolbar(self.canvas, self.window)
+        toolbar = NavigationToolbar(container.canvas, self.window)
         
         # Just some button connected to `plot` method
-        self.chkMultivariate = QtGui.QCheckBox("Multivariate?")
-        self.chkReversed = QtGui.QCheckBox("Reversed?")
+        container.chkMultivariate = QtGui.QCheckBox("Multivariate?")
+        container.chkReversed = QtGui.QCheckBox("Reversed?")
         
-        self.btnPlotTrajectory = QtGui.QPushButton('Plot trajectory')
-        connect(self.btnPlotTrajectory, "clicked()", self.plot_trajectory)
+        container.btnPlotTrajectory = QtGui.QPushButton('Plot trajectory')
+        connect(container.btnPlotTrajectory, "clicked()", lambda: self.plot_trajectory(container))
         
-        self.btnPlotHmmAndTrajectory = QtGui.QPushButton('Plot trajectory with HMM')
-        connect(self.btnPlotHmmAndTrajectory, "clicked()", self.plot_hmm_and_trajectory)
+        container.btnPlotHmmAndTrajectory = QtGui.QPushButton('Plot trajectory with HMM')
+        connect(container.btnPlotHmmAndTrajectory, "clicked()", lambda: self.plot_hmm_and_trajectory(container))
         
-        self.btnPlotHmm = QtGui.QPushButton('Plot HMM')
-        connect(self.btnPlotHmm, "clicked()", self.plot_hmm)
+        container.btnPlotHmm = QtGui.QPushButton('Plot HMM')
+        connect(container.btnPlotHmm, "clicked()", lambda: self.plot_hmm(container))
 
         layout = QtGui.QVBoxLayout()
         container.setLayout(layout)
-        [layout.addWidget(w) for w in [self.toolbar, self.canvas, self.chkMultivariate,
-                   self.chkReversed, self.btnPlotTrajectory, self.btnPlotHmmAndTrajectory, self.btnPlotHmm]]
-        self.canvas_win = self.mdi.addSubWindow(container)
+        [layout.addWidget(w) for w in [toolbar, container.canvas, container.chkMultivariate,
+                   container.chkReversed, container.btnPlotTrajectory, container.btnPlotHmmAndTrajectory,
+                                       container.btnPlotHmm]]
+        # self.canvas_win = self.mdi.addSubWindow(container)
 
     def setup_file_model(self):
         print "Root folder is %s" % self.dir
@@ -195,10 +198,12 @@ class BrowserWindow(object):
         patches = axis.quiver(X, Y, u, v, C, scale_units='xy', angles='xy', scale=1, width=0.005, alpha=alpha, **kwargs)
         return patches
 
-    def plot_trajectory(self):
+    def plot_trajectory(self, container=None):
         ''' plot some random stuff '''
-        reversed = self.chkReversed.isChecked()
-        multivariate = self.chkMultivariate.isChecked()
+        if not container:
+            container = self
+        reversed = container.chkReversed.isChecked()
+        multivariate = container.chkMultivariate.isChecked()
 
         indexes = self.log_selection.selectedRows()
         if not indexes:
@@ -209,7 +214,7 @@ class BrowserWindow(object):
         data = None
 
         # create an axis
-        ax = self.figure.add_subplot(111)
+        ax = container.figure.add_subplot(111)
 
         # discards the old graph
         ax.hold(False)
@@ -244,7 +249,7 @@ class BrowserWindow(object):
         print "Data:", data
 
         # refresh canvas
-        self.canvas.draw()
+        container.canvas.draw()
 
     def plot_hmm_and_trajectory(self):
         indexes = self.log_selection.selectedRows()
@@ -297,17 +302,6 @@ class BrowserWindow(object):
 
     def show(self):
         self.window.show()
-
-    # class PickHMMDialog(QtGui.QDialog):
-    #     def __init__(self, filelist, parent=None):
-    #         super(PickHMMDialog, self).__init__(parent)
-    #         self.list = QtGui.QListWidget(self)
-    #         self.list.addItems(filelist)
-    #         self.buttons = QtGui.QDialogButtonBox(
-    #             QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
-    #             Qt.Horizontal, self)
-    #         self.buttons.accepted.connect(self.accept)
-    #         self.buttons.rejected.connect(self.reject)
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

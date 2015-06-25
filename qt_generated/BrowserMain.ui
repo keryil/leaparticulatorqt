@@ -41,12 +41,24 @@
     </property>
     <addaction name="actionTile_windows"/>
    </widget>
+   <widget class="QMenu" name="menuPlotting">
+    <property name="title">
+     <string>Plotting</string>
+    </property>
+    <addaction name="actionNew_plot"/>
+   </widget>
    <addaction name="menuWindow"/>
+   <addaction name="menuPlotting"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionTile_windows">
    <property name="text">
     <string>Tile windows</string>
+   </property>
+  </action>
+  <action name="actionNew_plot">
+   <property name="text">
+    <string>New plot</string>
    </property>
   </action>
  </widget>
