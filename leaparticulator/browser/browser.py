@@ -29,12 +29,27 @@ import os
 from itertools import product
 
 
+def plot_quiver2d(data, axis, alpha=.75, C=[], path=None, label=None, *args, **kwargs):
+        X, Y = zip(*data[:-1])
+        u = [x1 - x0 for x0, x1 in zip(X[:-1], X[1:])]
+        v = [y1 - y0 for y0, y1 in zip(Y[:-1], Y[1:])]
+        if not C:
+            color_delta = 1. / (len(X) - 1)
+            C = [(color_delta * i, color_delta * i, color_delta * i) for i in range(len(X) - 1)]
+        X = X[:-1]
+        Y = Y[:-1]
+        # print map(len, [X, Y, u, v])
+        patches = axis.quiver(X, Y, u, v, *args, color=C,
+                              scale_units='xy', angles='xy', scale=1,
+                              width=0.005, alpha=alpha, label=label, **kwargs)
+        return patches
+
 class BrowserWindow(object):
     def __init__(self, parent=None):
         self.window = loadUiWidget(constants.BROWSER_UI)
         self.mdi = self.get_child(QtGui.QMdiArea, 'mdiArea')
         self.statusbar = self.get_child(QtGui.QStatusBar, 'statusbar')
-
+        self.figure_counter = 1
         self.setup_file_dock()
 
         # connect new plot action
@@ -61,6 +76,8 @@ class BrowserWindow(object):
         tree_splitter = QtGui.QSplitter(Qt.Vertical)
         self.file_tree = QtGui.QTreeView()
         self.log_tree = QtGui.QTreeView()
+        self.log_tree.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.log_tree.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         tree_splitter.addWidget(self.file_tree)
         tree_splitter.addWidget(self.log_tree)
 
@@ -70,13 +87,14 @@ class BrowserWindow(object):
 
     def figures(self):
         return [w.windowTitle() for w in self.mdi.subWindowList()]
-    
+
     def new_figure(self):
         # a frame to hold everything
         container = QtGui.QFrame()
         canvas_win = self.mdi.addSubWindow(container)
+        canvas_win.closeEvent = lambda x: x.ignore()
 
-        plot_id = "Plot #%d" % len(self.mdi.subWindowList())
+        plot_id = "Plot #%d" % self.figure_counter
         print plot_id
 
         canvas_win.setWindowTitle(plot_id)
@@ -95,6 +113,7 @@ class BrowserWindow(object):
         # Just some button connected to `plot` method
         container.chkMultivariate = QtGui.QCheckBox("Multivariate?")
         container.chkReversed = QtGui.QCheckBox("Reversed?")
+        container.chkClear = QtGui.QCheckBox("Clear previous plot?")
         
         container.btnPlotTrajectory = QtGui.QPushButton('Plot trajectory')
         connect(container.btnPlotTrajectory, "clicked()", lambda: self.plot_trajectory(container))
@@ -108,10 +127,12 @@ class BrowserWindow(object):
         layout = QtGui.QVBoxLayout()
         container.setLayout(layout)
         [layout.addWidget(w) for w in [toolbar, container.canvas, container.chkMultivariate,
-                   container.chkReversed, container.btnPlotTrajectory, container.btnPlotHmmAndTrajectory,
+                   container.chkReversed, container.chkClear, container.btnPlotTrajectory,
+                                       container.btnPlotHmmAndTrajectory,
                                        container.btnPlotHmm]]
         print "Finished %s" % plot_id
         canvas_win.show()
+        self.figure_counter += 1
 
     def setup_file_model(self):
         print "Root folder is %s" % self.dir
@@ -199,18 +220,8 @@ class BrowserWindow(object):
         else:
             return None
 
-    def plot_quiver2d(self, data, axis, alpha=.75, C=[], path=None, *args, **kwargs):
-        X, Y = zip(*data[:-1])
-        u = [x1 - x0 for x0, x1 in zip(X[:-1], X[1:])]
-        v = [y1 - y0 for y0, y1 in zip(Y[:-1], Y[1:])]
-        if not C:
-            color_delta = 1. / (len(X) - 1)
-            C = [(color_delta * i, color_delta * i, color_delta * i) for i in range(len(X) - 1)]
-        X = X[:-1]
-        Y = Y[:-1]
-        print map(len, [X, Y, u, v])
-        patches = axis.quiver(X, Y, u, v, C, scale_units='xy', angles='xy', scale=1, width=0.005, alpha=alpha, **kwargs)
-        return patches
+    def plot_quiver2d(self, data, axis, alpha=.75, C=[], path=None, label=None, *args, **kwargs):
+        return plot_quiver2d(data, axis, *args, alpha=alpha, C=C, path=path, label=label, **kwargs)
 
     def plot_trajectory(self, container=None):
         ''' plot some random stuff '''
@@ -218,52 +229,71 @@ class BrowserWindow(object):
             container = self
         reversed = container.chkReversed.isChecked()
         multivariate = container.chkMultivariate.isChecked()
+        clear = container.chkClear.isChecked()
 
-        indexes = self.log_selection.selectedRows()
-        if not indexes:
+        phases = self.log_selection.selectedRows(0)
+        meanings = self.log_selection.selectedRows(1)
+        if not meanings:
             return
-        index = indexes[0]
-        item = self.log_model.itemFromIndex(index)
-        print "Item:", item
-        data = None
+        print "Selected indexes: %s" % meanings
+        # index = indexes[0]
 
-        # create an axis
-        ax = container.figure.add_subplot(111)
+        # print "Item:", item
+        # data = None
 
-        # discards the old graph
-        ax.hold(False)
+        ax = container.figure.gca()
+        if clear:
+            ax.hold(False)
+             # create an axis
+            ax = container.figure.add_subplot(111)
+            ax.cla()
 
-        if multivariate:
-            data = [f.get_stabilized_position()[:2] for f in item.data()]
-            if reversed:
-                data = [(d1, d0) for d0, d1 in data]
-            # data0, data1 = zip(*data)
-            # ax.plot(data0, data1, '->')
-            self.plot_quiver2d(data, ax)
-            if reversed:
-                ax.set_xlabel("Y-coordinate")
-                ax.set_xlabel("X-coordinate")
+            # don't do this unless we have exactly one
+             # plot to display
+            # if len(indexes) == 1:
+                # discards the old graph
+
+        def do_plot(meaning_index, phase_index, color=None):
+            phase = self.log_model.itemFromIndex(phase_index).text()
+            item = self.log_model.itemFromIndex(meaning_index)
+            meaning = item.text()
+            color = [color] * len(item.data())
+            if multivariate:
+                data = [f.get_stabilized_position()[:2] for f in item.data()]
+                if reversed:
+                    data = [(d1, d0) for d0, d1 in data]
+                # data0, data1 = zip(*data)
+                # ax.plot(data0, data1, '->')
+                self.plot_quiver2d(data, ax, C=color, label="%s @phase%s" % (meaning, phase))
+                if reversed:
+                    ax.set_xlabel("Y-coordinate")
+                    ax.set_xlabel("X-coordinate")
+                else:
+                    ax.set_xlabel("X-coordinate")
+                    ax.set_xlabel("Y-coordinate")
             else:
-                ax.set_xlabel("X-coordinate")
-                ax.set_xlabel("Y-coordinate")
-        else:
-            if not reversed:
-                print "Frames: %s" % item.data()
-                data = [f.get_stabilized_position()[0] for f in item.data()]
-            else:
-                data = [f.get_stabilized_position()[1] for f in item.data()]
-            self.plot_quiver2d([d for d in enumerate(data)], ax)
-            # ax.plot(data, '->')
-            ax.set_xlabel("Time")
-            if reversed:
-                ax.set_ylabel("X-coordinate")
-            else:
-                ax.set_ylabel("Y-coordinate")
+                if not reversed:
+                    # print "Frames: %s" % item.data()
+                    data = [f.get_stabilized_position()[0] for f in item.data()]
+                else:
+                    data = [f.get_stabilized_position()[1] for f in item.data()]
+                self.plot_quiver2d([d for d in enumerate(data)], ax, C=color, label="%s @phase%s" % (meaning, phase))
+                # ax.plot(data, '->')
+                ax.set_xlabel("Time")
+                if reversed:
+                    ax.set_ylabel("X-coordinate")
+                else:
+                    ax.set_ylabel("Y-coordinate")
+            ax.legend()
+            container.canvas.draw()
+            print "Plotted index %s" % meaning_index
 
-        print "Data:", data
+        for meaning_index, phase_index, c in zip(meanings, phases, constants.kelly_colors):
+            print "Color: (%f, %f, %f)" % c
+            ax.hold(True)
+            do_plot(meaning_index, phase_index, color=c)
+            ax.hold(False)
 
-        # refresh canvas
-        container.canvas.draw()
 
     def plot_hmm_and_trajectory(self):
         indexes = self.log_selection.selectedRows()
