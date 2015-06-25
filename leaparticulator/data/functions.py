@@ -24,8 +24,8 @@ def recursive_decode(lst, verbose=False):
         print "Decoding %s" % (str(lst)[:100])
     try:
         # the arg lst may or may not be a pickled obj itself
-        if not isinstance(lst, str):
-            raise TypeError
+        # if not isinstance(lst, str):
+        #     raise TypeError
         lst = jsonpickle.decode(lst)
     except TypeError:
         pass
