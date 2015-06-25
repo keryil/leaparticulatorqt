@@ -40,6 +40,7 @@
      <string>Window</string>
     </property>
     <addaction name="actionTile_windows"/>
+    <addaction name="actionCascade_windows"/>
    </widget>
    <widget class="QMenu" name="menuPlotting">
     <property name="title">
@@ -47,8 +48,8 @@
     </property>
     <addaction name="actionNew_plot"/>
    </widget>
-   <addaction name="menuWindow"/>
    <addaction name="menuPlotting"/>
+   <addaction name="menuWindow"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionTile_windows">
@@ -61,6 +62,11 @@
     <string>New plot</string>
    </property>
   </action>
+  <action name="actionCascade_windows">
+   <property name="text">
+    <string>Cascade windows</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
@@ -69,6 +75,22 @@
    <signal>triggered()</signal>
    <receiver>mdiArea</receiver>
    <slot>tileSubWindows()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCascade_windows</sender>
+   <signal>triggered()</signal>
+   <receiver>mdiArea</receiver>
+   <slot>cascadeSubWindows()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

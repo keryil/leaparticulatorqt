@@ -37,7 +37,13 @@ class BrowserWindow(object):
 
         self.setup_file_dock()
 
-        self.setup_plotting_window()
+        # connect new plot action
+        action = self.get_child(QtGui.QAction, 'actionNew_plot')
+        print "Action:", action
+        connect(action, action.triggered, self.new_figure)
+        action.trigger()
+        action.trigger()
+        print self.figures()
         # self.setup_splitter()
         
         self.dir = os.path.join(constants.ROOT_DIR, "logs")
@@ -61,12 +67,19 @@ class BrowserWindow(object):
         self.file_dock = QtGui.QDockWidget("Files/Trajectories")
         self.file_dock.setWidget(tree_splitter)
         self.window.addDockWidget(Qt.LeftDockWidgetArea, self.file_dock)
+
+    def figures(self):
+        return [w.windowTitle() for w in self.mdi.subWindowList()]
     
-    def setup_plotting_window(self):
+    def new_figure(self):
         # a frame to hold everything
         container = QtGui.QFrame()
         canvas_win = self.mdi.addSubWindow(container)
-        canvas_win.setWindowTitle("Plot #%d" % len(self.mdi.subWindowList()))
+
+        plot_id = "Plot #%d" % len(self.mdi.subWindowList())
+        print plot_id
+
+        canvas_win.setWindowTitle(plot_id)
 
         # a figure instance to plot on
         container.figure = plt.figure()
@@ -77,7 +90,7 @@ class BrowserWindow(object):
         
         # this is the Navigation widget
         # it takes the Canvas widget and a parent
-        toolbar = NavigationToolbar(container.canvas, self.window)
+        toolbar = NavigationToolbar(container.canvas, container)
         
         # Just some button connected to `plot` method
         container.chkMultivariate = QtGui.QCheckBox("Multivariate?")
@@ -97,7 +110,8 @@ class BrowserWindow(object):
         [layout.addWidget(w) for w in [toolbar, container.canvas, container.chkMultivariate,
                    container.chkReversed, container.btnPlotTrajectory, container.btnPlotHmmAndTrajectory,
                                        container.btnPlotHmm]]
-        # self.canvas_win = self.mdi.addSubWindow(container)
+        print "Finished %s" % plot_id
+        canvas_win.show()
 
     def setup_file_model(self):
         print "Root folder is %s" % self.dir
