@@ -32,15 +32,13 @@ from itertools import product
 class BrowserWindow(object):
     def __init__(self, parent=None):
         self.window = loadUiWidget(constants.BROWSER_UI)
+        self.mdi = self.get_child(QtGui.QMdiArea, 'mdiArea')
         self.statusbar = self.get_child(QtGui.QStatusBar, 'statusbar')
-        self.layout = self.get_child(QtGui.QVBoxLayout, 'verticalLayout')
-        self.splitter = QtGui.QSplitter(Qt.Vertical)
-        # self.splitter.setSizePolicy(QtGui.QSizePolicy.ExpandFlag)
-        self.file_tree = QtGui.QTreeView()
-        self.log_tree = QtGui.QTreeView()
-        
-        self.setup_matplotlib()
-        self.setup_splitter()
+
+        self.setup_file_dock()
+
+        self.setup_plotting_window()
+        # self.setup_splitter()
         
         self.dir = os.path.join(constants.ROOT_DIR, "logs")
         self.dir_model = QtGui.QFileSystemModel()
@@ -49,12 +47,28 @@ class BrowserWindow(object):
         
         # this is a dict of pandas dataframes, indexed by the log file
         self.data = {}
+
+        self.mdi.tileSubWindows()
+
+    def setup_file_dock(self):
+        # this will hold the tree views
+        tree_splitter = QtGui.QSplitter(Qt.Vertical)
+        self.file_tree = QtGui.QTreeView()
+        self.log_tree = QtGui.QTreeView()
+        tree_splitter.addWidget(self.file_tree)
+        tree_splitter.addWidget(self.log_tree)
+
+        self.file_dock = QtGui.QDockWidget("Files/Trajectories")
+        self.file_dock.setWidget(tree_splitter)
+        self.window.addDockWidget(Qt.LeftDockWidgetArea, self.file_dock)
     
-    def setup_matplotlib(self):
+    def setup_plotting_window(self):
+        # a frame to hold everything
+        container = QtGui.QFrame()
+
         # a figure instance to plot on
         self.figure = plt.figure()
-        # return
-        
+
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
         self.canvas = FigureCanvas(self.figure)
@@ -75,23 +89,12 @@ class BrowserWindow(object):
         
         self.btnPlotHmm = QtGui.QPushButton('Plot HMM')
         connect(self.btnPlotHmm, "clicked()", self.plot_hmm)
-    
-    def setup_splitter(self):
-        self.layout.addWidget(self.splitter)
-        widgets = [self.file_tree, self.log_tree, self.toolbar, self.canvas, self.chkMultivariate,
-                   self.chkReversed, self.btnPlotTrajectory, self.btnPlotHmmAndTrajectory, self.btnPlotHmm]
-        [self.splitter.addWidget(w) for w in widgets]
-        self.splitter.setStretchFactor(widgets.index(self.toolbar), 0)
-        self.splitter.setStretchFactor(widgets.index(self.btnPlotHmm), 0)
-        self.splitter.setStretchFactor(widgets.index(self.btnPlotTrajectory), 0)
-        self.splitter.setStretchFactor(widgets.index(self.btnPlotHmmAndTrajectory), 0)
 
-        # hard-wire no expansion
-        widgets = [self.toolbar, self.btnPlotHmmAndTrajectory, self.btnPlotHmm, self.btnPlotTrajectory,
-                  self.chkMultivariate, self.chkReversed]
-        for w in widgets:
-            w.setMinimumHeight(30)
-            w.setMaximumHeight(30)
+        layout = QtGui.QVBoxLayout()
+        container.setLayout(layout)
+        [layout.addWidget(w) for w in [self.toolbar, self.canvas, self.chkMultivariate,
+                   self.chkReversed, self.btnPlotTrajectory, self.btnPlotHmmAndTrajectory, self.btnPlotHmm]]
+        self.canvas_win = self.mdi.addSubWindow(container)
 
     def setup_file_model(self):
         print "Root folder is %s" % self.dir
@@ -169,6 +172,10 @@ class BrowserWindow(object):
                 self.log_model.appendRow(row)
 
     def get_child(self, qtype, qname):
+        """
+
+        :QWidget : child
+        """
         obj = self.window.findChildren(qtype, qname)
         if len(obj):
             return obj[0]

@@ -35,9 +35,38 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Window</string>
+    </property>
+    <addaction name="actionTile_windows"/>
+   </widget>
+   <addaction name="menuWindow"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionTile_windows">
+   <property name="text">
+    <string>Tile windows</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionTile_windows</sender>
+   <signal>triggered()</signal>
+   <receiver>mdiArea</receiver>
+   <slot>tileSubWindows()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>326</x>
+     <y>237</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
