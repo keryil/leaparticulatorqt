@@ -192,11 +192,11 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
 
 from matplotlib.colors import colorConverter
 from matplotlib.patches import Ellipse, ArrowStyle
-from matplotlib.pyplot import scatter, annotate, quiver, legend, gca, gcf
+from matplotlib.pyplot import scatter, annotate, quiver, legend, gca, gcf, draw
 from numpy import log, exp
 # figure()
-# means = []
-# annotations = []
+means = []
+annotations = []
 
 def on_pick(event):
     print_n_flush( str(event))
@@ -205,8 +205,8 @@ def on_pick(event):
         on_pick_annotation(event)
     elif event.artist in means:
         on_pick_means(event)
-    draw()
-    time.sleep(1)
+#     draw()
+#     time.sleep(1)
 
 def on_pick_trajectory_event(event):
     pass
@@ -376,11 +376,14 @@ def fn(args):
     return reduce_hmm(hmm)[1]
         
 def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True, 
-                      phase=2, cond=None, units=Constants.XY, parallel=True):
+                      phase=2, cond=None, units=Constants.XY, parallel=True,
+                      include_practice=True):
     """
     Trains multiple HMM's (as many as trials parameter per nstate) and chooses the one with the 
     lowest BIC, so as to avoid local optima. units parameter can be "xy", "amp_and_freq", or
     "amp_and_mel", which specifies the kind of data to fit the HMM to. 
+    
+    When include_practice=False, data from practice rounds are not used for the training. 
     """
     def pick_lowest_bic(models):
         hmm, d, bic = None, None, 9999999999
@@ -408,9 +411,10 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
     from leaparticulator.data.hmm import reduce_hmm, reconstruct_hmm
     from leaparticulator.constants import palmToAmpAndFreq,palmToAmpAndMel
     
-    
-    
-    responses, test_results, responses_p, test_p, images = fromFile(id_to_log(file_id))
+    ff = id_to_log(file_id)
+    print_n_flush("Loading log file: %s..." % ff)
+    responses, test_results, responses_p, test_p, images = fromFile(ff)
+    print_n_flush("Loaded.")
     multivariate = False
     reverse_cond = cond in ("2r","1r")
     interval = 1
@@ -447,7 +451,9 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
             # -interval, because amp_and_freq returns y,x and not x,y. 
             formatData = lambda r, phase: [[palmToAmpAndMel(frame.get_stabilized_position())[::-interval][pick_var] for frame in rr] for rr in r["127.0.0.1"][str(phase)].values()]
     
-    data = formatData(responses,phase) + formatData(responses_p,phase)
+    data = formatData(responses,phase)
+    if include_practice: 
+        data += formatData(responses_p,phase)
     print_n_flush("Sample data: %s" % data[0][:3])
 #     data = [[frame.get_stabilized_position()[:2] for frame in response] for response in data]
 #     data.append()
@@ -681,15 +687,18 @@ def analyze_log_file_in_phases(file_id, nstates, trials, iter):
 
 def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, units=Constants.XY, parallel=True, 
                                             prefix="logs/", skip_phases=[]):
-    import gc
+    import gc, os
     print_n_flush( "Starting phase by phase analysis, controlled for conditions (units: %s)..." % units)
 #     d = pd.read_csv("/shared/AudioData/ThereminData/surfacedata.csv", na_values=["NaN"])
     global id_to_log
-    id_to_log = lambda x: "%s/%s.exp.log" % (prefix, x)
+    id_to_log = lambda x: os.path.join(os.getcwd(), prefix, "%s.exp.log" % x)#"%s/%s.exp.log" % (prefix, x)
     filename_log = id_to_log(file_id)
     cond = file_id.split('.')[-1]
+    print_n_flush("Working dir: %s" % os.getcwd())
     print_n_flush( "Condition", cond)
-    responses, tests, responses_t, tests_t, images = toCSV(filename_log)
+#     print_n_flush("Loading file %s..." % filename_log)
+#     responses, tests, responses_t, tests_t, images = toCSV(filename_log)
+#     print print_n_flush("Loaded.")
     from IPython.parallel import Client
     
 #     client = Client(profile="default")

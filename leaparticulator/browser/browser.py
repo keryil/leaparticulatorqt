@@ -350,9 +350,11 @@ class BrowserWindow(object):
         self.update_status("Unpickling the HMMs...")
         results = unpickle_results(hmm_file)
         hmm = results.hmms[0]
+        print "Initial BIC:", hmm.bic,"in %d HMMs" % len(results.hmms)
         for hmm_ in results.hmms:
-            if hmm.bic > hmm.bic:
+            if hmm.bic > hmm_.bic:
                 hmm = hmm_
+        print "Final BIC:", hmm.bic
 
         # # now for the actual plotting
         # # create an axis
