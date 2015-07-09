@@ -3,10 +3,15 @@
 
 # In[1]:
 
+get_ipython().magic(u'load_ext autoreload')
+get_ipython().magic(u'autoreload 2')
 import numpy as np
+from IPython.parallel import Client
+client = Client()
+lview = client.load_balanced_view()
 
 
-# In[8]:
+# In[2]:
 
 import sys, os
 ROOT = "~/ThereminData/logs/orange_squares"
@@ -14,23 +19,30 @@ root = os.path.expanduser(ROOT)
 p = os.path.expanduser("~/ThereminData/logs")
 print p
 sys.path.append(p)
+p = os.path.expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")
+print p
+sys.path.append(p)
 
 
-# In[9]:
+# In[25]:
 
+# gather HMM files
 files = get_ipython().getoutput(u'ls $ROOT/*phase*.*')
+get_ipython().system(u'pwd')
 
 
-# In[10]:
+# In[4]:
+
+# configure arrays for HMM files of different units
 
 blacklist = []
-files = [".".join((f.split('.')[:-1])) for f in files]
-files = filter(lambda x: x.split(".")[-1] in ('xy', 'amp_and_freq', 'amp_and_mel'), files)
+# files = [".".join((f.split('.')[:-1])) for f in files]
+files = filter(lambda x: x.endswith(".hmms"), files)
 files = filter(lambda x: not any([el in x for el in blacklist]), files)
 file_to_id = lambda f: ".".join(f.split('/')[-1].split('.')[:2])
-files_xy = filter(lambda x: x.split(".")[-1] in ('xy',), files)
-files_amp_and_mel = filter(lambda x: x.split(".")[-1] in ('amp_and_mel',), files)
-files_amp_and_freq = filter(lambda x: x.split(".")[-1] in ('amp_and_freq',), files)
+files_xy = filter(lambda x: '.xy.' in x, files)
+files_amp_and_mel = filter(lambda x: '.amp_and_mel.' in x, files)
+files_amp_and_freq = filter(lambda x: '.amp_and_freq.' in x, files)
 # files_iconicity
 # for f in files:
 #     print f
@@ -57,23 +69,31 @@ assert len(files_xy) == len(files_amp_and_mel) == len(files_amp_and_freq)
 # files_xy = files_xy[:2]
 # files_amp_and_freq = files_amp_and_freq[:2]
 # files_amp_and_mel = files_amp_and_mel[:2]
-
-
-# In[17]:
-
-from StreamlinedDataAnalysisGhmm import unpickle_results
-import pandas as pd
-
-d = pd.read_csv("/shared/AudioData/ThereminData/logs/logs/discrete/discretesurfacedata2.csv", na_values=["NaN"])
+print files_xy
 
 
 # In[5]:
+
+get_ipython().magic(u'pinfo lprun')
+
+
+# In[6]:
+
+from StreamlinedDataAnalysisGhmm import unpickle_results
+import pandas as pd
+from random import choice
+d = pd.read_csv(root + "/surfacedataos.csv", na_values=["NaN"])
+get_ipython().magic(u'lprun -f unpickle_results unpickle_results(choice(files))')
+
+
+# In[10]:
 
 def pick_lowest_bic(hmms):
     hmm, bic = None, 99999999999999
     for h in hmms:
         if h is None:
             continue
+#         print h
         if h.bic < bic:
             hmm = h
             bic = h.bic
@@ -91,16 +111,14 @@ def hmm_to_pykov_chain(hmm):
     return chain
 
 
-# In[18]:
+# In[27]:
 
 import pandas as pd
 from matplotlib.pyplot import *
 from rpy2.rinterface import RRuntimeError
+from leaparticulator import constants
 pd.set_option('mode.chained_assignment','warn')
 pd.set_option("display.max_rows", 300)
-# import the surface data
-# d = pd.read_csv("/shared/AudioData/ThereminData/surfacedata.csv", na_values=["NaN"])
-
 
 da_dict = {}
 states_xy = []
@@ -120,31 +138,53 @@ llhs_xy = []
 llhs_freq = []
 llhs_mel = []
 total_score = []
-cols = ['id', 'reversed', 'condition', 'phase', 'phase_order', 'score', 'score_n', 'total_score','discrete']
+cols = []
+
 # add a 5 
 for u in ('xy', 'amp_and_freq', 'amp_and_mel'):
     for c in ("nstates_%s", "bic_%s", "nstates_%s_n", "bic_%s_n"):
         cols.append(c % u)
-    
+
 # print cols
 all_data = pd.DataFrame(index=range(len(files_xy)),columns = tuple(cols))
 score_cols = ["Test1", "Test2", "Test3"]
 series = lambda x: pd.Series(x, index=all_data.index)
 normalize = lambda x: (x - np.average(x)) / np.std(x)
 norm_series = lambda x: series(normalize(x))
+fname_to_phase = lambda fname: int(fname.split("phase")[-1].split(".")[0])
 
 all_data["id"] = series([file_to_id(f).split(".")[0] for f in files_xy])
-all_data["phase"] = series([int(f.split(".")[-2][-1]) for f in files_xy])
-all_data["phase"] = series([int(f.split(".")[-2][-1]) for f in files_xy])
-all_data["phase_order"] = series([int(f.split(".")[-2][-1]) for f in files_xy])
+all_data["phase"] = series([fname_to_phase(f) for f in files_xy])
+all_data["phase_order"] = series([fname_to_phase(f) for f in files_xy])
 
-# for f in files:
-#     print f
-#     print any([True if hmm is not None else False for hmm in unpickle_results(f).hmms])
 
-hmms_xy = [pick_lowest_bic(unpickle_results(f).hmms)[0] for f in files_xy]
-hmms_freq = [pick_lowest_bic(unpickle_results(f).hmms)[0] for f in files_amp_and_freq]
-hmms_mel = [pick_lowest_bic(unpickle_results(f).hmms)[0] for f in files_amp_and_mel]
+# In[28]:
+
+print "Unpickle XvY HMMS..."
+# res_array = parallel_unpickle(files_xy)
+hmms_xy = [pick_lowest_bic(unpickle_results(f, fname_to_phase(f), 
+                                              units=constants.XY).hmms)[0] \
+            for f in files_xy]
+# print hmms_xy
+print "Unpickle AMPvFREQ HMMS..."
+hmms_freq = [pick_lowest_bic(unpickle_results(f, fname_to_phase(f), 
+                                              units=constants.AMP_AND_FREQ).hmms)[0] \
+            for f in files_amp_and_freq]
+
+print "Unpickle AMPvMEL HMMS..."
+hmms_mel = [pick_lowest_bic(unpickle_results(f, fname_to_phase(f), 
+                                             units=constants.AMP_AND_MEL).hmms)[0] \
+            for f in files_amp_and_mel]
+
+
+# In[29]:
+
+print "Lengths of HMM arrays: %d, %d, %d" % (len(hmms_xy), 
+                                             len(hmms_freq), 
+                                             len(hmms_mel))
+
+
+# In[30]:
 
 def process_hmm(hmm, states, bics, llhs, i=None):
     states.append(hmm.nstates)
@@ -152,15 +192,16 @@ def process_hmm(hmm, states, bics, llhs, i=None):
     llhs.append(np.product(hmm.loglikelihood))
 
 # print hmms
+# add HMM details to the table
+counter = 0
 for i, (hmm_xy, hmm_freq, hmm_mel) in enumerate(zip(hmms_xy, hmms_freq, hmms_mel)):
     process_hmm(hmm_xy, states_xy, bics_xy, llhs_xy, i)
     process_hmm(hmm_freq, states_freq, bics_freq, llhs_freq, i)
     process_hmm(hmm_mel, states_mel, bics_mel, llhs_mel, i)
+    counter += 1
+print "Processed %dx%d HMMs, added %d entries" % (counter, 3, counter*3)
     
-# print "States:",states_xy, states_freq, states_mel     
-# all_data["entropy_xy"] = series(entropies_xy)
-# all_data["entropy_amp_and_freq"] = series(entropies_freq)
-# all_data["entropy_amp_and_mel"] = series(entropies_mel)
+print len(bics_xy), len(all_data)
 assert len(bics_xy) == len(all_data)
 all_data["bic_xy"] = series(bics_xy)
 all_data["bic_amp_and_freq"] = series(bics_freq)
@@ -172,10 +213,7 @@ all_data["llh_xy"] = series(llhs_xy)
 all_data["llh_amp_and_freq"] = series(llhs_freq)
 all_data["llh_amp_and_mel"] = series(llhs_mel)
 
-cond = []
-rev = []
 scores = []
-discrete = []
 for id, phase in zip(all_data["id"], all_data["phase"]):
 #     print "ID", id
     
@@ -191,21 +229,12 @@ for id, phase in zip(all_data["id"], all_data["phase"]):
         print "FUUUUCK"
     
     row = row[0]
-
-    cond.append(d.at[row,"Condition"])
-    rev.append(d.at[row, "Reversed"])
     scores.append(d.at[row, score_cols[phase]])
     total_score.append(d.at[row, "TestAll"])
-    discrete.append(d.at[row, "Discrete"])
     
-all_data["condition"] = series(cond)
-all_data["reversed"] = series(rev)
 all_data["score"] = series(scores)
 all_data["total_score"] = series(total_score)
 
-# all_data["entropy_xy_n"] = norm_series(entropies_xy)
-# all_data["entropy_amp_and_freq_n"] = norm_series(entropies_freq)
-# all_data["entropy_amp_and_mel_n"] = norm_series(entropies_mel)
 all_data["bic_xy_n"] = norm_series(bics_xy)
 all_data["bic_amp_and_freq_n"] = norm_series(bics_freq)
 all_data["bic_amp_and_mel_n"] = norm_series(bics_mel)
@@ -217,115 +246,66 @@ all_data["llh_amp_and_freq_n"] = norm_series(llhs_freq)
 all_data["llh_amp_and_mel_n"] = norm_series(llhs_mel)
 all_data["score_n"] = norm_series(scores)
 
-# fix the differences in phase among conditions
-for index, row in all_data.iterrows():
-    if row["condition"] == 2:
-        p = row["phase"]
-        if p == 1:
-            all_data.at[index, "phase"] = 2
-            all_data.at[index, "phase_order"] = 1
-        elif p == 2:
-            all_data.at[index, "phase"] = 1
-            all_data.at[index, "phase_order"] = 2
-        else:
-            continue
-#         print "Switchover! %s to %s" % (p, all_data.at[index, "phase"]) 
-#         print all_data.at[index, "phase"], p
-        assert all_data.at[index, "phase"] != p
-    
 from os.path import join
 all_data.to_csv(join(root, "all_scores_bics_nstates_by_phase.csv"))
-# print all_data
+print "Output CSV to", join(root, "all_scores_bics_nstates_by_phase.csv")
 
 colors = "Blue BlueViolet Chocolate Crimson Yellow Green DarkSlateBlue DeepPink GreenYellow DarkKhaki Olive LightGray Black".split()
 
-    
-# all_data
-# figure()
 
-# hist(states)
-# figure()
-# print bics_freq
-# print zip(phases, states), len(states)
-# print bics, len(bics)
-# print da_dict
-
-
-# In[ ]:
+# In[53]:
 
 # print all_data["phase"]
 import pandas as pd
 from matplotlib.pyplot import *
 get_ipython().magic(u'matplotlib inline')
-all_data = pd.read_csv("all_scores_bics_nstates_by_phase.csv")
+all_data = pd.read_csv(root + "/all_scores_bics_nstates_by_phase.csv")
 from matplotlib.patches import Patch
 zero = all_data[all_data.phase == 0]
 one = all_data[all_data.phase == 1]
 two = all_data[all_data.phase == 2]
-get_values = lambda x: x["nstates_amp_and_freq"].values
-figure(figsize=(15,10))
+get_values = lambda x: x["nstates_amp_and_mel"].values
+figure(figsize=(12,7))
 mappings = ['1:1', "1:2", "2:2"]
 colors = [gca()._get_lines.color_cycle.next() for i in mappings] 
 # print dir(colors)
 # print colors
 handles = [Patch(color=c, label=m) for c,m in zip(colors, mappings)]
-hist([get_values(zero),get_values(one),get_values(two)], stacked=True, color=colors)#, histtype="stepfilled")
+hist([get_values(zero),get_values(one),get_values(two)], stacked=True, 
+     color=colors)#, histtype="stepfilled")
 legend(handles=handles)
-# # figure()
-# # hist(get_values(one), label="1:2")
-# # figure()
-# # hist(get_values(two), label="2:2")
-# legend()
-# print one
-# hist(one["nstates_amp_and_freq"])
-# figure()
-# hist(two["nstates_amp_and_freq"])
-# # %matplotlib qt
-# # x = "llh"
-# # y = "bic"
-# # from matplotlib.pyplot import scatter
-# # scat = lambda x, y: plt.scatter(all_data[x], all_data[y])
-# # scat(x,y)
-# # xlabel(x)
-# # ylabel(y)
-# import StreamlinedDataAnalysis
-# print plt
-# def plot_hmm(hmm):
-#     StreamlinedDataAnalysis.plot_hmm(means_=hmm.means, transmat=hmm.transmat, covars=hmm.variances, initProbs=hmm.initProb)
-# plot_hmm(hmms[10])
+for dataset in (get_values(zero), get_values(one), get_values(two)):
+    figure()
+    hist(dataset)
 
 
-# In[57]:
-
-from rpy2.robjects import r
-from rpy2 import robjects
-from rpy2.robjects import globalenv
-print (all_data[all_data.phase == 0]["nstates_amp_and_freq"])
-
-
-# In[79]:
+# In[46]:
 
 # %matplotlib inline
 # print all_data['llh']
 # scatter(all_data["score"], all_data["llh"])
+import numpy as np
+import matplotlib.pyplot as plt
 def plot_trend(target_col, source_col):
     for unit in ("xy", "amp_and_freq", "amp_and_mel"):
         figure()
-        scatter(all_data[target_col], all_data["%s_%s" % (source_col, unit)])
-        xlabel(target_col)
-        ylabel("%s_%s" % (source_col, unit))
+        scatter(all_data["%s_%s" % (source_col, unit)],all_data[target_col])
+        ylabel(target_col)
+        xlabel("%s_%s" % (source_col, unit))
+        plt.gca().set_xscale("log")
+#         plt.gca().set_yscale("log")
 
-plot_trend("score", "llh")
+plot_trend("score", "nstates")
 
-figure()
-plot(np.divide(range(1,100),100.), np.log(np.divide(range(1,100),100.)))
-xlabel("X")
-ylabel("log(X)")
-print all_data["llh_xy"]
+# figure()
+# plot(np.divide(range(1,100),100.), np.log(np.divide(range(1,100),100.)))
+# xlabel("X")
+# ylabel("log(X)")
+# print all_data["llh_xy"]
 # print ids
 
 
-# In[16]:
+# In[ ]:
 
-print d[d["ID"]=="D132011151014"]
+
 
