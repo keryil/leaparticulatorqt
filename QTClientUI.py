@@ -178,20 +178,21 @@ class ClientUI(AbstractClientUI):
                 def fn_done():
                     self.stop_recording()
                     self.theremin.mute()
-                    # self.send(Constants.END_REC)
-                    # self.isRecording = False
                     record.setText("Record")
-                    play.setEnabled(True)
-                    submit.setEnabled(True)
+                    # control against empty signals
+                    if self.last_signal:
+                        play.setEnabled(True)
+                        submit.setEnabled(True)
+                    else:
+                        QtGui.QMessageBox.warning(self.learningWindow, "Empty Signal",
+                                                        "You have recorded an empty signal. Please record again.")
                     record.setEnabled(True)
                     disconnect(record)
                     connect(record, "clicked()", fn_record)
                     shortcuts()
 
                 self.start_recording()
-                # self.send(Constants.START_REC)
-                # self.last_signal = []
-                # self.isRecording = True
+
                 play.setEnabled(False)
                 submit.setEnabled(False)
                 if duration_limited:
