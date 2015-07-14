@@ -26,7 +26,7 @@ def recursive_decode(lst, verbose=False):
         # the arg lst may or may not be a pickled obj itself
         # if not isinstance(lst, str):
         #     raise TypeError
-        if isinstance(lst, str):
+        # if isinstance(lst, str):
             lst = jsonpickle.decode(lst)
     except TypeError:
         pass
@@ -50,7 +50,11 @@ def recursive_decode(lst, verbose=False):
     else:
         if verbose:
             print "Probably hit tail..."
-    assert "py/object" not in str(lst)
+    try:
+        assert "py/object" not in str(lst)
+    except:
+        print str(lst)
+        raise Exception()
     return lst
 
 # converts a list of objects to a list of their
