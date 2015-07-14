@@ -9,7 +9,8 @@ def do_it(file_id=sys.argv[1], units=sys.argv[2], parallel=sys.argv[3], skip_pha
         print "prefix=%s" % prefix
         analyze_log_file_in_phases_by_condition(file_id, nstates=range(2,26), trials=100, iter=1000, 
                                                 parallel=parallel, units=units,
-                                            skip_phases=skip_phases, prefix=prefix)
+                                            skip_phases=skip_phases, prefix=prefix,
+                                               include_practice=False, multivariate=False)
     except Exception, err:
         print err
 if __name__ == "__main__":

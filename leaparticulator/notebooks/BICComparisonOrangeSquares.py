@@ -24,7 +24,7 @@ print p
 sys.path.append(p)
 
 
-# In[25]:
+# In[3]:
 
 # gather HMM files
 files = get_ipython().getoutput(u'ls $ROOT/*phase*.*')
@@ -72,21 +72,7 @@ assert len(files_xy) == len(files_amp_and_mel) == len(files_amp_and_freq)
 print files_xy
 
 
-# In[5]:
-
-get_ipython().magic(u'pinfo lprun')
-
-
-# In[6]:
-
-from StreamlinedDataAnalysisGhmm import unpickle_results
-import pandas as pd
-from random import choice
-d = pd.read_csv(root + "/surfacedataos.csv", na_values=["NaN"])
-get_ipython().magic(u'lprun -f unpickle_results unpickle_results(choice(files))')
-
-
-# In[10]:
+# In[8]:
 
 def pick_lowest_bic(hmms):
     hmm, bic = None, 99999999999999
@@ -111,12 +97,13 @@ def hmm_to_pykov_chain(hmm):
     return chain
 
 
-# In[27]:
+# In[9]:
 
 import pandas as pd
 from matplotlib.pyplot import *
 from rpy2.rinterface import RRuntimeError
 from leaparticulator import constants
+from StreamlinedDataAnalysisGhmm import unpickle_results
 pd.set_option('mode.chained_assignment','warn')
 pd.set_option("display.max_rows", 300)
 
@@ -158,7 +145,7 @@ all_data["phase"] = series([fname_to_phase(f) for f in files_xy])
 all_data["phase_order"] = series([fname_to_phase(f) for f in files_xy])
 
 
-# In[28]:
+# In[10]:
 
 print "Unpickle XvY HMMS..."
 # res_array = parallel_unpickle(files_xy)
@@ -177,14 +164,14 @@ hmms_mel = [pick_lowest_bic(unpickle_results(f, fname_to_phase(f),
             for f in files_amp_and_mel]
 
 
-# In[29]:
+# In[11]:
 
 print "Lengths of HMM arrays: %d, %d, %d" % (len(hmms_xy), 
                                              len(hmms_freq), 
                                              len(hmms_mel))
 
 
-# In[30]:
+# In[12]:
 
 def process_hmm(hmm, states, bics, llhs, i=None):
     states.append(hmm.nstates)
@@ -253,7 +240,7 @@ print "Output CSV to", join(root, "all_scores_bics_nstates_by_phase.csv")
 colors = "Blue BlueViolet Chocolate Crimson Yellow Green DarkSlateBlue DeepPink GreenYellow DarkKhaki Olive LightGray Black".split()
 
 
-# In[53]:
+# In[21]:
 
 # print all_data["phase"]
 import pandas as pd
@@ -279,7 +266,7 @@ for dataset in (get_values(zero), get_values(one), get_values(two)):
     hist(dataset)
 
 
-# In[46]:
+# In[20]:
 
 # %matplotlib inline
 # print all_data['llh']

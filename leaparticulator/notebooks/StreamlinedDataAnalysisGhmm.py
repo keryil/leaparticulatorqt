@@ -220,7 +220,8 @@ def on_pick_means(event):
     annotations[means.index(event.artist)].set_visible(True)
     print_n_flush( "%s" % annotations[means.index(event.artist)])
     
-def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transition_arrows=True):
+def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transition_arrows=True,
+            prob_lists=True):
     from matplotlib import pyplot as plt
     from matplotlib.patches import FancyArrowPatch
     univariate = False
@@ -229,8 +230,9 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
     except TypeError:
         univariate = True
         print_n_flush("Univariate HMM detected (%d states)." % len(means_))
+        print means[:3]
         means_ = [(0,m)for m in means_]
-        covars = [[[3,0],[0,covar]] for covar in covars]
+#         covars = [[[3,0],[0,covar]] for covar in covars]
         
     if axes != None:
         pass
@@ -254,13 +256,16 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
     
 #     max_prob = max(transmat.flatten())
     for i, mean in enumerate(means_):
+        color = colors[i % len(colors)]
         print_n_flush( "MEAN:", tuple(mean))
-#         means.append(scatter(*tuple(mean), color=colorConverter.to_rgb(colors[i]), picker=10, label="State%i"%i))
-        means.append(axes.scatter(*tuple(mean), color=colors[i], picker=10, label="State%i"%i))
+        means.append(axes.scatter(*tuple(mean), color=color, picker=10, label="State%i"%i))
         axes.annotate(s="%d" % i, xy=mean, xytext=(-10,-10), xycoords="data",textcoords="offset points", 
-                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colors[i], alpha=0.3))
+                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=color, alpha=0.3))
         print_n_flush( "COVARS: %s" % covars[i])
-        plot_cov_ellipse(covars[i], mean, alpha=.15, color=colors[i], ax=axes)
+        if not univariate:
+            plot_cov_ellipse(covars[i], mean, alpha=.30, color=color, ax=axes)
+        else:
+            axes.axhspan(mean[1] - np.sqrt(covars[i]),mean[1] + np.sqrt(covars[i]), color=color, alpha=.30)
         x0, y0 = mean
         prob_string = "P(t0)=%f" % initProbs[i]
         for j, p in enumerate(transmat[i]):
@@ -313,9 +318,9 @@ def plot_hmm(means_, transmat, covars, initProbs, axes=None, clr=None, transitio
 #                            scale_units='xy',angles='xy', scale=1, width=0.005, 
 #                             label="P(%d->%d)=%f" % (i,j,p))
 #         legend()
-
-        annotations.append(annotate(s=prob_string, xy=mean, xytext=(0, 10), xycoords="data",textcoords="offset points", 
-                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=colors[i], alpha=0.3), picker=True,
+        if prob_lists:
+            annotations.append(annotate(s=prob_string, xy=mean, xytext=(0, 10), xycoords="data",textcoords="offset points", 
+                         alpha=1,bbox=dict(boxstyle='round,pad=0.2', fc=color, alpha=0.3), picker=True,
                          visible=True))
 
 
@@ -377,13 +382,15 @@ def fn(args):
         
 def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True, 
                       phase=2, cond=None, units=Constants.XY, parallel=True,
-                      include_practice=True):
+                      include_practice=True, multivariate=None):
     """
     Trains multiple HMM's (as many as trials parameter per nstate) and chooses the one with the 
     lowest BIC, so as to avoid local optima. units parameter can be "xy", "amp_and_freq", or
     "amp_and_mel", which specifies the kind of data to fit the HMM to. 
     
     When include_practice=False, data from practice rounds are not used for the training. 
+    
+    multivariate parameter overrides the multivariate detection.
     """
     def pick_lowest_bic(models):
         hmm, d, bic = None, None, 9999999999
@@ -422,13 +429,13 @@ def train_hmm_n_times(file_id, nstates, trials=20, iter=1000, pickle=True,
     if reverse_cond:
         interval = -1
         pick_var = 1
-        
-    if cond in ("2","2r"):
-        if phase == 1:
-            multivariate = True
-    else:
-        if phase == 2:
-            multivariate = True
+    if multivariate is None:
+        if cond in ("2","2r"):
+            if phase == 1:
+                multivariate = True
+        else:
+            if phase == 2:
+                multivariate = True
             
     formatData = None
             
@@ -686,7 +693,21 @@ def analyze_log_file_in_phases(file_id, nstates, trials, iter):
     return results
 
 def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, units=Constants.XY, parallel=True, 
-                                            prefix="logs/", skip_phases=[]):
+                                            prefix="logs/", skip_phases=[], include_practice=True,
+                                           multivariate=None):
+    """
+    file_id: the id of the participant in the form 14701883.cond
+    nstates: a list of integers that signify the potential number of states for the HMMs
+    trials: number of attempts to build an HMM per phase and nstate.
+    iter: number of iterations (RHmm only)
+    units: the unit of measurement such as constants.XY, constants.AMP_AND_FREQ etc.
+    parallel: whether to use parallel processing
+    prefix: the prefix of the log directory relative to the project root
+    skip_phases: a list of phases to skip, used to limit memory usage
+    include_practice: whether practice rounds will be included in the trainign
+    multivariate: overrides the multi-/univariate choices based on condition and phase, unless set to None.
+    """
+    
     import gc, os
     print_n_flush( "Starting phase by phase analysis, controlled for conditions (units: %s)..." % units)
 #     d = pd.read_csv("/shared/AudioData/ThereminData/surfacedata.csv", na_values=["NaN"])
@@ -696,6 +717,8 @@ def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, unit
     cond = file_id.split('.')[-1]
     print_n_flush("Working dir: %s" % os.getcwd())
     print_n_flush( "Condition", cond)
+    if multivariate is not None:
+        print_n_flush("Multivariate parameter overridden to: %s" % multivariate)
 #     print_n_flush("Loading file %s..." % filename_log)
 #     responses, tests, responses_t, tests_t, images = toCSV(filename_log)
 #     print print_n_flush("Loaded.")
@@ -719,7 +742,8 @@ def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, unit
             continue
         print_n_flush("Doing phase#%d" % i)
         results[i] = train_hmm_n_times(file_id, nstates=nstates, trials=trials, iter=iter, phase=i, cond=cond,
-                                       units=units, parallel=parallel, pickle=True)
+                                       units=units, parallel=parallel, pickle=True, 
+                                       include_practice=include_practice, multivariate=multivariate)
         gc.collect()
     return results
 
