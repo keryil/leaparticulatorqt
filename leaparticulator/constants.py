@@ -127,6 +127,8 @@ MOD_FIRSTSCREEN = "mod_firstscreen"
 
 BROWSER_UI = "BrowserMain.ui"
 
+TXT_EMPTY_SIGNAL = "You have recorded an empty signal. Please record again."
+
 # delay between submitting a test answer and
 # the presentation of the next question in msec
 DELAY_TEST = 1000
