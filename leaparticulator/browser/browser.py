@@ -36,6 +36,9 @@ def plot_quiver2d(data, axis, alpha=.75, C=[], path=None, label=None, *args, **k
         if not C:
             color_delta = 1. / (len(X) - 1)
             C = [(color_delta * i, color_delta * i, color_delta * i) for i in range(len(X) - 1)]
+        if path:
+            print "Path: %s" % path
+            C = [C[i % len(C)] for i in path]
         X = X[:-1]
         Y = Y[:-1]
         # print map(len, [X, Y, u, v])
@@ -57,12 +60,12 @@ class BrowserWindow(object):
         print "Action:", action
         connect(action, action.triggered, self.new_figure)
         action.trigger()
-        action.trigger()
         print self.figures()
         # self.setup_splitter()
         
         self.dir = os.path.join(constants.ROOT_DIR, "logs")
         self.dir_model = QtGui.QFileSystemModel()
+        self.dir_model.setReadOnly(True)
         self.log_model = QtGui.QStandardItemModel()
         self.setup_file_model()
         
@@ -76,13 +79,16 @@ class BrowserWindow(object):
         tree_splitter = QtGui.QSplitter(Qt.Vertical)
         self.file_tree = QtGui.QTreeView()
         self.log_tree = QtGui.QTreeView()
-        self.log_tree.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.log_tree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
         self.log_tree.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.log_tree.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         tree_splitter.addWidget(self.file_tree)
         tree_splitter.addWidget(self.log_tree)
 
-        self.file_dock = QtGui.QDockWidget("Files/Trajectories")
+        self.file_dock = QtGui.QDockWidget("Files and Trajectories")
         self.file_dock.setWidget(tree_splitter)
+        self.file_dock.setFeatures(QtGui.QDockWidget.DockWidgetFloatable |
+                 QtGui.QDockWidget.DockWidgetMovable)
         self.window.addDockWidget(Qt.LeftDockWidgetArea, self.file_dock)
 
     def figures(self):
@@ -101,20 +107,35 @@ class BrowserWindow(object):
 
         # a figure instance to plot on
         container.figure = plt.figure()
+        plt.style.use('ggplot')
 
         # this is the Canvas Widget that displays the `figure`
         # it takes the `figure` instance as a parameter to __init__
         container.canvas = FigureCanvas(container.figure)
-        
+        container.canvas.hmm = None
+
         # this is the Navigation widget
         # it takes the Canvas widget and a parent
         toolbar = NavigationToolbar(container.canvas, container)
-        
+
+        # combobox to choose units
+        container.cmbUnit = cmbUnit = QtGui.QComboBox()
+        for unit in [constants.XY, constants.AMP_AND_FREQ, constants.AMP_AND_MEL]:
+            cmbUnit.addItem(unit)
+
         # Just some button connected to `plot` method
+        chkLayout = QtGui.QHBoxLayout()
         container.chkMultivariate = QtGui.QCheckBox("Multivariate?")
         container.chkReversed = QtGui.QCheckBox("Reversed?")
         container.chkClear = QtGui.QCheckBox("Clear previous plot?")
-        
+        container.chkAnnotate = QtGui.QCheckBox("Annotate with transition matrices?")
+        container.chkArrows = QtGui.QCheckBox("Transition arrows?")
+        container.chkLegend = QtGui.QCheckBox("Legend?")
+        container.chkClear.setChecked(True)
+        [chkLayout.addWidget(w) for w in [container.chkMultivariate,
+                   container.chkReversed, container.chkClear, container.chkAnnotate, container.chkArrows,
+                                          container.chkLegend]]
+
         container.btnPlotTrajectory = QtGui.QPushButton('Plot trajectory')
         connect(container.btnPlotTrajectory, "clicked()", lambda: self.plot_trajectory(container))
         
@@ -126,8 +147,8 @@ class BrowserWindow(object):
 
         layout = QtGui.QVBoxLayout()
         container.setLayout(layout)
-        [layout.addWidget(w) for w in [toolbar, container.canvas, container.chkMultivariate,
-                   container.chkReversed, container.chkClear, container.btnPlotTrajectory,
+        layout.insertLayout(1, chkLayout)
+        [layout.addWidget(w) for w in [toolbar, container.canvas, container.cmbUnit, container.btnPlotTrajectory,
                                        container.btnPlotHmmAndTrajectory,
                                        container.btnPlotHmm]]
         print "Finished %s" % plot_id
@@ -223,13 +244,34 @@ class BrowserWindow(object):
     def plot_quiver2d(self, data, axis, alpha=.75, C=[], path=None, label=None, *args, **kwargs):
         return plot_quiver2d(data, axis, *args, alpha=alpha, C=C, path=path, label=label, **kwargs)
 
+    def _format_axes_and_labels(self, unit, reversed, multivariate):
+        xlabel = "X coordinate"
+        ylabel = "Y coordinate"
+        process_data = lambda x: x
+        if unit == constants.AMP_AND_MEL:
+            process_data = lambda x: constants.palmToAmpAndMel(x)[::-1]
+            xlabel = "Mel frequency"
+            ylabel = "Amplitude"
+        elif unit == constants.AMP_AND_FREQ:
+            process_data = lambda x: constants.palmToAmpAndFreq(x)[::-1]
+            xlabel = "Hertz Frequency"
+            ylabel = "Amplitude"
+
+        if reversed:
+            xlabel, ylabel = ylabel, xlabel
+
+        if not multivariate:
+            xlabel = "Time"
+        return xlabel, ylabel, process_data
+
     def plot_trajectory(self, container=None):
-        ''' plot some random stuff '''
         if not container:
             container = self
         reversed = container.chkReversed.isChecked()
         multivariate = container.chkMultivariate.isChecked()
         clear = container.chkClear.isChecked()
+        unit = container.cmbUnit.currentText()
+        xlabel, ylabel, process_data = self._format_axes_and_labels(unit, reversed, multivariate)
 
         phases = self.log_selection.selectedRows(0)
         meanings = self.log_selection.selectedRows(1)
@@ -248,50 +290,51 @@ class BrowserWindow(object):
             ax = container.figure.add_subplot(111)
             ax.cla()
 
-            # don't do this unless we have exactly one
-             # plot to display
-            # if len(indexes) == 1:
-                # discards the old graph
-
-        def do_plot(meaning_index, phase_index, color=None):
+        def do_plot(meaning_index, phase_index, hmm=None, color=None):
+            print "do_plot() called."
             phase = self.log_model.itemFromIndex(phase_index).text()
             item = self.log_model.itemFromIndex(meaning_index)
             meaning = item.text()
-            color = [color] * len(item.data())
+            data = map(process_data, [f.get_stabilized_position() for f in item.data()])
             if multivariate:
-                data = [f.get_stabilized_position()[:2] for f in item.data()]
+                data = [f[:2] for f in data]
                 if reversed:
                     data = [(d1, d0) for d0, d1 in data]
-                # data0, data1 = zip(*data)
-                # ax.plot(data0, data1, '->')
-                self.plot_quiver2d(data, ax, C=color, label="%s @phase%s" % (meaning, phase))
-                if reversed:
-                    ax.set_xlabel("Y-coordinate")
-                    ax.set_xlabel("X-coordinate")
-                else:
-                    ax.set_xlabel("X-coordinate")
-                    ax.set_xlabel("Y-coordinate")
+                path = None
+                if hmm:
+                    print "Flattening data..."
+                    path = hmm.viterbi(data, flatten=True)[0]
+
+                self.plot_quiver2d(data, ax, C=color, path=path, label="%s @phase%s" % (meaning, phase))
             else:
+                path = None
                 if not reversed:
-                    # print "Frames: %s" % item.data()
-                    data = [f.get_stabilized_position()[0] for f in item.data()]
+                    data = [f[0] for f in data]
                 else:
-                    data = [f.get_stabilized_position()[1] for f in item.data()]
-                self.plot_quiver2d([d for d in enumerate(data)], ax, C=color, label="%s @phase%s" % (meaning, phase))
-                # ax.plot(data, '->')
-                ax.set_xlabel("Time")
-                if reversed:
-                    ax.set_ylabel("X-coordinate")
-                else:
-                    ax.set_ylabel("Y-coordinate")
-            ax.legend()
+                    data = [f[1] for f in data]
+                if hmm:
+                    path = hmm.viterbi(data, flatten=True)[0]
+
+                self.plot_quiver2d([d for d in enumerate(data)], ax, path=path, C=color, label="%s @phase%s" % (meaning, phase))
+            ax.set_xlabel(xlabel)
+            ax.set_ylabel(ylabel)
+            if container.chkLegend.isChecked():
+                ax.legend()
+            else:
+                if ax.legend():
+                    ax.legend().remove()
+            # ax.legend_.remove()
             container.canvas.draw()
             print "Plotted index %s" % meaning_index
 
         for meaning_index, phase_index, c in zip(meanings, phases, constants.kelly_colors):
             print "Color: (%f, %f, %f)" % c
             ax.hold(True)
-            do_plot(meaning_index, phase_index, color=c)
+            hmm = None
+            if hasattr(container, "hmm") and container.hmm:
+                c = constants.kelly_colors
+                hmm = container.hmm
+            do_plot(meaning_index, phase_index, color=c, hmm=hmm)
             ax.hold(False)
 
 
@@ -299,11 +342,20 @@ class BrowserWindow(object):
         indexes = self.log_selection.selectedRows()
         print map(lambda x: x.text(), map(self.log_model.itemFromIndex, indexes))
 
-    def plot_hmm(self):
+    def plot_hmm(self, container):
         from leaparticulator.notebooks.StreamlinedDataAnalysisGhmm import plot_hmm, unpickle_results
         indexes = self.log_selection.selectedRows()
         phase = self.log_model.itemFromIndex(indexes[0]).text()
+        unit = container.cmbUnit.currentText()
+        xlabel, ylabel, process_data = self._format_axes_and_labels(unit, reversed=container.chkReversed.isChecked(),
+                                              multivariate=container.chkMultivariate.isChecked())
 
+        ax = container.figure.gca()
+        if container.chkClear.isChecked():
+            ax.hold(False)
+             # create an axis
+            ax = container.figure.add_subplot(111)
+            ax.cla()
         # which phase are we interested in?
 
         # first, ask the user which HMM they want to plot
@@ -312,7 +364,7 @@ class BrowserWindow(object):
         print self.current_fname, fname_to_logid(self.current_fname)
         matches = []
         base_id = fname_to_logid(self.current_fname)
-        query = '%s*phase%d*.hmms' % (base_id, int(phase))
+        query = '%s*phase%d*.%s.hmms' % (base_id, int(phase), unit)
         print "Searching for filename format: %s" % query
         self.update_status("Searching %s recursively for HMM files associated with this trajectory..." % self.dir)
         for root, dirnames, filenames in os.walk(self.dir, followlinks=True):
@@ -324,18 +376,32 @@ class BrowserWindow(object):
         self.update_status("Unpickling the HMMs...")
         results = unpickle_results(hmm_file)
         hmm = results.hmms[0]
+        print "Initial BIC:", hmm.bic,"in %d HMMs" % len(results.hmms)
         for hmm_ in results.hmms:
-            if hmm.bic > hmm.bic:
+            if hmm.bic > hmm_.bic:
                 hmm = hmm_
 
-        # now for the actual plotting
-        # create an axis
-        ax = self.figure.add_subplot(111)
+        # hmm = results.hmms[2]
+        print "Final BIC:", hmm.bic
 
-        # discards the old graph
-        ax.hold(False)
+        # # now for the actual plotting
+        # # create an axis
+        # ax = container.figure.add_subplot(111)
+        #
+        # # discards the old graph
+        ax.hold(True)
 
-        plot_hmm(hmm.means, hmm.transmat, hmm.variances, hmm.initProb, axes=ax)
+        r = plot_hmm(hmm.means, hmm.transmat, hmm.variances, hmm.initProb, axes=ax,
+                 clr=constants.kelly_colors, prob_lists=container.chkAnnotate.isChecked(),
+                     transition_arrows=container.chkArrows.isChecked())
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+        plt.autoscale(True)
+        container.canvas.draw()
+        container.hmm = hmm
+        container.hmm_file = hmm_file
+        self.update_status("Loaded HMMS from %s" % hmm_file)
+        return r
 
     def pick_hmm_file(self, filenames):
         dialog = loadUiWidget("HmmFilePickerDialog.ui")

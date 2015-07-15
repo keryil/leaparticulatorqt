@@ -28,7 +28,7 @@ fadeout_call_rate = 0.005
 THEREMIN_RATE = 1./100
 
 # maximum duration of a signal in seconds
-MAX_SIGNAL_DURATION = 2.
+MAX_SIGNAL_DURATION = 1.
 
 # number of options each test question has
 n_of_options = [4, 4, 4]
@@ -126,6 +126,8 @@ MOD_EXIT = "mod_exit"
 MOD_FIRSTSCREEN = "mod_firstscreen"
 
 BROWSER_UI = "BrowserMain.ui"
+
+TXT_EMPTY_SIGNAL = "You have recorded an empty signal. Please record again."
 
 # delay between submitting a test answer and
 # the presentation of the next question in msec

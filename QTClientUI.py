@@ -4,7 +4,6 @@ from PyQt4 import QtCore, QtGui
 
 from leaparticulator import constants
 
-
 app = QtGui.QApplication.instance()
 if app is None:
     app = QtGui.QApplication(sys.argv)
@@ -17,8 +16,10 @@ from AbstractClientUI import AbstractClientUI
 from QtUtils import connect, disconnect, loadWidget, loadFromRes, setButtonIcon
 from jsonpickle import decode, encode
 from leaparticulator.constants import install_reactor
+
 install_reactor()
 from twisted.internet import reactor
+
 
 def getFunction(widget):
     """
@@ -59,8 +60,9 @@ class ClientUI(AbstractClientUI):
 
         # theremin stuff
         from leaparticulator.theremin.theremin import ConstantRateTheremin, ThereminPlayback
+
         self.theremin = ConstantRateTheremin(
-        # self.theremin, self.reactor, self.controller, self.connection = gimmeSomeTheremin(
+            # self.theremin, self.reactor, self.controller, self.connection = gimmeSomeTheremin(
             n_of_tones=1, default_volume=.5, ui=self, realtime=False)
         self.reactor = reactor
         self.connection = self.theremin.protocol
@@ -123,6 +125,7 @@ class ClientUI(AbstractClientUI):
         # handle play/stop plus label changes
         def fn_play():
             last_submit_state = submit.isEnabled()
+
             def fn_done():
                 self.playback_player.stop()
                 play.setText("Play")
@@ -163,8 +166,8 @@ class ClientUI(AbstractClientUI):
                 layout = get(QtGui.QVBoxLayout, 'verticalLayout_2')
                 self.progressLabel = QtGui.QLabel()
                 self.progressLabel.setTextFormat(QtCore.Qt.RichText)
-                txt =  "<b>Important:</b> Your signal cannot exceed %.01f seconds.<br/>" %\
-                                           constants.MAX_SIGNAL_DURATION
+                txt = "<b>Important:</b> Your signal cannot exceed %.01f seconds.<br/>" % \
+                      constants.MAX_SIGNAL_DURATION
                 # txt += "<b>Countdown:</b>"
                 self.progressLabel.setText(txt)
                 self.progressLabel.setAlignment(QtCore.Qt.AlignCenter)
@@ -175,23 +178,25 @@ class ClientUI(AbstractClientUI):
 
             def fn_record():
                 self.theremin.unmute()
+
                 def fn_done():
                     self.stop_recording()
                     self.theremin.mute()
-                    # self.send(Constants.END_REC)
-                    # self.isRecording = False
                     record.setText("Record")
-                    play.setEnabled(True)
-                    submit.setEnabled(True)
+                    # control against empty signals
+                    if self.last_signal:
+                        play.setEnabled(True)
+                        submit.setEnabled(True)
+                    else:
+                        QtGui.QMessageBox.warning(self.learningWindow, "Empty Signal",
+                                                  constants.TXT_EMPTY_SIGNAL)
                     record.setEnabled(True)
                     disconnect(record)
                     connect(record, "clicked()", fn_record)
                     shortcuts()
 
                 self.start_recording()
-                # self.send(Constants.START_REC)
-                # self.last_signal = []
-                # self.isRecording = True
+
                 play.setEnabled(False)
                 submit.setEnabled(False)
                 if duration_limited:
@@ -203,9 +208,10 @@ class ClientUI(AbstractClientUI):
                     def tick_progressbar(i):
                         self.progressbar.setValue(i)
                         if i < self.progressbar.maximum():
-                            reactor.callLater(delay, lambda: tick_progressbar(i+1))
+                            reactor.callLater(delay, lambda: tick_progressbar(i + 1))
                         else:
                             self.progressbar.setValue(0)
+
                     reactor.callLater(delay, lambda: tick_progressbar(1))
                 else:
                     disconnect(record)
@@ -278,19 +284,16 @@ class ClientUI(AbstractClientUI):
             info = "PRACTICE ROUND: " + info
         label.setText(info)
 
-        # set the meaning space image
-        label = self.infoWindow.findChildren(
-            QtGui.QLabel, "lblMeaningSpace")[0]
-        label.pixmap = None
-        dimension = "dimensions"
-        if self.phase == 0:
-            dimension = "dimension"
-
         if not first_or_last_or_pretest:
             from subprocess import Popen
             from shlex import split
             from os.path import join
             from os import remove
+
+            # set the meaning space image
+            label = self.infoWindow.findChildren(
+                QtGui.QLabel, "lblMeaningSpace")[0]
+            label.pixmap = None
 
             images = self.images[self.phase]
             filename = join(constants.MEANING_DIR, "montage.png")
@@ -311,7 +314,7 @@ class ClientUI(AbstractClientUI):
             # print "Pixmap: %s" % pixmap
             label.setPixmap(pixmap)
             remove(filename)
-        label.repaint()
+            label.repaint()
 
         # connect the button clicked signal
         button = self.infoWindow.findChildren(QtGui.QPushButton, "btnOkay")[0]

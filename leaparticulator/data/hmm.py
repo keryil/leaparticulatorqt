@@ -392,13 +392,15 @@ class HMM(object):
             rate -= stationary_dist[s1] * xlogy(p, p)
         return rate
 
-    def viterbi(self, obs):
+    def viterbi(self, obs, flatten=False):
         data = [flatten_to_emission(d) for d in obs]
         data = ghmm.SequenceSet(ghmm.Float(), data)
         # paths, likelihoods =
         # max_likelihood = -99999999
         # best_path = None
         viterbi_path, likelihood = self.hmm_object.viterbi(data)
+        if flatten:
+            viterbi_path = [v[0] for v in viterbi_path]
         return viterbi_path, likelihood
 
     def viterbi_path(self, obs):
