@@ -284,19 +284,16 @@ class ClientUI(AbstractClientUI):
             info = "PRACTICE ROUND: " + info
         label.setText(info)
 
-        # set the meaning space image
-        label = self.infoWindow.findChildren(
-            QtGui.QLabel, "lblMeaningSpace")[0]
-        label.pixmap = None
-        dimension = "dimensions"
-        if self.phase == 0:
-            dimension = "dimension"
-
         if not first_or_last_or_pretest:
             from subprocess import Popen
             from shlex import split
             from os.path import join
             from os import remove
+
+            # set the meaning space image
+            label = self.infoWindow.findChildren(
+                QtGui.QLabel, "lblMeaningSpace")[0]
+            label.pixmap = None
 
             images = self.images[self.phase]
             filename = join(constants.MEANING_DIR, "montage.png")
@@ -317,7 +314,7 @@ class ClientUI(AbstractClientUI):
             # print "Pixmap: %s" % pixmap
             label.setPixmap(pixmap)
             remove(filename)
-        label.repaint()
+            label.repaint()
 
         # connect the button clicked signal
         button = self.infoWindow.findChildren(QtGui.QPushButton, "btnOkay")[0]

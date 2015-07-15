@@ -28,7 +28,7 @@ fadeout_call_rate = 0.005
 THEREMIN_RATE = 1./100
 
 # maximum duration of a signal in seconds
-MAX_SIGNAL_DURATION = 2.
+MAX_SIGNAL_DURATION = 1.
 
 # number of options each test question has
 n_of_options = [4, 4, 4]
