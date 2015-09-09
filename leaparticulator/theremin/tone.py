@@ -109,13 +109,17 @@ class Tone(object):
                 if constants.THEREMIN_AUDIO_FORMAT == pyaudio.paInt32:
                     type = 'I'
                 buf = array.array(type, gen())
-                self.stream.write(buf.tostring())
+
 
                 # free = self.stream.get_write_available() # How much space is left in the buffer?
 
                 if self.record:
                     # in_buf = self.readfrom_stream.read(constants.FRAMES_PER_BUFFER)
                     self.recorded_frames.append(buf.tostring())
+                    buf = array.array(type, [0 for _ in buf])
+                    self.stream.write(buf.tostring())
+                else:
+                    self.stream.write(buf.tostring())
 
                     # SILENCE = 0
                     # if free > constants.FRAMES_PER_BUFFER: # Is there a lot of space in the buffer?

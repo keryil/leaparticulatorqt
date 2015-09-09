@@ -38,17 +38,26 @@ class RecorderWindow(QtGui.QMainWindow):
         self.playback = ThereminPlayback(record=False)
         loadUiWidget('Traj2MP3.ui', widget=self)
 
-        self.setLogFile(self.filename)
-        self.score = self.data['1']['./img/meanings/1_1.png']
+        # self.setLogFile(self.filename)
+        # self.score = self.data['1']['./img/meanings/1_1.png']
         import os
         self.txtOutputPath.setText(os.path.abspath(os.path.expanduser("~" + os.sep + "Desktop")))
 
         self.actionPlay.triggered.connect(self.play)
         self.actionRecord.triggered.connect(self.record)
         self.actionChange_Path.triggered.connect(self.setOutputPath)
+        self.actionOpenLog.triggered.connect(lambda: self.setLogFile(str(QtGui.QFileDialog.getOpenFileName())))
         self.score = None
 
+        self.lstSignals.currentItemChanged.connect(self.selectScore)
+
         print "Done!"
+
+    def selectScore(self, current, previous):
+        self.setScore(current.signal)
+
+    def setScore(self, score):
+        self.score = score
 
     def setOutputPath(self):
         print self.txtOutputPath.text()
@@ -64,6 +73,7 @@ class RecorderWindow(QtGui.QMainWindow):
 
     def populateWithSignals(self):
         self.items = []
+        self.lstSignals.clear()
         for phase in self.data:
             for meaning in self.data[phase]:
                 item = QtGui.QListWidgetItem("Phase %s, Meaning %s" % (phase, meaning))
@@ -84,14 +94,14 @@ class RecorderWindow(QtGui.QMainWindow):
     def _record(self, thereminplayback, item, callback=None):
         import os
         from twisted.internet import reactor
+        meaning = str(item.meaning)
+        if os.sep in meaning:
+            meaning = os.path.split(item.meaning)[-1].split(".")[0]
         thereminplayback.start(item.signal,
                                filename=os.path.join(self.txtOutputPath.text(), "phase%s-%s.wav" % (item.phase,
-                                                                                                    os.path.split(
-                                                                                                        item.meaning)[
-                                                                                                        -1].split(".")[
-                                                                                                        0])),
+                                                                                                    meaning)),
                                jsonencoded=False,
-                               callback=lambda: reactor.iterate(1000) and callback())
+                               callback=lambda: reactor.iterate(10) or callback())
 
     def record(self):
         try:
@@ -102,6 +112,8 @@ class RecorderWindow(QtGui.QMainWindow):
             print "Outputting %d items!" % len(self.items)
             self.count = 0
         try:
+            from twisted.internet import reactor
+            reactor.iterate(100)
             item = self.items[self.count]
             playback = ThereminPlayback(record=True)
             self._record(playback, item, callback=self.record)

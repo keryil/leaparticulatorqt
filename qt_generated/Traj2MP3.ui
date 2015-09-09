@@ -128,6 +128,11 @@
     <string>Change Path</string>
    </property>
   </action>
+  <action name="actionOpenLog">
+   <property name="text">
+    <string>openLog</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
@@ -172,6 +177,22 @@
     <hint type="sourcelabel">
      <x>200</x>
      <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnOpenLog</sender>
+   <signal>clicked()</signal>
+   <receiver>actionOpenLog</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>300</x>
+     <y>395</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>
