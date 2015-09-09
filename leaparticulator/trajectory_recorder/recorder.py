@@ -33,7 +33,8 @@ from leaparticulator.theremin.theremin import ThereminPlayback
 class RecorderWindow(QtGui.QMainWindow):
     def __init__(self):
         super(RecorderWindow, self).__init__()
-        self.filename = "/shared/Dropbox/ABACUS/Workspace/LeapArticulatorQt/leaparticulator/test/test_data/123R0126514.1r.exp.log"
+        # self.filename = "/shared/Dropbox/ABACUS/Workspace/LeapArticulatorQt/leaparticulator/test/test_data/123R0126514.1r.exp.log"
+        self.filename = None
         self.playback = ThereminPlayback(record=False)
         loadUiWidget('Traj2MP3.ui', widget=self)
 
