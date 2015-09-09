@@ -27,6 +27,10 @@ fadeout_call_rate = 0.005
 # for constant rate theremins
 THEREMIN_RATE = 1./100
 
+import pyaudio
+
+THEREMIN_AUDIO_FORMAT = pyaudio.paInt32
+
 # maximum duration of a signal in seconds
 MAX_SIGNAL_DURATION = 1.
 
@@ -143,11 +147,16 @@ def install_reactor():
     # https://github.com/ghtdak/qtreactor/issues/21
     # from qtreactor import pyside4reactor as reactor
     # from qtreactor import qt4reactor as reactor
-    import sys
-    if 'qt4reactor' not in sys.modules:
+    import sys, PyQt4
+    if 'qt4reactor' in sys.modules:
+        print "qt4reactor already in sys.modules!!"
+    if 'twisted.internet.reactor' not in sys.modules:
         import qt4reactor
         qt4reactor.install()
         print "Installed qt4reactor"
+    else:
+        from twisted.internet import reactor
+        print "Reactor already installed: %s" % reactor
 
 
 def freqToMel(freq):

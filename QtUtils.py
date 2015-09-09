@@ -24,7 +24,8 @@ def setButtonIcon(button, pixmap):
 
 def loadUiWidget(uifilename,
                  parent=None,
-                 root=ROOT_DIR):
+                 root=ROOT_DIR,
+                 widget=None):
     """
     Convenience method to load and setup
     and widget, a QMainWindow by default.
@@ -35,7 +36,7 @@ def loadUiWidget(uifilename,
         root = os.path.expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")
     ui_file = join(root, QT_DIR, uifilename)
     print "Loading ui file: %s" % ui_file
-    w = uic.loadUi(ui_file)
+    w = uic.loadUi(ui_file, widget)
     w.setParent(parent)
     return w
 
