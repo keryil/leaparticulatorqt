@@ -36,14 +36,14 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>230</x>
       <y>410</y>
-      <width>131</width>
+      <width>151</width>
       <height>19</height>
      </rect>
     </property>
     <property name="text">
-     <string>Output all as MP3</string>
+     <string>Output selected as MP3</string>
     </property>
    </widget>
    <widget class="QListWidget" name="lstSignals">
@@ -55,8 +55,14 @@
       <height>301</height>
      </rect>
     </property>
+    <property name="alternatingRowColors">
+     <bool>true</bool>
+    </property>
     <property name="selectionMode">
-     <enum>QAbstractItemView::SingleSelection</enum>
+     <enum>QAbstractItemView::MultiSelection</enum>
+    </property>
+    <property name="uniformItemSizes">
+     <bool>true</bool>
     </property>
     <property name="selectionRectVisible">
      <bool>true</bool>
@@ -81,10 +87,10 @@
    <widget class="QPushButton" name="btnChangeOutput">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>110</x>
       <y>430</y>
-      <width>121</width>
-      <height>19</height>
+      <width>141</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">

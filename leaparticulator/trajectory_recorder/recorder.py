@@ -106,15 +106,20 @@ class RecorderWindow(QtGui.QMainWindow):
     def record(self):
         try:
             self.count += 1
-            print "Outputting item %d (p%s/%s)..." % (self.count, self.items[self.count].phase,
-                                                      self.items[self.count].meaning)
+            print "Outputting item %d (p%s/%s)..." % (self.count + 1, self.selected[self.count].phase,
+                                                      self.selected[self.count].meaning)
+        except IndexError:
+            print "Finished outputting all items!"
+            return
         except:
-            print "Outputting %d items!" % len(self.items)
+            self.selected = self.lstSignals.selectedItems()
+            print "Outputting %d items!" % len(self.selected)
             self.count = 0
+
         try:
             from twisted.internet import reactor
             reactor.iterate(100)
-            item = self.items[self.count]
+            item = self.selected[self.count]
             playback = ThereminPlayback(record=True)
             self._record(playback, item, callback=self.record)
             # reactor.callLater(.5, self.record)
