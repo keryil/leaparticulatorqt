@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btnPlay">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>390</y>
+      <width>82</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Play</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnRecord">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>410</y>
+      <width>131</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Output all as MP3</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="lstSignals">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>40</y>
+      <width>531</width>
+      <height>301</height>
+     </rect>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
+    </property>
+    <property name="selectionRectVisible">
+     <bool>true</bool>
+    </property>
+    <property name="sortingEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnOpenLog">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>370</y>
+      <width>82</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Open log...</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnChangeOutput">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>430</y>
+      <width>121</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change output path...</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtOutputPath">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>430</y>
+      <width>281</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>16</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionPlay">
+   <property name="text">
+    <string>Play</string>
+   </property>
+  </action>
+  <action name="actionRecord">
+   <property name="text">
+    <string>Record</string>
+   </property>
+  </action>
+  <action name="actionChange_Path">
+   <property name="text">
+    <string>Change Path</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>btnPlay</sender>
+   <signal>clicked()</signal>
+   <receiver>actionPlay</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>300</x>
+     <y>305</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnRecord</sender>
+   <signal>clicked()</signal>
+   <receiver>actionRecord</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>300</x>
+     <y>325</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnChangeOutput</sender>
+   <signal>clicked()</signal>
+   <receiver>actionChange_Path</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>200</x>
+     <y>455</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
