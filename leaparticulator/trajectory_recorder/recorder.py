@@ -69,7 +69,11 @@ class RecorderWindow(QtGui.QMainWindow):
 
     def setOutputPath(self):
         print self.txtOutputPath.text()
-        text = str(QtGui.QFileDialog.getExistingDirectory(None))
+        import platform
+        options = QtGui.QFileDialog.Options(0)
+        if platform.system() == "Linux":
+            options = QtGui.QFileDialog.DontUseNativeDialog
+        text = str(QtGui.QFileDialog.getExistingDirectory(options=options))
         self.txtOutputPath.setText(text)
 
     def setLogFile(self, fname):
@@ -105,9 +109,11 @@ class RecorderWindow(QtGui.QMainWindow):
         meaning = str(item.meaning)
         if os.sep in meaning:
             meaning = os.path.split(item.meaning)[-1].split(".")[0]
+        fname = "%s-phase%s-%s.wav" % (os.path.split(self.filename)[-1].split(".exp.log")[0],
+                                       item.phase,
+                                       meaning)
         thereminplayback.start(item.signal,
-                               filename=os.path.join(self.txtOutputPath.text(), "phase%s-%s.wav" % (item.phase,
-                                                                                                    meaning)),
+                               filename=os.path.join(self.txtOutputPath.text(), fname),
                                jsonencoded=False,
                                callback=lambda: reactor.iterate(10) or callback())
 
