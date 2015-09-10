@@ -1,14 +1,13 @@
 import sys
+import platform
 
 from twisted.python import log
 import jsonpickle
 
-import platform
-
 if platform.system() == "Linux":
-    import drivers.linux.Leap as Leap
+    import leaparticulator.drivers.linux.Leap as Leap
 else:
-    import drivers.osx.Leap as Leap
+    import leaparticulator.drivers.osx.Leap as Leap
 from leaparticulator.data.frame import LeapFrame
 from leaparticulator.constants import install_reactor, palmToAmpAndFreq
 

@@ -33,8 +33,8 @@ def calculate_amp_and_freq(f, delimiter="|"):
     print "File: %s, Condition: %s" % (f, cond)
     data = pd.read_csv(f, delimiter=delimiter, na_values=["NaN"])
     new_file = ".".join(f.split(".")[:-1]) + ".freq_and_amp.csv"
-    
-    
+
+    +`
     series = lambda x: pd.Series(x, index=data.index)
     normalize = lambda x: (x - np.average(x)) / np.std(x)
     norm_series = lambda x: series(normalize(x))
