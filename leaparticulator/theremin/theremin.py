@@ -22,7 +22,7 @@ if 'Leap' not in sys.modules:
         command = "otool -L %s" % f
         output = subprocess.check_output(command.split())
         first_path = output.split()[1].lstrip()
-
+        done = False
         # find the libpython2.7.dylib
         for root, dnames, fnames in walk('/usr/local/Cellar/python'):
             for fname in fnmatch.filter(fnames, "libpython2.7.dylib"):
@@ -34,8 +34,10 @@ if 'Leap' not in sys.modules:
                                                                   f)
                 print "Issuing command: %s" % command
                 subprocess.check_call(command.split())
+                done = True
                 break
-            break
+            if done:
+                break
 
         import leaparticulator.drivers.osx.Leap as Leap
 
