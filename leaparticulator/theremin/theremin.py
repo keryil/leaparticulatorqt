@@ -7,7 +7,24 @@ import jsonpickle
 if platform.system() == "Linux":
     import leaparticulator.drivers.linux.Leap as Leap
 else:
+    # let's make the otools stuff automatic
+    # find the .so file
+    from os.path import dirname, join
+    from os import walk
+    import fnmatch
+
+    dir = join([dirname(__file__), "..", "drivers", "osx"])
+    f = join(dir, "LeapPython.so")
+
+    # find the libpython2.7.dylib
+    dylib_fnames = None
+    for root, dnames, fnames in walk('/usr/local/Cellar/python'):
+        for fname in fnmatch.filter(fnames, "libpython2.7.dylib"):
+            dylib_fnames.append(fname)
+    print dylib_fnames
+
     import leaparticulator.drivers.osx.Leap as Leap
+
 from leaparticulator.data.frame import LeapFrame
 from leaparticulator.constants import install_reactor, palmToAmpAndFreq
 
