@@ -10,12 +10,12 @@ if 'Leap' not in sys.modules:
     else:
         # let's make the otools stuff automatic
         # find the .so file
-        from os.path import dirname, join
+        from os.path import dirname, join, abspath
         from os import walk, sep
         import subprocess
         import fnmatch
 
-        dir = sep + join(*(dirname(__file__).split(sep) + ["..", "drivers", "osx"]))
+        dir = sep + join(*(abspath(dirname(__file__)).split(sep) + ["..", "drivers", "osx"]))
         f = join(dir, "LeapPython.so")
 
         # get current info
