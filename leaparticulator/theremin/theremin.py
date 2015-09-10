@@ -10,17 +10,22 @@ else:
     # let's make the otools stuff automatic
     # find the .so file
     from os.path import dirname, join
-    from os import walk
+    from os import walk, sep
+    import subprocess
     import fnmatch
 
-    dir = join([dirname(__file__), "..", "drivers", "osx"])
+    dir = join(*(dirname(__file__).split(sep) + ["..", "drivers", "osx"]))
     f = join(dir, "LeapPython.so")
 
     # find the libpython2.7.dylib
     dylib_fnames = None
     for root, dnames, fnames in walk('/usr/local/Cellar/python'):
         for fname in fnmatch.filter(fnames, "libpython2.7.dylib"):
-            dylib_fnames.append(fname)
+            # act on the first file
+            # first, get the current path using otools
+            command = "otool -L %s" % f
+            output = subprocess.check_output(command.split())
+            print output
     print dylib_fnames
 
     import leaparticulator.drivers.osx.Leap as Leap
