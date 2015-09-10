@@ -15,7 +15,7 @@ if 'Leap' not in sys.modules:
         import subprocess
         import fnmatch
 
-        dir = join(*(dirname(__file__).split(sep) + ["..", "drivers", "osx"]))
+        dir = sep + join(*(dirname(__file__).split(sep) + ["..", "drivers", "osx"]))
         f = join(dir, "LeapPython.so")
 
         # get current info
