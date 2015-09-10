@@ -21,7 +21,7 @@ if 'Leap' not in sys.modules:
         # get current info
         command = "otool -L %s" % f
         output = subprocess.check_output(command.split())
-        first_path = output[1].split()[0].lstrip()
+        first_path = output.split()[1].lstrip()
 
         # find the libpython2.7.dylib
         for root, dnames, fnames in walk('/usr/local/Cellar/python'):
@@ -32,8 +32,10 @@ if 'Leap' not in sys.modules:
                 command = "install_name_tool -change %s %s %s" % (first_path,
                                                                   dylib_path,
                                                                   f)
+                print "Issuing command: %s" % command
                 subprocess.check_call(command.split())
                 break
+            break
 
         import leaparticulator.drivers.osx.Leap as Leap
 
