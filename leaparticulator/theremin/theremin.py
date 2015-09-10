@@ -4,31 +4,38 @@ import platform
 from twisted.python import log
 import jsonpickle
 
-if platform.system() == "Linux":
-    import leaparticulator.drivers.linux.Leap as Leap
-else:
-    # let's make the otools stuff automatic
-    # find the .so file
-    from os.path import dirname, join
-    from os import walk, sep
-    import subprocess
-    import fnmatch
+if 'Leap' not in sys.modules:
+    if platform.system() == "Linux":
+        import leaparticulator.drivers.linux.Leap as Leap
+    else:
+        # let's make the otools stuff automatic
+        # find the .so file
+        from os.path import dirname, join
+        from os import walk, sep
+        import subprocess
+        import fnmatch
 
-    dir = join(*(dirname(__file__).split(sep) + ["..", "drivers", "osx"]))
-    f = join(dir, "LeapPython.so")
+        dir = join(*(dirname(__file__).split(sep) + ["..", "drivers", "osx"]))
+        f = join(dir, "LeapPython.so")
 
-    # find the libpython2.7.dylib
-    dylib_fnames = None
-    for root, dnames, fnames in walk('/usr/local/Cellar/python'):
-        for fname in fnmatch.filter(fnames, "libpython2.7.dylib"):
-            # act on the first file
-            # first, get the current path using otools
-            command = "otool -L %s" % f
-            output = subprocess.check_output(command.split())
-            print output
-    print dylib_fnames
+        # get current info
+        command = "otool -L %s" % f
+        output = subprocess.check_output(command.split())
+        first_path = output[1].split()[0].lstrip()
 
-    import leaparticulator.drivers.osx.Leap as Leap
+        # find the libpython2.7.dylib
+        for root, dnames, fnames in walk('/usr/local/Cellar/python'):
+            for fname in fnmatch.filter(fnames, "libpython2.7.dylib"):
+                # act on the first file
+                # update the info
+                dylib_path = join(root, fname)
+                command = "install_name_tool -change %s %s %s" % (first_path,
+                                                                  dylib_path,
+                                                                  f)
+                subprocess.check_call(command.split())
+                break
+
+        import leaparticulator.drivers.osx.Leap as Leap
 
 from leaparticulator.data.frame import LeapFrame
 from leaparticulator.constants import install_reactor, palmToAmpAndFreq
