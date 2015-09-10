@@ -50,7 +50,7 @@ class RecorderWindow(QtGui.QMainWindow):
         # fix the terribly slow open file dialog under
         # opensuse
         import platform
-        options = 0
+        options = QtGui.QFileDialog.Options(0)
         if platform.system() == "Linux":
             options = QtGui.QFileDialog.DontUseNativeDialog
         self.actionOpenLog.triggered.connect(
