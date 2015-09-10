@@ -46,9 +46,17 @@ class RecorderWindow(QtGui.QMainWindow):
         self.actionPlay.triggered.connect(self.play)
         self.actionRecord.triggered.connect(self.record)
         self.actionChange_Path.triggered.connect(self.setOutputPath)
-        self.actionOpenLog.triggered.connect(lambda: self.setLogFile(str(QtGui.QFileDialog.getOpenFileName())))
-        self.score = None
 
+        # fix the terribly slow open file dialog under
+        # opensuse
+        import platform
+        options = None
+        if platform.system() == "Linux":
+            options = QtGui.QFileDialog.DontUseNativeDialog
+        self.actionOpenLog.triggered.connect(
+            lambda: self.setLogFile(str(QtGui.QFileDialog.getOpenFileName(options=options))))
+
+        self.score = None
         self.lstSignals.currentItemChanged.connect(self.selectScore)
 
         print "Done!"
