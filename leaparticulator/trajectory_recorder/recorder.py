@@ -27,7 +27,7 @@ from PyQt4.QtCore import Qt
 from QtUtils import connect, disconnect, loadUiWidget
 
 from leaparticulator.data.functions import fromFile
-from leaparticulator.theremin.theremin import ThereminPlayback
+from leaparticulator.theremin.theremin import ThereminPlayback, ConstantRateTheremin
 
 
 class RecorderWindow(QtGui.QMainWindow):
@@ -37,6 +37,7 @@ class RecorderWindow(QtGui.QMainWindow):
         self.filename = None
         self.playback = ThereminPlayback(record=False)
         loadUiWidget('Traj2MP3.ui', widget=self)
+        self.setWindowTitle("Recorder")
 
         # self.setLogFile(self.filename)
         # self.score = self.data['1']['./img/meanings/1_1.png']
@@ -59,7 +60,17 @@ class RecorderWindow(QtGui.QMainWindow):
         self.score = None
         self.lstSignals.currentItemChanged.connect(self.selectScore)
 
+        # connect the playback rate spinner
+        self.spinPlayback.valueChanged.connect(self.setRate)
+        self.spinPlayback.setValue(int(1. / constants.THEREMIN_RATE))
+
         print "Done!"
+
+    def updateRateSpin(self):
+        self.spinPlayback.setValue(constants.THEREMIN_RATE)
+
+    def setRate(self, rate):
+        self.playback = ThereminPlayback(record=False, default_rate=1. / rate)
 
     def selectScore(self, current, previous):
         self.setScore(current.signal)
@@ -141,12 +152,26 @@ class RecorderWindow(QtGui.QMainWindow):
             print "Finished outputting all items!"
 
 
+class ConstantRateRecorder(RecorderWindow):
+    def __init__(self):
+        super(ConstantRateRecorder, self).__init__()
+        # self.filename = "/shared/Dropbox/ABACUS/Workspace/LeapArticulatorQt/leaparticulator/test/test_data/123R0126514.1r.exp.log"
+        self.filename = None
+        self.playback = ThereminPlayback(record=False, default_rate=constants.THEREMIN_RATE)
+        self.setWindowTitle("Constant Rate Recorder")
+
 if __name__ == '__main__':
     # app = QtGui.QApplication(sys.argv)
     from twisted.internet import reactor
     # console = embedded.EmbeddedIPython(app)#, main.window)
     # print "Embedded."
-    main = RecorderWindow()
+    import sys
+
+    main = None
+    if len(sys.argv) > 1 and sys.argv[1] == "constantrate":
+        main = ConstantRateRecorder()
+    else:
+        main = RecorderWindow()
     main.show()
     # console.show()
     reactor.runReturn()

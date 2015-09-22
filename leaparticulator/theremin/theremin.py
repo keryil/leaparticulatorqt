@@ -276,7 +276,8 @@ class ConstantRateTheremin(Theremin):
         self.rate = rate
         self.player = ThereminPlayer(n_of_tones=n_of_tones,
                                      default_volume=default_volume,
-                                     ui=ui)
+                                     ui=ui,
+                                     default_rate=rate)
         self.controller = Leap.Controller()
         self.controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
 
@@ -361,6 +362,8 @@ class ThereminPlayback(object):
 
         self.player.unmute()
         self.counter = 0
+        from datetime import datetime
+        self.start_time = datetime.now()
         self.call.start(self.rate, now=True).addErrback(log.err)
 
     def stop(self):
@@ -386,6 +389,9 @@ class ThereminPlayback(object):
                 # self.call = None
                 self.stopping = False
                 print "Stopped"
+
+                from datetime import datetime
+                print datetime.now() - self.start_time
                 if self.callback:
                     reactor.callLater(0, self.callback)
                     # self.callback()
