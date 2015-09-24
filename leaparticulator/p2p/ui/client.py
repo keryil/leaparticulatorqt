@@ -195,9 +195,9 @@ class LeapP2PClientUI(object):
             self.flicker()
             print "Signal is %d frames long." % len(self.getSignal())
 
-    # def extendSignal(self, frame):
-    #     if self.recording:
-    #         self.last_signal.append(frame)
+    def extend_last_signal(self, frame):
+        if self.recording:
+            self.last_signal.append(frame)
             # print ("Extending signal at ui... (frame %d)" % len(self.getSignal()))
             
     def resetSignal(self):
