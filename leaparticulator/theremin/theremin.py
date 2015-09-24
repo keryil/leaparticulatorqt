@@ -242,10 +242,12 @@ class Theremin(Leap.Listener):
                 if self.realtime:
                     self.protocol.sendLine(pickled)
                 if self.protocol.factory.ui:
+                    # print "extending"
                     self.protocol.factory.ui.extend_last_signal(pickled)
             else:
                 if not self.realtime and self.recording:
-                        self.last_signal.append(pickled)
+                    # print "appending"
+                    self.last_signal.append(pickled)
 
     def record(self):
         self.recording = True

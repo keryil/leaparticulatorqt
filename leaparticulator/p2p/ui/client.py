@@ -123,7 +123,7 @@ class LeapP2PClientUI(object):
         label.setPixmap(px)
 
         slider = self.creationWin.findChildren(QSlider, "sldVolume")[0]
-        slider.setRange(1,100)
+        slider.setRange(1, 100)
         slider.setSingleStep(1)
         slider.setValue(100)
         self.unique_connect(slider, "valueChanged(int)", self.set_volume)
@@ -140,6 +140,7 @@ class LeapP2PClientUI(object):
 
     def start_recording(self):
         if self.creationWin and not self.recording:
+            print "Start recording..."
             self.theremin.reset_signal()
             self.theremin.unmute()
             self.theremin.record()
@@ -197,7 +198,8 @@ class LeapP2PClientUI(object):
 
     def extend_last_signal(self, frame):
         if self.recording:
-            self.last_signal.append(frame)
+            # self.last_signal.append(frame)
+            self.theremin.last_signal.append(frame)
             # print ("Extending signal at ui... (frame %d)" % len(self.getSignal()))
             
     def resetSignal(self):
