@@ -578,7 +578,7 @@ def start_client(qapplication, uid):
     #                                                               ui=ui, realtime=False,
     #                                                               factory=None,
     #                                                               ip=None)
-    theremin = Theremin(ui=ui)
+    theremin = Theremin(ui=ui, realtime=False)
     factory = LeapP2PClientFactory(theremin, ui=ui, uid=uid)
     theremin.factory = factory
     # theremin.call = call
