@@ -555,6 +555,7 @@ def unpickle_results(filename_log, phase=None, units=None):
     extension = ".hmms"
     hmms = ds = nstates = trials = iter = None
     if filename_log.split('.')[-1] != 'hmms':
+        print filename_log
         assert phase and units
         extension = ".phase%d.%s.hmms" % (phase, units)
         # this clause is purely for backward compatibility with

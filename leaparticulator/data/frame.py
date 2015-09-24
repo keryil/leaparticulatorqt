@@ -122,6 +122,10 @@ class LeapFrame(object):
         """
         pass
 
+    def toJSON(self):
+        import jsonpickle
+        return jsonpickle.encode(self)
+
     
 def generateRandomSignal(duration):
     """

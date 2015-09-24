@@ -165,7 +165,7 @@ class HMM(object):
     # 		self.to_ghmm()
 
     def is_multivariate(self):
-        return len(list(data[0][0])) == 2
+        return isinstance(self.hmm_object.asMatrices()[1][0][0], list)
 
     def convert_data_to_sequence(self, data):
         multivariate = len(list(data[0][0])) == 2
@@ -364,14 +364,6 @@ class HMM(object):
         # try:
         return multivariate_normal.pdf(Ot, self.means[j], self.variances[j])
 
-    # underflow
-    # except FloatingPointError, e:
-
-    # 	self.Bmix_map[j][0][t] = 0
-    # print self.Bmix_map[j][0][t]
-    # return self.Bmix_map[j][0][t]
-    # </lift>
-
     def entropy_rate(self):
         """
         Returns the estimated entropy rate of the Markov chain
@@ -392,9 +384,17 @@ class HMM(object):
             rate -= stationary_dist[s1] * xlogy(p, p)
         return rate
 
-    def viterbi(self, obs, flatten=False):
-        data = [flatten_to_emission(d) for d in obs]
-        data = ghmm.SequenceSet(ghmm.Float(), data)
+    def viterbi(self, obs, flatten=False, flatten_input=False):
+        """
+        Receives a list of lists that contain emissions, returns a tuple
+        containing the path and the likelihood.
+        """
+        data = obs
+        if self.is_multivariate() and flatten_input:
+            if not isinstance(obs[0], ghmm.EmissionSequence):
+                print "Flattening..."
+                data = [flatten_to_emission(d) for d in obs]
+        data = ghmm.SequenceSet(ghmm.Float(), [d for d in obs])
         # paths, likelihoods =
         # max_likelihood = -99999999
         # best_path = None
@@ -402,6 +402,12 @@ class HMM(object):
         if flatten:
             viterbi_path = [v[0] for v in viterbi_path]
         return viterbi_path, likelihood
+
+    def viterbi_sequence(self, seq, flatten=True, flatten_input=False):
+        ret = []
+        for s in seq:
+            ret.append(self.viterbi([s], flatten, flatten_input))
+        return ret
 
     def viterbi_path(self, obs):
         """

@@ -1,31 +1,70 @@
 import sys
+import platform
 
 from twisted.python import log
 import jsonpickle
 
-import Leap
+if 'Leap' not in sys.modules:
+    if platform.system() == "Linux":
+        import leaparticulator.drivers.linux.Leap as Leap
+    else:
+        # let's make the otools stuff automatic
+        # find the .so file
+        from os.path import dirname, join, abspath
+        from os import walk, sep
+        import subprocess
+        import fnmatch
+
+        dir = sep + join(*(abspath(dirname(__file__)).split(sep) + ["..", "drivers", "osx"]))
+        f = join(dir, "LeapPython.so")
+
+        # get current info
+        command = "otool -L %s" % f
+        output = subprocess.check_output(command.split())
+        first_path = output.split()[1].lstrip()
+        done = False
+        # find the libpython2.7.dylib
+        for root, dnames, fnames in walk('/usr/local/Cellar/python'):
+            for fname in fnmatch.filter(fnames, "libpython2.7.dylib"):
+                # act on the first file
+                # update the info
+                dylib_path = join(root, fname)
+                command = "install_name_tool -change %s %s %s" % (first_path,
+                                                                  dylib_path,
+                                                                  f)
+                print "Issuing command: %s" % command
+                subprocess.check_call(command.split())
+                done = True
+                break
+            if done:
+                break
+
+        import leaparticulator.drivers.osx.Leap as Leap
+
 from leaparticulator.data.frame import LeapFrame
 from leaparticulator.constants import install_reactor, palmToAmpAndFreq
+
+install_reactor()
+
+
 import leaparticulator.constants as constants
 from leaparticulator.theremin.tone import Tone
 from LeapServer import LeapClientFactory
 from collections import deque
 
-install_reactor()
 from twisted.internet.task import LoopingCall
 from twisted.internet import reactor
-
 
 class ThereminPlayer(object):
     """
     This is what produces the sounds of the theremin.
     """
     def __init__(self, n_of_tones, default_volume=constants.default_amplitude, default_pitch=None,
-                 ui=None):
+                 ui=None, record=False):
         tones = []
         self.ui = ui
         for i in range(n_of_tones):
-            t = Tone()
+            t = Tone(record=record)
             t.open()
             t.setAmplitude(0)
             t.start()
@@ -39,6 +78,10 @@ class ThereminPlayer(object):
         self.fadeout_call = None
         self.fadeout_counter = 0
         log.startLogging(sys.stdout)
+
+    def dumpRecording(self, files):
+        for tone, f in zip(self.tones, files):
+            tone.dump_to_file(f)
 
     def fadeOut(self):
         self.fadeout_counter += 1
@@ -233,7 +276,8 @@ class ConstantRateTheremin(Theremin):
         self.rate = rate
         self.player = ThereminPlayer(n_of_tones=n_of_tones,
                                      default_volume=default_volume,
-                                     ui=ui)
+                                     ui=ui,
+                                     default_rate=rate)
         self.controller = Leap.Controller()
         self.controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
 
@@ -270,10 +314,12 @@ class ThereminPlayback(object):
     call = None
     stopping = False
 
-    def __init__(self, n_of_tones=1, default_volume=.5, default_rate=None):
-        self.player = ThereminPlayer(n_of_tones, default_volume)
+    def __init__(self, n_of_tones=1, default_volume=.5, default_rate=None, record=False):
+        self.player = ThereminPlayer(n_of_tones, default_volume, record=record)
         self.player.mute()
         self.default_rate = default_rate
+        self.record = record
+        self.filename = None
 
     def setVolume(self, value):
         self.player.setVolume(value)
@@ -287,7 +333,10 @@ class ThereminPlayback(object):
         except IndexError, e:
             self.stop()
 
-    def start(self, score, callback=None):
+    def start(self, score, callback=None, filename=None, jsonencoded=True):
+        if self.record:
+            assert filename
+            self.filename = filename
         if self.call:
             if self.call.running:
                 self.call.stop()
@@ -298,7 +347,10 @@ class ThereminPlayback(object):
 
         self.call = LoopingCall(self.play)  # , self)
         # print "Score is something like: ", score
-        self.score = deque([jsonpickle.decode(f) for f in score])
+        if jsonencoded:
+            self.score = deque([jsonpickle.decode(f) for f in score])
+        else:
+            self.score = deque(score)
         # for f in self.score:
         #   print f.current_frames_per_second
         if self.default_rate:
@@ -310,6 +362,8 @@ class ThereminPlayback(object):
 
         self.player.unmute()
         self.counter = 0
+        from datetime import datetime
+        self.start_time = datetime.now()
         self.call.start(self.rate, now=True).addErrback(log.err)
 
     def stop(self):
@@ -331,14 +385,20 @@ class ThereminPlayback(object):
                 # raise err
                 # finally:
                 self.player.mute()
+                self.player.dumpRecording([self.filename])
                 # self.call = None
                 self.stopping = False
                 print "Stopped"
+
+                from datetime import datetime
+                print datetime.now() - self.start_time
                 if self.callback:
-                    self.callback()
+                    reactor.callLater(0, self.callback)
+                    # self.callback()
             self.stopping = True
             # allow a short time for the fadeout to end
             reactor.callLater(.5, finalize)
+
 
 if __name__ == "__main__":
     # theremin = Theremin()

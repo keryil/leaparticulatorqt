@@ -22,18 +22,21 @@ def refactor_old_references(string):
 def recursive_decode(lst, verbose=False):
     if verbose:
         print "Decoding %s" % (str(lst)[:100])
-    try:
-        # the arg lst may or may not be a pickled obj itself
-        # if not isinstance(lst, str):
-        #     raise TypeError
-        # if isinstance(lst, str):
-            lst = jsonpickle.decode(lst)
-    except TypeError:
-        pass
-    except KeyError, err:
-        print "Error: %s" % err
-        print "String: %s" % lst
-        raise err
+
+    if isinstance(lst, str) or isinstance(lst, unicode):
+        try:
+            # the arg lst may or may not be a pickled obj itself
+            # if not isinstance(lst, str):
+            #     raise TypeError
+            while isinstance(lst, str) or isinstance(lst, unicode):
+                lst = jsonpickle.decode(lst)
+        except TypeError, err:
+            print err
+            pass
+        except KeyError, err:
+            print "Error: %s" % err
+            print "String: %s" % lst
+            raise err
     if isinstance(lst, dict):
         if "py/object" in lst.keys():
             if verbose:
@@ -52,9 +55,9 @@ def recursive_decode(lst, verbose=False):
             print "Probably hit tail..."
     try:
         assert "py/object" not in str(lst)
-    except:
-        print str(lst)
-        raise Exception()
+    except Exception, ex:
+        print ex, str(lst)
+        raise Exception(type(lst), str(lst), ex)
     return lst
 
 # converts a list of objects to a list of their
