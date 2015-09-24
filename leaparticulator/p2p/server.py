@@ -166,7 +166,8 @@ class LeapP2PServer(basic.LineReceiver):
 
         # bugfix for multiple connections to hosts
         for k in self.factory.clients.keys():
-            if self.factory.clients[k] == self.other_end:
+            print "Checking %s versus %s" % (self.other_end, k.transport.getPeer().host)
+            if k.transport.getPeer().host == self.other_end:
                 del self.factory.clients[k]
 
         self.factory.clients[self] = self.other_end

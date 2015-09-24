@@ -16,8 +16,8 @@ default_amplitude = .5
 
 leap_port = 9999
 # leap_server = "127.0.0.1"
-leap_server = "134.184.26.54"
-# leap_server = "134.184.26.61"
+# leap_server = "134.184.26.54"
+leap_server = "134.184.26.61"
 # leap_server = "127.0.0.1"
 
 fadeout_multiplier = 0.95
