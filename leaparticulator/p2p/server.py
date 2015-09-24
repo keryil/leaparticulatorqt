@@ -438,6 +438,7 @@ class LeapP2PClient(basic.LineReceiver):
                     raise err
             # self.factory.current_image = message.data.image
             if message.data.isSpeaker:
+                log.msg("I am the speaker.")
                 self.factory.mode = constants.SPEAKER
                 self.factory.theremin.unmute()
                 self.ui.wait_over()
