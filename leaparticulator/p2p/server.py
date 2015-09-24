@@ -163,12 +163,21 @@ class LeapP2PServer(basic.LineReceiver):
 
     def connectionMade(self):
         self.other_end = self.transport.getPeer().host
+
+        # bugfix for multiple connections to hosts
+        for k in self.factory.clients.keys():
+            if self.factory.clients[k] == self.other_end:
+                del self.factory.clients[k]
+
         self.factory.clients[self] = self.other_end
+
+
         # check if we need a new session
         # if self.other_end not in self.factory.responses:
         #     self.factory.responses[self.other_end] = {0:{},1:{},2:{}}
         #     self.factory.responses_practice[self.other_end] = {0:{},1:{},2:{}}
         log.msg("Connection with %s is made" % self.other_end)
+        print "Current client list:", self.factory.clients
         # log.msg("Callbacks: %s" % self.connectionMadeListeners)
         for callback in self.connectionMadeListeners:
             callback(self)
@@ -200,6 +209,8 @@ class LeapP2PServer(basic.LineReceiver):
         client.sendLine(message)
 
     def start(self, practice=False):
+        print "--------->start() called"
+        print "clients (%d): %s" % (len(self.factory.clients), self.factory.clients)
         self.factory.practice = practice
         self.factory.ui.disableStart()
         # self.factory.rounds.append(LeapP2PRoundSummary())
@@ -226,6 +237,9 @@ class LeapP2PServer(basic.LineReceiver):
                 # print img_list
                 self.send_all(img_list)
             self.choose_speaker_and_topic()
+        else:
+            print "--------->start() called with more or less than two clients"
+
 
     def choose_speaker_and_topic(self):
         # choose a speaker
@@ -258,6 +272,8 @@ class LeapP2PServer(basic.LineReceiver):
         nline = "<{}@{}> {}".format(self.other_end_alias, self.other_end, line)
         if len(nline) < 300:
             log.msg("Received: %s" % nline)
+        else:
+            log.msg("Received: %s" % nline[:400])
         message = jsonpickle.decode(line)
         assert isinstance(message, LeapP2PMessage)
 
