@@ -28,7 +28,7 @@ from twisted.protocols import basic
 from leaparticulator import constants
 import jsonpickle
 import TestQuestion
-from Meaning import FeaturelessMeaning
+from leaparticulator.data.meaning import FeaturelessMeaning
 
 
 class LeapServer(basic.LineReceiver):
