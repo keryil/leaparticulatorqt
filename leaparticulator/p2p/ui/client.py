@@ -16,6 +16,7 @@ from leaparticulator.theremin.theremin import ThereminPlayback
 # from LeapTheremin import ThereminPlayback
 from leaparticulator.p2p.messaging import EndRoundMessage
 from QtUtils import connect, disconnect, loadUiWidget
+import leaparticulator.constants as constants
 # from QtUtils import loadWidget as loadUiWidget
 
 # def loadUiWidget(name, parent=None):
@@ -86,9 +87,12 @@ class LeapP2PClientUI(object):
         # import pdb;pdb.set_trace()
         self.firstWin = loadUiWidget('FirstWindow.ui')
         button = self.firstWin.findChildren(QPushButton, "btnOkay")[0]
+        text = self.firstWin.findChildren(QTextBrowser, "textBrowser")[0]
         print "loaded"
         self.firstWin.showFullScreen()
         connect(button, "clicked()", self.show_wait)
+        from os.path import join
+        text.setText(open(join(constants.P2P_RES_DIR, "first_screen.txt")).read())
         print "first_screen done"
         return self.firstWin
 

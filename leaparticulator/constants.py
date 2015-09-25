@@ -115,6 +115,7 @@ IMG_DIR = 'img'
 MEANING_DIR = join(IMG_DIR, 'meanings', 'featureless')
 MEANING_DIR_P2P = join(IMG_DIR, 'meanings', 'featureless')
 IMG_EXTENSION = 'png'
+P2P_RES_DIR = join("res", "p2p")
 
 FALSE_OVERLAY = join(IMG_DIR, "false.png")
 TRUE_OVERLAY = join(IMG_DIR, "true.png")
