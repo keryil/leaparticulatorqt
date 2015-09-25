@@ -448,6 +448,7 @@ class LeapP2PClient(basic.LineReceiver):
                 # self.factory.theremin.mute()
             else:
                 self.factory.mode = constants.LISTENER
+                self.factory.theremin.mute()
                 self.ui.show_wait()
         elif isinstance(message, ResponseMessage):
             try:
