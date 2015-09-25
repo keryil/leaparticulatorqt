@@ -34,11 +34,13 @@ class FeedbackMessage(LeapP2PMessage):
     Signals the success/failure of the round
     """
     instruction = constants.FEEDBACK
-    def __init__(self, target_image, chosen_image, success):
+
+    def __init__(self, target_image, chosen_image, success, image_pointer):
         self.success = success
         self.target_image = target_image
         self.chosen_image = chosen_image
         self.data = {"success":success, "target":target_image, "chosen":chosen_image}
+        self.image_pointer = image_pointer
 
 class InitMessage(LeapP2PMessage):
     """

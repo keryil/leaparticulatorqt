@@ -271,14 +271,20 @@ class LeapP2PClientUI(object):
         slider.setSingleStep(1)
         slider.setValue(100)
         slider.valueChanged.connect(self.set_volume)
-    
-        for i, image in zip(range(1,5), images):
+
+        for i in range(1, 5):
             view = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
-            pixmap = image.pixmap()
-            # pixmap.setAlignment()
-            view.setIcon(QIcon(pixmap))
-            view.setIconSize(pixmap.rect().size())
-            connect(view, "clicked()", enable)
+            try:
+                image = images[i - 1]
+                pixmap = image.pixmap()
+                # pixmap.setAlignment()
+                view.setIcon(QIcon(pixmap))
+                view.setIconSize(pixmap.rect().size())
+                connect(view, "clicked()", enable)
+            # this happens when we have fewer than 4 images
+            except IndexError:
+                view.setEnabled(False)
+
 
         self.testWin.showFullScreen()
 

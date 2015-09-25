@@ -197,9 +197,12 @@ class Theremin(Leap.Listener):
         self.controller.add_listener(self)
         print "Connecting to: %s:%s" % (constants.leap_server,
                                         constants.leap_port)
-        self.protocol = reactor.connectTCP(constants.leap_server,
+        if factory:
+            self.protocol = reactor.connectTCP(constants.leap_server,
                                            constants.leap_port,
                                            factory(self, ui))
+        else:
+            self.protocol = None
         # self.reactor = reactor
         log.startLogging(sys.stdout)
 
