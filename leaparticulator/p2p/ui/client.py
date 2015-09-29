@@ -319,9 +319,12 @@ class LeapP2PClientUI(object):
         self.first_screen()
 
     def final_screen(self):
+        from os.path import join
         self.close_all()
         self.finalScreen = loadUiWidget(constants.P2P_FINAL_WIN)
         self.finalScreen.btnOkay.clicked.connect(self.app.exit)
+        msg = open(join(constants.P2P_RES_DIR, "final_screen.txt")).read()
+        self.finalScreen.textBrowser.setText(msg)
         self.finalScreen.showFullScreen()
 
 if __name__ == "__main__":
