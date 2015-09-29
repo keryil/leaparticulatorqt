@@ -1,0 +1,2 @@
+ 
+This is the content of ./res/p2p/first_screen.txt
