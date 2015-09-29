@@ -107,7 +107,6 @@ class LeapP2PSession(object):
         if len(self.round_data) > 0:
             rnd = self.getLastRound()
             assert rnd.success is not None
-            self.dump_to_file()
         #     assert None not in (rnd.speaker, rnd.hearer, rnd.signal,
         #                         rnd.image, rnd.guess, rnd.success)
         log.msg("New round: #%d" % len(self.round_data))
@@ -128,6 +127,9 @@ class LeapP2PSession(object):
 
     def setHearerContribution(self, response_message):
         self.getLastRound().set_hearers_contribution(response_message)
+        # since this is the last piece of information, we can
+        # serialize after setting the hearer contribution
+        self.dump_to_file()
         self.notify()
 
     def getLastRound(self):
@@ -280,6 +282,12 @@ class LeapP2PServer(basic.LineReceiver):
 
             if self.factory.end_round_msg_counter not in (-1, 2):
                 print 'Why the fuck are we restarting with %d end of round messages?! Ignoring...' % self.factory.end_round_msg_counter
+                return
+
+            # check if we have any images left, otherwise, terminate
+            if self.factory.image_pointer == len(self.factory.images):
+                log.msg("Successfully finished the image set, ending the experiment...")
+                self.end()
                 return
 
             self.factory.end_round_msg_counter = 0
