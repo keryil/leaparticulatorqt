@@ -383,19 +383,22 @@ class LeapP2PServer(basic.LineReceiver):
             guess = self.factory.session.getLastRound().guess
             self.factory.mode = constants.FEEDBACK
 
-            if success:
-                try:
-                    self.factory.image_success[str(image)] += 1
-                except Exception, e:
-                    print ["\"%s\"" % i for i in self.factory.image_success.keys()]
-                    print "\"%s\"" % image
-                    print e
-                    raise Exception()
-                if self.factory.image_success[str(image)] == 2:
-                    self.factory.image_pointer += 1
-            # we only expand the meaning space if there are two **consecutive** successes
-            else:
-                self.factory.image_success[str(image)] = 0
+            if self.factory.image_success[str(image)] < 2:
+                if success:
+                    try:
+                        self.factory.image_success[str(image)] += 1
+                    except Exception, e:
+                        print ["\"%s\"" % i for i in self.factory.image_success.keys()]
+                        print "\"%s\"" % image
+                        print e
+                        raise Exception()
+                    if self.factory.image_success[str(image)] == 2:
+                        self.factory.image_pointer += 2
+                        self.factory.image_pointer = min(self.factory.image_pointer,
+                                                         len(self.factory.images))
+                # we only expand the meaning space if there are two **consecutive** successes
+                else:
+                    self.factory.image_success[str(image)] = 0
 
             self.send_all(FeedbackMessage(target_image=image,
                                           chosen_image=guess,
