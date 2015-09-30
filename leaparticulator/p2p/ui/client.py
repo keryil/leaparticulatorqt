@@ -90,6 +90,7 @@ class LeapP2PClientUI(object):
         button = self.firstWin.findChildren(QPushButton, "btnOkay")[0]
         text = self.firstWin.findChildren(QTextBrowser, "textBrowser")[0]
         print "loaded"
+        self.theremin.unmute()
         self.firstWin.showFullScreen()
         connect(button, "clicked()", self.show_wait)
         from os.path import join
