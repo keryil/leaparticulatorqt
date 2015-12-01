@@ -399,7 +399,7 @@ class LeapP2PServer(basic.LineReceiver):
                 # we only expand the meaning space if there are two **consecutive** successes
                 else:
                     self.factory.image_success[str(image)] = 0
-/
+
             self.send_all(FeedbackMessage(target_image=image,
                                           chosen_image=guess,
                                           success=success,
