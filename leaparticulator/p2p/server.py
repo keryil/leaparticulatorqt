@@ -399,7 +399,7 @@ class LeapP2PServer(basic.LineReceiver):
                 # we only expand the meaning space if there are two **consecutive** successes
                 else:
                     self.factory.image_success[str(image)] = 0
-
+/
             self.send_all(FeedbackMessage(target_image=image,
                                           chosen_image=guess,
                                           success=success,
@@ -699,7 +699,7 @@ def start_client(qapplication, uid):
     endpoint = TCP4ClientEndpoint(
         reactor, constants.leap_server, constants.leap_port)
     theremin.factory = factory
-    # ui.setClientFactory(factory)
+    ui.setClientFactory(factory)
     theremin.endpoint = endpoint
     connection_def = endpoint.connect(factory)
     connection_def.addCallback(ui.setClient)
