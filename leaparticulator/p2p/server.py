@@ -699,6 +699,7 @@ def start_client(qapplication, uid):
     endpoint = TCP4ClientEndpoint(
         reactor, constants.leap_server, constants.leap_port)
     theremin.factory = factory
+    factory.theremin = theremin
     ui.setClientFactory(factory)
     theremin.endpoint = endpoint
     connection_def = endpoint.connect(factory)
