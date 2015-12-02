@@ -50,6 +50,7 @@ class LeapP2PClientUI(object):
         self.theremin = factory.theremin
 
     def setClient(self, client):
+        print "Setting client to %s" % client
         self.client = client
         self.setClientFactory(client.factory)
 

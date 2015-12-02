@@ -101,7 +101,14 @@
   p <- ggplot(aes(x=coefs, y=label, color=order, shape=phase),title="Fixed Effects", data=df) + geom_point(size=5)
   p <- p + geom_errorbarh(aes(xmin=ci.low, xmax=ci.hi, height=.33), size=1, data=df)
   p <- p + scale_y_discrete(name="Coefficients", labels=newNames) + theme(axis.text.y = element_text(size=14),axis.text.x = element_text(size=14))
-  p + coord_flip()
+  p + coord_flip() + scale_colour_grey() + scale_fill_grey() + theme(
+    panel.background = element_rect(fill = "white",
+                                    colour = "white",
+                                    size = 0.5, linetype = "solid"),
+    panel.grid.major = element_line(size = 0.5, linetype = 'solid',
+                                    colour = "gray"), 
+    panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
+                                    colour = "gray"))
   
   library(coefplot)
   newNames = c("Baseline","1st:mismatchF","2nd:mismatchF","3rd:mismatchF", 
@@ -118,7 +125,14 @@
   p <- p + geom_errorbar(aes(ymin=ci.low, ymax=ci.hi, height=.33), width=.33, size=1, data=df)
   p <- p + theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14))
   p <- p + scale_x_discrete(labels=newNames)# + ylim(newNames)
-  p + labs(y= "Value", x="Coefficient") 
+  p + labs(y= "Value", x="Coefficient") +  scale_colour_grey() + scale_fill_grey() + theme(
+    panel.background = element_rect(fill = "white",
+                                    colour = "white",
+                                    size = 0.5, linetype = "solid"),
+    panel.grid.major = element_line(size = 0.5, linetype = 'solid',
+                                    colour = "gray"), 
+    panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
+                                    colour = "gray"))
   # newNames = list(parse(text="beta[1]") + "(1:1,1st)","$\\beta_4$ (1:2,2nd)","$\\beta_5$ (1:2,3rd)","$\\beta_2$ (2:2,2nd)","$\\beta_3$ (2:2,3rd)")
   # names(newNames) = names(coef(model1)$id)[2:6]
   # coefplot(model1, newNames=newNames, ylab="Coefficients", intercept=FALSE)

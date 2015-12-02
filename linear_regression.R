@@ -119,38 +119,45 @@ p <- ggplot(aes(y=coefs, x=label, color=ordering, shape=phase), data=df) + geom_
 p <- p + geom_errorbar(aes(ymin=ci.low, ymax=ci.hi, height=.33), width=.33, size=1, data=df)
 p <- p + theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14))
 p <- p + scale_x_discrete(labels=newNames)# + ylim(newNames)
-p + labs(x= "Value", y="Coefficient") 
+p + labs(x= "Value", y="Coefficient") +  scale_colour_grey() + scale_fill_grey() + theme(
+  panel.background = element_rect(fill = "white",
+                                  colour = "white",
+                                  size = 0.5, linetype = "solid"),
+  panel.grid.major = element_line(size = 0.5, linetype = 'solid',
+                                  colour = "gray"), 
+  panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
+                                  colour = "gray"))
 
 
 # the Bayesian MCMC stuff from here
-library(MCMCglmm)
-model.glmm <- MCMCglmm(score ~ nstates_amp_and_freq_n:phase_order:phase, random=~id, data=all, nitt=1000000, thin=500,
-                       pr = TRUE)
-
-# we don't take the random effects of id, the intercept or the main predictor
-samples <- model.glmm$Sol[,c(25:30)]
-means <- apply(samples, 2, mean)
-medians <- apply(samples, 2, median)
-CI.low <- list()
-CI.high <- list()
-# calculate CIs
-for (i in 1:dim(samples)[[2]]) {
-  CI.low[[i]] <- quantile(samples[,i], c(.025))[[1]];
-  CI.high[[i]] <- quantile(samples[,i], c(.975))[[1]];
-}
-
-df <- data.frame(mean=means, median=medians, CI.low=as.numeric(CI.low), CI.high=as.numeric(CI.high), name=names(means))
-
-p <- ggplot(data=df, 
-            aes(x=name, y=median)
-) + geom_errorbar(aes(ymin=CI.low, ymax=CI.high)) 
-
-p <- p + geom_point()# + geom_point(data=df, aes(x=name, y=CI.low, color="red"))+ geom_point(data=df, aes(x=name, y=CI.high, color="green"))
-
-# p <- p + ggplot(data=df, aes(x=name, y=CI.low, color="red"))
-# p
-# p
-p + geom_point()
+# library(MCMCglmm)
+# model.glmm <- MCMCglmm(score ~ nstates_amp_and_freq_n:phase_order:phase, random=~id, data=all, nitt=1000000, thin=500,
+#                        pr = TRUE)
+# 
+# # we don't take the random effects of id, the intercept or the main predictor
+# samples <- model.glmm$Sol[,c(25:30)]
+# means <- apply(samples, 2, mean)
+# medians <- apply(samples, 2, median)
+# CI.low <- list()
+# CI.high <- list()
+# # calculate CIs
+# for (i in 1:dim(samples)[[2]]) {
+#   CI.low[[i]] <- quantile(samples[,i], c(.025))[[1]];
+#   CI.high[[i]] <- quantile(samples[,i], c(.975))[[1]];
+# }
+# 
+# df <- data.frame(mean=means, median=medians, CI.low=as.numeric(CI.low), CI.high=as.numeric(CI.high), name=names(means))
+# 
+# p <- ggplot(data=df, 
+#             aes(x=name, y=median)
+# ) + geom_errorbar(aes(ymin=CI.low, ymax=CI.high)) 
+# 
+# p <- p + geom_point()# + geom_point(data=df, aes(x=name, y=CI.low, color="red"))+ geom_point(data=df, aes(x=name, y=CI.high, color="green"))
+# 
+# # p <- p + ggplot(data=df, aes(x=name, y=CI.low, color="red"))
+# # p
+# # p
+# p + geom_point()
 
 library(tikzDevice)
 newNames = simplify2array(str_replace_all(oldNames, "(.+)", "$\\\\\\1$"))
@@ -160,7 +167,14 @@ p <- ggplot(aes(y=coefs, x=label, color=ordering, shape=phase), data=df) + geom_
 p <- p + geom_errorbar(aes(ymin=ci.low, ymax=ci.hi, height=.33), width=.33, size=1, data=df)
 p <- p + theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14))
 p <- p + scale_x_discrete(labels=newNames)# + ylim(newNames)
-p + labs(y= "Value", x="Coefficient") 
+p + labs(y= "Value", x="Coefficient")  +  scale_colour_grey() + scale_fill_grey() + theme(
+  panel.background = element_rect(fill = "white",
+                                  colour = "white",
+                                  size = 0.5, linetype = "solid"),
+  panel.grid.major = element_line(size = 0.5, linetype = 'solid',
+                                  colour = "gray"), 
+  panel.grid.minor = element_line(size = 0.25, linetype = 'solid',
+                                  colour = "gray"))
 # newNames = list(parse(text="beta[1]") + "(1:1,1st)","$\\beta_4$ (1:2,2nd)","$\\beta_5$ (1:2,3rd)","$\\beta_2$ (2:2,2nd)","$\\beta_3$ (2:2,3rd)")
 # names(newNames) = names(coef(model1)$id)[2:6]
 # coefplot(model1, newNames=newNames, ylab="Coefficients", intercept=FALSE)

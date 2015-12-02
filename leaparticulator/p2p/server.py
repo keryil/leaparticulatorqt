@@ -703,8 +703,8 @@ def start_client(qapplication, uid):
     # ui.setClientFactory(factory)
     theremin.endpoint = endpoint
 
-    def gogogo(**args):
-        ui.setClient()
+    def go(client):
+        ui.setClient(client)
         if not (constants.TESTING or reactor.running):
             print "Starting reactor..."
             reactor.runReturn()
@@ -712,8 +712,7 @@ def start_client(qapplication, uid):
             ui.go()
 
     connection_def = endpoint.connect(factory)
-    connection_def.addCallback(ui.setClient)
-    connection_def.addCallback(gogogo)
+    connection_def.addCallback(go)
     factory.connection_def = connection_def
     factory.endpoint = endpoint
     
