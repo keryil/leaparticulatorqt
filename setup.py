@@ -13,5 +13,6 @@ setup(
     license='GPL',
     author='Kerem Eryilmaz',
     author_email='keryilmaz@gmail.com',
-    description=''
+    description='', requires=['pyaudio', 'jsonpickle', 'pandas',
+                              'numpy', 'ghmm', 'PyQt4', 'scipy', 'sip']
 )
