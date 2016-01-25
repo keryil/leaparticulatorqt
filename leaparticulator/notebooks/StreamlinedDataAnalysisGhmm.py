@@ -29,10 +29,11 @@ import jsonpickle
 import numpy as np
 from leaparticulator import constants as Constants
 
-colors = [(x/10.,y/20.,z/40.) for x, y, z in zip(range(10), range(10), range(10))]
-colors.extend([(x/40.,y/20.,z/10.) for x, y, z in zip(range(1,10), range(1,10), range(1,10))])
-colors.extend([(x/40.,y/10.,z/20.) for x, y, z in zip(range(1,10), range(1,10), range(1,10))])
+# colors = [(x/10.,y/20.,z/40.) for x, y, z in zip(range(10), range(10), range(10))]
+# colors.extend([(x/40.,y/20.,z/10.) for x, y, z in zip(range(1,10), range(1,10), range(1,10))])
+# colors.extend([(x/40.,y/10.,z/20.) for x, y, z in zip(range(1,10), range(1,10), range(1,10))])
 # colors.extend(['red','green','yellow', 'magenta', 'orange', 'black', 'cyan', 'white'])
+colors = Constants.color_palette
 
 pd.set_option("display.max_columns", None)
 # file_id = "1230105514.master"
@@ -188,7 +189,7 @@ def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
     return ellip
 
 
-# In[1]:
+# In[6]:
 
 from matplotlib.colors import colorConverter
 from matplotlib.patches import Ellipse, ArrowStyle
@@ -340,9 +341,13 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
     for i, (trajectory, p) in enumerate(zip(trajectory_objs, paths)): 
 #         print_n_flush( "Path:", p)
         tr_colors = [colors[int(state)] for state in p]
-        t = trajectory.plot2d(color=tr_colors)
+try:
+    len(trajectory[0])
+    t = trajectory.plot2d(color=tr_colors)
+except TypeError:
+    t = trajectory.plot(color=tr_colors)
     #     t = plot_quiver2d(trajectory, color=tr_colors, path=p)
-        too_high = [tt for tt in trajectory if tt[1] > 400]
+    #     too_high = [tt for tt in trajectory if tt[1] > 400]
 #         print_n_flush( "Too high", too_high)
         legends.append("Trajectory%i" % i)
     #     items.append(p)
@@ -366,7 +371,7 @@ def plot_hmm_path(trajectory_objs, paths, legends=[], items=[]):
     check.on_clicked(func)
 
 
-# In[1]:
+# In[ ]:
 
 # import Constants
 def fn(args):
@@ -583,7 +588,7 @@ def unpickle_results(filename_log, phase=None, units=None):
     return Results(hmms, ds, nstates, trials, iter)
 
 
-# In[9]:
+# In[ ]:
 
 def responses_to_traj_objs(responses, responses_t=None, to_file=False):
     import trajectory
@@ -637,7 +642,7 @@ def pick_hmm_by_bic(hmms, responses, responses_t, plot=True):
     return hmm, d
 
 
-# In[10]:
+# In[ ]:
 
 def analyze_log_file(file_id, nstates, trials, iter):
 #     id_to_log = lambda x: "logs/%s.exp.log" % x
@@ -749,7 +754,7 @@ def analyze_log_file_in_phases_by_condition(file_id, nstates, trials, iter, unit
     return results
 
 
-# In[11]:
+# In[ ]:
 
 def pull_hmm_paths(d):
     globalenv['d'] = d
@@ -766,7 +771,7 @@ def pull_hmm_paths(d):
 #     analyze_log_file_in_phases_by_condition(f[5:-8], 5, 1, 100)
 
 
-# In[14]:
+# In[ ]:
 
 # line = 'hmms = analyze_log_file_in_phases_by_condition("1320116514.2", nstates=range(2,30), trials=5, iter=100, parallel=True, units=Constants.XY)'
 # %lprun -f analyze_log_file_in_phases_by_condition analyze_log_file_in_phases_by_condition("1320116514.2", nstates=range(2,30), trials=5, iter=100, parallel=True, units=Constants.XY)
@@ -777,75 +782,7 @@ if __name__ == "__main__":
 # hmms_m = analyze_log_file_in_phases_by_condition("1320116514.2", nstates=10, trials=50, iter=100, parallel=False, units=Constants.AMP_AND_MEL)
 
 
-# In[18]:
-
-# def fn(a):
-#     raise ValueError(a)
-
-# [fn(n) for n in range(4)]
-
-
-# In[15]:
-
-# %matplotlib inline
-# from GHmmWrapper import nest
-# from matplotlib import colors
-# from matplotlib.pyplot import figure
-# # clr = [colorConverter.to_rgb(c) for c in colors.cnames]
-# def plot_hmm_obj(hmm, 
-#                  clr=[colorConverter.to_rgb(c) for c in colors.cnames],
-#                  transition_arrows=True):
-#     plot_hmm(means_ = hmm.means, transmat = hmm.transmat, 
-#              covars=hmm.variances, initProbs=hmm.initProb,
-#              clr=clr, transition_arrows=transition_arrows)
-# # plot_hmm_obj(hmms[1], clr=clr)
-# def plot_hmm_and_trajectories(hmm, 
-#                               clr=[colorConverter.to_rgb(c) for c in colors.cnames],
-#                               transition_arrows=True,
-#                               separate_figures=False,
-#                               traj_list=[],
-#                               units=Constants.XY):
-#     if not separate_figures:
-#         plot_hmm_obj(hmm, clr=clr, transition_arrows=transition_arrows)
-        
-#     for i,dd in enumerate(hmm.training_data):
-#         if traj_list != []:
-#             if i not in traj_list:
-#                 continue
-#         if separate_figures:
-#             figure()
-#             plot_hmm_obj(hmm, clr=clr, transition_arrows=transition_arrows)
-#         d = nest(dd)
-#         path = hmm.viterbi_path(dd)[0]
-# #         print path
-#         # xmin, xmax, ymin, ymax = find_bounding_box([d])
-#         # print list(d)
-#         C=[clr[i] for i in path]
-# #         print path
-# #         print C
-#         plot_quiver2d(d, C=C,alpha=.7)
-# #         break
-# # plot_hmm_and_trajectories(hmm, 
-# #                           transition_arrows=False, 
-# #                           separate_figures=True,
-# #                           traj_list=[])
-# from matplotlib.pyplot import figure;figure()
-# plot_hmm_and_trajectories(hmm, 
-#                           transition_arrows=False, 
-#                           separate_figures=False,
-#                           traj_list=[])
-# #     break
-# #     traj = to_trajectory_object_raw(d, *find_bounding_box_raw([d]))
-# #     plot_hmm_path([traj],[[1 for i in hmms[1].training_data]], axis=gca())
-
-
-# In[16]:
-
-# %Rpull hmm
-# hmm[1][0]
-
-
-# In[17]:
+# In[ ]:
 
 # import rpy2.robjects.numpy2ri
 # from rpy2.robjects import r, globalenv
@@ -882,92 +819,4 @@ def draw():
                   items=items)
     plt.draw()
     plt.show()
-
-
-# In[18]:
-
-# responses, test_results, responses_p, test_p, images = fromFile(id_to_log(file_id))
-# data = responses["127.0.0.1"][str(1)].values()
-# data = [[frame.get_stabilized_position()[:2] for frame in response] for response in data]
-
-
-# In[19]:
-
-# from itertools import product
-# print pd.DataFrame(data[0])[:3]
-# # print [[x for x,y in seq] for seq in data][:3]
-# print get_range_of_multiple_traj(data)
-# # min([el[0] for el in seq for seq in data])
-# # data[0]
-
-
-# In[20]:
-
-# from pickle import dumps, dump
-# from ExperimentalData import reconstruct_hmm, reduce_hmm
-# import copy_reg
-# copy_reg.pickle(HMM, reduce_hmm, reconstruct_hmm)
-# print dumps(hmm)
-# results = unpickle_results("logs/1230115514.master.exp.log", phase=2, units=Constants.AMP_AND_FREQ)
-# print results.hmms[0]
-
-
-# In[22]:
-
-# results.hmms[0].entropy_rate()
-
-
-# In[95]:
-
-# def stationary(transmat):
-#         from rpy2.robjects import r, globalenv
-#         from itertools import product
-#         import pandas as pdnfds;
-#         import pandas.rpy.common as com
-#         from scipy.special import xlogy
-#         r("library('DTMCPack')")
-#         globalenv['transmat'] = com.convert_to_r_dataframe(pd.DataFrame(transmat))
-#         stationary_dist = r("statdistr(transmat)")
-#         # long_as = lambda x: range(len(x)) 
-#         rate = 0
-#         for s1, s2 in product(range(len(self.means)),range(len(self.means))):
-#             p = self.transmat[s1][s2]
-#             rate -= stationary_dist[s1] * xlogy(p,p)
-#         return stationary_dist
-# print stationary(results.hmms[1].transmat)
-
-
-# In[96]:
-
-# import numpy as np
-# from numpy.linalg import matrix_power
-# from scipy.linalg import eig
-# m = np.asmatrix(results.hmms[1].transmat)
-# print m
-# final = None
-# for i in range(50000):
-# #     if not i % 1000:
-#         m_ = matrix_power(m, i)
-# #         print m_
-#         w, vl, vr = eig(m_, left=True)
-#         for i, w_ in enumerate(w):
-#             if w_ != 1.0:
-# #             if not (0.999 <= w_ <= 1.001):
-#                 continue
-# #             print "Eig-vec:", vl_
-# #             if not (0.95 <= sum(vl_) <= 1.05):
-# #                 continue
-# #             skip = False
-# #             for v in vl_:
-# #                 if v < 0:
-# #                     skip = True
-# #                     break
-# #             if skip:
-# #                 break
-# #             print "Raw:", vl[:,i].T
-#             normalized = vl[:,i].T / sum(vl[:,i].T)
-# #             print "Normalized:", normalized
-# #             print "Sum:", sum(normalized)
-#             final = normalized
-# print "Final:", normalized
 

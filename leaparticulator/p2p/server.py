@@ -316,11 +316,19 @@ class LeapP2PServer(basic.LineReceiver):
         # choose a speaker
         log.msg("Choosing the speaker and topic...")
         # TODO: how to choose the speaker?
+        # choose the speaker and listener alternately
+
         self.factory.mode = constants.SPEAKERS_TURN
         # speaker_no = choice(range(2))
-        hearer = speaker = choice(tuple(self.factory.clients.keys()))
-        while hearer == speaker:
-            hearer = choice(tuple(self.factory.clients.keys()))
+        hearer = speaker = None
+        if len(self.factory.clients) == 2:
+            last_round = self.factory.session.getLastRound()
+            hearer = self.factory.session.getLastRound().speaker
+            speaker = self.factory.session.getLastRound().hearer
+        else:
+            hearer = speaker = choice(tuple(self.factory.clients.keys()))
+            while hearer == speaker:
+                hearer = choice(tuple(self.factory.clients.keys()))
         assert hearer != speaker
 
         # choose an image

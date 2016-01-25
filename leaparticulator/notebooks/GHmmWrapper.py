@@ -169,8 +169,8 @@ def train_hmm_on_set_of_obs(data, nstates, range_x, range_y=None):
         for f in traj:
             data_np.append(f)
     data_np = np.asarray(data_np)
-    
-#     print "Is multivariate?", multivariate
+
+    print "Is multivariate?", multivariate
     import sys;sys.stdout.flush()
     variance = means = B = dist = None
     
