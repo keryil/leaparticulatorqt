@@ -15,7 +15,7 @@ else:
 from leaparticulator.theremin.theremin import ThereminPlayback
 # from LeapTheremin import ThereminPlayback
 from leaparticulator.p2p.messaging import EndRoundMessage
-from QtUtils import connect, disconnect, loadUiWidget
+from leaparticulator.oldstuff.QtUtils import connect, disconnect, loadUiWidget
 import leaparticulator.constants as constants
 # from QtUtils import loadWidget as loadUiWidget
 

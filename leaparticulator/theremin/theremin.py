@@ -1,8 +1,8 @@
-import sys
 import platform
+import sys
 
-from twisted.python import log
 import jsonpickle
+from twisted.python import log
 
 if 'Leap' not in sys.modules:
     if platform.system() == "Linux":
@@ -49,7 +49,7 @@ install_reactor()
 
 import leaparticulator.constants as constants
 from leaparticulator.theremin.tone import Tone
-from LeapServer import LeapClientFactory
+from leaparticulator.oldstuff.LeapServer import LeapClientFactory
 from collections import deque
 
 from twisted.internet.task import LoopingCall

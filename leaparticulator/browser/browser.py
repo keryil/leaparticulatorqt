@@ -1,7 +1,7 @@
 __author__ = 'kerem'
 
-import sys
 import sip
+import sys
 
 try:
     sip.setapi('QDate', 2)
@@ -21,7 +21,7 @@ import matplotlib
 matplotlib.use("Qt4Agg")
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
-from QtUtils import connect, disconnect, loadUiWidget
+from leaparticulator.oldstuff.QtUtils import connect, loadUiWidget
 from leaparticulator import constants
 from leaparticulator.data.functions import fromFile
 import matplotlib.pyplot as plt

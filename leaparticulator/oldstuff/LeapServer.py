@@ -27,7 +27,7 @@ from twisted.python.log import FileLogObserver
 from twisted.protocols import basic
 from leaparticulator import constants
 import jsonpickle
-import TestQuestion
+import leaparticulator.question as TestQuestion
 from leaparticulator.data.meaning import FeaturelessMeaning
 
 

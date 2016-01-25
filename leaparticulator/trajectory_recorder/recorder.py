@@ -1,6 +1,6 @@
 __author__ = 'kerem'
-import sys
 import sip
+import sys
 
 try:
     sip.setapi('QDate', 2)
@@ -21,13 +21,12 @@ from leaparticulator import constants
 
 constants.install_reactor()
 
-from PyQt4 import QtGui, uic
-from PyQt4.QtCore import Qt
+from PyQt4 import QtGui
 
-from QtUtils import connect, disconnect, loadUiWidget
+from leaparticulator.oldstuff.QtUtils import loadUiWidget
 
 from leaparticulator.data.functions import fromFile
-from leaparticulator.theremin.theremin import ThereminPlayback, ConstantRateTheremin
+from leaparticulator.theremin.theremin import ThereminPlayback
 
 
 class RecorderWindow(QtGui.QMainWindow):
