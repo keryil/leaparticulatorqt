@@ -195,9 +195,9 @@ def palmToFreq(palmPosition):
 
 
 def setupTest(no_sound=False):
-    global leap_server, NO_SOUND, TEST, ROOT_DIR
+    global leap_server, NO_SOUND, TESTING, ROOT_DIR
     leap_server = "127.0.0.1"
-    TEST = True
+    TESTING = True
     ROOT_DIR = expanduser("~/Dropbox/ABACUS/Workspace/LeapArticulatorQt")
     if no_sound:
         NO_SOUND = True

@@ -701,6 +701,7 @@ def start_client(qapplication, uid):
     factory = LeapP2PClientFactory(theremin, ui=ui, uid=uid)
     theremin.factory = factory
     # theremin.call = call
+    theremin.reactor = reactor
     
     theremin.player.ui = ui
     print "Initiating connection with %s:%s" % (constants.leap_server, constants.leap_port)

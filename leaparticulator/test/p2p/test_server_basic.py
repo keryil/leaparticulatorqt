@@ -31,6 +31,8 @@ class P2PTestCase(unittest.TestCase):
         self.timeout=6
         self.factories = []
         self.clients = {}
+        from leaparticulator import constants
+        constants.leap_server = "127.0.0.1"
 
     def runTest(self):
         pass
@@ -50,12 +52,21 @@ class P2PTestCase(unittest.TestCase):
         theremin = start_client(
             self.app, uid=client_id)
         factory = theremin.factory
+        d = theremin.endpoint.connect(factory)
+
         self.factories.append(factory)
-        factory.ui.go()
+
+        def fn(client):
+            factory.ui.setClient(client)
+            factory.ui.go()
+
+        d.addCallback(fn)
         assert isinstance(factory, LeapP2PClientFactory)
-        data = ClientData(theremin, theremin.controller, None, factory, client_id, client_ip)
+
+        data = ClientData(theremin, theremin.controller, d, factory, client_id, client_ip)
         self.clients[id] = data
-        self.reactor = theremin.reactor
+        # from twisted.internet import reactor
+        # self.reactor = reactor
         return data
 
     def getFactories(self):
@@ -159,9 +170,15 @@ class ServerTestWithClient(P2PTestCase):
         self.startServer()
 
     def test_connect(self):
+        from leaparticulator.p2p.server import start_client
+        # client = start_client(self.app, 'client1')
         data = self.startClient(1)
-        d = defer.Deferred()
-        def fn():
+        print "Data:", data
+        print "Connection:", data.connection
+
+        # d = defer.Deferred()
+        def fn(client):
+            # data.factory.ui.setClient(client)
             for factory in self.factories:
                 if isinstance(factory, LeapP2PServerFactory):
                     item = "%s (%s)" % (data.client_ip, data.client_id)
@@ -169,6 +186,8 @@ class ServerTestWithClient(P2PTestCase):
                     item = factory.ui.clientModel.findItems(item, Qt.MatchExactly)
                     print "Rows: ", factory.ui.clientModel.rowCount()
                     print "Found: ", item
-                    d.callback(self.assertIsNotNone(item))
-        self.reactor.callLater(.5, fn)
-        return d
+                    # d.callback(self.assertIsNotNone(item))
+
+        # data.theremin.callLater(5, fn)
+        data.connection.addCallback(fn)
+        return data.connection
