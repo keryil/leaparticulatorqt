@@ -227,7 +227,6 @@ class LeapP2PServer(basic.LineReceiver):
 
         self.factory.clients[self] = self.other_end
 
-
         # check if we need a new session
         # if self.other_end not in self.factory.responses:
         #     self.factory.responses[self.other_end] = {0:{},1:{},2:{}}
@@ -271,8 +270,10 @@ class LeapP2PServer(basic.LineReceiver):
         self.send_all(EndSessionMessage())
 
     def start(self, practice=False):
-        print "--------->start() called"
-        print "clients (%d): %s" % (len(self.factory.clients), self.factory.clients)
+        if self.factory.mode == constants.INIT:
+            print "--------->start() called"
+            print "clients (%d): %s" % (len(self.factory.clients), self.factory.clients)
+
         self.factory.practice = practice
         self.factory.ui.disableStart()
         self.factory.ui.enableEnd()
@@ -315,7 +316,6 @@ class LeapP2PServer(basic.LineReceiver):
     def choose_speaker_and_topic(self):
         # choose a speaker
         log.msg("Choosing the speaker and topic...")
-        # TODO: how to choose the speaker?
         # choose the speaker and listener alternately
 
         self.factory.mode = constants.SPEAKERS_TURN
@@ -349,6 +349,26 @@ class LeapP2PServer(basic.LineReceiver):
             StartRoundMessage(isSpeaker=True, image=image), speaker)
         self.send_to_client(
             StartRoundMessage(isSpeaker=False, image=image), hearer)
+
+    def expandMeaningSpace(self):
+        """
+        Checks whether or not it's time to expand the meaning space,
+        and does so if necessary.
+        :return:
+        """
+        # check that the *whole* meaning space is
+        # figured out before expanding it
+        for img in self.factory.images[:self.factory.image_pointer]:
+            count = self.factory.image_success[str(img)]
+            if count < 2:
+                log.msg("Not expanding meaning space due to %s (%s correct guesses so far)" % (img, count))
+                break
+        else:
+            self.factory.image_pointer += 2
+            self.factory.image_pointer = min(self.factory.image_pointer,
+                                             len(self.factory.images))
+            log.msg("Expanding meaning space by two; the new space is\n%s" % (
+                self.factory.images[:self.factory.image_pointer]))
 
     def lineReceived(self, line):
         nline = "<{}@{}> {}".format(self.other_end_alias, self.other_end, line)
@@ -392,8 +412,8 @@ class LeapP2PServer(basic.LineReceiver):
             guess = self.factory.session.getLastRound().guess
             self.factory.mode = constants.FEEDBACK
 
-            if self.factory.image_success[str(image)] < 2:
-                if success:
+            if success:
+                if self.factory.image_success[str(image)] < 2:
                     try:
                         self.factory.image_success[str(image)] += 1
                     except Exception, e:
@@ -401,19 +421,11 @@ class LeapP2PServer(basic.LineReceiver):
                         print "\"%s\"" % image
                         print e
                         raise Exception()
-
-                    # check that the *whole* meaning space is
-                    # figured out before expanding it
-                    for count in self.factory.image_success[:self.factory.image_pointer]:
-                        if count < 2:
-                            break
-                    else:
-                        self.factory.image_pointer += 2
-                        self.factory.image_pointer = min(self.factory.image_pointer,
-                                                         len(self.factory.images))
+                self.expandMeaningSpace()
+            else:
                 # we only expand the meaning space if there are two **consecutive** successes
-                else:
-                    self.factory.image_success[str(image)] = 0
+                # so we reset the count for any failure
+                self.factory.image_success[str(image)] = 0
 
             self.send_all(FeedbackMessage(target_image=image,
                                           chosen_image=guess,
@@ -569,14 +581,13 @@ class LeapP2PClient(basic.LineReceiver):
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
             image_pointer = self.factory.image_pointer
-            if image_pointer < 4:
-                options = list(set(self.factory.images[:image_pointer]))
-            else:
-                options = sample(list(set(self.factory.images[:image_pointer]) - set([message.data.image])), 3) \
+            options = self.factory.images[:image_pointer]
+            if image_pointer >= 4:
+                options = sample(set(options) - set([message.data.image]), 3) \
                           + [message.data.image]
-            # options = sample(list(set(self.factory.images[:self.factory.image_pointer]) - set([message.data.image])), 3) \
-            #           + [message.data.image]
             shuffle(options)
+            assert len(options) == len(set(options))
+
             self.ui.wait_over()
             self.ui.test_screen(options)
             # self.listen()
@@ -709,7 +720,6 @@ def start_client(qapplication, uid):
     theremin.factory = factory
     # theremin.call = call
     theremin.reactor = reactor
-    
     theremin.player.ui = ui
     print "Initiating connection with %s:%s" % (constants.leap_server, constants.leap_port)
     endpoint = TCP4ClientEndpoint(
@@ -774,12 +784,16 @@ if __name__ == '__main__':
         no_ui = sys.argv[-1] == "no_ui"
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
+            try:
+                constants.leap_server = sys.argv[4]
+            except IndexError:
+                pass
             start_client(qapplication, uid=sys.argv[3])
         elif sys.argv[2] == "server":
             start_server(qapplication, condition=sys.argv[1], no_ui=no_ui)
 
     except AssertionError:
-        print "USAGE: LeapP2PServer {condition} {client/server} [client_id]."
+        print "USAGE: LeapP2PServer {condition} {client/server} [client_id] [server_ip (only in client mode)]."
         sys.exit(-1)
 
     sys.exit(app.exec_())
