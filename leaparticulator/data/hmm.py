@@ -1,6 +1,7 @@
 import ghmm
 import numpy as np
 import pandas as pd
+from sklearn.cluster import KMeans
 
 __author__ = 'Kerem'
 
@@ -54,10 +55,11 @@ class HMM(object):
     # hmm_type = None
 
     def __init__(self, hmm_obj=None, training_data=None,
-                 matrices=None, hmm_type="ghmm"):
+                 matrices=None, hmm_type="ghmm",
+                 nstates=None):
         assert hmm_type is not None
         self.means = []
-        self.nstates = None
+        self.nstates = nstates
         self.variances = []
         self.initProb = []
         self.transmat = []
@@ -75,8 +77,29 @@ class HMM(object):
             if hmm_obj is not None:
                 self.from_ghmm(hmm_obj, training_data)
             else:
-                self.from_matrix(matrices, training_data)
+                if self.nstates and (not matrices):
+                    self._induce_from_data(training_data)
+                else:
+                    self.from_matrix(matrices, training_data)
 
+    def _induce_from_data(self, training_data):
+        """
+        This method assigns observed (k)means to states,
+        and the observed variances as covariance matrices.
+        Expects self.nstates to be defined when it is called.
+        :return:
+        """
+        assert self.nstates
+        multivariate = len(training_data[0]) > 1
+        obs = [flatten_to_emission(d) for d in training_data]
+        obs = ghmm.SequenceSet(domain, obs)
+
+        means = list(KMeans(n_clusters=self.nstates).fit(training_data).cluster_centers_)
+        variance = np.cov(list(obs[rand_obs])[::2], list(obs[rand_obs])[1::2]).flatten()
+        domain = ghmm.Float()
+
+        self.hmm_object.baumWelch(obs)
+        self.hmm_object.obs = obs
 
                 # def __reduce__(self):
                 # return (reconstruct_hmm,

@@ -197,9 +197,9 @@
     <widget class="QPushButton" name="btnPlay">
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>40</x>
        <y>40</y>
-       <width>111</width>
+       <width>121</width>
        <height>20</height>
       </rect>
      </property>
@@ -213,14 +213,30 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>30</x>
+       <x>40</x>
        <y>20</y>
-       <width>111</width>
+       <width>121</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
       <string>Start experiment</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnEnd">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>60</y>
+       <width>121</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>End experiment</string>
      </property>
     </widget>
    </widget>

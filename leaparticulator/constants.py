@@ -15,8 +15,8 @@ default_pitch = 440.
 default_amplitude = .5
 
 leap_port = 9999
-leap_server = "127.0.0.1"
-# leap_server = "134.184.26.54"
+# leap_server = "127.0.0.1"
+leap_server = "134.184.26.54"
 # leap_server = "134.184.26.61"
 # leap_server = "127.0.0.1"
 
@@ -100,6 +100,7 @@ FEEDBACK = "Feedback"
 START_ROUND = "Start round"
 END_ROUND = "End round"
 RESPONSE = "Response"
+END_SESSION = "End session"
 
 # Analysis constants
 # unit parameters for train_hmm_n_times()
@@ -115,6 +116,8 @@ IMG_DIR = 'img'
 MEANING_DIR = join(IMG_DIR, 'meanings', 'featureless')
 MEANING_DIR_P2P = join(IMG_DIR, 'meanings', 'featureless')
 IMG_EXTENSION = 'png'
+P2P_RES_DIR = join("res", "p2p")
+P2P_LOG_DIR = join('logs', 'p2p')
 
 FALSE_OVERLAY = join(IMG_DIR, "false.png")
 TRUE_OVERLAY = join(IMG_DIR, "true.png")
@@ -122,6 +125,7 @@ TRUE_OVERLAY = join(IMG_DIR, "true.png")
 LEARNING_WIN = 'learningWindow.ui'
 INFO_WIN = 'InfoWindow.ui'
 TEST_WIN = 'testingWindow.ui'
+P2P_FINAL_WIN = "FinalWindow.ui"
 
 # Mode constants for Info Window
 MOD_PREPHASE = "mod_prephase"

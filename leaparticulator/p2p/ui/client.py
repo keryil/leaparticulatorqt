@@ -15,7 +15,8 @@ else:
 from leaparticulator.theremin.theremin import ThereminPlayback
 # from LeapTheremin import ThereminPlayback
 from leaparticulator.p2p.messaging import EndRoundMessage
-from QtUtils import connect, disconnect, loadUiWidget
+from leaparticulator.oldstuff.QtUtils import connect, disconnect, loadUiWidget
+import leaparticulator.constants as constants
 # from QtUtils import loadWidget as loadUiWidget
 
 # def loadUiWidget(name, parent=None):
@@ -42,12 +43,14 @@ class LeapP2PClientUI(object):
         self.playback_player = ThereminPlayback(default_volume=None)
         self.last_signal = []
         self.recording = False
+        self.finalScreen = None
 
     def setClientFactory(self, factory):
         self.factory = factory
         self.theremin = factory.theremin
 
     def setClient(self, client):
+        print "Setting client to %s" % client
         self.client = client
         self.setClientFactory(client.factory)
 
@@ -86,9 +89,13 @@ class LeapP2PClientUI(object):
         # import pdb;pdb.set_trace()
         self.firstWin = loadUiWidget('FirstWindow.ui')
         button = self.firstWin.findChildren(QPushButton, "btnOkay")[0]
+        text = self.firstWin.findChildren(QTextBrowser, "textBrowser")[0]
         print "loaded"
+        self.theremin.unmute()
         self.firstWin.showFullScreen()
         connect(button, "clicked()", self.show_wait)
+        from os.path import join
+        text.setText(open(join(constants.P2P_RES_DIR, "first_screen.txt")).read())
         print "first_screen done"
         return self.firstWin
 
@@ -123,7 +130,7 @@ class LeapP2PClientUI(object):
         label.setPixmap(px)
 
         slider = self.creationWin.findChildren(QSlider, "sldVolume")[0]
-        slider.setRange(1,100)
+        slider.setRange(1, 100)
         slider.setSingleStep(1)
         slider.setValue(100)
         self.unique_connect(slider, "valueChanged(int)", self.set_volume)
@@ -140,6 +147,7 @@ class LeapP2PClientUI(object):
 
     def start_recording(self):
         if self.creationWin and not self.recording:
+            print "Start recording..."
             self.theremin.reset_signal()
             self.theremin.unmute()
             self.theremin.record()
@@ -195,9 +203,10 @@ class LeapP2PClientUI(object):
             self.flicker()
             print "Signal is %d frames long." % len(self.getSignal())
 
-    # def extendSignal(self, frame):
-    #     if self.recording:
-    #         self.last_signal.append(frame)
+    def extend_last_signal(self, frame):
+        if self.recording:
+            # self.last_signal.append(frame)
+            self.theremin.last_signal.append(frame)
             # print ("Extending signal at ui... (frame %d)" % len(self.getSignal()))
             
     def resetSignal(self):
@@ -265,14 +274,20 @@ class LeapP2PClientUI(object):
         slider.setSingleStep(1)
         slider.setValue(100)
         slider.valueChanged.connect(self.set_volume)
-    
-        for i, image in zip(range(1,5), images):
+
+        for i in range(1, 5):
             view = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
-            pixmap = image.pixmap()
-            # pixmap.setAlignment()
-            view.setIcon(QIcon(pixmap))
-            view.setIconSize(pixmap.rect().size())
-            connect(view, "clicked()", enable)
+            try:
+                image = images[i - 1]
+                pixmap = image.pixmap()
+                # pixmap.setAlignment()
+                view.setIcon(QIcon(pixmap))
+                view.setIconSize(pixmap.rect().size())
+                connect(view, "clicked()", enable)
+            # this happens when we have fewer than 4 images
+            except IndexError:
+                view.setEnabled(False)
+
 
         self.testWin.showFullScreen()
 
@@ -303,26 +318,16 @@ class LeapP2PClientUI(object):
         return self.feedbackWin
 
     def go(self):
-
-        # Create Qt application and the QDeclarative view
-        # self.app = QApplication.instance()
-        # if not self.app:
-        #     self.app = app
-        # print "boohoo"
-        # firstWin = loadUiWidget('FirstWindow.ui')
-        # button = firstWin.findChildren(QPushButton, "btnOkay")[0]
-        # connect(button, "clicked()", firstWin.close)
-        # firstWin.showFullScreen()
         self.first_screen()
-        # self.creation_screen(QPixmap("img/meanings/5_5.png"))
-        # self.test_screen([QPixmap("img/meanings/5_5.png")] * 4)
-        # show_wait()
-        # view = QDeclarativeView()
-        # # Create an URL to the QML file
-        # url = QUrl('qt_interface/P2PLeapArticulator/P2PLeapArticulator.qml')
-        # # Set the QML file and show
-        # view.setSource(url)
-        # Enter Qt main loop
+
+    def final_screen(self):
+        from os.path import join
+        self.close_all()
+        self.finalScreen = loadUiWidget(constants.P2P_FINAL_WIN)
+        self.finalScreen.btnOkay.clicked.connect(self.app.exit)
+        msg = open(join(constants.P2P_RES_DIR, "final_screen.txt")).read()
+        self.finalScreen.textBrowser.setText(msg)
+        self.finalScreen.showFullScreen()
 
 if __name__ == "__main__":
     gui = LeapP2PClientUI(app)

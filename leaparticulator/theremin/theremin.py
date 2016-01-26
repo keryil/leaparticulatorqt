@@ -1,8 +1,8 @@
-import sys
 import platform
+import sys
 
-from twisted.python import log
 import jsonpickle
+from twisted.python import log
 
 if 'Leap' not in sys.modules:
     if platform.system() == "Linux":
@@ -49,7 +49,7 @@ install_reactor()
 
 import leaparticulator.constants as constants
 from leaparticulator.theremin.tone import Tone
-from LeapServer import LeapClientFactory
+from leaparticulator.oldstuff.LeapServer import LeapClientFactory
 from collections import deque
 
 from twisted.internet.task import LoopingCall
@@ -197,9 +197,12 @@ class Theremin(Leap.Listener):
         self.controller.add_listener(self)
         print "Connecting to: %s:%s" % (constants.leap_server,
                                         constants.leap_port)
-        self.protocol = reactor.connectTCP(constants.leap_server,
+        if factory:
+            self.protocol = reactor.connectTCP(constants.leap_server,
                                            constants.leap_port,
                                            factory(self, ui))
+        else:
+            self.protocol = None
         # self.reactor = reactor
         log.startLogging(sys.stdout)
 
@@ -242,10 +245,12 @@ class Theremin(Leap.Listener):
                 if self.realtime:
                     self.protocol.sendLine(pickled)
                 if self.protocol.factory.ui:
+                    # print "extending"
                     self.protocol.factory.ui.extend_last_signal(pickled)
             else:
                 if not self.realtime and self.recording:
-                        self.last_signal.append(pickled)
+                    # print "appending"
+                    self.last_signal.append(pickled)
 
     def record(self):
         self.recording = True

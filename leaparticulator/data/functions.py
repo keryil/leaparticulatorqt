@@ -65,21 +65,23 @@ def recursive_decode(lst, verbose=False):
 toStr = lambda x: map(str, x)
 
 
-def fromFile(filename):
+def fromFile(filename, no_practice=False):
     lines = open(filename).readlines()
     lines = [refactor_old_references(line) for line in lines]
     images = jsonpickle.decode(lines[0])
     responses = recursive_decode(lines[1])
     test_results = jsonpickle.decode(lines[2])
-    responses_practice = recursive_decode(lines[3])
-    test_results_practice = jsonpickle.decode(lines[4])
-
     test_results = _expandTestResults(test_results, images)
-    test_results_practice = _expandTestResults(test_results_practice, images)
-    responses_practice = _expandResponsesNew(responses_practice, images)
     responses = _expandResponsesNew(responses, images)
-    return responses, test_results, responses_practice, test_results_practice, images
+    
+    if not no_practice:
+        responses_practice = recursive_decode(lines[3])
+        test_results_practice = jsonpickle.decode(lines[4])
+        test_results_practice = _expandTestResults(test_results_practice, images)
+        responses_practice = _expandResponsesNew(responses_practice, images)
+        return responses, test_results, responses_practice, test_results_practice, images
 
+    return responses, test_results, None, None, images
 
 def fromFile_old(filename):
     lines = open(filename).readlines()

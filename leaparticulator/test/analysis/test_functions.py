@@ -8,12 +8,13 @@ import os
 class TestFromFile(unittest.TestCase):
 
     def setUp(self):
-        self.filenames = map(lambda x: os.path.join('logs', x), ["FL1.1.exp.log", "FL3.1.exp.log"])
+        self.filenames = map(lambda x: os.path.join("..", "..", 'logs', x), ["FL1.1.exp.log", "FL3.1.exp.log"])
 
     def tearDown(self):
         pass
 
     def testFL1(self):
+        print os.getcwd()
         fromFile(self.filenames[0])
 
     def testFL2(self):

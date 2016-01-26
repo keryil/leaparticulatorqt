@@ -15,6 +15,26 @@ from scipy.spatial.distance import euclidean
 np.seterr(all='raise')
 
 
+def trajectory_from_array(arr):
+    """
+    Helper function that creates a Trajectory object from a generic array.
+    Default values used are prob_c = .1
+    :param arr:
+    :return:
+    """
+    arr = np.asarray(arr)
+    duration = len(arr)
+    prob_c = .1
+    try:
+        ndim = len(arr[0])
+        dimsize = [max(arr[:, dim]) - min(arr[:, dim]) for dim in range(ndim)]
+    except TypeError:
+        ndim = 1
+        dimsize = [1]
+    step_size = max([arr[n] - arr[n - 1] for n in range(1, duration)])
+    return Trajectory(duration, step_size, prob_c, dimsize, ndim, from_arr=arr)
+
+
 class Trajectory(object):
     '''
     This class represents a trajectory in an n-dimensional space consisting of a number of 
@@ -54,11 +74,17 @@ class Trajectory(object):
         if from_arr == None:
             self.__create(leading_silence, trailing_silence)
         else:
-            assert ndim == len(from_arr[0])
+            try:
+                assert ndim == len(from_arr[0])
+            except TypeError:
+                assert ndim == 1
             assert duration == len(from_arr)
             self.__createFromArr(from_arr)
         if plot:
-            self.plot2d(*args, show=False, **kwargs)
+            if ndim != 1:
+                self.plot2d(*args, show=False, **kwargs)
+            else:
+                self.plot(*args, show=False, **kwargs)
 
     def __createFromArr(self, arr):
         self.data = arr
@@ -164,6 +190,26 @@ class Trajectory(object):
             # plt.ylim((-1, self.dim_size))
             plt.show()
         return q
+
+    def plot(self, show=True, width=0.002, path=None, *args, **kwargs):
+        from matplotlib import pyplot as plt
+        assert self.ndim == 1
+
+        x, y = zip(*enumerate(self.data))
+        x, y = np.asarray(x), np.asarray(y)
+        q = plt.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1,
+                       width=width, *args, **kwargs)
+        print q
+        # print x[:1], y[:1], [x[1]-x[2]], [y[1]-y[2]]
+        # plt.arrow(x[:1], y[:1], [x[1]-x[0]], [y[1]-y[0]], edgecolor="red", scale_units='xy', angles='xy', scale=1)
+        # plt.plot(xdif, ydif)
+        # plt.plot(x, y, *args, **kwargs)
+        if show:
+            # plt.xlim((-1, self.dim_size))
+            # plt.ylim((-1, self.dim_size))
+            plt.show()
+        return q
+
 
     def noise(self, spread, in_place=True):
         """

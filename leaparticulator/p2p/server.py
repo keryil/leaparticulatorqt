@@ -719,7 +719,7 @@ def start_client(qapplication, uid):
     theremin.factory = factory
     # theremin.call = call
     theremin.reactor = reactor
-    
+
     theremin.player.ui = ui
     print "Initiating connection with %s:%s" % (constants.leap_server, constants.leap_port)
     endpoint = TCP4ClientEndpoint(
