@@ -581,12 +581,13 @@ class LeapP2PClient(basic.LineReceiver):
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
             image_pointer = self.factory.image_pointer
-            if image_pointer < 4:
-                options = self.factory.images[:image_pointer]
-            else:
-                options = sample(list(set(self.factory.images[:image_pointer]) - set([message.data.image])), 3) \
+            options = self.factory.images[:image_pointer]
+            if image_pointer >= 4:
+                options = sample(set(options) - set([message.data.image]), 3) \
                           + [message.data.image]
             shuffle(options)
+            assert len(options) == len(set(options))
+
             self.ui.wait_over()
             self.ui.test_screen(options)
             # self.listen()
@@ -784,12 +785,16 @@ if __name__ == '__main__':
         no_ui = sys.argv[-1] == "no_ui"
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
+            try:
+                constants.leap_server = sys.argv[4]
+            except IndexError:
+                pass
             start_client(qapplication, uid=sys.argv[3])
         elif sys.argv[2] == "server":
             start_server(qapplication, condition=sys.argv[1], no_ui=no_ui)
 
     except AssertionError:
-        print "USAGE: LeapP2PServer {condition} {client/server} [client_id]."
+        print "USAGE: LeapP2PServer {condition} {client/server} [client_id] [server_ip (only in client mode)]."
         sys.exit(-1)
 
     sys.exit(app.exec_())

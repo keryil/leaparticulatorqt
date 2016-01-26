@@ -4,6 +4,7 @@
 # simple.py
 import sys
 
+from PyQt4.QtCore import QPoint
 from PyQt4.QtGui import *
 app = QApplication.instance()
 if app is None:
@@ -225,7 +226,7 @@ class LeapP2PClientUI(object):
                                        
         # self.waitDialog.setWindowFlags(flags)
         self.waitDialog.setModal(True)
-        pos = QApplication.desktop().screen().rect().center()- self.waitDialog.rect().center()
+        pos = QApplication.desktop().screen().rect().center() - self.waitDialog.rect().center() + QPoint(0, 15)
         self.waitDialog.move(pos)
         self.waitDialog.show()
         self.waitDialog.activateWindow()
