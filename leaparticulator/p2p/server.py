@@ -582,12 +582,10 @@ class LeapP2PClient(basic.LineReceiver):
             self.factory.last_response_data = message.data
             image_pointer = self.factory.image_pointer
             if image_pointer < 4:
-                options = list(set(self.factory.images[:image_pointer]))
+                options = self.factory.images[:image_pointer]
             else:
                 options = sample(list(set(self.factory.images[:image_pointer]) - set([message.data.image])), 3) \
                           + [message.data.image]
-            # options = sample(list(set(self.factory.images[:self.factory.image_pointer]) - set([message.data.image])), 3) \
-            #           + [message.data.image]
             shuffle(options)
             self.ui.wait_over()
             self.ui.test_screen(options)
