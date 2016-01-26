@@ -10,6 +10,8 @@ class TwoClientsFirstRound(P2PTestCase):
 
     def tearDown(self):
         self.stopServer()
+        for client in self.clients.values():
+            client.connection.stopListening()
         self.clients = {}
 
     def setUp(self):
@@ -26,9 +28,9 @@ class TwoClientsFirstRound(P2PTestCase):
             button = client.factory.ui.firstWin.findChildren(
                 QtGui.QPushButton, "btnOkay")[0]
             self.click(button)
-        d = defer.Deferred()
-        self.reactor.callLater(.2, lambda: d.callback('setUp'))
-        return d
+        # d = defer.Deferred()
+        # self.reactor.callLater(.2, lambda: d.callback('setUp'))
+        return clients[-1].connection
 
     def test_createFirstSignal(self):
         self.click(self.factory.ui.mainWin.btnStart)

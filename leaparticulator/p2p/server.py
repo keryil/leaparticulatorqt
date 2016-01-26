@@ -321,10 +321,11 @@ class LeapP2PServer(basic.LineReceiver):
         self.factory.mode = constants.SPEAKERS_TURN
         # speaker_no = choice(range(2))
         hearer = speaker = None
-        if len(self.factory.clients) == 2:
+        if len(self.factory.clients) == 2 and \
+                        len(self.factory.session.round_data) > 0:
             last_round = self.factory.session.getLastRound()
-            hearer = self.factory.session.getLastRound().speaker
-            speaker = self.factory.session.getLastRound().hearer
+            hearer = last_round.speaker
+            speaker = last_round.hearer
         else:
             hearer = speaker = choice(tuple(self.factory.clients.keys()))
             while hearer == speaker:
@@ -400,7 +401,13 @@ class LeapP2PServer(basic.LineReceiver):
                         print "\"%s\"" % image
                         print e
                         raise Exception()
-                    if self.factory.image_success[str(image)] == 2:
+
+                    # check that the *whole* meaning space is
+                    # figured out before expanding it
+                    for count in self.factory.image_success[:self.factory.image_pointer]:
+                        if count < 2:
+                            break
+                    else:
                         self.factory.image_pointer += 2
                         self.factory.image_pointer = min(self.factory.image_pointer,
                                                          len(self.factory.images))
