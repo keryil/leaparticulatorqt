@@ -116,7 +116,7 @@ IMG_DIR = 'img'
 MEANING_DIR = join(IMG_DIR, 'meanings', 'featureless')
 MEANING_DIR_P2P = join(IMG_DIR, 'meanings', 'featureless')
 IMG_EXTENSION = 'png'
-P2P_RES_DIR = join("res", "p2p")
+P2P_RES_DIR = join(ROOT_DIR, "res", "p2p")
 P2P_LOG_DIR = join('logs', 'p2p')
 
 FALSE_OVERLAY = join(IMG_DIR, "false.png")
@@ -151,7 +151,7 @@ def install_reactor():
     # https://github.com/ghtdak/qtreactor/issues/21
     # from qtreactor import pyside4reactor as reactor
     # from qtreactor import qt4reactor as reactor
-    import sys, PyQt4
+    import sys
     if 'qt4reactor' in sys.modules:
         print "qt4reactor already in sys.modules!!"
     if 'twisted.internet.reactor' not in sys.modules:

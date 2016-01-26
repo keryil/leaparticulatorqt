@@ -73,7 +73,7 @@ def fromFile(filename, no_practice=False):
     test_results = jsonpickle.decode(lines[2])
     test_results = _expandTestResults(test_results, images)
     responses = _expandResponsesNew(responses, images)
-    
+
     if not no_practice:
         responses_practice = recursive_decode(lines[3])
         test_results_practice = jsonpickle.decode(lines[4])

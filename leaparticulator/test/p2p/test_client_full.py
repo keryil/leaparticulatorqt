@@ -1,9 +1,9 @@
 from PyQt4 import QtGui
-from twisted.internet import defer
+from twisted.internet import defer, task
 
-from test_server_basic import prep, P2PTestCase
 from leaparticulator import constants
 from leaparticulator.p2p.ui.client import LeapP2PClientUI
+from test_server_basic import prep, P2PTestCase
 
 
 class TwoClientsFirstRound(P2PTestCase):
@@ -20,15 +20,20 @@ class TwoClientsFirstRound(P2PTestCase):
         prep(self)
         self.startServer()
         self.timeout = 5
+        self.clock = task.Clock()
 
-        clients = self.startClients(2)
+        clients = [client.namedtuple for client in self.startClients(2)]
 
-        for client in clients:
-            self.clients[client.client_id] = client
-            button = client.factory.ui.firstWin.findChildren(
-                QtGui.QPushButton, "btnOkay")[0]
-            self.click(button)
-        # d = defer.Deferred()
+        def fn(*args):
+            for c in clients:
+                self.clients[client.client_id] = c
+                button = client.factory.ui.firstWin.findChildren(
+                        QtGui.QPushButton, "btnOkay")[0]
+                self.click(button)
+
+        d = defer.Deferred()
+        clients[-1].connection.addCallback(lambda x: d)
+        clients[-1].connection.addCallback(fn)
         # self.reactor.callLater(.2, lambda: d.callback('setUp'))
         return clients[-1].connection
 
@@ -37,6 +42,7 @@ class TwoClientsFirstRound(P2PTestCase):
         d = defer.Deferred()
 
         def fn():
+            print "***************IIIIII AAAAAAAM FFFFNNNNNNN"
             ui_speaker, ui_listener = self.getClientsAsUi(0)
             win_speaker = ui_speaker.creationWin
             get_btn = lambda name: win_speaker.findChildren(
@@ -64,9 +70,9 @@ class TwoClientsFirstRound(P2PTestCase):
 
             self.click(submit_btn)
             self.assertTrue(ui_speaker.is_waiting())
-            d.callback(("FirstSignal"))
-        self.reactor.callLater(.1, fn)
+            return d.callback(("FirstSignal"))
 
+        self.reactor.callLater(.1, fn)
         return d
 
     def test_FirstImage(self):
