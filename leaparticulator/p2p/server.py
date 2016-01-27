@@ -333,12 +333,30 @@ class LeapP2PServer(basic.LineReceiver):
         assert hearer != speaker
 
         # choose an image
-        # TODO: we need a strategy for this
-        image = choice(self.factory.images[:self.factory.image_pointer])
+
+        # We have n images, x of which have fewer than 2 correct responses.
+        # Let's give 50% of the probability to the responses without 2 correct responses, so each of them gets 1/2x.
+        # Then the other meanings get 1/2(n-x) each.
+
+        # this is a flag indicating whether or not
+        # we are going to pick an image with 2
+        # consecutive right guesses, at p = .5
+        from random import random
+        pick_guessed_image = True if random() > 0.5 else False
+
+        all_images = self.factory.images[:self.factory.image_pointer]
+        success = self.factory.image_success
+
+        if pick_guessed_image:
+            all_images = filter(lambda x: success[x] == 2, all_images)
+        else:
+            all_images = filter(lambda x: success[x] != 2, all_images)
+
+        image = choice(all_images)
         log.msg("The chosen image is: %s" % image)
         log.msg("Speaker: %s; Hearer: %s" % (self.factory.clients[speaker],
                                              self.factory.clients[hearer]))
-        print "Success dict:", self.factory.image_success
+        print "Success dict:", success
         print "Image pointer:", self.factory.image_pointer
         self.factory.session.newRound()
         self.factory.session.getLastRound().image = image
