@@ -346,13 +346,14 @@ class LeapP2PServer(basic.LineReceiver):
 
         all_images = self.factory.images[:self.factory.image_pointer]
         success = self.factory.image_success
+        guessed = filter(lambda x: success[x] == 2, all_images)
+        non_guessed = filter(lambda x: success[x] != 2, all_images)
 
-        if pick_guessed_image:
-            all_images = filter(lambda x: success[x] == 2, all_images)
+        if pick_guessed_image and len(guessed) > 0:
+            image = choice(guessed)
         else:
-            all_images = filter(lambda x: success[x] != 2, all_images)
+            image = choice(non_guessed)
 
-        image = choice(all_images)
         log.msg("The chosen image is: %s" % image)
         log.msg("Speaker: %s; Hearer: %s" % (self.factory.clients[speaker],
                                              self.factory.clients[hearer]))
