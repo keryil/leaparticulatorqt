@@ -68,7 +68,7 @@ class P2PTestCase(unittest.TestCase):
         data.connection.namedtuple = data
         # from twisted.internet import reactor
         # self.reactor = reactor
-        return data.connection
+        return d
 
     def getFactories(self):
         server = None

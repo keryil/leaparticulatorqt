@@ -89,7 +89,7 @@ class LeapP2PSession(object):
         exists = self.started_file_dump
         filename = join("logs", filename)
 
-        print "Dumping round data to %s. First entry? %s" % (filename, exists)
+        print "Dumping round data to %s. First entry? %s" % (filename, not exists)
         extract_participant = lambda x: "%s@%s" % (x.other_end_alias, x.other_end)
         mode = "a" if exists else "w"
         with open(filename, mode) as f:
