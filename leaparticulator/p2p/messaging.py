@@ -9,9 +9,10 @@ class RoundData(object):
 
 
 class ResponseData(object):
-    def __init__(self, signal, image):
+    def __init__(self, signal, image, options=None):
         self.signal = signal
         self.image = image
+        self.options = options
 
 
 # RoundData = namedtuple("RoundData", ["isSpeaker", "image"])
@@ -111,9 +112,9 @@ class ResponseMessage(LeapP2PMessage):
     image field to send it back to the server.
     """
 
-    def __init__(self, signal, image):
+    def __init__(self, signal, image, options=None):
         self.instruction = constants.RESPONSE
-        self.data = ResponseData(signal=signal, image=image)
+        self.data = ResponseData(signal=signal, image=image, options=options)
 
 
 class EndSessionMessage(LeapP2PMessage):

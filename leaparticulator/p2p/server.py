@@ -44,6 +44,7 @@ class LeapP2PRoundSummary(object):
         self.image = None
         self.guess = None
         self.success = None
+        self.options = None
 
     def set_participants(self, speaker, hearer):
         self.speaker = speaker
@@ -57,6 +58,10 @@ class LeapP2PRoundSummary(object):
         self.guess = response_message.data.image
         self.success = (str(self.guess) == str(self.image))
 
+    def set_options(self, options):
+        assert options is not None
+        self.options = options
+
     def shorthand_copy(self):
         """
         Returns a copy of this object with the TCP connection objects
@@ -69,6 +74,7 @@ class LeapP2PRoundSummary(object):
         copy.hearer = extract_participant(self.hearer)
         copy.signal = self.signal
         copy.image = self.image
+        copy.options = self.options
         copy.guess = self.guess
         copy.success = self.success
         return copy
@@ -112,6 +118,10 @@ class LeapP2PSession(object):
         log.msg("New round: #%d" % len(self.round_data))
         # from traceback import print_stack; print_stack()
         self.round_data.append(LeapP2PRoundSummary())
+        self.notify()
+
+    def setOptions(self, options):
+        self.getLastRound().set_options(options)
         self.notify()
 
     def setImage(self, image):
@@ -182,7 +192,6 @@ class LeapP2PServer(basic.LineReceiver):
         if len(self.factory.images) == 0:
             from glob import glob
             from random import shuffle
-            from collections import defaultdict
             # root = os.getcwd()
             # if "_trial_temp" in root:
             #     root = root[:-11]
@@ -198,7 +207,8 @@ class LeapP2PServer(basic.LineReceiver):
             # guesses regarding image.
 
             self.factory.image_pointer = 2
-            self.factory.image_success = defaultdict(int)
+            self.factory.image_success = {str(image): 0 for image in self.factory.images}
+            print "Success dict, initialized: %s" % self.factory.image_success
             # print self.factory.image_success
             # print images[0], type(images[0])
             print "Images in place!"
@@ -335,21 +345,25 @@ class LeapP2PServer(basic.LineReceiver):
         # choose an image
 
         # We have n images, x of which have fewer than 2 correct responses.
-        # Let's give 50% of the probability to the responses without 2 correct responses, so each of them gets 1/2x.
+        # Let's give 66% of the probability to the responses without 2 correct responses, so each of them gets 1/2x.
         # Then the other meanings get 1/2(n-x) each.
 
         # this is a flag indicating whether or not
         # we are going to pick an image with 2
         # consecutive right guesses, at p = .5
         from random import random
-        pick_guessed_image = True if random() > 0.5 else False
+        pick_guessed_image = True if random() > 0.66 else False
+        log.msg("Do we intend to pick an already established meaning? %s" % pick_guessed_image)
 
         all_images = self.factory.images[:self.factory.image_pointer]
         success = self.factory.image_success
-        guessed = filter(lambda x: success[x] == 2, all_images)
-        non_guessed = filter(lambda x: success[x] != 2, all_images)
+        guessed = filter(lambda x: success[str(x)] == 2, all_images)
+        non_guessed = filter(lambda x: success[str(x)] != 2, all_images)
 
-        if pick_guessed_image and len(guessed) > 0:
+        if pick_guessed_image:
+            log.msg("Do we have enough established meanings to pick from? %s" % (len(guessed) > 1))
+
+        if pick_guessed_image and len(guessed) > 1:
             image = choice(guessed)
         else:
             image = choice(non_guessed)
@@ -420,6 +434,20 @@ class LeapP2PServer(basic.LineReceiver):
             # print "Received signal: %s" % message.data.signal[-5:]
             self.factory.mode = constants.HEARERS_TURN
             self.factory.session.setSpeakerContribution(message)
+
+            # pick the images
+            image_pointer = self.factory.image_pointer
+            options = filter(lambda x: str(x) != str(message.data.image), self.factory.images[:image_pointer])
+            if len(options) > 3:
+                options = sample(options, 3)
+            options = options + [message.data.image]
+            shuffle(options)
+            assert len(map(str, options)) == len(set(map(str, options)))
+            log.msg("Prepared options for the round: %s" % options)
+            self.factory.session.setOptions(options)
+
+            message.data.options = options
+
             self.send_to_client(message,
                                 self.factory.session.getHearer())
         elif self.factory.mode == constants.HEARERS_TURN:
@@ -554,7 +582,7 @@ class LeapP2PClient(basic.LineReceiver):
         if len(message) < 1000:
             log.msg("Received: %s" % message)
         else:
-            log.msg("Received: %s" % message[:250])
+            log.msg("Received: %s" % message[:550])
 
         message = jsonpickle.decode(message)
         assert isinstance(message, LeapP2PMessage)
@@ -599,14 +627,15 @@ class LeapP2PClient(basic.LineReceiver):
                 raise Exception("Mode not LISTENER: %s" % self.factory.mode)
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
-            image_pointer = self.factory.image_pointer
-            options = self.factory.images[:image_pointer]
-            if image_pointer >= 4:
-                options = sample(set(options) - set([message.data.image]), 3) \
-                          + [message.data.image]
-            shuffle(options)
-            assert len(options) == len(set(options))
-
+            # image_pointer = self.factory.image_pointer
+            # options = self.factory.images[:image_pointer]
+            # if image_pointer >= 4:
+            #     options = sample(set(options) - set([message.data.image]), 3) \
+            #               + [message.data.image]
+            # shuffle(options)
+            # assert len(options) == len(set(options))
+            options = message.data.options
+            log.msg("Received options: %s" % options)
             self.ui.wait_over()
             self.ui.test_screen(options)
             # self.listen()
@@ -643,8 +672,8 @@ class LeapP2PClient(basic.LineReceiver):
         # print self.factory.last_response_data
         self.send_to_server(ResponseMessage(
                             signal=self.factory.last_response_data.signal,
-                            image=image)  # choice(self.factory.images))
-                            )
+                image=image,  # choice(self.factory.images))
+                options=self.factory.last_response_data.options))
         self.factory.mode = constants.FEEDBACK
     # def extend_last_signal(self,signal):
     #     print "Extending: %s" % signal

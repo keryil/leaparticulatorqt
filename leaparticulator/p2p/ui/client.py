@@ -189,20 +189,31 @@ class LeapP2PClientUI(object):
             # self.factory.stop_recording()
             self.recording = False
             self.theremin.stop_record()
-            # self.theremin.mute()
+            valid = len(self.getSignal()) > 0
+
             btnRec = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
-            btnRec.setText("Re-record")
+            if valid:
+                btnRec.setText("Re-record")
+            else:
+                btnRec.setText("Record")
+
             self.unique_connect(btnRec, "clicked()", self.start_recording)
 
-            btnPlay = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
-            btnPlay.setEnabled(True)
+            if valid:
+                btnPlay = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
+                btnPlay.setEnabled(True)
 
-            btnSubmit = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
-            btnSubmit.setEnabled(True)
+                btnSubmit = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
+                btnSubmit.setEnabled(True)
 
-            self.setup_play_button(btnPlay, self.getSignal())
+                self.setup_play_button(btnPlay, self.getSignal())
             self.flicker()
-            print "Signal is %d frames long." % len(self.getSignal())
+
+            if not valid:
+                QMessageBox.warning(self.creationWin, "Empty signal",
+                                    "You have just recorded an empty signal. Please try again.")
+            else:
+                print "Signal is %d frames long." % len(self.getSignal())
 
     def extend_last_signal(self, frame):
         if self.recording:
