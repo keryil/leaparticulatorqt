@@ -1,5 +1,6 @@
 import sys
 
+from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QApplication
 from PyQt4.QtTest import QTest
@@ -48,6 +49,49 @@ class P2PTestCase(unittest.TestCase):
         self.clients = {}
         from leaparticulator import constants
         constants.leap_server = "127.0.0.1"
+
+    def tearDown(self):
+        self.stopServer()
+        for client in self.clients.values():
+            print client
+            client.factory.stopFactory()
+        self.clients = {}
+        self.server_factory = None
+
+    def setUp(self):
+        """
+        Sets up two clients and a server, and initiates the
+        experiment.
+        :return:
+        """
+        from twisted.internet import reactor
+        self.reactor = reactor
+        prep(self)
+        self.startServer()
+        self.timeout = 5
+
+        clients = [client.namedtuple for client in self.startClients(2)]
+        d = defer.Deferred()
+
+        def fn(*args):
+            """
+            Clicks the first screen's okay button for all clients.
+            :param args:
+            :return:
+            """
+            for client in clients:
+                self.clients[client.client_id] = client
+                print "Setting up client:", client
+                button = client.factory.ui.firstWin.findChildren(
+                        QtGui.QPushButton, "btnOkay")[0]
+                self.click(button)
+            d.callback(("Setup done"))
+
+        self.reactor.callLater(.2, fn)
+        # clients[0].deferred.addCallback(fn)
+        # d.chainDeferred(clients[1].deferred)
+        # d.addCallback(fn)
+        return d  #
 
     def click(self, widget):
         print "Left clicking %s" % str(widget)
@@ -150,6 +194,48 @@ class P2PTestCase(unittest.TestCase):
     def getClientsAsUi(self, rnd_no=None):
         speaker, listener = self.getClientsAsClientData(rnd_no)
         return speaker.factory.ui, listener.factory.ui
+
+    def create_signal(self, callback):
+        ui_speaker, ui_listener = self.getClientsAsUi(rnd_no=0)
+
+        submit_btn = ui_speaker.creationWin.findChildren(
+                QtGui.QPushButton, "btnSubmit")[0]
+        record_btn = ui_speaker.creationWin.findChildren(
+                QtGui.QPushButton, "btnRecord")[0]
+
+        image = ui_speaker.creationWin.findChildren(
+                QtGui.QLabel, "lblImage")[0]
+        # record something
+        from leaparticulator.data.frame import generateRandomSignal
+        self.click(record_btn)
+        ui_speaker.theremin.last_signal = generateRandomSignal(2)
+        self.click(record_btn)
+
+        self.click(submit_btn)
+        self.reactor.callLater(.5, callback)
+
+    def answer_question(self, answer=0, callback=None):
+        # speaker, listener = self.getClientsAsClientData()
+
+        ui_speaker, ui_listener = self.getClientsAsUi(0)
+        get_btn = lambda name: ui_listener.testWin.findChildren(
+                QtGui.QPushButton, name)[0]
+
+        play_btn = get_btn("btnPlay")
+        submit_btn = get_btn("btnSubmit")
+        # record_btn = get_btn("btnRecord")
+        choices = [get_btn("btnImage%d" % i) for i in range(1, 5)]
+        self.click(play_btn)
+        self.click(choices[answer])
+        print "Chosen the answer..."
+
+        def submit():
+            self.assertTrue(submit_btn.isEnabled())
+            print "Clicking submit button, which is *enabled*"
+            self.click(submit_btn)
+            callback("FirstAnswer")
+
+        self.reactor.callLater(1, submit)
 
     
 
