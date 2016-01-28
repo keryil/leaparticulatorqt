@@ -45,6 +45,8 @@ class LeapP2PRoundSummary(object):
         self.guess = None
         self.success = None
         self.options = None
+        # these are the counts at the end of the round.
+        self.success_counts = None
 
     def set_participants(self, speaker, hearer):
         self.speaker = speaker
@@ -62,6 +64,10 @@ class LeapP2PRoundSummary(object):
         assert options is not None
         self.options = options
 
+    def set_success_counts(self, counts):
+        from copy import deepcopy
+        self.success_counts = deepcopy(counts)
+
     def shorthand_copy(self):
         """
         Returns a copy of this object with the TCP connection objects
@@ -77,6 +83,7 @@ class LeapP2PRoundSummary(object):
         copy.options = self.options
         copy.guess = self.guess
         copy.success = self.success
+        copy.success_counts = self.success_counts
         return copy
 
 class LeapP2PSession(object):
@@ -113,11 +120,15 @@ class LeapP2PSession(object):
         if len(self.round_data) > 0:
             rnd = self.getLastRound()
             assert rnd.success is not None
+            counts = rnd.success_counts
         #     assert None not in (rnd.speaker, rnd.hearer, rnd.signal,
         #                         rnd.image, rnd.guess, rnd.success)
+        else:
+            counts = self.factory.image_success
         log.msg("New round: #%d" % len(self.round_data))
         # from traceback import print_stack; print_stack()
         self.round_data.append(LeapP2PRoundSummary())
+        self.setSuccessCounts(counts)
         self.notify()
 
     def setOptions(self, options):
@@ -150,6 +161,10 @@ class LeapP2PSession(object):
 
     def getSpeaker(self):
         return self.getLastRound().speaker
+
+    def setSuccessCounts(self, counts):
+        self.getLastRound().set_success_counts(counts)
+        self.notify()
 
     def addCallback(self, func):
         self.callbacks.append(func)
@@ -438,9 +453,10 @@ class LeapP2PServer(basic.LineReceiver):
                 self.factory.start_counter += 1
                 print "Received START message #%d" % self.factory.start_counter
                 if self.factory.start_counter == 2:
-                    self.factory.ui.btnStart.clicked.connect(self.start)
-                    self.factory.ui.enableStart()
+                    # self.factory.ui.btnStart.clicked.connect(self.start)
+                    # self.factory.ui.enableStart()
                     del self.factory.start_counter
+                    self.start()
 
         elif self.factory.mode == constants.SPEAKERS_TURN:
             assert isinstance(message, ResponseMessage)
@@ -486,6 +502,7 @@ class LeapP2PServer(basic.LineReceiver):
                 # we only expand the meaning space if there are two **consecutive** successes
                 # so we reset the count for any failure
                 self.factory.image_success[str(image)] = 0
+            self.factory.session.setSuccessCounts(self.factory.image_success)
 
             self.send_all(FeedbackMessage(target_image=image,
                                           chosen_image=guess,
@@ -641,13 +658,7 @@ class LeapP2PClient(basic.LineReceiver):
                 raise Exception("Mode not LISTENER: %s" % self.factory.mode)
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
-            # image_pointer = self.factory.image_pointer
-            # options = self.factory.images[:image_pointer]
-            # if image_pointer >= 4:
-            #     options = sample(set(options) - set([message.data.image]), 3) \
-            #               + [message.data.image]
-            # shuffle(options)
-            # assert len(options) == len(set(options))
+
             options = message.data.options
             log.msg("Received options: %s" % options)
             self.ui.wait_over()

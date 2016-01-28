@@ -53,6 +53,12 @@ class LeapP2PServerUI(object):
         self.btnPlay = self.mainWin.findChildren(QPushButton, "btnPlay")[0]
         self.btnStart = self.mainWin.findChildren(QPushButton, "btnStart")[0]
         self.btnEnd = self.mainWin.findChildren(QPushButton, "btnEnd")[0]
+
+        self.meaningSpaceScroll = self.mainWin.findChildren(QScrollArea, "scrollArea")
+        self.meaningSpace = self.mainWin.findChildren(QGroupBox, "meaningSpace")[0]
+        self.meaningSpaceLabels = []
+        # self.meaningSpace = self.mainWin.findChildren(QGroupBox, "meaningSpace")[0]
+        # self.meaningSpaceLayout = self.mainWin.findChildren(QVBoxLayout, "meaningLayout")[0]
         # self.go()
 
     def get_active_window(self):
@@ -160,6 +166,48 @@ class LeapP2PServerUI(object):
                 self.playback.start(rnd.signal)
 
             self.btnPlay.clicked.connect(play_back)
+        self.displayMeaningSpace(rnd)
+
+    def displayMeaningSpace(self, rnd):
+        """
+        Displays the meaning space and the associated counts on
+        the server GUI.
+        :param rnd:
+        :return:
+        """
+        image_list = self.factory.images[:self.factory.image_pointer]
+        if not hasattr(self, 'meaningSpace'):
+            print "Creating the initial meaning space widgets..."
+            self.meaningSpace = QGroupBox(title="Meaning Space")
+            self.meaningSpace.setObjectName("meaningSpace")
+            self.mainWin.findChildren(QScrollArea, "scrollArea")[0].setWidget(self.meaningSpace)
+
+        assert self.meaningSpace
+        print "Got a handle for the meaning space now."
+
+        # first clean the current items, if present
+        layout = self.meaningSpace.layout()
+        if layout:
+            print "Cleaning old items in the meaning space..."
+            for labels in self.meaningSpaceLabels:
+                for label in labels:
+                    layout.removeWidget(label)
+                    QObjectCleanupHandler().add(label)
+            self.meaningSpaceLabels = []
+        else:
+            layout = QFormLayout()
+            self.meaningSpace.setLayout(layout)
+
+        for meaning, count in rnd.success_counts.items():
+            if meaning in map(str, image_list):
+                print "Adding %s to meaning space" % meaning
+                index = map(str, image_list).index(meaning)
+                label = QLabel()
+                label.setPixmap(image_list[index].pixmap().scaledToWidth(75))
+                count_label = QLabel("%s correct guesses" % count)
+                layout.addRow(label, count_label)
+                self.meaningSpaceLabels.append([label, count_label])
+                print meaning, count
 
     def first_screen(self):
         # self.close_all()
