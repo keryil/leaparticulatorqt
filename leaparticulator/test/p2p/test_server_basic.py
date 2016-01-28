@@ -8,7 +8,8 @@ from twisted.internet import defer
 from twisted.python.failure import Failure
 from twisted.trial import unittest
 
-from leaparticulator.p2p.server import start_server, start_client, LeapP2PServerFactory, LeapP2PClientFactory
+from leaparticulator.p2p.client import LeapP2PClientFactory, start_client
+from leaparticulator.p2p.server import start_server, LeapP2PServerFactory
 
 
 def prep(self):
@@ -68,7 +69,7 @@ class P2PTestCase(unittest.TestCase):
         self.reactor = reactor
         prep(self)
         self.startServer()
-        self.timeout = 5
+        self.timeout = 6
 
         clients = [client.namedtuple for client in self.startClients(2)]
         d = defer.Deferred()
@@ -203,23 +204,39 @@ class P2PTestCase(unittest.TestCase):
         record_btn = ui_speaker.creationWin.findChildren(
                 QtGui.QPushButton, "btnRecord")[0]
 
-        image = ui_speaker.creationWin.findChildren(
-                QtGui.QLabel, "lblImage")[0]
         # record something
         from leaparticulator.data.frame import generateRandomSignal
         self.click(record_btn)
-        ui_speaker.theremin.last_signal = generateRandomSignal(2)
-        self.click(record_btn)
 
-        self.click(submit_btn)
-        self.reactor.callLater(.5, callback)
+        def fn(*args):
+            ui_speaker.theremin.last_signal = generateRandomSignal(2)
+            self.click(record_btn)
+            self.click(submit_btn)
+            self.reactor.callLater(.5, callback)
 
-    def answer_question(self, answer=0, callback=None):
-        # speaker, listener = self.getClientsAsClientData()
+        self.reactor.callLater(.1, fn)
 
+    def answer_question(self, answer_correctly=True, callback=None):
+        """
+        Answers the question on the screen, correctly
+        if answer_correctly=True.
+        :param answer:
+        :param callback:
+        :return:
+        """
         ui_speaker, ui_listener = self.getClientsAsUi(0)
         get_btn = lambda name: ui_listener.testWin.findChildren(
                 QtGui.QPushButton, name)[0]
+
+        target_image = self.getLastRound().image
+        options = self.getLastRound().options
+        answer = options.index(target_image)
+        print "Predicted answer: %d (%s)" % (answer,
+                                             options[answer])
+        if not answer_correctly:
+            answer = options.index(list(set(options) - set([answer]))[0])
+            print "Chosen incorrect answer: %d (%s)" % (answer,
+                                                        options[answer])
 
         play_btn = get_btn("btnPlay")
         submit_btn = get_btn("btnSubmit")
@@ -233,11 +250,28 @@ class P2PTestCase(unittest.TestCase):
             self.assertTrue(submit_btn.isEnabled())
             print "Clicking submit button, which is *enabled*"
             self.click(submit_btn)
-            callback("FirstAnswer")
+            self.reactor.callLater(.25, lambda: callback("Submitted"))
 
-        self.reactor.callLater(1, submit)
+        self.reactor.callLater(1.2, submit)
 
-    
+    def do_one_round(self, callback=None, answer_correctly=True):
+        deferred = defer.Deferred()
+        create = lambda: self.create_signal(callback=lambda: self.reactor.callLater(.2, give_answer))
+        give_answer = lambda: self.answer_question(callback=deferred.callback,
+                                                   answer_correctly=answer_correctly)
+
+        def click_okay(*args):
+            for ui in self.getClientsAsUi(0):
+                get_btn = lambda name: ui.feedbackWin.findChildren(
+                        QtGui.QPushButton, name)[0]
+                button = get_btn("btnOkay")
+                self.click(button)
+                # self.reactor.callLater(.1, lambda: callback("Ended round."))
+
+        deferred.addCallback(click_okay)
+        deferred.addCallback(callback)
+        self.reactor.callLater(.1, create)
+        return deferred
 
 
 class ServerTest(P2PTestCase):

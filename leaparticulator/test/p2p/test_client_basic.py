@@ -1,4 +1,5 @@
-from leaparticulator.p2p.server import start_server, start_client
+from leaparticulator.p2p.client import start_client
+from leaparticulator.p2p.server import start_server
 from test_server_basic import P2PTestCase
 from test_server_basic import prep
 

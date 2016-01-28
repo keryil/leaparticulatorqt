@@ -182,9 +182,9 @@ class LeapP2PClientUI(object):
         def play():
             button.setEnabled(False)
             # button.setText("Stop")
-            self.unique_connect(button, "clicked()", self.playback_player.stop)
-            self.playback_player.start(signal, 
+            self.playback_player.start(signal,
                                        enable)
+            self.unique_connect(button, "clicked()", self.playback_player.stop)
             self.flicker()
         
         self.unique_connect(button, "clicked()", play)
@@ -298,6 +298,7 @@ class LeapP2PClientUI(object):
                 image = images[i - 1]
                 pixmap = image.pixmap()
                 # pixmap.setAlignment()
+                view.image = image
                 view.setIcon(QIcon(pixmap))
                 view.setIconSize(pixmap.rect().size())
                 connect(view, "clicked()", enable)

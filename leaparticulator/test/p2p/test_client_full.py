@@ -85,12 +85,26 @@ class TwoClientsFirstRound(P2PTestCase):
 
     def test_answerFirstQuestion(self):
         d = defer.Deferred()
-        create = lambda: self.create_signal(callback=give_answer)
-        give_answer = lambda: self.answer_question(answer=0,
-                                                   callback=d.callback)
-        self.reactor.callLater(.2, create)
+
+        def check(*args):
+            print 'CHECK CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+            round = self.getLastRound()
+            self.assertEqual(round.image, round.guess)
+            self.assertTrue(round.success)
+            d.callback("Done")
+
+        self.do_one_round(callback=check)
         return d
 
+    def test_answerTwoQuestions(self):
+        d = defer.Deferred()
+
+        def do_second(*args):
+            self.do_one_round(callback=d.callback)
+
+        self.do_one_round(callback=do_second)
+        return d
 
 class TwoClientsTillEnd(P2PTestCase):
-    pass
+    def test_endByExhaustion(self):
+        pass
