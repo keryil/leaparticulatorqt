@@ -398,10 +398,14 @@ class LeapP2PServer(basic.LineReceiver):
                 break
         else:
             self.factory.image_pointer += 2
-            self.factory.image_pointer = min(self.factory.image_pointer,
-                                             len(self.factory.images))
-            log.msg("Expanding meaning space by two; the new space is\n%s" % (
-                self.factory.images[:self.factory.image_pointer]))
+            # if we run out of images, just end the experiment.
+            if self.factory.image_pointer >= len(self.factory.images):
+                self.end()
+            else:
+                self.factory.image_pointer = min(self.factory.image_pointer,
+                                                 len(self.factory.images))
+                log.msg("Expanding meaning space by two; the new space is\n%s" % (
+                    self.factory.images[:self.factory.image_pointer]))
 
     def lineReceived(self, line):
         nline = "<{}@{}> {}".format(self.other_end_alias, self.other_end, line)
