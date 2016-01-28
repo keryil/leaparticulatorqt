@@ -1,6 +1,6 @@
 from leaparticulator.p2p.server import start_server, start_client
-from test_server_basic import prep
 from test_server_basic import P2PTestCase
+from test_server_basic import prep
 
 
 class P2PClientTest(P2PTestCase):
@@ -31,12 +31,12 @@ class ClientTestWithServer(P2PTestCase):
 
     def tearDown(self):
         if hasattr(self, 'factory'):
-            self.factory.listener.result.stopListening()
-            self.factory.stopFactory()
+            self.server_factory.listener.result.stopListening()
+            self.server_factory.stopFactory()
 
     def setUp(self):
         prep(self)
-        self.factory = start_server(
+        self.server_factory = start_server(
             self.app, condition='1', no_ui=False)
 
     def test_connect(self):

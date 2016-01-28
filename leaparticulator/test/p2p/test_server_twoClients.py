@@ -2,7 +2,6 @@ from PyQt4 import QtGui
 from twisted.internet import defer
 
 from test_server_basic import prep, P2PTestCase
-from leaparticulator import constants
 
 
 class TwoClientsInit(P2PTestCase):
@@ -20,7 +19,7 @@ class TwoClientsInit(P2PTestCase):
 
     def test_connect(self):
         self.startClient(1)
-        button = self.factory.ui.mainWin.btnStart
+        button = self.server_factory.ui.mainWin.btnStart
         print "Button enabled? ",  button.isEnabled()
         self.assertFalse(button.isEnabled())
         self.startClient(2)
@@ -29,7 +28,7 @@ class TwoClientsInit(P2PTestCase):
         self.startClients(2)
         # self.reactor.iterate(1)
         d = defer.Deferred()
-        button = self.factory.ui.mainWin.btnStart
+        button = self.server_factory.ui.mainWin.btnStart
 
         def fn():
             print "Button enabled? ",  button.isEnabled()
@@ -80,7 +79,7 @@ class TwoClientsFirstRound(P2PTestCase):
                 self.click(button)
 
             def clickStart():
-                self.click(self.factory.ui.mainWin.btnStart)
+                self.click(self.server_factory.ui.mainWin.btnStart)
                 # dd = defer.Deferred()
                 self.reactor.callLater(.3, lambda: d.callback("setUp"))
                 # return dd
@@ -89,30 +88,30 @@ class TwoClientsFirstRound(P2PTestCase):
         return d
 
     def test_roundList(self):
-        items = self.factory.ui.roundModel.findItems("Round #0")
+        items = self.server_factory.ui.roundModel.findItems("Round #0")
         self.failIfEqual(items, [])
 
     def test_roundSpeakerHearerDisplay(self):
         speaker, listener = self.getClientsAsServerConnections(rnd_no=0)
 
-        view = self.factory.ui.lstRounds
+        view = self.server_factory.ui.lstRounds
         index = view.model().index(0, 0)
         view.setCurrentIndex(index)
         self.click(view)
         d = defer.Deferred()
 
         def test():
-            client_id = str(self.factory.ui.lblSpeaker.text()).split()[-1]
+            client_id = str(self.server_factory.ui.lblSpeaker.text()).split()[-1]
             self.assertEqual(client_id, speaker.other_end_alias)
 
-            client_id = str(self.factory.ui.lblHearer.text()).split()[-1]
+            client_id = str(self.server_factory.ui.lblHearer.text()).split()[-1]
             self.assertEqual(client_id, listener.other_end_alias)
             d.callback(client_id)
         self.reactor.callLater(.3, test)
         return d
 
     def test_roundSpeakerHearerImage(self):
-        view = self.factory.ui.lstRounds
+        view = self.server_factory.ui.lstRounds
         index = view.model().index(0, 0)
         view.setCurrentIndex(index)
         self.click(view)
@@ -123,10 +122,10 @@ class TwoClientsFirstRound(P2PTestCase):
             speaker_img = self.getRound(rnd_no=0).image
 
             # hearer's image should be displayed as a question mark
-            self.assertFalse(hasattr(self.factory.ui.lblGiven, 'meaning'))
+            self.assertFalse(hasattr(self.server_factory.ui.lblGiven, 'meaning'))
             # compare speaker's original image and the one displayed
             self.assertEqual(speaker_img,
-                             self.factory.ui.lblExpected.meaning)
+                             self.server_factory.ui.lblExpected.meaning)
             d.callback("Images")
         self.reactor.callLater(.3, test)
         return d

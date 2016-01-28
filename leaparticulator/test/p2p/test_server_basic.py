@@ -1,5 +1,4 @@
 import sys
-from collections import namedtuple
 
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QApplication
@@ -20,9 +19,25 @@ def prep(self):
     if not self.app:
         self.app = QApplication(sys.argv)
 
-ClientData = namedtuple(
-    "ClientData",
-    "theremin controller connection factory client_id client_ip".split())
+
+class ClientData(object):
+    def __init__(self, theremin, controller, connection, factory,
+                 client_id, client_ip, deferred):
+        self.theremin = theremin
+        self.controller = controller
+        self.connection = connection
+        self.factory = factory
+        self.client_id = client_id
+        self.client_ip = client_ip
+        self.deferred = deferred
+
+    def __str__(self):
+        vars = dir(self)
+        vars = filter(lambda x: not x.startswith("_"), vars)
+        string = repr(self)
+        for var in vars:
+            string = "%s\n%s=%s" % (string, var, getattr(self, var))
+        return string
 
 
 class P2PTestCase(unittest.TestCase):
@@ -52,20 +67,28 @@ class P2PTestCase(unittest.TestCase):
         theremin = start_client(
             self.app, uid=client_id)
         factory = theremin.factory
-        d = theremin.factory.connection_def  # endpoint.connect(factory)
-
+        d = theremin.factory.connection_def
+        # theremin.factory.connection_def.chainDeferred(d)  # endpoint.connect(factory)
+        print "Connection deferred:", d
         self.factories.append(factory)
+        assert isinstance(factory, LeapP2PClientFactory)
+
+        data = ClientData(theremin=theremin,
+                          controller=theremin.controller,
+                          deferred=d,
+                          factory=factory,
+                          client_id=client_id,
+                          client_ip=client_ip,
+                          connection=None)
 
         def fn(client):
-            factory.ui.setClient(client)
+            data.connection = client
+            # factory.ui.setClient(client)
             factory.ui.go()
 
         d.addCallback(fn)
-        assert isinstance(factory, LeapP2PClientFactory)
-
-        data = ClientData(theremin, theremin.controller, d, factory, client_id, client_ip)
         self.clients[id] = data
-        data.connection.namedtuple = data
+        data.deferred.namedtuple = data
         # from twisted.internet import reactor
         # self.reactor = reactor
         return d
@@ -78,7 +101,7 @@ class P2PTestCase(unittest.TestCase):
                 server = f
             else:
                 clients.append(f)
-        assert server == self.factory
+        assert server == self.server_factory
         return server, clients
 
     def stopClient(self, id):
@@ -89,10 +112,10 @@ class P2PTestCase(unittest.TestCase):
             del self.clients[id]
 
     def getLastRound(self):
-        return self.factory.session.getLastRound()
+        return self.server_factory.session.getLastRound()
 
     def getRound(self, rnd_no):
-        return self.factory.session.round_data[rnd_no]
+        return self.server_factory.session.round_data[rnd_no]
 
     def startClients(self, qty):
         res = []
@@ -101,13 +124,13 @@ class P2PTestCase(unittest.TestCase):
         return res
 
     def startServer(self):
-        self.factory = start_server(
+        self.server_factory = start_server(
             self.app, condition='1', no_ui=False)
-        self.factories.append(self.factory)
-        return self.factory
+        self.factories.append(self.server_factory)
+        return self.server_factory
 
     def stopServer(self):
-        factory = self.factory
+        factory = self.server_factory
         if not isinstance(factory.listener.result, Failure):
             factory.listener.result.stopListening()
         del factory.listener
@@ -145,8 +168,8 @@ class ServerTest(P2PTestCase):
 
     def test_startUp(self):
         self.startServer()
-        self.assertIsNotNone(self.factory)
-        self.assertIsNotNone(self.factory.ui)
+        self.assertIsNotNone(self.server_factory)
+        self.assertIsNotNone(self.server_factory.ui)
 
     def test_invalidCondition(self):
         self.assertRaises(
@@ -154,10 +177,10 @@ class ServerTest(P2PTestCase):
                                            no_ui=False))
 
     def test_headlessStartup(self):
-        self.factory = start_server(
+        self.server_factory = start_server(
             self.app, condition='1', no_ui=True)
-        self.assertIsNotNone(self.factory)
-        self.assertIsNone(self.factory.ui)
+        self.assertIsNotNone(self.server_factory)
+        self.assertIsNone(self.server_factory.ui)
 
 
 class ServerTestWithClient(P2PTestCase):
