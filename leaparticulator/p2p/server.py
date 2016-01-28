@@ -413,21 +413,30 @@ class LeapP2PServer(basic.LineReceiver):
         assert isinstance(message, LeapP2PMessage)
 
         if self.factory.mode == constants.INIT:
-            assert isinstance(message, InitMessage)
-            self.factory.clients[self] = message.client_id
-            self.other_end_alias = message.client_id
-            self.factory.ui.connectionMade(self.other_end, message.client_id)
-            if len(self.factory.clients) < 2:
-                return
+            if not hasattr(self.factory, 'start_counter'):
+                log.msg("Initialized start counter at zero.")
+                self.factory.start_counter = 0
+
+            if isinstance(message, InitMessage):
+                self.factory.clients[self] = message.client_id
+                self.other_end_alias = message.client_id
+                self.factory.ui.connectionMade(self.other_end, message.client_id)
+                if len(self.factory.clients) < 2:
+                    return
+                else:
+                    all_aliased = True
+                    for c in self.factory.clients:
+                        if c.other_end_alias == "":
+                            all_aliased = False
+                            break
             else:
-                all_aliased = True
-                for c in self.factory.clients:
-                    if c.other_end_alias == "":
-                        all_aliased = False
-                        break
-                if all_aliased:
+                assert isinstance(message, StartMessage)
+                self.factory.start_counter += 1
+                print "Received START message #%d" % self.factory.start_counter
+                if self.factory.start_counter == 2:
                     self.factory.ui.btnStart.clicked.connect(self.start)
                     self.factory.ui.enableStart()
+                    del self.factory.start_counter
 
         elif self.factory.mode == constants.SPEAKERS_TURN:
             assert isinstance(message, ResponseMessage)
@@ -565,6 +574,7 @@ class LeapP2PClient(basic.LineReceiver):
     def __init__(self, factory):
         self.factory = factory
         self.ui = self.factory.ui
+        self.ui.send_to_server = self.send_to_server
         self.factory.theremin.mute()
         self.mode = None
         # self.ui.show_wait()

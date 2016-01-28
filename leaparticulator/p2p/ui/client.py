@@ -15,7 +15,7 @@ else:
 
 from leaparticulator.theremin.theremin import ThereminPlayback
 # from LeapTheremin import ThereminPlayback
-from leaparticulator.p2p.messaging import EndRoundMessage
+from leaparticulator.p2p.messaging import EndRoundMessage, StartMessage
 from leaparticulator.oldstuff.QtUtils import connect, disconnect, loadUiWidget
 import leaparticulator.constants as constants
 # from QtUtils import loadWidget as loadUiWidget
@@ -94,7 +94,12 @@ class LeapP2PClientUI(object):
         print "loaded"
         self.theremin.unmute()
         self.firstWin.showFullScreen()
-        connect(button, "clicked()", self.show_wait)
+
+        def fn(*args):
+            self.send_to_server(StartMessage())
+            self.show_wait()
+
+        connect(button, "clicked()", fn)
         from os.path import join
         text.setText(open(join(constants.P2P_RES_DIR, "first_screen.txt")).read())
         print "first_screen done"
