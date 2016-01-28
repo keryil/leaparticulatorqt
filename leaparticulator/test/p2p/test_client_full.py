@@ -25,6 +25,7 @@ class TwoClientsFirstRound(P2PTestCase):
         self.clock = task.Clock()
 
         clients = [client.namedtuple for client in self.startClients(2)]
+        d = defer.Deferred()
 
         def fn(*args):
             for client in clients:
@@ -33,10 +34,13 @@ class TwoClientsFirstRound(P2PTestCase):
                 button = client.factory.ui.firstWin.findChildren(
                         QtGui.QPushButton, "btnOkay")[0]
                 self.click(button)
+            d.callback(("Setup done"))
 
         self.reactor.callLater(.2, fn)
-        # clients[-1].deferred.addCallback(fn)
-        return clients[-1].deferred
+        # clients[0].deferred.addCallback(fn)
+        # d.chainDeferred(clients[1].deferred)
+        # d.addCallback(fn)
+        return d  # clients[-1].deferred
 
     def test_createFirstSignal(self):
         # self.click(self.factory.ui.mainWin.btnStart)
@@ -62,8 +66,8 @@ class TwoClientsFirstRound(P2PTestCase):
             # record something
             from leaparticulator.data.frame import generateRandomSignal
             self.click(record_btn)
-            self.click(record_btn)
             ui_speaker.theremin.last_signal = generateRandomSignal(10)
+            self.click(record_btn)
 
             # now things should be enabled
             self.assertTrue(play_btn.isEnabled())
@@ -73,7 +77,7 @@ class TwoClientsFirstRound(P2PTestCase):
             self.assertTrue(ui_speaker.is_waiting())
             return d.callback(("FirstSignal"))
 
-        self.reactor.callLater(.1, fn)
+        self.reactor.callLater(.2, fn)
         return d
 
     def test_FirstImage(self):
@@ -111,7 +115,7 @@ class TwoClientsFirstRound(P2PTestCase):
             self.assertEqual(self.getRound(0).image.pixmap().toImage(), image.pixmap().toImage())
             d.callback('FirstImage')
 
-        self.reactor.callLater(.1, fn)
+        self.reactor.callLater(.2, fn)
         return d
 
     def test_answerFirstQuestion(self):

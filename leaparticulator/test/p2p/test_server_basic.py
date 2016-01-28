@@ -49,9 +49,6 @@ class P2PTestCase(unittest.TestCase):
         from leaparticulator import constants
         constants.leap_server = "127.0.0.1"
 
-    def runTest(self):
-        pass
-
     def click(self, widget):
         print "Left clicking %s" % str(widget)
         QTest.mouseClick(widget, Qt.LeftButton)
