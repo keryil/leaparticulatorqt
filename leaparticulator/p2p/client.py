@@ -1,12 +1,28 @@
 import sys
 
+from PyQt4.QtGui import QApplication
+
+from leaparticulator import constants
+
+print "LeapP2PClient QApp check...",
+app = QApplication.instance()
+if app is None:
+    app = QApplication(sys.argv)
+    print "LeapP2PClient new QApp: %s" % app
+else:
+    print "LeapP2PClient existing QApp: %s" % app
+
+from leaparticulator.constants import install_reactor
+
+qapplication = app
+install_reactor()
+
 import jsonpickle
 from twisted.internet import protocol, reactor
 from twisted.internet.endpoints import TCP4ClientEndpoint
 from twisted.protocols import basic
 from twisted.python import log
 
-from leaparticulator import constants
 from leaparticulator.p2p.messaging import InitMessage, LeapP2PMessage, StartMessage, ImageListMessage, \
     StartRoundMessage, ResponseMessage, FeedbackMessage, EndSessionMessage
 from leaparticulator.theremin.theremin import Theremin
@@ -21,7 +37,7 @@ class LeapP2PClient(basic.LineReceiver):
         self.ui = self.factory.ui
         self.ui.send_to_server = self.send_to_server
         self.factory.theremin.mute()
-        self.mode = None
+        # self.mode = None
 
     def connectionMade(self):
         self.factory.resetDelay()
@@ -70,8 +86,8 @@ class LeapP2PClient(basic.LineReceiver):
                 # self.speak()
                 # self.factory.theremin.mute()
             else:
-                log.msg("I am the listener.")
                 self.factory.mode = constants.LISTENER
+                log.msg("I am the listener. My mode is %s." % self.factory.mode)
                 self.factory.theremin.mute()
                 self.ui.show_wait()
         elif isinstance(message, ResponseMessage):
@@ -141,6 +157,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
         # self.phase = 0
         self.__mode = None
         self.image_pointer = 2
+        self.mode
 
     def buildProtocol(self, addr):
         # self.listener = leap_listener
@@ -156,6 +173,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
 
     @property
     def mode(self):
+        log.msg("SOMEONE ASKED MY MODE! IT IS %s" % self.__mode)
         return self.__mode
 
     @mode.setter
@@ -165,7 +183,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
                          constants.LISTENER,
                          constants.FEEDBACK,
                          constants.PRACTICE)
-        print "MY MODE IS BEING SET TO %s" % value
+        log.msg("MY MODE IS BEING SET TO %s" % value)
         self.__mode = value
 
 

@@ -91,6 +91,8 @@ class TwoClientsFirstRound(P2PTestCase):
             round = self.getLastRound()
             self.assertEqual(round.image, round.guess)
             self.assertTrue(round.success)
+            for factory in self.factories:
+                self.assertTrue(factory.mode == constants.FEEDBACK)
             d.callback("Done")
 
         self.do_one_round(callback=check)

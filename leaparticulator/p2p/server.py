@@ -16,8 +16,8 @@ if app is None:
 else:
     print "LeapP2PServer existing QApp: %s" % app
 
+from leaparticulator.constants import install_reactor, NOVELTY_COEFFICENT
 
-from leaparticulator.constants import install_reactor
 qapplication = app
 install_reactor()
 
@@ -29,7 +29,6 @@ from twisted.protocols import basic
 from random import choice, sample, shuffle
 import jsonpickle
 from leaparticulator.p2p.messaging import *
-# from LeapTheremin import gimmeSomeTheremin#, gimmeSimpleTheremin
 from leaparticulator.data.meaning import P2PMeaning
 import os
 
@@ -366,7 +365,7 @@ class LeapP2PServer(basic.LineReceiver):
         # we are going to pick an image with 2
         # consecutive right guesses, at p = .5
         from random import random
-        pick_guessed_image = True if random() > 0.66 else False
+        pick_guessed_image = True if random() > NOVELTY_COEFFICENT else False
         log.msg("Do we intend to pick an already established meaning? %s" % pick_guessed_image)
 
         all_images = self.factory.images[:self.factory.image_pointer]
@@ -513,13 +512,12 @@ class LeapP2PServer(basic.LineReceiver):
         elif self.factory.mode == constants.FEEDBACK:
             assert isinstance(message, EndRoundMessage)
             self.factory.end_round_msg_counter += 1
+            log.msg("%i EndRoundMessages received so far." %
+                    self.factory.end_round_msg_counter)
             if self.factory.end_round_msg_counter == len(self.factory.clients):
                 if len(self.factory.session.round_data) < 20:
+                    log.msg("Moving to the next round...")
                     self.start()
-            else:
-                log.msg("%i EndRoundMessages received so far." %
-                        self.factory.end_round_msg_counter)
-
 
 class LeapP2PServerFactory(protocol.Factory):
     numConnections = 0

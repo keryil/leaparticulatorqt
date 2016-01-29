@@ -102,6 +102,11 @@ END_ROUND = "End round"
 RESPONSE = "Response"
 END_SESSION = "End session"
 
+# This is the probability of picking an unestablished meaning for a round
+# in P2P. so a random draw greater than this will cause the experiment to
+# pick an already established meaning.
+NOVELTY_COEFFICENT = 0.66
+
 # Analysis constants
 # unit parameters for train_hmm_n_times()
 XY, AMP_AND_FREQ, AMP_AND_MEL = "xy", "amp_and_freq", "amp_and_mel"

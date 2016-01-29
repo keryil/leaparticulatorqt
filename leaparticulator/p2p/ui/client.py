@@ -266,6 +266,7 @@ class LeapP2PClientUI(object):
         # this is a flag which is only true if one of the options is 
         # chosen
         self.picked_choice = False
+
         def submit():
             image_ = None
             for i, image in zip(range(1,5), images):
