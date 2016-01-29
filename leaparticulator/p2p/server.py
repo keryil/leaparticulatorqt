@@ -515,9 +515,8 @@ class LeapP2PServer(basic.LineReceiver):
             log.msg("%i EndRoundMessages received so far." %
                     self.factory.end_round_msg_counter)
             if self.factory.end_round_msg_counter == len(self.factory.clients):
-                if len(self.factory.session.round_data) < 20:
-                    log.msg("Moving to the next round...")
-                    self.start()
+                log.msg("Moving to the next round...")
+                self.start()
 
 class LeapP2PServerFactory(protocol.Factory):
     numConnections = 0
