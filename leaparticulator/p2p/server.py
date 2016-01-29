@@ -425,13 +425,12 @@ class LeapP2PServer(basic.LineReceiver):
                 log.msg("Not expanding meaning space due to %s (%s correct guesses so far)" % (img, count))
                 break
         else:
-            self.factory.image_pointer += 2
+            self.factory.image_pointer = min(self.factory.image_pointer + 2,
+                                             len(self.factory.images))
             # if we run out of images, just end the experiment.
-            if self.factory.image_pointer >= len(self.factory.images):
+            if self.factory.image_pointer == len(self.factory.images):
                 self.end()
             else:
-                self.factory.image_pointer = min(self.factory.image_pointer,
-                                                 len(self.factory.images))
                 log.msg("Expanding meaning space by two; the new space is\n%s" % (
                     self.factory.images[:self.factory.image_pointer]))
 
