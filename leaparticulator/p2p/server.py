@@ -46,6 +46,11 @@ class LeapP2PRoundSummary(object):
         # these are the counts at the end of the round.
         self.success_counts = None
 
+        # this the the image pointer at the beginning
+        # of the round (i.e. when the target image
+        # is being decided on)
+        self.image_pointer = None
+
     def set_participants(self, speaker, hearer):
         self.speaker = speaker
         self.hearer = hearer
@@ -66,6 +71,9 @@ class LeapP2PRoundSummary(object):
         from copy import deepcopy
         self.success_counts = deepcopy(counts)
 
+    def set_image_pointer(self, pointer):
+        self.image_pointer = pointer
+
     def shorthand_copy(self):
         """
         Returns a copy of this object with the TCP connection objects
@@ -82,6 +90,7 @@ class LeapP2PRoundSummary(object):
         copy.guess = self.guess
         copy.success = self.success
         copy.success_counts = self.success_counts
+        copy.image_pointer = self.image_pointer
         return copy
 
 class LeapP2PSession(object):
@@ -126,7 +135,12 @@ class LeapP2PSession(object):
         log.msg("New round: #%d" % len(self.round_data))
         # from traceback import print_stack; print_stack()
         self.round_data.append(LeapP2PRoundSummary())
+        self.setImagePointer(self.factory.image_pointer)
         self.setSuccessCounts(counts)
+        self.notify()
+
+    def setImagePointer(self, pointer):
+        self.getLastRound().set_image_pointer(pointer)
         self.notify()
 
     def setOptions(self, options):
@@ -135,6 +149,7 @@ class LeapP2PSession(object):
 
     def setImage(self, image):
         self.image = image
+        self.notify()
 
     def setParticipants(self, speaker, hearer):
         self.getLastRound().set_participants(speaker, hearer)

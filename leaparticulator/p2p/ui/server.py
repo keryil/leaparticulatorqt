@@ -175,7 +175,9 @@ class LeapP2PServerUI(object):
         :param rnd:
         :return:
         """
-        image_list = self.factory.images[:self.factory.image_pointer]
+        pointer = rnd.image_pointer
+        print "Image pointer with which I'll draw the meaning space: %s" % pointer
+        image_list = self.factory.images[:pointer]
         if not hasattr(self, 'meaningSpace'):
             print "Creating the initial meaning space widgets..."
             self.meaningSpace = QGroupBox(title="Meaning Space")
@@ -198,16 +200,16 @@ class LeapP2PServerUI(object):
             layout = QFormLayout()
             self.meaningSpace.setLayout(layout)
 
-        for meaning, count in rnd.success_counts.items():
-            if meaning in map(str, image_list):
-                print "Adding %s to meaning space" % meaning
-                index = map(str, image_list).index(meaning)
-                label = QLabel()
-                label.setPixmap(image_list[index].pixmap().scaledToWidth(75))
-                count_label = QLabel("%s correct guesses" % count)
-                layout.addRow(label, count_label)
-                self.meaningSpaceLabels.append([label, count_label])
-                print meaning, count
+        for meaning in map(str, image_list):
+            count = rnd.success_counts[meaning]
+            print "Adding %s to meaning space" % meaning
+            index = map(str, image_list).index(meaning)
+            label = QLabel()
+            label.setPixmap(image_list[index].pixmap().scaledToWidth(75))
+            count_label = QLabel("%s correct guesses" % count)
+            layout.addRow(label, count_label)
+            self.meaningSpaceLabels.append([label, count_label])
+            print meaning, count
 
     def first_screen(self):
         # self.close_all()
