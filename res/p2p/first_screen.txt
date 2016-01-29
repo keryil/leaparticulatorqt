@@ -1,9 +1,9 @@
  
-Hello, and welcome to the experiment. Please read the instructions before pressing “great” to begin. 
+Hello, and welcome to the experiment. Please read the instructions before pressing "great" to begin.
 
 You will be playing a communication game with your partner.
 
-You both a Leap Motion sensor in front of you. You can create signals by moving your hand from left to right above the sensor. This will affect the pitch of the signal. You can try this now.
+You both have a Leap Motion sensor in front of you. You can create signals by moving your hand from left to right above the sensor. This will affect the pitch of the signal. You can try this now.
 
 Player 1: Will see a shape, will produce a signal for that shape. Once happy with your signal, you may send it to the other player.
 Player 2: Will listen to the signal and choose which shape they think the signal refers to.
