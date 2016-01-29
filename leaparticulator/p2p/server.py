@@ -93,6 +93,15 @@ class LeapP2PRoundSummary(object):
         copy.image_pointer = self.image_pointer
         return copy
 
+
+def notifies(function):
+    def inner(*args, **kwargs):
+        function(*args, **kwargs)
+        args[0].notify()
+
+    return inner
+
+
 class LeapP2PSession(object):
     def __init__(self, participants, condition, factory):
         self.round_data = []
@@ -122,7 +131,7 @@ class LeapP2PSession(object):
             f.write("\n")
         self.started_file_dump = True
 
-
+    @notifies
     def newRound(self):
         if len(self.round_data) > 0:
             rnd = self.getLastRound()
@@ -137,34 +146,40 @@ class LeapP2PSession(object):
         self.round_data.append(LeapP2PRoundSummary())
         self.setImagePointer(self.factory.image_pointer)
         self.setSuccessCounts(counts)
-        self.notify()
+        # self.notify()
 
+    @notifies
     def setImagePointer(self, pointer):
         self.getLastRound().set_image_pointer(pointer)
-        self.notify()
+        # self.notify()
 
+    @notifies
     def setOptions(self, options):
         self.getLastRound().set_options(options)
-        self.notify()
+        # self.notify()
 
+    @notifies
     def setImage(self, image):
         self.image = image
-        self.notify()
+        # self.notify()
 
+    @notifies
     def setParticipants(self, speaker, hearer):
         self.getLastRound().set_participants(speaker, hearer)
-        self.notify()
+        # self.notify()
 
+    @notifies
     def setSpeakerContribution(self, response_message):
         self.getLastRound().set_speakers_contribution(response_message)
-        self.notify()
+        # self.notify()
 
+    @notifies
     def setHearerContribution(self, response_message):
         self.getLastRound().set_hearers_contribution(response_message)
         # since this is the last piece of information, we can
         # serialize after setting the hearer contribution
         self.dump_to_file()
-        self.notify()
+        # self.notify()
 
     def getLastRound(self):
         return self.round_data[-1]
@@ -177,7 +192,7 @@ class LeapP2PSession(object):
 
     def setSuccessCounts(self, counts):
         self.getLastRound().set_success_counts(counts)
-        self.notify()
+        # self.notify()
 
     def addCallback(self, func):
         self.callbacks.append(func)
@@ -188,6 +203,7 @@ class LeapP2PSession(object):
     def notify(self):
         for func in self.callbacks:
             func(self)
+
 
 
 class LeapP2PServer(basic.LineReceiver):
@@ -223,10 +239,9 @@ class LeapP2PServer(basic.LineReceiver):
             # root = os.getcwd()
             # if "_trial_temp" in root:
             #     root = root[:-11]
-            log.msg("Found image files: %s" % glob(os.path.join(constants.ROOT_DIR,
-                                                self.image_mask)))
+            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))[:3]
+            log.msg("Found image files: %s" % images)
 
-            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))
             self.factory.images = [P2PMeaning.FromFile(i) for i in images]
             shuffle(self.factory.images)
             # this keeps the pointer so that the images in the game are

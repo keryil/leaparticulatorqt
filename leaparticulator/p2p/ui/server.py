@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # simple.py
+import re
 import sys
 
 from PyQt4.QtGui import *
@@ -135,12 +136,18 @@ class LeapP2PServerUI(object):
             else:
                 item = QStandardItem(title)
                 self.roundModel.appendRow(item)
+        self.displayRoundData(implicit_update=True)
 
-    def displayRoundData(self, old, new):
+    def displayRoundData(self, implicit_update=False):
+        # if there is nothing selected, do nothing
+        if implicit_update and (self.lstRounds.selectedIndexes() == []):
+            return
         row = self.lstRounds.selectedIndexes()[0].row()
         rnd = self.session.round_data[row]
-        print "Selected round #%d" % row
-        print "Speaker: %s, Hearer: %s\nImage: %s, Guess: %s" % (rnd.speaker.other_end_alias,
+
+        if not implicit_update:
+            print "Selected round #%d" % row
+            print "Speaker: %s, Hearer: %s\nImage: %s, Guess: %s" % (rnd.speaker.other_end_alias,
                                                                  rnd.hearer.other_end_alias,
                                                                  rnd.image,
                                                                  rnd.guess)
@@ -150,18 +157,23 @@ class LeapP2PServerUI(object):
         #     print "Signal:", rnd.signal[:5]
         # else:
         # print "Signal:", rnd.signal
-        if rnd.image != None:
-            self.lblExpected.setPixmap(rnd.image.pixmap())
+        if rnd.image is not None:
+            overlay = str(rnd.image.feature_dict[rnd.image.feature_order[0]])
+            self.lblExpected.setPixmap(rnd.image.pixmap(overlayed_text=overlay,
+                                                        font=QFont("Arial", 25)))
             self.lblExpected.meaning = rnd.image
         else:
             self.lblExpected.setPixmap(QPixmap(constants.question_mark_path))
-        if rnd.guess != None:
-            self.lblGiven.setPixmap(rnd.guess.pixmap())
+
+        if rnd.guess is not None:
+            overlay = str(rnd.guess.feature_dict[rnd.guess.feature_order[0]])
+            self.lblGiven.setPixmap(rnd.guess.pixmap(overlayed_text=overlay,
+                                                     font=QFont("Arial", 25)))
             self.lblGiven.meaning = rnd.guess
         else:
             self.lblGiven.setPixmap(QPixmap(constants.question_mark_path))
 
-        if rnd.signal != None and rnd.signal != []:
+        if rnd.signal is not None and rnd.signal != []:
             def play_back():
                 self.playback.start(rnd.signal)
 
@@ -205,7 +217,10 @@ class LeapP2PServerUI(object):
             print "Adding %s to meaning space" % meaning
             index = map(str, image_list).index(meaning)
             label = QLabel()
-            label.setPixmap(image_list[index].pixmap().scaledToWidth(75))
+            overlay = re.search('(\d+)\.png', meaning).group(1)
+            label.setPixmap(image_list[index].pixmap(overlayed_text=overlay,
+                                                     font=QFont("Arial", 33)).
+                            scaledToWidth(75, mode=Qt.SmoothTransformation))
             count_label = QLabel("%s correct guesses" % count)
             layout.addRow(label, count_label)
             self.meaningSpaceLabels.append([label, count_label])

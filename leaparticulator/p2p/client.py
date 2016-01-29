@@ -113,6 +113,8 @@ class LeapP2PClient(basic.LineReceiver):
             # self.send_to_server(EndRoundMessage())
         elif isinstance(message, EndSessionMessage):
             self.ui.final_screen()
+        else:
+            raise Exception("Unknown message packet: %s" % message)
 
     def send_to_server(self, message):
         assert isinstance(message, LeapP2PMessage)
