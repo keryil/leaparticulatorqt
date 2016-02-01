@@ -6,7 +6,6 @@ from PyQt4 import QtGui, QtCore
 from leaparticulator.constants import (IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY,
                                        FALSE_OVERLAY, MEANING_DIR_P2P, ROOT_DIR)
 
-
 loadFromRes = lambda path: open(join(ROOT_DIR, "res", path + ".txt")).read()
 
 class AbstractMeaning(object):
@@ -61,7 +60,8 @@ class AbstractMeaning(object):
         args = map(int, args)
         return cls(*args)
 
-    def pixmap(self, tint=None):
+    def pixmap(self, tint=None, overlayed_text=None,
+               font=QtGui.QFont("Arial", 27)):
         """
         Tint is a tuple (r,g,b,a).
         """
@@ -87,6 +87,16 @@ class AbstractMeaning(object):
             painter = QtGui.QPainter(px)
             painter.drawPixmap(0, 0, base)
             painter.drawPixmap(0, 0, overlay)
+            painter.end()
+
+        if overlayed_text:
+            painter = QtGui.QPainter(px)
+            painter.drawPixmap(0, 0, base)
+            painter.setPen(QtCore.Qt.red)
+            painter.setFont(font)
+            painter.drawText(base.rect(),
+                             QtCore.Qt.AlignCenter,
+                             overlayed_text)
             painter.end()
 
         return px
@@ -152,36 +162,6 @@ class Meaning(object):
         name = filename.split(os.path.sep)[-1].split('.')[0]
         args = map(int, list(name))
         return Meaning(*args)
-
-    def pixmap(self, tint=None):
-        """
-        Tint is a tuple (r,g,b,a).
-        """
-        # if tint is None and self._ready:
-        #     return self._ready
-        base = QtGui.QPixmap(self.filename())
-        # self._ready = px = base
-        if tint is not None:
-            px = QtGui.QPixmap(250, 250)
-            px.fill(QtCore.Qt.transparent)
-            r, g, b, a = tint
-            correct = g > 1
-            overlay = None
-            if correct:
-                overlay = QtGui.QPixmap(TRUE_OVERLAY)
-                print "Overlay: %s" % TRUE_OVERLAY
-            else:
-                overlay = QtGui.QPixmap(FALSE_OVERLAY)
-                print "Overlay: %s" % TRUE_OVERLAY
-            # color = QtGui.QColor(r,g,b,a)
-            painter = QtGui.QPainter(px)
-            painter.drawPixmap(0, 0, base)
-            painter.drawPixmap(0, 0, overlay)
-            painter.end()
-            # painter.setCompositionMode(painter.CompositionMode_Multiply)
-            # painter.fillRect(px.rect(), color)
-
-        return px
 
     def __repr__(self):
         return self.__str__()
