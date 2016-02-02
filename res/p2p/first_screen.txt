@@ -1,19 +1,20 @@
  
-Hello, and welcome to the experiment. Please read the instructions before pressing "great" to begin.
+Hello, and welcome to the experiment.
+
+Please read the instructions before pressing Great! to begin. 
 
 You will be playing a communication game with your partner.
 
 You both have a Leap Motion sensor in front of you. You can create signals by moving your hand from left to right above the sensor. This will affect the pitch of the signal. You can try this now.
 
 Player 1: Will see a shape, will produce a signal for that shape. Once happy with your signal, you may send it to the other player.
+
 Player 2: Will listen to the signal and choose which shape they think the signal refers to.
 
 You will then be told if your communication was successful or unsuccessful. You will take it in turns to produce signals. 
 
-You will start the experiment with 2 shapes, once you have successfully communicated those shapes twice in a row, then you will be give 2 more shapes. Once you have communicated those 2 shapes twice in a row, you will be given 2 more shapes. And so on. 
+The pair of participants who do the experiment the fastest will win a 20 euro bol.com voucher. 
 
-There are 15 shapes in total. If you communicate all 15 in the time, you will be entered in a prize draw.
-
-If you do not finish all 15 shapes in time, the experiment will automatically stop after 50 minutes.
+If you have not finished after 50 minutes the experiment will automatically end.
 
 Good luck!
