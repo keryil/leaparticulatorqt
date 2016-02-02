@@ -158,7 +158,8 @@ class LeapP2PServerUI(object):
         # else:
         # print "Signal:", rnd.signal
         if rnd.image is not None:
-            overlay = str(rnd.image.feature_dict[rnd.image.feature_order[0]])
+            overlay = ''.join(str(rnd.image.feature_dict[feature])
+                              for feature in rnd.image.feature_order)
             self.lblExpected.setPixmap(rnd.image.pixmap(overlayed_text=overlay,
                                                         font=QFont("Arial", 25)))
             self.lblExpected.meaning = rnd.image
@@ -166,7 +167,8 @@ class LeapP2PServerUI(object):
             self.lblExpected.setPixmap(QPixmap(constants.question_mark_path))
 
         if rnd.guess is not None:
-            overlay = str(rnd.guess.feature_dict[rnd.guess.feature_order[0]])
+            overlay = ''.join(str(rnd.guess.feature_dict[feature])
+                              for feature in rnd.guess.feature_order)
             self.lblGiven.setPixmap(rnd.guess.pixmap(overlayed_text=overlay,
                                                      font=QFont("Arial", 25)))
             self.lblGiven.meaning = rnd.guess
@@ -202,7 +204,7 @@ class LeapP2PServerUI(object):
         # first clean the current items, if present
         layout = self.meaningSpace.layout()
         if layout:
-            print "Cleaning old items in the meaning space..."
+            # print "Cleaning old items in the meaning space..."
             for labels in self.meaningSpaceLabels:
                 for label in labels:
                     layout.removeWidget(label)
@@ -214,17 +216,17 @@ class LeapP2PServerUI(object):
 
         for meaning in map(str, image_list):
             count = rnd.success_counts[meaning]
-            print "Adding %s to meaning space" % meaning
+            # print "Adding %s to meaning space" % meaning
             index = map(str, image_list).index(meaning)
             label = QLabel()
             overlay = re.search('(\d+)\.png', meaning).group(1)
             label.setPixmap(image_list[index].pixmap(overlayed_text=overlay,
-                                                     font=QFont("Arial", 33)).
+                                                     font=QFont("Arial", 35)).
                             scaledToWidth(75, mode=Qt.SmoothTransformation))
             count_label = QLabel("%s correct guesses" % count)
             layout.addRow(label, count_label)
             self.meaningSpaceLabels.append([label, count_label])
-            print meaning, count
+            # print meaning, count
 
     def first_screen(self):
         # self.close_all()

@@ -45,7 +45,7 @@ class AbstractMeaning(object):
         fn = join(self.MEANING_DIR, format_txt %
                   tuple(tuples))
         # print join(getcwd(), fn)
-        print "Image path: ", join(ROOT_DIR, fn)
+        # print "Image path: ", join(ROOT_DIR, fn)
         assert os.path.isfile(join(ROOT_DIR, fn))
         return fn
 

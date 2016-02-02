@@ -34,7 +34,6 @@ import os
 
 
 class LeapP2PRoundSummary(object):
-
     def __init__(self):
         self.speaker = None
         self.hearer = None
@@ -137,7 +136,7 @@ class LeapP2PSession(object):
             rnd = self.getLastRound()
             assert rnd.success is not None
             counts = rnd.success_counts
-        #     assert None not in (rnd.speaker, rnd.hearer, rnd.signal,
+        # assert None not in (rnd.speaker, rnd.hearer, rnd.signal,
         #                         rnd.image, rnd.guess, rnd.success)
         else:
             counts = self.factory.image_success
@@ -205,9 +204,7 @@ class LeapP2PSession(object):
             func(self)
 
 
-
 class LeapP2PServer(basic.LineReceiver):
-
     """
     An extension of the regular server that supports runs with multiple
     peers communicating with one another. 
@@ -229,7 +226,7 @@ class LeapP2PServer(basic.LineReceiver):
     connectionMadeListeners = set()
     connectionLostListeners = set()
 
-    def __init__(self, factory):  # , image_mask="./img/animals/*.png"):
+    def __init__(self, factory):
         self.factory = factory
         self.end_round_msg_counter = -1
         # self.factory.mode = Constants.INIT
@@ -239,7 +236,7 @@ class LeapP2PServer(basic.LineReceiver):
             # root = os.getcwd()
             # if "_trial_temp" in root:
             #     root = root[:-11]
-            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))
+            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))[:5]
             log.msg("Found image files: %s" % images)
 
             self.factory.images = [P2PMeaning.FromFile(i) for i in images]
@@ -326,6 +323,8 @@ class LeapP2PServer(basic.LineReceiver):
         if self.factory.mode == constants.INIT:
             print "--------->start() called"
             print "clients (%d): %s" % (len(self.factory.clients), self.factory.clients)
+        # elif self.factory.mode == "ENDING":
+        #     self.end()
 
         self.factory.practice = practice
         self.factory.ui.disableStart()
@@ -338,11 +337,11 @@ class LeapP2PServer(basic.LineReceiver):
                 print 'Why the fuck are we restarting with %d end of round messages?! Ignoring...' % self.factory.end_round_msg_counter
                 return
 
-            # check if we have any images left, otherwise, terminate
-            if self.factory.image_pointer == len(self.factory.images):
-                log.msg("Successfully finished the image set, ending the experiment...")
-                self.end()
-                return
+            # # check if we have any images left, otherwise, terminate
+            # if self.factory.image_pointer == len(self.factory.images):
+            #     log.msg("Successfully finished the image set, ending the experiment...")
+            #     self.end()
+            #     return
 
             self.factory.end_round_msg_counter = 0
             log.msg("Starting a new session with clients %s" %
@@ -364,7 +363,6 @@ class LeapP2PServer(basic.LineReceiver):
             self.choose_speaker_and_topic()
         else:
             print "--------->start() called with more or less than two clients"
-
 
     def choose_speaker_and_topic(self):
         # choose a speaker
@@ -400,8 +398,8 @@ class LeapP2PServer(basic.LineReceiver):
 
         all_images = self.factory.images[:self.factory.image_pointer]
         success = self.factory.image_success
-        guessed = filter(lambda x: success[str(x)] == 2, all_images)
-        non_guessed = filter(lambda x: success[str(x)] != 2, all_images)
+        guessed = filter(lambda x: success[str(x)] >= 2, all_images)
+        non_guessed = filter(lambda x: success[str(x)] < 2, all_images)
 
         if pick_guessed_image:
             log.msg("Do we have enough established meanings to pick from? %s" % (len(guessed) > 1))
@@ -440,14 +438,20 @@ class LeapP2PServer(basic.LineReceiver):
                 log.msg("Not expanding meaning space due to %s (%s correct guesses so far)" % (img, count))
                 break
         else:
-            self.factory.image_pointer = min(self.factory.image_pointer + 2,
+            # expand the meaning space
+            new_pointer = min(self.factory.image_pointer + 2,
                                              len(self.factory.images))
-            # if we run out of images, just end the experiment.
-            if self.factory.image_pointer == len(self.factory.images):
-                self.end()
+
+            # if we run out of new images, just end the experiment.
+            if new_pointer == self.factory.image_pointer:
+                log.msg(
+                    "Successfully finished the image set, ending the experiment before the beginning of next round...")
+                self.factory.end_experiment = True
+            # otherwise, just proceed as usual.
             else:
                 log.msg("Expanding meaning space by two; the new space is\n%s" % (
-                    self.factory.images[:self.factory.image_pointer]))
+                    self.factory.images[:new_pointer]))
+            self.factory.image_pointer = new_pointer
 
     def lineReceived(self, line):
         nline = "<{}@{}> {}".format(self.other_end_alias, self.other_end, line)
@@ -516,14 +520,12 @@ class LeapP2PServer(basic.LineReceiver):
             self.factory.mode = constants.FEEDBACK
 
             if success:
-                if self.factory.image_success[str(image)] < 2:
-                    try:
-                        self.factory.image_success[str(image)] += 1
-                    except Exception, e:
-                        print ["\"%s\"" % i for i in self.factory.image_success.keys()]
-                        print "\"%s\"" % image
-                        print e
-                        raise Exception()
+                try:
+                    self.factory.image_success[str(image)] += 1
+                except Exception, e:
+                    print ["\"%s\"" % i for i in self.factory.image_success.keys()]
+                    print "\"%s\"" % image
+                    raise
                 self.expandMeaningSpace()
             else:
                 # we only expand the meaning space if there are two **consecutive** successes
@@ -544,8 +546,12 @@ class LeapP2PServer(basic.LineReceiver):
             log.msg("%i EndRoundMessages received so far." %
                     self.factory.end_round_msg_counter)
             if self.factory.end_round_msg_counter == len(self.factory.clients):
-                log.msg("Moving to the next round...")
-                self.start()
+                if self.factory.end_experiment:
+                    self.end()
+                else:
+                    log.msg("Moving to the next round...")
+                    self.start()
+
 
 class LeapP2PServerFactory(protocol.Factory):
     numConnections = 0
@@ -563,6 +569,7 @@ class LeapP2PServerFactory(protocol.Factory):
     clients = {}
     end_round_msg_counter = -1
     logger = log
+    end_experiment = False
 
     # dict of dicts e.g. responses[client][phase][image] = response
     # responses = {}
@@ -602,7 +609,7 @@ class LeapP2PServerFactory(protocol.Factory):
         server.MAX_LENGTH = 100000 * 1024
         if self.ui:
             server.addListenerConnectionLost(self.ui.connectionLost)
-        #     server.addListenerConnectionMade(self.ui.connectionMade)
+        # server.addListenerConnectionMade(self.ui.connectionMade)
         return server
 
     def stopFactory(self):
@@ -659,6 +666,7 @@ def start_server(qapplication, condition='1', no_ui=False):
 
 if __name__ == '__main__':
     import sys
+
     try:
         assert len(sys.argv) > 2
         no_ui = sys.argv[-1] == "no_ui"
