@@ -236,7 +236,7 @@ class LeapP2PServer(basic.LineReceiver):
             # root = os.getcwd()
             # if "_trial_temp" in root:
             #     root = root[:-11]
-            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))
+            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))[:self.factory.max_images]
             log.msg("Found image files: %s" % images)
 
             self.factory.images = [P2PMeaning.FromFile(i) for i in images]
@@ -571,6 +571,7 @@ class LeapP2PServerFactory(protocol.Factory):
     end_round_msg_counter = -1
     logger = log
     end_experiment = False
+    max_images = None
 
     # dict of dicts e.g. responses[client][phase][image] = response
     # responses = {}
@@ -580,10 +581,12 @@ class LeapP2PServerFactory(protocol.Factory):
     # test_results_practice = {}
     condition = None
 
-    def __init__(self, ui=None, condition=None, no_log=False, uid=None):
+    def __init__(self, ui=None, condition=None, no_log=False, uid=None,
+                 max_images=None):
         import time
         self.clients = {}
         self.ui = ui
+        self.max_images = max_images
         self.session = None
         if uid is None:
             self.uid = time.strftime("%y%m%d.%H%M%S")
@@ -621,20 +624,20 @@ class LeapP2PServerFactory(protocol.Factory):
             client.transport.loseConnection()
 
 
-def get_server_instance(condition, ui=None):
+def get_server_instance(condition, ui=None, max_images=None):
     """
     Returns a default server instance, reading settings 
     from constants.py
     """
     endpoint = TCP4ServerEndpoint(reactor, constants.leap_port)
-    factory = LeapP2PServerFactory(ui=ui, condition=condition, no_log=True)
+    factory = LeapP2PServerFactory(ui=ui, condition=condition, no_log=True, max_images=max_images)
     listener = endpoint.listen(factory)
     factory.endpoint = endpoint
     factory.listener = listener
     return factory
 
 
-def start_server(qapplication, condition='1', no_ui=False):
+def start_server(qapplication, condition='1', no_ui=False, max_images=None):
     from leaparticulator.p2p.ui.server import LeapP2PServerUI
 
     factory = None
@@ -643,7 +646,9 @@ def start_server(qapplication, condition='1', no_ui=False):
         if no_ui:
             print "Headless mode..."
             sys.stdout.flush()
-            factory = get_server_instance(condition=condition, ui=None)
+            factory = get_server_instance(condition=condition,
+                                          ui=None,
+                                          max_images=max_images)
             if not (constants.TESTING or reactor.running):
                 print "Starting reactor..."
                 reactor.runReturn()
@@ -651,7 +656,9 @@ def start_server(qapplication, condition='1', no_ui=False):
             print "Normal GUI mode..."
             sys.stdout.flush()
             ui = LeapP2PServerUI(qapplication)
-            factory = get_server_instance(condition=condition, ui=ui)
+            factory = get_server_instance(condition=condition,
+                                          ui=ui,
+                                          max_images=max_images)
             ui.setFactory(factory)
             if not (constants.TESTING or reactor.running):
                 print "Starting reactor..."

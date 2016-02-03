@@ -116,22 +116,31 @@ class TwoClientsFirstRound(P2PTestCase):
         self.do_one_round(callback=do_second)
         return d
 
+
 class TwoClientsTillEnd(P2PTestCase):
     def __init__(self, *args, **kwargs):
         super(TwoClientsTillEnd, self).__init__(*args, **kwargs)
-        self.timeout = 100
+        self.max_images = 5
+        self.timeout = 120
 
     def test_endByExhaustion(self):
         print "Timeout set to: {}".format(self.timeout)
         d = defer.Deferred()
 
-        def exhaust(*args):
+        def do_tests(*args):
+            for c in self.getClientsAsUi():
+                assert c.get_active_window() == c.finalScreen
+            d.callback("Done")
+
+        # d.addCallback(do_tests)
+
+        def exhaust(round=-1):
             print "-------------------EXHAUST CALLED-------------------"
             if self.server_factory.end_experiment:
-                print "Exhaustion complete."
-                d.callback("Done")
+                print "Exhaustion complete at round #{}.".format(round)
+                self.reactor.callLater(.2, do_tests)
             else:
-                self.do_one_round(callback=exhaust)
+                self.do_one_round().addCallback(lambda *x: exhaust(round + 1))
 
         exhaust()
         return d

@@ -56,17 +56,18 @@ class LeapP2PClientUI(object):
         self.setClientFactory(client.factory)
 
     def get_active_window(self):
-        for w in (self.firstWin, self.creationWin, 
-                  self.testWin, self.feedbackWin):
+        for w in (self.firstWin, self.creationWin,
+                  self.testWin, self.feedbackWin,
+                  self.finalScreen):
             if w and w.isVisible():
                 return w
         else:
             return None
 
     def close_all(self):
-        for w in (self.firstWin, self.creationWin, 
-                  self.testWin, self.feedbackWin, 
-                  self.waitDialog):
+        for w in (self.firstWin, self.creationWin,
+                  self.testWin, self.feedbackWin,
+                  self.waitDialog, self.finalScreen):
             if w and w.isVisible():
                 w.close()
 

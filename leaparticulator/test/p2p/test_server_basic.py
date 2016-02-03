@@ -48,6 +48,7 @@ class P2PTestCase(unittest.TestCase):
         self.timeout=6
         self.factories = []
         self.clients = {}
+        self.max_images = None
         from leaparticulator import constants
         constants.leap_server = "127.0.0.1"
 
@@ -70,7 +71,7 @@ class P2PTestCase(unittest.TestCase):
         prep(self)
         self.startServer()
 
-        clients = [client.namedtuple for client in self.startClients(2)]
+        clients = [c.namedtuple for c in self.startClients(2)]
         d = defer.Deferred()
 
         def fn(*args):
@@ -173,7 +174,8 @@ class P2PTestCase(unittest.TestCase):
 
     def startServer(self):
         self.server_factory = start_server(
-            self.app, condition='1', no_ui=False)
+            self.app, condition='1', no_ui=False,
+            max_images=self.max_images)
         self.factories.append(self.server_factory)
         return self.server_factory
 
