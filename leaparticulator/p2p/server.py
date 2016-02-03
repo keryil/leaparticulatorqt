@@ -236,7 +236,7 @@ class LeapP2PServer(basic.LineReceiver):
             # root = os.getcwd()
             # if "_trial_temp" in root:
             #     root = root[:-11]
-            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))[:5]
+            images = glob(os.path.join(constants.ROOT_DIR, self.image_mask))
             log.msg("Found image files: %s" % images)
 
             self.factory.images = [P2PMeaning.FromFile(i) for i in images]
