@@ -121,7 +121,7 @@ class TwoClientsTillEnd(P2PTestCase):
     def __init__(self, *args, **kwargs):
         super(TwoClientsTillEnd, self).__init__(*args, **kwargs)
         self.max_images = 5
-        self.timeout = 120
+        self.timeout = self.max_images * 8
 
     def test_endByExhaustion(self):
         print "Timeout set to: {}".format(self.timeout)
@@ -131,8 +131,6 @@ class TwoClientsTillEnd(P2PTestCase):
             for c in self.getClientsAsUi():
                 assert c.get_active_window() == c.finalScreen
             d.callback("Done")
-
-        # d.addCallback(do_tests)
 
         def exhaust(round=-1):
             print "-------------------EXHAUST CALLED-------------------"
