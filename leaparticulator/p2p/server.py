@@ -317,6 +317,7 @@ class LeapP2PServer(basic.LineReceiver):
         """
         End the experiment.
         """
+        print "Server's end() method called, sending end messages."
         self.send_all(EndSessionMessage())
 
     def start(self, practice=False):
@@ -344,8 +345,6 @@ class LeapP2PServer(basic.LineReceiver):
             #     return
 
             self.factory.end_round_msg_counter = 0
-            log.msg("Starting a new session with clients %s" %
-                    ([c for c in self.factory.clients.values()]))
             # send the start signals and the image list
             if self.factory.mode == constants.INIT:
                 self.factory.session = LeapP2PSession(self.factory.clients,
@@ -353,6 +352,9 @@ class LeapP2PServer(basic.LineReceiver):
                                                       self.factory)
                 self.factory.session.addCallback(
                     self.factory.ui.onSessionChange)
+
+                log.msg("Starting a new session with clients %s" %
+                        ([c for c in self.factory.clients.values()]))
 
                 # self.factory.session_data = LeapP2PSession(self.factory.clients)
                 self.send_all(StartMessage())
@@ -538,7 +540,6 @@ class LeapP2PServer(basic.LineReceiver):
                                           success=success,
                                           image_pointer=self.factory.image_pointer)
                           )
-
 
         elif self.factory.mode == constants.FEEDBACK:
             assert isinstance(message, EndRoundMessage)

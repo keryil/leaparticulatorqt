@@ -54,7 +54,7 @@ class P2PTestCase(unittest.TestCase):
     def tearDown(self):
         self.stopServer()
         for client in self.clients.values():
-            print client
+            print "<tearDown> disconnecting from %s" % client.client_id
             client.factory.stopFactory()
         self.clients = {}
         self.server_factory = None
@@ -69,7 +69,6 @@ class P2PTestCase(unittest.TestCase):
         self.reactor = reactor
         prep(self)
         self.startServer()
-        self.timeout = 6
 
         clients = [client.namedtuple for client in self.startClients(2)]
         d = defer.Deferred()
@@ -86,8 +85,9 @@ class P2PTestCase(unittest.TestCase):
                 button = client.factory.ui.firstWin.findChildren(
                         QtGui.QPushButton, "btnOkay")[0]
                 caption = "{}'s start button.".format(client.factory.uid)
-                self.click(button)
-            d.callback(("Setup done"))
+                self.click(button, caption)
+            # d.callback("Setup done")
+            self.reactor.callLater(.2, lambda: d.callback("Setup done"))
 
         self.reactor.callLater(.2, fn)
         # clients[0].deferred.addCallback(fn)
@@ -203,6 +203,7 @@ class P2PTestCase(unittest.TestCase):
         return speaker.factory.ui, listener.factory.ui
 
     def create_signal(self, callback):
+        print "-->Starting to create the signal"
         ui_speaker, ui_listener = self.getClientsAsUi()
 
         submit_btn = ui_speaker.creationWin.findChildren(
@@ -256,24 +257,22 @@ class P2PTestCase(unittest.TestCase):
         caption = "{}'s play button.".format(ui_listener.client.factory.uid)
         self.click(play_btn, caption)
 
-        caption = "{}'s option {}.".format(ui_listener.client.factory.uid,
-                                           answer)
+        caption = "{}'s option {} ({}).".format(ui_listener.client.factory.uid,
+                                                answer, options[answer])
         self.click(choices[answer], caption)
         print "Chosen the answer..."
 
         def submit():
+            ui_listener.playback_player.callbacks = []
             self.assertTrue(submit_btn.isEnabled())
             caption = "{}'s enabled submit button.".format(ui_listener.client.factory.uid)
             self.click(submit_btn, caption)
             self.reactor.callLater(.25, lambda: callback("Submitted"))
 
-        self.reactor.callLater(1.2, submit)
+        ui_listener.playback_player.callbacks = [submit]
 
     def do_one_round(self, callback=None, answer_correctly=True):
-        deferred = defer.Deferred()
-        create = lambda: self.create_signal(callback=lambda: self.reactor.callLater(.2, give_answer))
-        give_answer = lambda: self.answer_question(callback=deferred.callback,
-                                                   answer_correctly=answer_correctly)
+        d = defer.Deferred()
 
         def click_okay(*args):
             for ui in self.getClientsAsUi():
@@ -282,12 +281,20 @@ class P2PTestCase(unittest.TestCase):
                 button = get_btn("btnOkay")
                 caption = "{}'s okay button on feedback screen.".format(ui.client.factory.uid)
                 self.click(button, caption)
-                # self.reactor.callLater(.1, lambda: callback("Ended round."))
+            d.callback("Ended round.")
 
-        deferred.addCallback(click_okay)
-        deferred.addCallback(callback)
-        self.reactor.callLater(.1, create)
-        return deferred
+        def give_answer(*args):
+            self.answer_question(callback=click_okay,
+                                 answer_correctly=answer_correctly)
+
+        def create(*args):
+            self.create_signal(callback=give_answer)
+
+        if callback:
+            d.addCallback(callback)
+
+        self.reactor.callLater(.2, create)
+        return d
 
 
 class ServerTest(P2PTestCase):

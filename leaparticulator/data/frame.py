@@ -4,7 +4,8 @@ Created on Mar 6, 2014
 @author: kerem
 '''
 
-from random import randint, random
+from random import randint
+from random import random as rnd
 
 class InteractionBox(object):
     center = None
@@ -42,13 +43,13 @@ class LeapHand(object):
         if random:
             self.id = 1
             self.frame = None
-            self.stabilized_palm_position = (randint(0,100),randint(0,100),randint(0,100))
-            self.palm_normal = (randint(0,100),randint(0,100),randint(0,100))
-            self.palm_position = (randint(0,100),randint(0,100),randint(0,100))
-            self.palm_velocity = (randint(0,100),randint(0,100),randint(0,100))
-            self.direction = (randint(0,100),randint(0,100),randint(0,100))
-            self.sphere_center = (randint(0,100),randint(0,100),randint(0,100))
-            self.time_visible = randint(0,100)
+            self.stabilized_palm_position = (rnd() * 100, rnd() * 100, rnd() * 100)
+            self.palm_normal = (rnd() * 100, rnd() * 100, rnd() * 100)
+            self.palm_position = (rnd() * 100, rnd() * 100, rnd() * 100)
+            self.palm_velocity = (rnd() * 100, rnd() * 100, rnd() * 100)
+            self.direction = (rnd() * 100, rnd() * 100, rnd() * 100)
+            self.sphere_center = (rnd() * 100, rnd() * 100, rnd() * 100)
+            self.time_visible = randint(1, 100)
             self.is_valid = True
         else:
             self.id = hand.id
@@ -135,6 +136,7 @@ def generateRandomSignal(duration):
     from jsonpickle import encode
     lst = []
     for i in range(duration):
+        frame = LeapFrame(None, random=True)
         lst.append(encode(LeapFrame(None, random=True)))
     return lst
         

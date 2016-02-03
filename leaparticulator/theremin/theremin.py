@@ -318,6 +318,7 @@ class ThereminPlayback(object):
     counter = 0
     call = None
     stopping = False
+    late_callbacks = []
 
     def __init__(self, n_of_tones=1, default_volume=.5, default_rate=None, record=False):
         self.player = ThereminPlayer(n_of_tones, default_volume, record=record)
@@ -399,6 +400,8 @@ class ThereminPlayback(object):
                 print datetime.now() - self.start_time
                 if self.callback:
                     reactor.callLater(0, self.callback)
+                    for callback in self.callbacks:
+                        reactor.callLater(0, callback)
                     # self.callback()
             self.stopping = True
             # allow a short time for the fadeout to end

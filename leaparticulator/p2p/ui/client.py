@@ -298,7 +298,6 @@ class LeapP2PClientUI(object):
             try:
                 image = images[i - 1]
                 pixmap = image.pixmap()
-                # pixmap.setAlignment()
                 view.image = image
                 view.setIcon(QIcon(pixmap))
                 view.setIconSize(pixmap.rect().size())
