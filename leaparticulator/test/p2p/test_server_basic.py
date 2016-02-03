@@ -82,9 +82,10 @@ class P2PTestCase(unittest.TestCase):
             """
             for client in clients:
                 self.clients[client.client_id] = client
-                print "Setting up client:", client
+                print "Setting up client:", client.factory.uid
                 button = client.factory.ui.firstWin.findChildren(
                         QtGui.QPushButton, "btnOkay")[0]
+                caption = "{}'s start button.".format(client.factory.uid)
                 self.click(button)
             d.callback(("Setup done"))
 
@@ -94,8 +95,10 @@ class P2PTestCase(unittest.TestCase):
         # d.addCallback(fn)
         return d  #
 
-    def click(self, widget):
-        print "Left clicking %s" % str(widget)
+    def click(self, widget, caption=None):
+        if caption is None:
+            caption = str(widget)
+        print "Left clicking %s" % caption
         QTest.mouseClick(widget, Qt.LeftButton)
 
     def startClient(self, id=None):
@@ -159,6 +162,9 @@ class P2PTestCase(unittest.TestCase):
     def getRound(self, rnd_no):
         return self.server_factory.session.round_data[rnd_no]
 
+    def getRounds(self):
+        return self.server_factory.session.round_data
+
     def startClients(self, qty):
         res = []
         for i in range(qty):
@@ -197,7 +203,7 @@ class P2PTestCase(unittest.TestCase):
         return speaker.factory.ui, listener.factory.ui
 
     def create_signal(self, callback):
-        ui_speaker, ui_listener = self.getClientsAsUi(rnd_no=0)
+        ui_speaker, ui_listener = self.getClientsAsUi()
 
         submit_btn = ui_speaker.creationWin.findChildren(
                 QtGui.QPushButton, "btnSubmit")[0]
@@ -206,12 +212,16 @@ class P2PTestCase(unittest.TestCase):
 
         # record something
         from leaparticulator.data.frame import generateRandomSignal
-        self.click(record_btn)
+        caption = "{}'s record button".format(ui_speaker.factory.uid)
+        self.click(record_btn,
+                   caption)
 
-        def fn(*args):
+        def fn():
+            caption = "{}'s record button".format(ui_speaker.factory.uid)
             ui_speaker.theremin.last_signal = generateRandomSignal(2)
-            self.click(record_btn)
-            self.click(submit_btn)
+            self.click(record_btn, caption)
+            caption = "{}'s submit button".format(ui_speaker.factory.uid)
+            self.click(submit_btn, caption)
             self.reactor.callLater(.5, callback)
 
         self.reactor.callLater(.1, fn)
@@ -224,7 +234,7 @@ class P2PTestCase(unittest.TestCase):
         :param callback:
         :return:
         """
-        ui_speaker, ui_listener = self.getClientsAsUi(0)
+        ui_speaker, ui_listener = self.getClientsAsUi()
         get_btn = lambda name: ui_listener.testWin.findChildren(
                 QtGui.QPushButton, name)[0]
 
@@ -242,14 +252,19 @@ class P2PTestCase(unittest.TestCase):
         submit_btn = get_btn("btnSubmit")
         # record_btn = get_btn("btnRecord")
         choices = [get_btn("btnImage%d" % i) for i in range(1, 5)]
-        self.click(play_btn)
-        self.click(choices[answer])
+
+        caption = "{}'s play button.".format(ui_listener.client.factory.uid)
+        self.click(play_btn, caption)
+
+        caption = "{}'s option {}.".format(ui_listener.client.factory.uid,
+                                           answer)
+        self.click(choices[answer], caption)
         print "Chosen the answer..."
 
         def submit():
             self.assertTrue(submit_btn.isEnabled())
-            print "Clicking submit button, which is *enabled*"
-            self.click(submit_btn)
+            caption = "{}'s enabled submit button.".format(ui_listener.client.factory.uid)
+            self.click(submit_btn, caption)
             self.reactor.callLater(.25, lambda: callback("Submitted"))
 
         self.reactor.callLater(1.2, submit)
@@ -261,11 +276,12 @@ class P2PTestCase(unittest.TestCase):
                                                    answer_correctly=answer_correctly)
 
         def click_okay(*args):
-            for ui in self.getClientsAsUi(0):
+            for ui in self.getClientsAsUi():
                 get_btn = lambda name: ui.feedbackWin.findChildren(
                         QtGui.QPushButton, name)[0]
                 button = get_btn("btnOkay")
-                self.click(button)
+                caption = "{}'s okay button on feedback screen.".format(ui.client.factory.uid)
+                self.click(button, caption)
                 # self.reactor.callLater(.1, lambda: callback("Ended round."))
 
         deferred.addCallback(click_okay)

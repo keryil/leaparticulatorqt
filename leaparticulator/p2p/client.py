@@ -39,9 +39,13 @@ class LeapP2PClient(basic.LineReceiver):
         self.factory.theremin.mute()
         # self.mode = None
 
+    def log(self, message):
+        log.msg("<{}> {}".format(self.factory.uid,
+                                 message))
+
     def connectionMade(self):
         self.factory.resetDelay()
-        log.msg("Connection made to %s" % self.transport.getPeer())
+        self.log("Connection made to %s" % self.transport.getPeer())
         self.send_to_server(InitMessage(client_id=self.factory.uid))
 
     def connectionLost(self, reason):
@@ -49,9 +53,9 @@ class LeapP2PClient(basic.LineReceiver):
 
     def lineReceived(self, message):
         if len(message) < 1000:
-            log.msg("Received: %s" % message)
+            self.log("Received: %s" % message)
         else:
-            log.msg("Received: %s" % message[:550])
+            self.log("Received: %s" % message[:550])
 
         message = jsonpickle.decode(message)
         assert isinstance(message, LeapP2PMessage)
@@ -77,7 +81,7 @@ class LeapP2PClient(basic.LineReceiver):
                     raise err
             # self.factory.current_image = message.data.image
             if message.data.isSpeaker:
-                log.msg("I am the speaker.")
+                self.log("I am the speaker.")
                 self.factory.mode = constants.SPEAKER
                 self.factory.theremin.unmute()
                 self.ui.wait_over()
@@ -87,7 +91,7 @@ class LeapP2PClient(basic.LineReceiver):
                 # self.factory.theremin.mute()
             else:
                 self.factory.mode = constants.LISTENER
-                log.msg("I am the listener. My mode is %s." % self.factory.mode)
+                self.log("I am the listener. My mode is %s." % self.factory.mode)
                 self.factory.theremin.mute()
                 self.ui.show_wait()
         elif isinstance(message, ResponseMessage):
@@ -99,13 +103,13 @@ class LeapP2PClient(basic.LineReceiver):
             self.factory.last_response_data = message.data
 
             options = message.data.options
-            log.msg("Received options: %s" % options)
+            self.log("Received options: %s" % options)
             self.ui.wait_over()
             self.ui.test_screen(options)
             # self.listen()
         elif isinstance(message, FeedbackMessage):
             assert self.factory.mode == constants.FEEDBACK
-            print "Received feedback: %s" % message
+            self.log("Received feedback: %s" % message)
             self.ui.wait_over()
             self.factory.image_pointer = message.image_pointer
             self.ui.feedback_screen(message.target_image,
@@ -128,11 +132,11 @@ class LeapP2PClient(basic.LineReceiver):
         self.send_to_server(message)
         self.ui.resetSignal()
         # self.factory.last_signal = []
-        print "Spoken"
+        self.log("Spoken")
         self.factory.mode = constants.FEEDBACK
 
     def listen(self, image):
-        print "Listening"
+        self.log("Listening")
         self.factory.current_hearer_image = image
         # print self.factory.last_response_data
         self.send_to_server(ResponseMessage(
@@ -152,14 +156,14 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
     def __init__(self, leap_listener, ui, uid):
         log.startLogging(sys.stdout)
         if ui is None:
-            log.msg("Warning: No UI")
+            print "Warning: No UI"
         self.theremin = leap_listener
         self.ui = ui
         self.uid = uid
         # self.phase = 0
         self.__mode = None
         self.image_pointer = 2
-        self.mode
+        # self.mode
 
     def buildProtocol(self, addr):
         # self.listener = leap_listener

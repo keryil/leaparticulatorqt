@@ -87,7 +87,7 @@ class TwoClientsFirstRound(P2PTestCase):
         d = defer.Deferred()
 
         def check(*args):
-            print 'CHECK CALLED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+            assert len(self.getRounds()) == 1
             round = self.getLastRound()
             self.assertEqual(round.image, round.guess)
             self.assertTrue(round.success)
@@ -101,8 +101,17 @@ class TwoClientsFirstRound(P2PTestCase):
     def test_answerTwoQuestions(self):
         d = defer.Deferred()
 
+        def do_test(*args):
+            assert len(self.getRounds()) == 2
+            round = self.getLastRound()
+            self.assertEqual(round.image, round.guess)
+            self.assertTrue(round.success)
+            for factory in self.factories:
+                self.assertTrue(factory.mode == constants.FEEDBACK)
+            d.callback("Done")
+
         def do_second(*args):
-            self.do_one_round(callback=d.callback)
+            self.do_one_round(callback=do_test)
 
         self.do_one_round(callback=do_second)
         return d
