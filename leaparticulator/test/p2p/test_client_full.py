@@ -120,7 +120,7 @@ class TwoClientsFirstRound(P2PTestCase):
 class TwoClientsTillEnd(P2PTestCase):
     def __init__(self, *args, **kwargs):
         super(TwoClientsTillEnd, self).__init__(*args, **kwargs)
-        self.max_images = 5
+        self.max_images = 15
         self.timeout = self.max_images * 8
 
     def test_endByExhaustion(self):

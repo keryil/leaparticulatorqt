@@ -83,6 +83,53 @@ def fromFile(filename, no_practice=False):
 
     return responses, test_results, None, None, images
 
+
+def fromFile_p2p(filename):
+    from collections import namedtuple
+    decode = jsonpickle.decode
+    participants = None
+    meanings = None
+    responses = {}
+    image_pointer = 0
+    phase = -1
+    with open(filename) as f:
+        for i, line in zip(range(-2, 40000), open(filename)):
+            if i == -2:
+                participants = decode(line)
+                responses = {p: {} for p in participants}
+            elif i == -1:
+                meanings = decode(line)
+            else:
+                round_summary = recursive_decode(line)
+                # speaker owns the round, because it's his
+                # signal
+                speaker = round_summary.speaker
+                hearer = round_summary.hearer
+
+                # if this fails, there is something seriously
+                # wrong about this log file.
+                assert round_summary.image in meanings
+
+                # detect phase boundaries
+                if image_pointer < round_summary.image_pointer:
+                    image_pointer = round_summary.image_pointer
+                    phase += 1
+                    responses[speaker][phase] = {meaning: None for meaning in meanings[:image_pointer]}
+                    responses[hearer][phase] = {meaning: None for meaning in meanings[:image_pointer]}
+                    print "New phase: {}".format(phase)
+                    # print responses
+                resp = responses[speaker][phase]
+
+                # we only want the successful rounds
+                if round_summary.success:
+                    print resp.keys()
+                    resp[round_summary.image] = round_summary.signal
+                    # print round_summary.image_pointer
+                    # responses.append(round_summary)
+    return namedtuple("RoundSummaryTuple", ["responses", "images"])(responses=responses,
+                                                                    images=meanings)
+
+
 def fromFile_old(filename):
     lines = open(filename).readlines()
     images = jsonpickle.decode(lines[0])
