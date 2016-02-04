@@ -1,0 +1,5 @@
+PyAudio
+pandas
+qt4reactor
+twisted
+jsonpickle
