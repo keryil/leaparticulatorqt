@@ -159,6 +159,10 @@ class LeapP2PClientUI(object):
             self.theremin.unmute()
             self.theremin.record()
             self.recording = True
+
+            if constants.RANDOM_SIGNALS:
+                from leaparticulator.data.frame import generateRandomSignal
+                self.theremin.last_signal = generateRandomSignal(100)
             # self.factory.start_recording()
             button = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
             button.setText("Stop")
@@ -280,6 +284,7 @@ class LeapP2PClientUI(object):
         self.testWin = loadUiWidget('SignalTesting.ui')
         btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
         connect(btnSubmit, "clicked()", submit)
+
         def enable():
             self.picked_choice = True
             if self.played:

@@ -400,7 +400,7 @@ class ThereminPlayback(object):
                 print datetime.now() - self.start_time
                 if self.callback:
                     reactor.callLater(0, self.callback)
-                    for callback in self.callbacks:
+                    for callback in self.late_callbacks:
                         reactor.callLater(0, callback)
                     # self.callback()
             self.stopping = True

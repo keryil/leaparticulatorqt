@@ -677,7 +677,9 @@ if __name__ == '__main__':
 
     try:
         assert len(sys.argv) > 2
-        no_ui = sys.argv[-1] == "no_ui"
+        no_ui = "no_ui" in sys.argv
+        constants.RANDOM_SIGNALS = "randomsignals" in sys.argv
+
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
             try:
@@ -689,7 +691,7 @@ if __name__ == '__main__':
             start_server(qapplication, condition=sys.argv[1], no_ui=no_ui)
 
     except AssertionError:
-        print "USAGE: LeapP2PServer {condition} {client/server} [client_id] [server_ip (only in client mode)]."
+        print "USAGE: LeapP2PServer {condition} {client/server} [client_id] [server_ip (only in client mode)] [randomsignals]."
         sys.exit(-1)
 
     sys.exit(app.exec_())

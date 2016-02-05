@@ -148,6 +148,7 @@ DELAY_TEST = 1000
 
 TESTING = False
 NO_SOUND = False
+RANDOM_SIGNALS = False
 
 import math
 
