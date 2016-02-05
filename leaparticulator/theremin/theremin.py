@@ -319,6 +319,7 @@ class ThereminPlayback(object):
     call = None
     stopping = False
     late_callbacks = []
+    callback = None
 
     def __init__(self, n_of_tones=1, default_volume=.5, default_rate=None, record=False):
         self.player = ThereminPlayer(n_of_tones, default_volume, record=record)
