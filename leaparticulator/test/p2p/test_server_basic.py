@@ -265,13 +265,13 @@ class P2PTestCase(unittest.TestCase):
         print "Chosen the answer..."
 
         def submit():
-            ui_listener.playback_player.callbacks = []
+            ui_listener.playback_player.late_callbacks.remove(submit)
             self.assertTrue(submit_btn.isEnabled())
             caption = "{}'s enabled submit button.".format(ui_listener.client.factory.uid)
             self.click(submit_btn, caption)
             self.reactor.callLater(.25, lambda: callback("Submitted"))
 
-        ui_listener.playback_player.callbacks = [submit]
+        ui_listener.playback_player.late_callbacks.append(submit)
 
     def do_one_round(self, callback=None, answer_correctly=True):
         d = defer.Deferred()
