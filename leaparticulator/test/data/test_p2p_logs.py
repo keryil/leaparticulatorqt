@@ -1,4 +1,4 @@
-from leaparticulator.data.functions import fromFile_p2p
+from leaparticulator.data.functions import fromFile_p2p, fromFile
 
 
 class TestP2PLogsFromTest(object):
@@ -12,7 +12,7 @@ class TestP2PLogsFromTest(object):
         print fromFile_p2p(self.test_file)
 
 
-class TestP2PLogsFromTest(object):
+class TestP2PLogsFromReal(object):
     def setup_method(self, method):
         self.test_file = './leaparticulator/test/test_data/P2P-160203.170804.REALDATA.1.exp.log'
 
@@ -21,3 +21,14 @@ class TestP2PLogsFromTest(object):
 
     def test_read(self):
         print fromFile_p2p(self.test_file)
+
+
+class TestP2PLogsDetectP2P(object):
+    def setup_method(self, method):
+        self.test_file = './leaparticulator/test/test_data/P2P-160203.170804.REALDATA.1.exp.log'
+
+    def teardown_method(self, method):
+        pass
+
+    def test_read(self):
+        print fromFile(self.test_file)
