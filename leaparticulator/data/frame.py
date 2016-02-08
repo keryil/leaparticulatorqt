@@ -127,6 +127,12 @@ class LeapFrame(object):
         import jsonpickle
         return jsonpickle.encode(self)
 
+    def __str__(self):
+        return "LeapFrame({:.2f},{:.2f},{:.2f})".format(*self.get_stabilized_position())
+
+    def __repr__(self):
+        return str(self)
+
     
 def generateRandomSignal(duration):
     """
