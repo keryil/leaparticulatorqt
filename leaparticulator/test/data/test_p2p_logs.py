@@ -31,4 +31,4 @@ class TestP2PLogsDetectP2P(object):
         pass
 
     def test_read(self):
-        print fromFile(self.test_file)
+        assert str(fromFile_p2p(self.test_file)) == str(fromFile(self.test_file))
