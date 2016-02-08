@@ -67,6 +67,8 @@ toStr = lambda x: map(str, x)
 
 
 def fromFile(filename, no_practice=False):
+    if str.startswith(filename, "P2P"):
+        return fromFile_p2p(filename)
     lines = open(filename).readlines()
     lines = [refactor_old_references(line) for line in lines]
     images = jsonpickle.decode(lines[0])
