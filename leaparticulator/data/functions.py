@@ -105,6 +105,7 @@ def fromFile_p2p(filename):
                 # signal
                 speaker = round_summary.speaker
                 hearer = round_summary.hearer
+                signal = recursive_decode(round_summary.signal)
 
                 # if this fails, there is something seriously
                 # wrong about this log file.
@@ -114,16 +115,16 @@ def fromFile_p2p(filename):
                 if image_pointer < round_summary.image_pointer:
                     image_pointer = round_summary.image_pointer
                     phase += 1
-                    responses[speaker][phase] = {meaning: None for meaning in meanings[:image_pointer]}
-                    responses[hearer][phase] = {meaning: None for meaning in meanings[:image_pointer]}
-                    print "New phase: {}".format(phase)
+                    responses[speaker][phase] = {str(meaning): None for meaning in meanings[:image_pointer]}
+                    responses[hearer][phase] = {str(meaning): None for meaning in meanings[:image_pointer]}
+                    print "Found phase: {}".format(phase)
                     # print responses
                 resp = responses[speaker][phase]
 
                 # we only want the successful rounds
                 if round_summary.success:
-                    print resp.keys()
-                    resp[round_summary.image] = round_summary.signal
+                    # print resp.keys()
+                    resp[str(round_summary.image)] = signal
                     # print round_summary.image_pointer
                     # responses.append(round_summary)
     return namedtuple("RoundSummaryTuple", ["responses", "images"])(responses=responses,
