@@ -34,6 +34,10 @@ import os
 
 
 class LeapP2PRoundSummary(object):
+    _field_names = ['speaker', 'image_pointer', 'hearer', 'signal',
+                    'image', 'guess', 'success', 'options',
+                    'success_counts']
+
     def __init__(self):
         self.speaker = None
         self.hearer = None
@@ -72,6 +76,14 @@ class LeapP2PRoundSummary(object):
 
     def set_image_pointer(self, pointer):
         self.image_pointer = pointer
+
+    @classmethod
+    def FromDict(cls, dictionary):
+        obj = cls()
+        for attr in obj._field_names:
+            assert attr in dictionary
+            setattr(obj, attr, dictionary[attr])
+        return obj
 
     def shorthand_copy(self):
         """

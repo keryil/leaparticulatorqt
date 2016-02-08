@@ -4,6 +4,7 @@ import pandas as pd
 # this is a list of refactored classes which need to be
 # replaced with their new FQ names for jsonpickle to be
 # able to unpickle them.
+
 to_replace = [
     ("LeapFrame.", "leaparticulator.data.frame."),
     ("TestQuestion.", "leaparticulator.question."),
@@ -100,7 +101,11 @@ def fromFile_p2p(filename):
             elif i == -1:
                 meanings = decode(line)
             else:
+                # for some reason we have this confusion in the logs
+                # sometimes
+                line = line.replace("__main__", "leaparticulator.p2p.server")
                 round_summary = recursive_decode(line)
+
                 # speaker owns the round, because it's his
                 # signal
                 speaker = round_summary.speaker
