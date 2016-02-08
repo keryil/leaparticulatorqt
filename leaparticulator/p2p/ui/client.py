@@ -272,7 +272,11 @@ class LeapP2PClientUI(object):
         # chosen
         self.picked_choice = False
 
+        self.testWin = loadUiWidget('SignalTesting.ui')
+        btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
+
         def submit():
+            btnSubmit.setEnabled(False)
             image_ = None
             for i, image in zip(range(1,5), images):
                 button = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
@@ -281,8 +285,6 @@ class LeapP2PClientUI(object):
                     break
             self.client.listen(image_)
 
-        self.testWin = loadUiWidget('SignalTesting.ui')
-        btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
         connect(btnSubmit, "clicked()", submit)
 
         def enable():
