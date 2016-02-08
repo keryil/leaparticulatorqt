@@ -144,6 +144,7 @@ class LeapP2PClient(basic.LineReceiver):
                 image=image,  # choice(self.factory.images))
                 options=self.factory.last_response_data.options))
         self.factory.mode = constants.FEEDBACK
+        self.log("Listened")
         # def extend_last_signal(self,signal):
         #     print "Extending: %s" % signal
 

@@ -314,7 +314,6 @@ class LeapP2PClientUI(object):
             except IndexError:
                 view.setEnabled(False)
 
-
         self.testWin.showFullScreen()
 
         return self.testWin
