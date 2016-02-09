@@ -68,7 +68,7 @@
        <x>30</x>
        <y>20</y>
        <width>161</width>
-       <height>551</height>
+       <height>491</height>
       </rect>
      </property>
     </widget>
@@ -79,7 +79,7 @@
       <x>250</x>
       <y>10</y>
       <width>731</width>
-      <height>701</height>
+      <height>771</height>
      </rect>
     </property>
     <property name="title">
@@ -88,8 +88,8 @@
     <widget class="QLabel" name="lblExpected">
      <property name="geometry">
       <rect>
-       <x>70</x>
-       <y>20</y>
+       <x>60</x>
+       <y>50</y>
        <width>330</width>
        <height>330</height>
       </rect>
@@ -107,8 +107,8 @@
     <widget class="QLabel" name="lblGiven">
      <property name="geometry">
       <rect>
-       <x>70</x>
-       <y>350</y>
+       <x>60</x>
+       <y>400</y>
        <width>330</width>
        <height>330</height>
       </rect>
@@ -126,9 +126,9 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>530</x>
-       <y>150</y>
-       <width>111</width>
+       <x>60</x>
+       <y>20</y>
+       <width>121</width>
        <height>16</height>
       </rect>
      </property>
@@ -139,8 +139,8 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>540</x>
-       <y>460</y>
+       <x>60</x>
+       <y>370</y>
        <width>111</width>
        <height>16</height>
       </rect>
@@ -174,6 +174,60 @@
      <property name="text">
       <string>Hearer: n/a</string>
      </property>
+    </widget>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>100</y>
+       <width>251</width>
+       <height>651</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="groupBox_5">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>239</width>
+        <height>649</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QGroupBox" name="meaningSpace">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>261</width>
+         <height>781</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>Meaning Space (at the end of the round)</string>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
@@ -247,7 +301,7 @@
      <x>0</x>
      <y>0</y>
      <width>1057</width>
-     <height>16</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

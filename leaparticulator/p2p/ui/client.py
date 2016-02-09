@@ -15,7 +15,7 @@ else:
 
 from leaparticulator.theremin.theremin import ThereminPlayback
 # from LeapTheremin import ThereminPlayback
-from leaparticulator.p2p.messaging import EndRoundMessage
+from leaparticulator.p2p.messaging import EndRoundMessage, StartMessage
 from leaparticulator.oldstuff.QtUtils import connect, disconnect, loadUiWidget
 import leaparticulator.constants as constants
 # from QtUtils import loadWidget as loadUiWidget
@@ -56,17 +56,18 @@ class LeapP2PClientUI(object):
         self.setClientFactory(client.factory)
 
     def get_active_window(self):
-        for w in (self.firstWin, self.creationWin, 
-                  self.testWin, self.feedbackWin):
+        for w in (self.firstWin, self.creationWin,
+                  self.testWin, self.feedbackWin,
+                  self.finalScreen):
             if w and w.isVisible():
                 return w
         else:
             return None
 
     def close_all(self):
-        for w in (self.firstWin, self.creationWin, 
-                  self.testWin, self.feedbackWin, 
-                  self.waitDialog):
+        for w in (self.firstWin, self.creationWin,
+                  self.testWin, self.feedbackWin,
+                  self.waitDialog, self.finalScreen):
             if w and w.isVisible():
                 w.close()
 
@@ -94,7 +95,12 @@ class LeapP2PClientUI(object):
         print "loaded"
         self.theremin.unmute()
         self.firstWin.showFullScreen()
-        connect(button, "clicked()", self.show_wait)
+
+        def fn(*args):
+            self.send_to_server(StartMessage())
+            self.show_wait()
+
+        connect(button, "clicked()", fn)
         from os.path import join
         text.setText(open(join(constants.P2P_RES_DIR, "first_screen.txt")).read())
         print "first_screen done"
@@ -153,6 +159,10 @@ class LeapP2PClientUI(object):
             self.theremin.unmute()
             self.theremin.record()
             self.recording = True
+
+            if constants.RANDOM_SIGNALS:
+                from leaparticulator.data.frame import generateRandomSignal
+                self.theremin.last_signal = generateRandomSignal(100)
             # self.factory.start_recording()
             button = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
             button.setText("Stop")
@@ -177,9 +187,9 @@ class LeapP2PClientUI(object):
         def play():
             button.setEnabled(False)
             # button.setText("Stop")
-            self.unique_connect(button, "clicked()", self.playback_player.stop)
-            self.playback_player.start(signal, 
+            self.playback_player.start(signal,
                                        enable)
+            self.unique_connect(button, "clicked()", self.playback_player.stop)
             self.flicker()
         
         self.unique_connect(button, "clicked()", play)
@@ -189,20 +199,31 @@ class LeapP2PClientUI(object):
             # self.factory.stop_recording()
             self.recording = False
             self.theremin.stop_record()
-            # self.theremin.mute()
+            valid = len(self.getSignal()) > 0
+
             btnRec = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
-            btnRec.setText("Re-record")
+            if valid:
+                btnRec.setText("Re-record")
+            else:
+                btnRec.setText("Record")
+
             self.unique_connect(btnRec, "clicked()", self.start_recording)
 
-            btnPlay = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
-            btnPlay.setEnabled(True)
+            if valid:
+                btnPlay = self.creationWin.findChildren(QPushButton, "btnPlay")[0]
+                btnPlay.setEnabled(True)
 
-            btnSubmit = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
-            btnSubmit.setEnabled(True)
+                btnSubmit = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
+                btnSubmit.setEnabled(True)
 
-            self.setup_play_button(btnPlay, self.getSignal())
+                self.setup_play_button(btnPlay, self.getSignal())
             self.flicker()
-            print "Signal is %d frames long." % len(self.getSignal())
+
+            if not valid:
+                QMessageBox.warning(self.creationWin, "Empty signal",
+                                    "You have just recorded an empty signal. Please try again.")
+            else:
+                print "Signal is %d frames long." % len(self.getSignal())
 
     def extend_last_signal(self, frame):
         if self.recording:
@@ -250,7 +271,12 @@ class LeapP2PClientUI(object):
         # this is a flag which is only true if one of the options is 
         # chosen
         self.picked_choice = False
+
+        self.testWin = loadUiWidget('SignalTesting.ui')
+        btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
+
         def submit():
+            btnSubmit.setEnabled(False)
             image_ = None
             for i, image in zip(range(1,5), images):
                 button = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
@@ -259,9 +285,8 @@ class LeapP2PClientUI(object):
                     break
             self.client.listen(image_)
 
-        self.testWin = loadUiWidget('SignalTesting.ui')
-        btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
         connect(btnSubmit, "clicked()", submit)
+
         def enable():
             self.picked_choice = True
             if self.played:
@@ -281,14 +306,13 @@ class LeapP2PClientUI(object):
             try:
                 image = images[i - 1]
                 pixmap = image.pixmap()
-                # pixmap.setAlignment()
+                view.image = image
                 view.setIcon(QIcon(pixmap))
                 view.setIconSize(pixmap.rect().size())
                 connect(view, "clicked()", enable)
             # this happens when we have fewer than 4 images
             except IndexError:
                 view.setEnabled(False)
-
 
         self.testWin.showFullScreen()
 
@@ -325,7 +349,9 @@ class LeapP2PClientUI(object):
         from os.path import join
         self.close_all()
         self.finalScreen = loadUiWidget(constants.P2P_FINAL_WIN)
-        self.finalScreen.btnOkay.clicked.connect(self.app.exit)
+        btn = self.finalScreen.findChildren(QPushButton, "btnOkay")[0]
+
+        btn.clicked.connect(self.app.exit)
         msg = open(join(constants.P2P_RES_DIR, "final_screen.txt")).read()
         self.finalScreen.textBrowser.setText(msg)
         self.finalScreen.showFullScreen()

@@ -1,48 +1,18 @@
 from PyQt4 import QtGui
-from twisted.internet import defer, task
+from twisted.internet import defer
 
 from leaparticulator import constants
 from leaparticulator.p2p.ui.client import LeapP2PClientUI
-from test_server_basic import prep, P2PTestCase
+from test_server_basic import P2PTestCase
 
 
 class TwoClientsFirstRound(P2PTestCase):
 
-    def tearDown(self):
-        self.stopServer()
-        for client in self.clients.values():
-            client.connection.stopListening()
-        self.clients = {}
-
-    def setUp(self):
-        from twisted.internet import reactor
-        self.reactor = reactor
-        prep(self)
-        self.startServer()
-        self.timeout = 5
-        self.clock = task.Clock()
-
-        clients = [client.namedtuple for client in self.startClients(2)]
-
-        def fn(*args):
-            for c in clients:
-                self.clients[client.client_id] = c
-                button = client.factory.ui.firstWin.findChildren(
-                        QtGui.QPushButton, "btnOkay")[0]
-                self.click(button)
-
-        d = defer.Deferred()
-        clients[-1].connection.addCallback(lambda x: d)
-        clients[-1].connection.addCallback(fn)
-        # self.reactor.callLater(.2, lambda: d.callback('setUp'))
-        return clients[-1].connection
-
     def test_createFirstSignal(self):
-        self.click(self.factory.ui.mainWin.btnStart)
+        # self.click(self.factory.ui.mainWin.btnStart)
         d = defer.Deferred()
 
         def fn():
-            print "***************IIIIII AAAAAAAM FFFFNNNNNNN"
             ui_speaker, ui_listener = self.getClientsAsUi(0)
             win_speaker = ui_speaker.creationWin
             get_btn = lambda name: win_speaker.findChildren(
@@ -61,8 +31,8 @@ class TwoClientsFirstRound(P2PTestCase):
             # record something
             from leaparticulator.data.frame import generateRandomSignal
             self.click(record_btn)
-            self.click(record_btn)
             ui_speaker.theremin.last_signal = generateRandomSignal(10)
+            self.click(record_btn)
 
             # now things should be enabled
             self.assertTrue(play_btn.isEnabled())
@@ -72,19 +42,19 @@ class TwoClientsFirstRound(P2PTestCase):
             self.assertTrue(ui_speaker.is_waiting())
             return d.callback(("FirstSignal"))
 
-        self.reactor.callLater(.1, fn)
+        self.reactor.callLater(.2, fn)
         return d
 
     def test_FirstImage(self):
-        self.click(self.factory.ui.mainWin.btnStart)
+        # self.click(self.server_factory.ui.mainWin.btnStart)
         d = defer.Deferred()
 
         def fn():
-            print self.factory.mode
-            self.assertEqual(self.factory.mode, constants.SPEAKERS_TURN)
+            print self.server_factory.mode
+            self.assertEqual(self.server_factory.mode, constants.SPEAKERS_TURN)
             speaker, listener = self.getClientsAsServerConnections(0)
             speaker_id, listener_id = [c.factory.clients[c] for c in (speaker, listener)]
-            print self.clients
+            print "FirstImage clients:", self.clients
             assert isinstance(self.clients, dict)
             ui_speaker, ui_listener = self.getClientsAsUi(0)
             # ui_speaker = self.clients[speaker_id].factory.ui
@@ -109,58 +79,66 @@ class TwoClientsFirstRound(P2PTestCase):
                 QtGui.QLabel, "lblImage")[0]
             self.assertEqual(self.getRound(0).image.pixmap().toImage(), image.pixmap().toImage())
             d.callback('FirstImage')
-        self.reactor.callLater(.1, fn)
+
+        self.reactor.callLater(.2, fn)
         return d
 
     def test_answerFirstQuestion(self):
-        self.click(self.factory.ui.mainWin.btnStart)
-        # d_create = defer.Deferred()
+        d = defer.Deferred()
 
-        def create():
-            # speaker, listener = self.getClientsAsClientData()
+        def check(*args):
+            assert len(self.getRounds()) == 1
+            round = self.getLastRound()
+            self.assertEqual(round.image, round.guess)
+            self.assertTrue(round.success)
+            for factory in self.factories:
+                self.assertTrue(factory.mode == constants.FEEDBACK)
+            d.callback("Done")
 
-            ui_speaker, ui_listener = self.getClientsAsUi(rnd_no=0)
+        self.do_one_round(callback=check)
+        return d
 
-            submit_btn = ui_speaker.creationWin.findChildren(
-                QtGui.QPushButton, "btnSubmit")[0]
-            record_btn = ui_speaker.creationWin.findChildren(
-                QtGui.QPushButton, "btnRecord")[0]
+    def test_answerTwoQuestions(self):
+        d = defer.Deferred()
 
-            image = ui_speaker.creationWin.findChildren(
-                QtGui.QLabel, "lblImage")[0]
-            # record something
-            from leaparticulator.data.frame import generateRandomSignal
-            self.click(record_btn)
-            self.click(record_btn)
-            ui_speaker.theremin.last_signal = generateRandomSignal(2)
+        def do_test(*args):
+            assert len(self.getRounds()) == 2
+            round = self.getLastRound()
+            self.assertEqual(round.image, round.guess)
+            self.assertTrue(round.success)
+            for factory in self.factories:
+                self.assertTrue(factory.mode == constants.FEEDBACK)
+            d.callback("Done")
 
-            self.click(submit_btn)
-            self.reactor.callLater(.5, answer)
-        self.reactor.callLater(.2, create)
+        def do_second(*args):
+            self.do_one_round(callback=do_test)
 
-        d_answer = defer.Deferred()
+        self.do_one_round(callback=do_second)
+        return d
 
-        def answer():
-            # speaker, listener = self.getClientsAsClientData()
 
-            ui_speaker, ui_listener = self.getClientsAsUi(0)
-            get_btn = lambda name: ui_listener.testWin.findChildren(
-                QtGui.QPushButton, name)[0]
+class TwoClientsTillEnd(P2PTestCase):
+    def __init__(self, *args, **kwargs):
+        super(TwoClientsTillEnd, self).__init__(*args, **kwargs)
+        self.max_images = 15
+        self.timeout = self.max_images * 8
 
-            play_btn = get_btn("btnPlay")
-            submit_btn = get_btn("btnSubmit")
-            # record_btn = get_btn("btnRecord")
-            choices = [get_btn("btnImage%d" % i) for i in range(1, 5)]
-            self.click(play_btn)
-            self.click(choices[0])
-            print "Chosen the answer..."
-            def submit():
-                self.assertTrue(submit_btn.isEnabled())
-                print "Clicking submit button, which is *enabled*"
-                self.click(submit_btn)
-                d_answer.callback("FirstAnswer")
-            self.reactor.callLater(.4, submit)
-        # d_create.addCallback(answer)
-        # self.reactor.callLater(1, answer)
-        # return defer.DeferredList([d_answer, d_create])
-        return d_answer
+    def test_endByExhaustion(self):
+        print "Timeout set to: {}".format(self.timeout)
+        d = defer.Deferred()
+
+        def do_tests(*args):
+            for c in self.getClientsAsUi():
+                assert c.get_active_window() == c.finalScreen
+            d.callback("Done")
+
+        def exhaust(round=-1):
+            print "-------------------EXHAUST CALLED-------------------"
+            if self.server_factory.end_experiment:
+                print "Exhaustion complete at round #{}.".format(round)
+                self.reactor.callLater(.2, do_tests)
+            else:
+                self.do_one_round().addCallback(lambda *x: exhaust(round + 1))
+
+        exhaust()
+        return d

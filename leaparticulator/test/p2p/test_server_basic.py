@@ -1,6 +1,6 @@
 import sys
-from collections import namedtuple
 
+from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 from PyQt4.QtGui import QApplication
 from PyQt4.QtTest import QTest
@@ -8,7 +8,8 @@ from twisted.internet import defer
 from twisted.python.failure import Failure
 from twisted.trial import unittest
 
-from leaparticulator.p2p.server import start_server, start_client, LeapP2PServerFactory, LeapP2PClientFactory
+from leaparticulator.p2p.client import LeapP2PClientFactory, start_client
+from leaparticulator.p2p.server import start_server, LeapP2PServerFactory
 
 
 def prep(self):
@@ -20,9 +21,25 @@ def prep(self):
     if not self.app:
         self.app = QApplication(sys.argv)
 
-ClientData = namedtuple(
-    "ClientData",
-    "theremin controller connection factory client_id client_ip".split())
+
+class ClientData(object):
+    def __init__(self, theremin, controller, connection, factory,
+                 client_id, client_ip, deferred):
+        self.theremin = theremin
+        self.controller = controller
+        self.connection = connection
+        self.factory = factory
+        self.client_id = client_id
+        self.client_ip = client_ip
+        self.deferred = deferred
+
+    def __str__(self):
+        vars = dir(self)
+        vars = filter(lambda x: not x.startswith("_"), vars)
+        string = repr(self)
+        for var in vars:
+            string = "%s\n%s=%s" % (string, var, getattr(self, var))
+        return string
 
 
 class P2PTestCase(unittest.TestCase):
@@ -31,14 +48,58 @@ class P2PTestCase(unittest.TestCase):
         self.timeout=6
         self.factories = []
         self.clients = {}
+        self.max_images = None
         from leaparticulator import constants
         constants.leap_server = "127.0.0.1"
 
-    def runTest(self):
-        pass
+    def tearDown(self):
+        self.stopServer()
+        for client in self.clients.values():
+            print "<tearDown> disconnecting from %s" % client.client_id
+            client.factory.stopFactory()
+        self.clients = {}
+        self.server_factory = None
 
-    def click(self, widget):
-        print "Left clicking %s" % str(widget)
+    def setUp(self):
+        """
+        Sets up two clients and a server, and initiates the
+        experiment.
+        :return:
+        """
+        from twisted.internet import reactor
+        self.reactor = reactor
+        prep(self)
+        self.startServer()
+
+        clients = [c.namedtuple for c in self.startClients(2)]
+        d = defer.Deferred()
+
+        def fn(*args):
+            """
+            Clicks the first screen's okay button for all clients.
+            :param args:
+            :return:
+            """
+            for client in clients:
+                self.clients[client.client_id] = client
+                print "Setting up client:", client.factory.uid
+                button = client.factory.ui.firstWin.findChildren(
+                        QtGui.QPushButton, "btnOkay")[0]
+                caption = "{}'s start button.".format(client.factory.uid)
+                self.click(button, caption)
+            # d.callback("Setup done")
+            self.reactor.callLater(.2, lambda: d.callback("Setup done"))
+
+        self.reactor.callLater(.2, fn)
+        # clients[0].deferred.addCallback(fn)
+        # d.chainDeferred(clients[1].deferred)
+        # d.addCallback(fn)
+        return d  #
+
+    def click(self, widget, caption=None):
+        if caption is None:
+            caption = str(widget)
+        print "Left clicking %s" % caption
         QTest.mouseClick(widget, Qt.LeftButton)
 
     def startClient(self, id=None):
@@ -52,23 +113,31 @@ class P2PTestCase(unittest.TestCase):
         theremin = start_client(
             self.app, uid=client_id)
         factory = theremin.factory
-        d = theremin.factory.connection_def  # endpoint.connect(factory)
-
+        d = theremin.factory.connection_def
+        # theremin.factory.connection_def.chainDeferred(d)  # endpoint.connect(factory)
+        print "Connection deferred:", d
         self.factories.append(factory)
+        assert isinstance(factory, LeapP2PClientFactory)
+
+        data = ClientData(theremin=theremin,
+                          controller=theremin.controller,
+                          deferred=d,
+                          factory=factory,
+                          client_id=client_id,
+                          client_ip=client_ip,
+                          connection=None)
 
         def fn(client):
-            factory.ui.setClient(client)
+            data.connection = client
+            # factory.ui.setClient(client)
             factory.ui.go()
 
         d.addCallback(fn)
-        assert isinstance(factory, LeapP2PClientFactory)
-
-        data = ClientData(theremin, theremin.controller, d, factory, client_id, client_ip)
         self.clients[id] = data
-        data.connection.namedtuple = data
+        data.deferred.namedtuple = data
         # from twisted.internet import reactor
         # self.reactor = reactor
-        return data.connection
+        return d
 
     def getFactories(self):
         server = None
@@ -78,7 +147,7 @@ class P2PTestCase(unittest.TestCase):
                 server = f
             else:
                 clients.append(f)
-        assert server == self.factory
+        assert server == self.server_factory
         return server, clients
 
     def stopClient(self, id):
@@ -89,10 +158,13 @@ class P2PTestCase(unittest.TestCase):
             del self.clients[id]
 
     def getLastRound(self):
-        return self.factory.session.getLastRound()
+        return self.server_factory.session.getLastRound()
 
     def getRound(self, rnd_no):
-        return self.factory.session.round_data[rnd_no]
+        return self.server_factory.session.round_data[rnd_no]
+
+    def getRounds(self):
+        return self.server_factory.session.round_data
 
     def startClients(self, qty):
         res = []
@@ -101,13 +173,14 @@ class P2PTestCase(unittest.TestCase):
         return res
 
     def startServer(self):
-        self.factory = start_server(
-            self.app, condition='1', no_ui=False)
-        self.factories.append(self.factory)
-        return self.factory
+        self.server_factory = start_server(
+            self.app, condition='1', no_ui=False,
+            max_images=self.max_images)
+        self.factories.append(self.server_factory)
+        return self.server_factory
 
     def stopServer(self):
-        factory = self.factory
+        factory = self.server_factory
         if not isinstance(factory.listener.result, Failure):
             factory.listener.result.stopListening()
         del factory.listener
@@ -131,7 +204,99 @@ class P2PTestCase(unittest.TestCase):
         speaker, listener = self.getClientsAsClientData(rnd_no)
         return speaker.factory.ui, listener.factory.ui
 
-    
+    def create_signal(self, callback):
+        print "-->Starting to create the signal"
+        ui_speaker, ui_listener = self.getClientsAsUi()
+
+        submit_btn = ui_speaker.creationWin.findChildren(
+                QtGui.QPushButton, "btnSubmit")[0]
+        record_btn = ui_speaker.creationWin.findChildren(
+                QtGui.QPushButton, "btnRecord")[0]
+
+        # record something
+        from leaparticulator.data.frame import generateRandomSignal
+        caption = "{}'s record button".format(ui_speaker.factory.uid)
+        self.click(record_btn,
+                   caption)
+
+        def fn():
+            caption = "{}'s record button".format(ui_speaker.factory.uid)
+            ui_speaker.theremin.last_signal = generateRandomSignal(2)
+            self.click(record_btn, caption)
+            caption = "{}'s submit button".format(ui_speaker.factory.uid)
+            self.click(submit_btn, caption)
+            self.reactor.callLater(.5, callback)
+
+        self.reactor.callLater(.1, fn)
+
+    def answer_question(self, answer_correctly=True, callback=None):
+        """
+        Answers the question on the screen, correctly
+        if answer_correctly=True.
+        :param answer:
+        :param callback:
+        :return:
+        """
+        ui_speaker, ui_listener = self.getClientsAsUi()
+        get_btn = lambda name: ui_listener.testWin.findChildren(
+                QtGui.QPushButton, name)[0]
+
+        target_image = self.getLastRound().image
+        options = self.getLastRound().options
+        answer = options.index(target_image)
+        print "Predicted answer: %d (%s)" % (answer,
+                                             options[answer])
+        if not answer_correctly:
+            answer = options.index(list(set(options) - set([answer]))[0])
+            print "Chosen incorrect answer: %d (%s)" % (answer,
+                                                        options[answer])
+
+        play_btn = get_btn("btnPlay")
+        submit_btn = get_btn("btnSubmit")
+        # record_btn = get_btn("btnRecord")
+        choices = [get_btn("btnImage%d" % i) for i in range(1, 5)]
+
+        caption = "{}'s play button.".format(ui_listener.client.factory.uid)
+        self.click(play_btn, caption)
+
+        caption = "{}'s option {} ({}).".format(ui_listener.client.factory.uid,
+                                                answer, options[answer])
+        self.click(choices[answer], caption)
+        print "Chosen the answer..."
+
+        def submit():
+            ui_listener.playback_player.late_callbacks.remove(submit)
+            self.assertTrue(submit_btn.isEnabled())
+            caption = "{}'s enabled submit button.".format(ui_listener.client.factory.uid)
+            self.click(submit_btn, caption)
+            self.reactor.callLater(.25, lambda: callback("Submitted"))
+
+        ui_listener.playback_player.late_callbacks.append(submit)
+
+    def do_one_round(self, callback=None, answer_correctly=True):
+        d = defer.Deferred()
+
+        def click_okay(*args):
+            for ui in self.getClientsAsUi():
+                get_btn = lambda name: ui.feedbackWin.findChildren(
+                        QtGui.QPushButton, name)[0]
+                button = get_btn("btnOkay")
+                caption = "{}'s okay button on feedback screen.".format(ui.client.factory.uid)
+                self.click(button, caption)
+            d.callback("Ended round.")
+
+        def give_answer(*args):
+            self.answer_question(callback=click_okay,
+                                 answer_correctly=answer_correctly)
+
+        def create(*args):
+            self.create_signal(callback=give_answer)
+
+        if callback:
+            d.addCallback(callback)
+
+        self.reactor.callLater(.2, create)
+        return d
 
 
 class ServerTest(P2PTestCase):
@@ -145,8 +310,8 @@ class ServerTest(P2PTestCase):
 
     def test_startUp(self):
         self.startServer()
-        self.assertIsNotNone(self.factory)
-        self.assertIsNotNone(self.factory.ui)
+        self.assertIsNotNone(self.server_factory)
+        self.assertIsNotNone(self.server_factory.ui)
 
     def test_invalidCondition(self):
         self.assertRaises(
@@ -154,10 +319,10 @@ class ServerTest(P2PTestCase):
                                            no_ui=False))
 
     def test_headlessStartup(self):
-        self.factory = start_server(
+        self.server_factory = start_server(
             self.app, condition='1', no_ui=True)
-        self.assertIsNotNone(self.factory)
-        self.assertIsNone(self.factory.ui)
+        self.assertIsNotNone(self.server_factory)
+        self.assertIsNone(self.server_factory.ui)
 
 
 class ServerTestWithClient(P2PTestCase):

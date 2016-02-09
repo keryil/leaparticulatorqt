@@ -15,8 +15,8 @@ default_pitch = 440.
 default_amplitude = .5
 
 leap_port = 9999
-leap_server = "127.0.0.1"
-# leap_server = "134.184.26.54"
+# leap_server = "127.0.0.1"
+leap_server = "134.184.26.54"
 # leap_server = "134.184.26.61"
 # leap_server = "127.0.0.1"
 
@@ -102,6 +102,11 @@ END_ROUND = "End round"
 RESPONSE = "Response"
 END_SESSION = "End session"
 
+# This is the probability of picking an unestablished meaning for a round
+# in P2P. so a random draw greater than this will cause the experiment to
+# pick an already established meaning.
+NOVELTY_COEFFICENT = 0.5
+
 # Analysis constants
 # unit parameters for train_hmm_n_times()
 XY, AMP_AND_FREQ, AMP_AND_MEL = "xy", "amp_and_freq", "amp_and_mel"
@@ -143,6 +148,7 @@ DELAY_TEST = 1000
 
 TESTING = False
 NO_SOUND = False
+RANDOM_SIGNALS = False
 
 import math
 

@@ -4,6 +4,7 @@ import pandas as pd
 # this is a list of refactored classes which need to be
 # replaced with their new FQ names for jsonpickle to be
 # able to unpickle them.
+
 to_replace = [
     ("LeapFrame.", "leaparticulator.data.frame."),
     ("TestQuestion.", "leaparticulator.question."),
@@ -66,6 +67,9 @@ toStr = lambda x: map(str, x)
 
 
 def fromFile(filename, no_practice=False):
+    from os import path
+    if str.startswith(path.split(filename)[-1], "P2P"):
+        return fromFile_p2p(filename)
     lines = open(filename).readlines()
     lines = [refactor_old_references(line) for line in lines]
     images = jsonpickle.decode(lines[0])
@@ -82,6 +86,58 @@ def fromFile(filename, no_practice=False):
         return responses, test_results, responses_practice, test_results_practice, images
 
     return responses, test_results, None, None, images
+
+
+def fromFile_p2p(filename):
+    from collections import namedtuple
+    decode = jsonpickle.decode
+    participants = None
+    meanings = None
+    responses = {}
+    image_pointer = 0
+    phase = -1
+    with open(filename) as f:
+        for i, line in zip(range(-2, 40000), open(filename)):
+            if i == -2:
+                participants = decode(line)
+                responses = {p: {} for p in participants}
+            elif i == -1:
+                meanings = decode(line)
+            else:
+                # for some reason we have this confusion in the logs
+                # sometimes
+                line = line.replace("__main__", "leaparticulator.p2p.server")
+                round_summary = recursive_decode(line)
+
+                # speaker owns the round, because it's his
+                # signal
+                speaker = round_summary.speaker
+                hearer = round_summary.hearer
+                signal = recursive_decode(round_summary.signal)
+
+                # if this fails, there is something seriously
+                # wrong about this log file.
+                assert round_summary.image in meanings
+
+                # detect phase boundaries
+                if image_pointer < round_summary.image_pointer:
+                    image_pointer = round_summary.image_pointer
+                    phase += 1
+                    responses[speaker][phase] = {str(meaning): None for meaning in meanings[:image_pointer]}
+                    responses[hearer][phase] = {str(meaning): None for meaning in meanings[:image_pointer]}
+                    print "Found phase: {}".format(phase)
+                    # print responses
+                resp = responses[speaker][phase]
+
+                # we only want the successful rounds
+                if round_summary.success:
+                    # print resp.keys()
+                    resp[str(round_summary.image)] = signal
+                    # print round_summary.image_pointer
+                    # responses.append(round_summary)
+    return namedtuple("RoundSummaryTuple", ["responses", "images"])(responses=responses,
+                                                                    images=meanings)
+
 
 def fromFile_old(filename):
     lines = open(filename).readlines()
