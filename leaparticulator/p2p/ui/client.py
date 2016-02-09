@@ -153,6 +153,7 @@ class LeapP2PClientUI(object):
         self.theremin.setVolume(value)
 
     def start_recording(self):
+        print "start_recording() called."
         if self.creationWin and not self.recording:
             print "Start recording..."
             self.theremin.reset_signal()
@@ -168,6 +169,13 @@ class LeapP2PClientUI(object):
             button.setText("Stop")
             self.unique_connect(button, "clicked()", self.stop_recording)
             self.flicker()
+        else:
+            string = "Cannot start recording because {}"
+            if not self.creationWin:
+                string = string.format("self.creationWin is None (actually {}).".format(self.creationWin))
+            else:
+                string = string.format("participant pushed record while already recording.")
+            print string
 
 
     def setup_play_button(self, button, signal):
