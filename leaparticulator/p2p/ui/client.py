@@ -154,7 +154,10 @@ class LeapP2PClientUI(object):
 
     def start_recording(self):
         print "start_recording() called."
-        if self.creationWin and not self.recording:
+        if self.creationWin:
+            if self.recording:
+                print "Interrupting an apparently ongoing recording..."
+                self.stop_recording()
             print "Start recording..."
             self.theremin.reset_signal()
             self.theremin.unmute()
