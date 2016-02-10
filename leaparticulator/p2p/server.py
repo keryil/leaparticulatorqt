@@ -157,32 +157,26 @@ class LeapP2PSession(object):
         self.round_data.append(LeapP2PRoundSummary())
         self.setImagePointer(self.factory.image_pointer)
         self.setSuccessCounts(counts)
-        # self.notify()
 
     @notifies
     def setImagePointer(self, pointer):
         self.getLastRound().set_image_pointer(pointer)
-        # self.notify()
 
     @notifies
     def setOptions(self, options):
         self.getLastRound().set_options(options)
-        # self.notify()
 
     @notifies
     def setImage(self, image):
         self.image = image
-        # self.notify()
 
     @notifies
     def setParticipants(self, speaker, hearer):
         self.getLastRound().set_participants(speaker, hearer)
-        # self.notify()
 
     @notifies
     def setSpeakerContribution(self, response_message):
         self.getLastRound().set_speakers_contribution(response_message)
-        # self.notify()
 
     @notifies
     def setHearerContribution(self, response_message):
@@ -190,7 +184,6 @@ class LeapP2PSession(object):
         # since this is the last piece of information, we can
         # serialize after setting the hearer contribution
         self.dump_to_file()
-        # self.notify()
 
     def getLastRound(self):
         return self.round_data[-1]
