@@ -168,7 +168,26 @@ def fromFile_p2p(filename):
                                                                     images=meanings)
 
 
+def process_p2p_log(filename, clients_hook, meanings_hook, round_hook):
+    """
+    Takes a P2P log file, and applies clients_hook to the first line,
+    meanings_hook to the second, and round_hook for every following round
+    :param filename:
+    :param clients_hook:
+    :param meanings_hook:
+    :param round_hook:
+    :return:
+    """
+    pass
+
 def toPandas_p2p(filename):
+    """
+    Takes a P2P log file, and returns TWO pandas.DataFrame objects, one for
+    response data, one for question data, respectively. For the response data,
+    the "client" is the speaker. For the test data, the "client" is the hearer.
+    :param filename:
+    :return:
+    """
     from leaparticulator.constants import palmToAmpAndFreq, palmToAmpAndMel
     r = fromFile_p2p(filename)
     responses = r.responses
@@ -184,8 +203,44 @@ def toPandas_p2p(filename):
                         mel = palmToAmpAndMel((x, y))[1]
                         lst.append(pd.Series([client, phase, meaning, i, x, y, z, hertz, mel], index=columns))
 
-    df = pd.DataFrame(lst, columns=columns)
-    return df
+    df_response = pd.DataFrame(lst, columns=columns)
+
+    lst = []
+    columns = ['client', 'phase', 'image0', 'image1', 'image2', 'image3', 'answer', 'given_answer', 'success']
+
+    with open(filename) as f:
+        phase = -1
+        last_pointer = -1
+        for i, line in zip(range(-2, 40000), f):
+            if i >= 0:
+                line = line.replace("__main__", "leaparticulator.p2p.server")
+                rnd = jsonpickle.decode(line)
+
+                # phase change
+                if rnd.image_pointer > last_pointer:
+                    phase += 1
+                    last_pointer = rnd.image_pointer
+
+                # the owner of the test is the hearer
+                client = rnd.hearer
+                answer = rnd.image
+                given_answer = rnd.guess
+                success = answer == given_answer
+                image0 = image1 = image2 = image3 = None
+                images = [image0, image1, image2, image3]
+                try:
+                    image0 = rnd.options[0]
+                    image1 = rnd.options[1]
+                    image2 = rnd.options[2]
+                    image3 = rnd.options[3]
+                except IndexError:
+                    pass
+
+                lst.append(pd.Series([client, phase, image0, image1, image2, image3, answer, given_answer, success],
+                                     index=columns))
+
+    df_test = pd.DataFrame(lst, columns=columns)
+    return df_response, df_test
 
 def fromFile_old(filename):
     lines = open(filename).readlines()
