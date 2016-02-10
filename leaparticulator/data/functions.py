@@ -88,8 +88,37 @@ def fromFile(filename, no_practice=False):
     return responses, test_results, None, None, images
 
 
+def new_recursive_decode(string, verbose=False):
+    def print_(stuff):
+        print stuff
+
+    if not verbose:
+        print_ = callable
+
+    obj = string
+    if (isinstance(string, str) or isinstance(string, unicode)) \
+            and "py/object" in string:
+        print_("Decoding string: {}".format(string))
+        obj = jsonpickle.decode(string)
+
+    if isinstance(obj, dict):
+        if ("py/object" in obj):
+            print_("Detected a dict with py/object as key: {}".format(obj))
+            new_obj = {}
+            for k, v in obj.items():
+                try:
+                    new_obj[k] = jsonpickle.decode(v)
+                except:
+                    new_obj[k] = new_recursive_decode(v)
+
+    if isinstance(obj, list):
+        obj = [new_recursive_decode(o) for o in obj]
+    print_("Returning object: {}".format(obj))
+    return obj
+
 def fromFile_p2p(filename):
     from collections import namedtuple
+    recursive_decode = new_recursive_decode
     decode = jsonpickle.decode
     participants = None
     meanings = None

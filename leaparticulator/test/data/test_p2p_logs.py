@@ -14,10 +14,14 @@ class TestP2PLogsFromTest(object):
         pass
 
     def test_readTestData(self):
-        assert fromFile_p2p(self.test_file)
+        r = fromFile_p2p(self.test_file)
+        print r
+        assert r
 
     def test_readRealData(self):
-        assert fromFile_p2p(self.test_file)
+        r = fromFile_p2p(self.test_file)
+        print r
+        assert r
 
     def test_detectP2PData(self):
         assert str(fromFile_p2p(self.test_file)) == str(fromFile(self.test_file))
