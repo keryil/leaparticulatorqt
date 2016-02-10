@@ -168,6 +168,25 @@ def fromFile_p2p(filename):
                                                                     images=meanings)
 
 
+def toPandas_p2p(filename):
+    from leaparticulator.constants import palmToAmpAndFreq, palmToAmpAndMel
+    r = fromFile_p2p(filename)
+    responses = r.responses
+    columns = ['client', 'phase', 'image', 'data_index', 'x', 'y', 'z', 'frequency', 'mel']
+    lst = []
+    for client, client_ in responses.items():
+        for phase, phase_ in client_.items():
+            for meaning, signal in phase_.items():
+                if signal:
+                    for i, frame in enumerate(signal):
+                        x, y, z = frame.get_stabilized_position()
+                        hertz = palmToAmpAndFreq((x, y))[1]
+                        mel = palmToAmpAndMel((x, y))[1]
+                        lst.append(pd.Series([client, phase, meaning, i, x, y, z, hertz, mel], index=columns))
+
+    df = pd.DataFrame(lst, columns=columns)
+    return df
+
 def fromFile_old(filename):
     lines = open(filename).readlines()
     images = jsonpickle.decode(lines[0])
