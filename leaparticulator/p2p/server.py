@@ -658,6 +658,8 @@ if __name__ == '__main__':
         assert len(sys.argv) > 2
         no_ui = "no_ui" in sys.argv
         constants.RANDOM_SIGNALS = "randomsignals" in sys.argv
+        if constants.RANDOM_SIGNALS:
+            sys.argv.remove("randomsignals")
 
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
