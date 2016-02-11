@@ -227,11 +227,16 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
     return context_dict
 
 
-def toPandas_p2p(filename):
+def toPandas_p2p(filename, nphases=8):
     """
     Takes a P2P log file, and returns TWO pandas.DataFrame objects, one for
     response data, one for question data, respectively. For the response data,
     the "client" is the speaker. For the test data, the "client" is the hearer.
+
+    nphases is optional, and only necessary when there are less/more than
+    15 meanings. It informs the algorithm of the number of phases in the
+    experimental run.
+    :param nphases:
     :param filename:
     :return:
     """
@@ -287,7 +292,8 @@ def toPandas_p2p(filename):
                                    round_hooks=[question_hook,
                                                 response_hook],
                                    context_dict=context_dict,
-                                   reverse=True)
+                                   reverse=True,
+                                   nphases=nphases)
     reverse_list = lambda x: list(reversed(x))
     df_test = pd.DataFrame(reverse_list(context_dict['lst_questions']), columns=columns_test)
     df_response = pd.DataFrame(reverse_list(context_dict['lst_responses']), columns=columns_response)
