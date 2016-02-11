@@ -71,6 +71,14 @@ class LeapP2PClientUI(object):
             if w and w.isVisible():
                 w.close()
 
+    def close_except(self, win):
+        for w in (self.firstWin, self.creationWin,
+                  self.testWin, self.feedbackWin,
+                  self.finalScreen):
+            if w and w.isVisible():
+                if w != win:
+                    w.close()
+
     def flicker(self):
         """
         This method simply jiggles the mouse. It is used as 
@@ -98,7 +106,7 @@ class LeapP2PClientUI(object):
 
         def fn(*args):
             self.send_to_server(StartMessage())
-            self.show_wait()
+            self.show_wait(parent=self.firstWin)
 
         connect(button, "clicked()", fn)
         from os.path import join
@@ -118,7 +126,7 @@ class LeapP2PClientUI(object):
 
         def submit_and_proceed():
             self.client.speak()
-            self.show_wait()
+            self.show_wait(self.creationWin)
 
         button = self.creationWin.findChildren(QPushButton, "btnSubmit")[0]
         connect(button, "clicked()", submit_and_proceed)
@@ -194,12 +202,13 @@ class LeapP2PClientUI(object):
             if (self.get_active_window() == self.testWin) and self.picked_choice:
                 button = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
                 button.setEnabled(True)
+            self.flicker()
 
         def play():
             button.setEnabled(False)
             # button.setText("Stop")
             self.playback_player.start(signal,
-                                       enable)
+                                       callback=enable)
             self.unique_connect(button, "clicked()", self.playback_player.stop)
             self.flicker()
         
@@ -251,6 +260,7 @@ class LeapP2PClientUI(object):
     def show_wait(self, parent=None):
         if not parent:
             parent = self.get_active_window()
+            self.close_except(parent)
         self.waitDialog = loadUiWidget('WaitDialog.ui', parent)
         # self.waitDialog.setParent(parent)#QDialog(parent)
         #flags = #Qt.WindowStaysOnTopHint# | Qt.WindowTitleHint 
@@ -285,9 +295,14 @@ class LeapP2PClientUI(object):
 
         self.testWin = loadUiWidget('SignalTesting.ui')
         btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
+        btnPlay = self.testWin.findChildren(QPushButton, "btnPlay")[0]
+        btnPlay.setEnabled(True)
+        self.setup_play_button(btnPlay, self.factory.last_response_data.signal)
+
 
         def submit():
             btnSubmit.setEnabled(False)
+            btnPlay.setEnabled(False)
             image_ = None
             for i, image in zip(range(1,5), images):
                 button = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
@@ -303,9 +318,6 @@ class LeapP2PClientUI(object):
             if self.played:
                 btnSubmit.setEnabled(True)
 
-        button = self.testWin.findChildren(QPushButton, "btnPlay")[0]
-        self.setup_play_button(button, self.factory.last_response_data.signal)
-        
         slider = self.testWin.findChildren(QSlider, "sldVolume")[0]
         slider.setRange(1,100)
         slider.setSingleStep(1)
