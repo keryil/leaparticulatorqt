@@ -310,6 +310,7 @@ class LeapP2PClientUI(object):
                     image_ = image
                     break
             self.client.listen(image_)
+            self.show_wait(parent=self.testWin)
 
         connect(btnSubmit, "clicked()", submit)
 
