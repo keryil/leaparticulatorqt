@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 import jsonpickle
 import pandas as pd
 
@@ -61,6 +63,7 @@ def recursive_decode(lst, verbose=False):
         raise Exception(type(lst), str(lst), ex)
     return lst
 
+
 # converts a list of objects to a list of their
 # string representations
 toStr = lambda x: map(str, x)
@@ -116,69 +119,113 @@ def new_recursive_decode(string, verbose=False):
     print_("Returning object: {}".format(obj))
     return obj
 
+
 def fromFile_p2p(filename):
-    from collections import namedtuple
-    recursive_decode = new_recursive_decode
-    decode = jsonpickle.decode
-    participants = None
-    meanings = None
-    responses = {}
-    image_pointer = 0
-    phase = -1
-    with open(filename) as f:
-        for i, line in zip(range(-2, 40000), open(filename)):
-            if i == -2:
-                participants = decode(line)
-                responses = {p: {} for p in participants}
-            elif i == -1:
-                meanings = decode(line)
-            else:
-                # for some reason we have this confusion in the logs
-                # sometimes
-                line = line.replace("__main__", "leaparticulator.p2p.server")
-                round_summary = recursive_decode(line)
+    def client_hook(obj, context):
+        context['participants'] = obj
+        context['responses'] = {p: {} for p in obj}
+        return context
 
-                # speaker owns the round, because it's his
-                # signal
-                speaker = round_summary.speaker
-                hearer = round_summary.hearer
-                signal = recursive_decode(round_summary.signal)
+    def meaning_hook(obj, context):
+        context['meanings'] = obj
+        return context
 
-                # if this fails, there is something seriously
-                # wrong about this log file.
-                assert round_summary.image in meanings
+    def round_hook(obj, nround, phase, context):
+        round_summary = obj
+        speaker = round_summary.speaker
+        hearer = round_summary.hearer
+        signal = new_recursive_decode(round_summary.signal)
+        image_pointer = round_summary.image_pointer
+        meanings = context['meanings']
+        responses = context['responses']
 
-                # detect phase boundaries
-                if image_pointer < round_summary.image_pointer:
-                    image_pointer = round_summary.image_pointer
-                    phase += 1
-                    responses[speaker][phase] = {str(meaning): None for meaning in meanings[:image_pointer]}
-                    responses[hearer][phase] = {str(meaning): None for meaning in meanings[:image_pointer]}
-                    print "Found phase: {}".format(phase)
-                    # print responses
-                resp = responses[speaker][phase]
+        # if this fails, there is something seriously
+        # wrong about this log file.
+        assert round_summary.image in meanings
 
-                # we only want the successful rounds
-                if round_summary.success:
-                    # print resp.keys()
-                    resp[str(round_summary.image)] = signal
-                    # print round_summary.image_pointer
-                    # responses.append(round_summary)
-    return namedtuple("RoundSummaryTuple", ["responses", "images"])(responses=responses,
-                                                                    images=meanings)
+        try:
+            resp = responses[speaker][phase]
+        except KeyError:
+            responses[speaker][phase] = {str(meaning): None for meaning in meanings[:image_pointer]}
+            resp = responses[speaker][phase]
+
+        # we only want the successful rounds
+        if round_summary.success:
+            # print resp.keys()
+            resp[str(round_summary.image)] = signal
+            # print round_summary.image_pointer
+            # responses.append(round_summary)
+        return context
+
+    context_dict = dict(responses={},
+                        meanings=None)
+
+    context_dict = process_p2p_log(filename,
+                                   clients_hooks=[client_hook],
+                                   meanings_hooks=[meaning_hook],
+                                   round_hooks=[round_hook],
+                                   context_dict=context_dict)
+
+    return namedtuple("RoundSummaryTuple", ["responses", "images"])(responses=context_dict['responses'],
+                                                                    images=context_dict['meanings'])
 
 
-def process_p2p_log(filename, clients_hook, meanings_hook, round_hook):
+def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[],
+                    context_dict={}, reverse=False, nphases=8):
     """
     Takes a P2P log file, and applies clients_hook to the first line,
-    meanings_hook to the second, and round_hook for every following round
+    meanings_hook to the second, and round_hook for every following round.
+    All operations use context_dict to read/write data.
+
+    round_hooks members are of the form function(object, nround, phase, context_dict).
+    Other hook members are of the form function(object, context_dict).
+    All hook members are to return the context_dict.
+
+    :param context_dict:
     :param filename:
-    :param clients_hook:
-    :param meanings_hook:
-    :param round_hook:
+    :param clients_hooks:
+    :param meanings_hooks:
+    :param round_hooks:
     :return:
     """
-    pass
+    with open(filename) as f:
+        phase = -1
+        last_pointer = -1
+        lines = zip(range(-2, 40000), f)
+
+        if reverse:
+            lines = reversed(lines)
+            phase = nphases
+            last_pointer = 10000
+
+        for i, line in lines:
+            obj = jsonpickle.decode(line.replace("__main__", "leaparticulator.p2p.server"))
+            # phase_change = False
+            if i >= 0:
+                phase_change = ((obj.image_pointer > last_pointer) and not reverse) \
+                               or ((obj.image_pointer < last_pointer) and reverse)
+
+                obj.signal = recursive_decode(obj.signal)
+                if phase_change:
+                    phase += 1
+                    if reverse:
+                        phase -= 2
+
+                    last_pointer = obj.image_pointer
+                    print "Phase {} {} at round {}".format(phase, "ends" if reverse else "starts", i)
+
+                for round_hook in round_hooks:
+                    context_dict = round_hook(obj, i, phase, context_dict)
+            elif i == -2:
+                for clients_hook in clients_hooks:
+                    context_dict = clients_hook(obj, context_dict)
+            elif i == -1:
+                for meanings_hook in meanings_hooks:
+                    context_dict = meanings_hook(obj, context_dict)
+                    # if reverse and phase_change:
+                    #     phase -= 1
+    return context_dict
+
 
 def toPandas_p2p(filename):
     """
@@ -189,58 +236,127 @@ def toPandas_p2p(filename):
     :return:
     """
     from leaparticulator.constants import palmToAmpAndFreq, palmToAmpAndMel
-    r = fromFile_p2p(filename)
-    responses = r.responses
-    columns = ['client', 'phase', 'image', 'data_index', 'x', 'y', 'z', 'frequency', 'mel']
-    lst = []
-    for client, client_ in responses.items():
-        for phase, phase_ in client_.items():
-            for meaning, signal in phase_.items():
-                if signal:
-                    for i, frame in enumerate(signal):
-                        x, y, z = frame.get_stabilized_position()
-                        hertz = palmToAmpAndFreq((x, y))[1]
-                        mel = palmToAmpAndMel((x, y))[1]
-                        lst.append(pd.Series([client, phase, meaning, i, x, y, z, hertz, mel], index=columns))
+    columns_response = ['round', 'client', 'phase', 'image', 'data_index', 'x', 'y', 'z', 'frequency', 'mel']
+    columns_test = ['client', 'phase', 'image0', 'image1', 'image2', 'image3', 'answer', 'given_answer', 'success']
 
-    df_response = pd.DataFrame(lst, columns=columns)
+    def response_hook(obj, nround, phase, context):
+        client = obj.speaker
+        meaning = obj.image
+        success = obj.success
+        assert success == (obj.image == obj.guess)
+        signal = obj.signal
+        # guarantee that we only capture the last success
+        if signal and success and \
+                ((client, phase, str(meaning)) not in context['phase_and_meaning']):
+            context['phase_and_meaning'][(client, phase, str(meaning))] = True
+            for i, frame in reversed(list(enumerate(signal))):
+                x, y, z = frame.get_stabilized_position()
+                hertz = palmToAmpAndFreq((x, y))[1]
+                mel = palmToAmpAndMel((x, y))[1]
+                context['lst_responses'].append(pd.Series([nround, client, phase, meaning, i, x, y, z, hertz, mel],
+                                                          index=columns_response))
+        return context
 
-    lst = []
-    columns = ['client', 'phase', 'image0', 'image1', 'image2', 'image3', 'answer', 'given_answer', 'success']
+    def question_hook(obj, nround, phase, context):
+        rnd = obj
 
-    with open(filename) as f:
-        phase = -1
-        last_pointer = -1
-        for i, line in zip(range(-2, 40000), f):
-            if i >= 0:
-                line = line.replace("__main__", "leaparticulator.p2p.server")
-                rnd = jsonpickle.decode(line)
+        # the owner of the test is the hearer
+        client = rnd.hearer
+        answer = rnd.image
+        given_answer = rnd.guess
+        success = answer == given_answer
+        image0 = image1 = image2 = image3 = None
+        try:
+            image0 = rnd.options[0]
+            image1 = rnd.options[1]
+            image2 = rnd.options[2]
+            image3 = rnd.options[3]
+        except IndexError:
+            pass
 
-                # phase change
-                if rnd.image_pointer > last_pointer:
-                    phase += 1
-                    last_pointer = rnd.image_pointer
+        context['lst_questions'].append(
+            pd.Series([client, phase, image0, image1, image2, image3, answer, given_answer, success],
+                      index=columns_test))
+        return context
 
-                # the owner of the test is the hearer
-                client = rnd.hearer
-                answer = rnd.image
-                given_answer = rnd.guess
-                success = answer == given_answer
-                image0 = image1 = image2 = image3 = None
-                images = [image0, image1, image2, image3]
-                try:
-                    image0 = rnd.options[0]
-                    image1 = rnd.options[1]
-                    image2 = rnd.options[2]
-                    image3 = rnd.options[3]
-                except IndexError:
-                    pass
+    context_dict = dict(lst_questions=[],
+                        lst_responses=[],
+                        phase_and_meaning={})
 
-                lst.append(pd.Series([client, phase, image0, image1, image2, image3, answer, given_answer, success],
-                                     index=columns))
-
-    df_test = pd.DataFrame(lst, columns=columns)
+    context_dict = process_p2p_log(filename,
+                                   round_hooks=[question_hook,
+                                                response_hook],
+                                   context_dict=context_dict,
+                                   reverse=True)
+    reverse_list = lambda x: list(reversed(x))
+    df_test = pd.DataFrame(reverse_list(context_dict['lst_questions']), columns=columns_test)
+    df_response = pd.DataFrame(reverse_list(context_dict['lst_responses']), columns=columns_response)
+    # print context_dict
     return df_response, df_test
+
+
+# def toPandas_p2p(filename):
+#     """
+#     Takes a P2P log file, and returns TWO pandas.DataFrame objects, one for
+#     response data, one for question data, respectively. For the response data,
+#     the "client" is the speaker. For the test data, the "client" is the hearer.
+#     :param filename:
+#     :return:
+#     """
+#     from leaparticulator.constants import palmToAmpAndFreq, palmToAmpAndMel
+#     r = fromFile_p2p(filename)
+#     responses = r.responses
+#     columns = ['client', 'phase', 'image', 'data_index', 'x', 'y', 'z', 'frequency', 'mel']
+#     lst = []
+#     for client, client_ in responses.items():
+#         for phase, phase_ in client_.items():
+#             for meaning, signal in phase_.items():
+#                 if signal:
+#                     for i, frame in enumerate(signal):
+#                         x, y, z = frame.get_stabilized_position()
+#                         hertz = palmToAmpAndFreq((x, y))[1]
+#                         mel = palmToAmpAndMel((x, y))[1]
+#                         lst.append(pd.Series([client, phase, meaning, i, x, y, z, hertz, mel], index=columns))
+#
+#     df_response = pd.DataFrame(lst, columns=columns)
+#
+#     lst = []
+#     columns = ['client', 'phase', 'image0', 'image1', 'image2', 'image3', 'answer', 'given_answer', 'success']
+#
+#     with open(filename) as f:
+#         phase = -1
+#         last_pointer = -1
+#         for i, line in zip(range(-2, 40000), f):
+#             if i >= 0:
+#                 line = line.replace("__main__", "leaparticulator.p2p.server")
+#                 rnd = jsonpickle.decode(line)
+#
+#                 # phase change
+#                 if rnd.image_pointer > last_pointer:
+#                     phase += 1
+#                     last_pointer = rnd.image_pointer
+#
+#                 # the owner of the test is the hearer
+#                 client = rnd.hearer
+#                 answer = rnd.image
+#                 given_answer = rnd.guess
+#                 success = answer == given_answer
+#                 image0 = image1 = image2 = image3 = None
+#                 images = [image0, image1, image2, image3]
+#                 try:
+#                     image0 = rnd.options[0]
+#                     image1 = rnd.options[1]
+#                     image2 = rnd.options[2]
+#                     image3 = rnd.options[3]
+#                 except IndexError:
+#                     pass
+#
+#                 lst.append(pd.Series([client, phase, image0, image1, image2, image3, answer, given_answer, success],
+#                                      index=columns))
+#
+#     df_test = pd.DataFrame(lst, columns=columns)
+#     return df_response, df_test
+
 
 def fromFile_old(filename):
     lines = open(filename).readlines()
@@ -400,7 +516,6 @@ def toCSV(filename, delimiter="|", data=None):
                                               doublequote(question.given_answer))))
                     csv.write("\n")
 
-
     # Finally, the images
     csv_filename = csv_filename.replace("tests", "images")
     print("Saving images into %s" % csv_filename)
@@ -427,8 +542,8 @@ def convertToPandas(images, responses, test_results):
         for phase in responses[client]:
             phased = {}
             # clientd[phase] = phased
-            #print "Phase:", phase
-            #print "Image indexes:", responses[client][phase].keys()
+            # print "Phase:", phase
+            # print "Image indexes:", responses[client][phase].keys()
             for index in responses[client][phase]:
                 image = images[int(phase)][int(index)]
                 phased[image] = responses[client][phase][index]
@@ -448,10 +563,10 @@ def convertToPandas(images, responses, test_results):
         # print "Client:", client
         # print "Phases:", test_results[client].keys()
         for phase in test_results[client]:
-            #print "Phase:", phase
+            # print "Phase:", phase
             d[phase] = []
             for index, question in enumerate(test_results[client][phase]):
-                #print "Question:", index, question
+                # print "Question:", index, question
                 question.pics = [images[int(phase)][pic] for pic in question.pics]
                 question.answer = images[int(phase)][int(question.answer)]
                 question.given_answer = images[int(phase)][int(question.given_answer)]
@@ -477,9 +592,9 @@ def logToPandasFrame(logfile):
     responses_p = responses_practice['127.0.0.1']
     phases = map(str, range(3))
     meanings = responses[phases[0]].keys()
-    columns=['phase', 'meaning', 'frame_index', 'x', 'y', 'practice']
+    columns = ['phase', 'meaning', 'frame_index', 'x', 'y', 'practice']
     all_data = pd.DataFrame(columns=columns)
-#     print all_data
+    #     print all_data
     grand_index = 0
     for phase, meaning in product(phases, meanings):
         for response_dict in (responses, responses_p):
@@ -515,7 +630,6 @@ def logToPandasFrame(logfile):
                 frame[field] = pd.Series(name=field, data=lst, index=index)
             all_data = all_data.append(frame)
     return all_data
-
 
 
 # if __name__ == "__main__":
