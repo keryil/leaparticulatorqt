@@ -177,7 +177,15 @@ class LeapP2PServerUI(object):
 
         if rnd.signal is not None and rnd.signal != []:
             def play_back():
-                self.playback.start(rnd.signal)
+                def stop():
+                    self.btnPlay.setText("Play the signal")
+                    self.btnPlay.clicked.disconnect()
+                    self.btnPlay.clicked.connect(play_back)
+
+                self.btnPlay.setText("Stop playback")
+                self.btnPlay.clicked.disconnect()
+                self.btnPlay.clicked.connect(stop)
+                self.playback.start(rnd.signal, callback=stop)
 
             self.btnPlay.clicked.connect(play_back)
         self.displayMeaningSpace(rnd)
