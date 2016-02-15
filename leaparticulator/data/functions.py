@@ -295,6 +295,15 @@ def toPandas_p2p(filename, nphases=8):
                                    reverse=True,
                                    nphases=nphases)
     reverse_list = lambda x: list(reversed(x))
+
+    # calculate the phase offset, and apply it if nonzero
+    min_phase = context_dict['lst_questions'][-1]['phase']
+    if min_phase:
+        print "Correcting for {} phases (offset: {})...".format(nphases - min_phase, - min_phase)
+        for lst in (context_dict['lst_questions'], context_dict['lst_responses']):
+            for row in lst:
+                row['phase'] -= min_phase
+
     df_test = pd.DataFrame(reverse_list(context_dict['lst_questions']), columns=columns_test)
     df_response = pd.DataFrame(reverse_list(context_dict['lst_responses']), columns=columns_response)
     # print context_dict
