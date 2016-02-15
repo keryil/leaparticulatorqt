@@ -51,7 +51,8 @@ You should change Constants.py file on client-side to specify the server ip/port
 
 You can try:
 
-1. ```
+1. 
+```
 #!python
 
 df_responses, df_tests = toPandas_p2p("./leaparticulator/test/test_data/P2P-160209.144607.realdata.1.exp.log", nphases=8)
@@ -59,7 +60,8 @@ df_responses, df_tests = toPandas_p2p("./leaparticulator/test/test_data/P2P-1602
 which returns two dataframes that hold the responses and the test results. The "client" column holds the speaker for the response data frame, and the hearer for the other data frame. If there are fewer than 8 phases in total i.e. the experimental run has been cut short, you have to input the number of phases manually to get correct phase numbers. 
 
 
-2. ```
+2. 
+```
 #!python
 
 responses, images = fromFile("./leaparticulator/test/test_data/P2P-160209.144607.realdata.1.exp.log")
