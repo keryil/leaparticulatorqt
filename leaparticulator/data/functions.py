@@ -203,7 +203,7 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
             if i >= 0:
                 phase_change = ((obj.image_pointer > last_pointer) and not reverse) \
                                or ((obj.image_pointer < last_pointer) and reverse)
-                obj.signal = [decode(frame) for frame in obj.signal]
+                obj.signal = map(decode, obj.signal)
 
                 if phase_change:
                     phase += 1

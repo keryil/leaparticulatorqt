@@ -21,10 +21,16 @@ def do_profile(follow=[]):
     return inner
 
 
+fname = './leaparticulator/test/test_data/P2P-160209.144607.realdata.1.exp.log'
+
 @do_profile(follow=[process_p2p_log])
 def profile_fromFile():
-    fromFile('./leaparticulator/test/test_data/P2P-160203.170804.REALDATA.1.exp.log')
+    fromFile(fname)
 
+
+@do_profile(follow=[toPandas_p2p, process_p2p_log])
+def profile_toPandas_p2p():
+    toPandas_p2p(fname, nphases=10)
 
 #     self.test_file = './leaparticulator/test/test_data/P2P-160203.170804.REALDATA.1.exp.log'
 # else:
@@ -33,4 +39,4 @@ def profile_fromFile():
 
 
 if __name__ == "__main__":
-    profile_fromFile()
+    profile_toPandas_p2p()
