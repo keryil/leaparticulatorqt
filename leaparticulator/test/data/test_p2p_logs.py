@@ -27,8 +27,14 @@ class TestP2PLogsToPandas(object):
         self.test_file = './leaparticulator/test/test_data/P2P-160203.170804.REALDATA.1.exp.log'
         print "Data file to use in the following test: {}".format(self.test_file)
 
-    def test_correctPhaseNumbers(self):
+    def test_correctPhaseNumberTooGreat(self):
         df1, df2 = toPandas_p2p(self.test_file, nphases=10)
+        for df in (df1, df2):
+            assert min(df["phase"]) == 0
+            assert max(df["phase"]) == 7
+
+    def test_correctPhaseNumberTooLow(self):
+        df1, df2 = toPandas_p2p(self.test_file, nphases=5)
         for df in (df1, df2):
             assert min(df["phase"]) == 0
             assert max(df["phase"]) == 7
