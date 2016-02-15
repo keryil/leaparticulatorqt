@@ -65,16 +65,18 @@ class LeapP2PClientUI(object):
             return None
 
     def close_all(self):
-        for w in (self.firstWin, self.creationWin,
-                  self.testWin, self.feedbackWin,
-                  self.waitDialog, self.finalScreen):
+        for w in self.app.topLevelWidgets():
+            # for w in (self.firstWin, self.creationWin,
+            #           self.testWin, self.feedbackWin,
+            #           self.waitDialog, self.finalScreen):
             if w and w.isVisible():
                 w.close()
 
     def close_except(self, win):
-        for w in (self.firstWin, self.creationWin,
-                  self.testWin, self.feedbackWin,
-                  self.finalScreen):
+        # for w in (self.firstWin, self.creationWin,
+        #           self.testWin, self.feedbackWin,
+        #           self.finalScreen):
+        for w in self.app.topLevelWidgets():
             if w and w.isVisible():
                 if w != win:
                     w.close()
