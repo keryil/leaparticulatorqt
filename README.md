@@ -44,3 +44,25 @@ You should change Constants.py file on client-side to specify the server ip/port
 4. Have fun.
 
 5. Restart BOTH for each new experimental run.
+
+## Reading Log Files ##
+### P2P ###
+
+
+You can try either:
+ 
+```
+#!python
+
+df_responses, df_tests = toPandas_p2p("./leaparticulator/test/test_data/P2P-160209.144607.realdata.1.exp.log", nphases=8)
+```
+which returns two dataframes that hold the responses and the test results. The "client" column holds the speaker for the response data frame, and the hearer for the other data frame. If there are fewer than 8 phases in total i.e. the experimental run has been cut short, you have to input the number of phases manually to get correct phase numbers,
+
+OR
+ 
+```
+#!python
+
+responses, images = fromFile("./leaparticulator/test/test_data/P2P-160209.144607.realdata.1.exp.log")
+```
+Returns a dictionary of last seen successful response for each meaning in each phase and a list of images used. The dict is indexed as responses[client][phase][meaning] = signal.
