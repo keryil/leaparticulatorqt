@@ -1,21 +1,19 @@
 import sys
 
-from PyQt4.QtGui import QApplication
-
 from leaparticulator import constants
-
-print "LeapP2PClient QApp check...",
-app = QApplication.instance()
-if app is None:
-    app = QApplication(sys.argv)
-    print "LeapP2PClient new QApp: %s" % app
-else:
-    print "LeapP2PClient existing QApp: %s" % app
-
-from leaparticulator.constants import install_reactor
-
-qapplication = app
-install_reactor()
+#
+# print "LeapP2PClient QApp check...",
+# app = QApplication.instance()
+# if app is None:
+#     app = QApplication(sys.argv)
+#     print "LeapP2PClient new QApp: %s" % app
+# else:
+#     print "LeapP2PClient existing QApp: %s" % app
+#
+# from leaparticulator.constants import install_reactor
+#
+# qapplication = app
+# install_reactor()
 
 import jsonpickle
 from twisted.internet import protocol, reactor
