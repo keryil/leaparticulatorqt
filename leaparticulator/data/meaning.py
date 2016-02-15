@@ -61,7 +61,8 @@ class AbstractMeaning(object):
         return cls(*args)
 
     def pixmap(self, tint=None, overlayed_text=None,
-               font=QtGui.QFont("Arial", 27)):
+               font=QtGui.QFont("Arial", 27),
+               size=(250, 250)):
         """
         Tint is a tuple (r,g,b,a).
         """
@@ -72,7 +73,7 @@ class AbstractMeaning(object):
         # self._ready = px
 
         if tint is not None:
-            px = QtGui.QPixmap(250, 250)
+            px = QtGui.QPixmap(*size)
             px.fill(QtCore.Qt.transparent)
             r, g, b, a = tint
             correct = g > 1

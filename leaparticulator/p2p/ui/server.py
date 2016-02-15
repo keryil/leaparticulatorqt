@@ -55,9 +55,10 @@ class LeapP2PServerUI(object):
         self.btnStart = self.mainWin.findChildren(QPushButton, "btnStart")[0]
         self.btnEnd = self.mainWin.findChildren(QPushButton, "btnEnd")[0]
 
-        self.meaningSpaceScroll = self.mainWin.findChildren(QScrollArea, "scrollArea")
+        self.meaningSpaceScroll = self.mainWin.findChildren(QScrollArea, "scrollArea")[0]
         self.meaningSpace = self.mainWin.findChildren(QGroupBox, "meaningSpace")[0]
         self.meaningSpaceLabels = []
+        self.meaningSpaceScrollWidget = self.mainWin.findChildren(QWidget, "groupBox_5")[0]
         # self.meaningSpace = self.mainWin.findChildren(QGroupBox, "meaningSpace")[0]
         # self.meaningSpaceLayout = self.mainWin.findChildren(QVBoxLayout, "meaningLayout")[0]
         # self.go()
@@ -213,7 +214,7 @@ class LeapP2PServerUI(object):
             self.mainWin.findChildren(QScrollArea, "scrollArea")[0].setWidget(self.meaningSpace)
 
         assert self.meaningSpace
-        print "Got a handle for the meaning space now."
+        print "Got a handle for the meaning space now. It has {} meanings in it.".format(len(image_list))
 
         # first clean the current items, if present
         layout = self.meaningSpace.layout()
@@ -227,7 +228,7 @@ class LeapP2PServerUI(object):
         else:
             layout = QFormLayout()
             self.meaningSpace.setLayout(layout)
-
+        height = 0
         for meaning in map(str, image_list):
             count = rnd.success_counts[meaning]
             # print "Adding %s to meaning space" % meaning
@@ -240,7 +241,10 @@ class LeapP2PServerUI(object):
             count_label = QLabel("%s correct guesses" % count)
             layout.addRow(label, count_label)
             self.meaningSpaceLabels.append([label, count_label])
+            height += label.sizeHint().height() + 10
             # print meaning, count
+        self.meaningSpaceScrollWidget.setMinimumHeight(height)
+        self.meaningSpace.setMinimumHeight(height)
 
     def first_screen(self):
         # self.close_all()
