@@ -128,8 +128,14 @@ class LeapP2PServerUI(object):
     def onSessionChange(self, session):
         self.session = session
         self.lblCondition.setText("Condition: %s" % session.condition)
+        phase = -1
+        last_pointer = -1
         for index, rnd in enumerate(session.round_data):
-            title = "Round #%s" % index
+            if rnd.image_pointer > last_pointer:
+                phase += 1
+                last_pointer = rnd.image_pointer
+            title = "Round #{} (Phase {})".format(str(index).zfill(2),
+                                                  phase)
             items = self.roundModel.findItems(title)
             if items != []:
                 item = items[0]
@@ -175,9 +181,17 @@ class LeapP2PServerUI(object):
         else:
             self.lblGiven.setPixmap(QPixmap(constants.question_mark_path))
 
-        if rnd.signal is not None and rnd.signal != []:
+        if rnd.signal:
             def play_back():
-                self.playback.start(rnd.signal)
+                def stop():
+                    self.btnPlay.setText("Play the signal")
+                    self.btnPlay.clicked.disconnect()
+                    self.btnPlay.clicked.connect(play_back)
+
+                self.btnPlay.setText("Stop playback")
+                self.btnPlay.clicked.disconnect()
+                self.btnPlay.clicked.connect(stop)
+                self.playback.start(rnd.signal, callback=stop)
 
             self.btnPlay.clicked.connect(play_back)
         self.displayMeaningSpace(rnd)

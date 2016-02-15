@@ -39,11 +39,15 @@ class LeapHand(object):
     _translation = None
     _translation_prob = None
 
-    def __init__(self, hand, frame, random=False):
+    def __init__(self, hand, frame, random=False, position=None):
         if random:
             self.id = 1
             self.frame = None
-            self.stabilized_palm_position = (rnd() * 100, rnd() * 100, rnd() * 100)
+            if position:
+                assert len(position) == 3
+                self.stabilized_palm_position = position
+            else:
+                self.stabilized_palm_position = (rnd() * 100, rnd() * 100, rnd() * 100)
             self.palm_normal = (rnd() * 100, rnd() * 100, rnd() * 100)
             self.palm_position = (rnd() * 100, rnd() * 100, rnd() * 100)
             self.palm_velocity = (rnd() * 100, rnd() * 100, rnd() * 100)
@@ -78,15 +82,14 @@ class LeapFrame(object):
     current_frames_per_second = None
     is_valid = None
 
-
-    def __init__(self, frame, random=False):
+    def __init__(self, frame, random=False, position=None):
         '''
         Constructs a new python frame from the original frame
         '''
         if random:
             self.id = randint(0,100)
             self.timestamp = randint(0,10000)
-            self.hands = [LeapHand(None, None, random=random)]
+            self.hands = [LeapHand(None, None, random=random, position=position)]
             self.interaction_box = InteractionBox()
             self.interaction_box.center = (randint(0,100),randint(0,100),randint(0,100))
             self.interaction_box.width = randint(0,100)
@@ -142,7 +145,7 @@ def generateRandomSignal(duration):
     from jsonpickle import encode
     lst = []
     for i in range(duration):
-        frame = LeapFrame(None, random=True)
-        lst.append(encode(LeapFrame(None, random=True)))
+        frame = LeapFrame(None, random=True, position=(40 + i, 30, 30))
+        lst.append(encode(frame))
     return lst
         

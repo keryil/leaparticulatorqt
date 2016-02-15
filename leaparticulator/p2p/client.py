@@ -123,6 +123,11 @@ class LeapP2PClient(basic.LineReceiver):
     def send_to_server(self, message):
         assert isinstance(message, LeapP2PMessage)
         self.sendLine(jsonpickle.encode(message))
+        # if self.ui:
+        #     win = self.ui.get_active_window()
+        #     if win:
+        #         win.showMinimized()
+        #         reactor.callLater(0.01, win.showFullScreen)
 
     def speak(self):
         # from time import sleep

@@ -332,15 +332,15 @@ class ThereminPlayback(object):
         self.player.setVolume(value)
 
     def play(self):
-        # log.msg("Frame %s of this recording." % self.counter)
         try:
-            f = self.score[self.counter]
-            self.player.newPosition(f)
+            frame = self.score[self.counter]
+            self.player.newPosition(frame)
             self.counter += 1
-        except IndexError, e:
+        except IndexError:
             self.stop()
 
     def start(self, score, callback=None, filename=None, jsonencoded=True):
+        from copy import deepcopy as copy
         if self.record:
             assert filename
             self.filename = filename
@@ -352,12 +352,13 @@ class ThereminPlayback(object):
         self.callback = callback
         # self.call = QtCore.QTimer()
 
+        self.counter = 0
         self.call = LoopingCall(self.play)  # , self)
         # print "Score is something like: ", score
         if jsonencoded:
-            self.score = deque([jsonpickle.decode(f) for f in score])
+            self.score = deque([jsonpickle.decode(f) for f in copy(score)])
         else:
-            self.score = deque(score)
+            self.score = deque(copy(score))
         # for f in self.score:
         #   print f.current_frames_per_second
         if self.default_rate:
@@ -368,7 +369,6 @@ class ThereminPlayback(object):
             self.rate = 1. / average_fps
 
         self.player.unmute()
-        self.counter = 0
         from datetime import datetime
         self.start_time = datetime.now()
         self.call.start(self.rate, now=True).addErrback(log.err)

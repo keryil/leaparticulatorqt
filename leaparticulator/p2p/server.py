@@ -157,32 +157,26 @@ class LeapP2PSession(object):
         self.round_data.append(LeapP2PRoundSummary())
         self.setImagePointer(self.factory.image_pointer)
         self.setSuccessCounts(counts)
-        # self.notify()
 
     @notifies
     def setImagePointer(self, pointer):
         self.getLastRound().set_image_pointer(pointer)
-        # self.notify()
 
     @notifies
     def setOptions(self, options):
         self.getLastRound().set_options(options)
-        # self.notify()
 
     @notifies
     def setImage(self, image):
         self.image = image
-        # self.notify()
 
     @notifies
     def setParticipants(self, speaker, hearer):
         self.getLastRound().set_participants(speaker, hearer)
-        # self.notify()
 
     @notifies
     def setSpeakerContribution(self, response_message):
         self.getLastRound().set_speakers_contribution(response_message)
-        # self.notify()
 
     @notifies
     def setHearerContribution(self, response_message):
@@ -190,7 +184,6 @@ class LeapP2PSession(object):
         # since this is the last piece of information, we can
         # serialize after setting the hearer contribution
         self.dump_to_file()
-        # self.notify()
 
     def getLastRound(self):
         return self.round_data[-1]
@@ -274,28 +267,11 @@ class LeapP2PServer(basic.LineReceiver):
 
     def connectionMade(self):
         self.other_end = self.transport.getPeer().host
-
-        # bugfix for multiple connections to hosts
-        # no longer needed because we stopped the theremin
-        # establishing a second connection
-
-        # for k in self.factory.clients.keys():
-        #     print "Checking %s versus %s" % (self.other_end, k.transport.getPeer().host)
-        #     # skip if this is a server/client. we are probably testing.
-        #     if self.other_end == constants.leap_server:
-        #         continue
-        #     if k.transport.getPeer().host == self.other_end:
-        #         del self.factory.clients[k]
-
         self.factory.clients[self] = self.other_end
 
-        # check if we need a new session
-        # if self.other_end not in self.factory.responses:
-        #     self.factory.responses[self.other_end] = {0:{},1:{},2:{}}
-        #     self.factory.responses_practice[self.other_end] = {0:{},1:{},2:{}}
         log.msg("Connection with %s is made" % self.other_end)
         print "Current client list:", self.factory.clients
-        # log.msg("Callbacks: %s" % self.connectionMadeListeners)
+
         for callback in self.connectionMadeListeners:
             callback(self)
 
@@ -350,12 +326,6 @@ class LeapP2PServer(basic.LineReceiver):
                 print 'Why the fuck are we restarting with %d end of round messages?! Ignoring...' % self.factory.end_round_msg_counter
                 return
 
-            # # check if we have any images left, otherwise, terminate
-            # if self.factory.image_pointer == len(self.factory.images):
-            #     log.msg("Successfully finished the image set, ending the experiment...")
-            #     self.end()
-            #     return
-
             self.factory.end_round_msg_counter = 0
             # send the start signals and the image list
             if self.factory.mode == constants.INIT:
@@ -368,11 +338,8 @@ class LeapP2PServer(basic.LineReceiver):
                 log.msg("Starting a new session with clients %s" %
                         ([c for c in self.factory.clients.values()]))
 
-                # self.factory.session_data = LeapP2PSession(self.factory.clients)
                 self.send_all(StartMessage())
                 img_list = ImageListMessage(self.factory.images)
-                # print self.factory.images
-                # print img_list
                 self.send_all(img_list)
             self.choose_speaker_and_topic()
         else:
@@ -691,6 +658,8 @@ if __name__ == '__main__':
         assert len(sys.argv) > 2
         no_ui = "no_ui" in sys.argv
         constants.RANDOM_SIGNALS = "randomsignals" in sys.argv
+        if constants.RANDOM_SIGNALS:
+            sys.argv.remove("randomsignals")
 
         if sys.argv[2] == "client":
             assert len(sys.argv) > 3
