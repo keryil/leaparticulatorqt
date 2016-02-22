@@ -93,10 +93,8 @@ def fromFile(filename, no_practice=False):
 
 def new_recursive_decode(string, verbose=False):
     def print_(stuff):
-        print stuff
-
-    if not verbose:
-        print_ = callable
+        if verbose:
+            print stuff
 
     obj = string
     if (isinstance(string, str) or isinstance(string, unicode)) \
@@ -116,7 +114,8 @@ def new_recursive_decode(string, verbose=False):
 
     if isinstance(obj, list):
         obj = [new_recursive_decode(o) for o in obj]
-    print_("Returning object: {}".format(obj))
+    if verbose:
+        print_("Returning object: {}".format(obj))
     return obj
 
 
@@ -134,7 +133,7 @@ def fromFile_p2p(filename):
         round_summary = obj
         speaker = round_summary.speaker
         hearer = round_summary.hearer
-        signal = new_recursive_decode(round_summary.signal)
+        signal = round_summary.signal
         image_pointer = round_summary.image_pointer
         meanings = context['meanings']
         responses = context['responses']
@@ -188,6 +187,7 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
     :param round_hooks:
     :return:
     """
+    decode = jsonpickle.decode
     with open(filename) as f:
         phase = -1
         last_pointer = -1
@@ -199,13 +199,12 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
             last_pointer = 10000
 
         for i, line in lines:
-            obj = jsonpickle.decode(line.replace("__main__", "leaparticulator.p2p.server"))
-            # phase_change = False
+            obj = decode(line.replace("__main__", "leaparticulator.p2p.server"))
             if i >= 0:
                 phase_change = ((obj.image_pointer > last_pointer) and not reverse) \
                                or ((obj.image_pointer < last_pointer) and reverse)
+                obj.signal = map(decode, obj.signal)
 
-                obj.signal = recursive_decode(obj.signal)
                 if phase_change:
                     phase += 1
                     if reverse:
@@ -222,8 +221,7 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
             elif i == -1:
                 for meanings_hook in meanings_hooks:
                     context_dict = meanings_hook(obj, context_dict)
-                    # if reverse and phase_change:
-                    #     phase -= 1
+
     return context_dict
 
 
