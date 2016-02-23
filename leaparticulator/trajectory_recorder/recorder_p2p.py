@@ -72,7 +72,8 @@ class RecorderWindow(QtGui.QMainWindow):
         self.playback = ThereminPlayback(record=False, default_rate=1. / rate)
 
     def selectScore(self, current, previous):
-        self.setScore(current.signal)
+        if current:
+            self.setScore(current.signal)
 
     def setScore(self, score):
         self.score = score
@@ -99,7 +100,7 @@ class RecorderWindow(QtGui.QMainWindow):
         for speaker in self.data:
             for phase in self.data[speaker]:
                 for meaning, signal in self.data[speaker][phase].items():
-                    if signal:
+                    if signal is not None and signal != []:
                         item = QtGui.QListWidgetItem(
                             "Speaker %s, Phase %s, Meaning %s" % (speaker.split("@")[0], phase, meaning))
                         item.signal = signal
