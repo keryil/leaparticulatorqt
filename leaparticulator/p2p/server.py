@@ -16,7 +16,7 @@ if app is None:
 else:
     print "LeapP2PServer existing QApp: %s" % app
 
-from leaparticulator.constants import install_reactor, NOVELTY_COEFFICENT
+from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT
 
 qapplication = app
 install_reactor()
@@ -221,8 +221,7 @@ class LeapP2PServer(basic.LineReceiver):
     response = []
     # phase = 0
 
-    image_mask = os.path.join(constants.MEANING_DIR_P2P, "*.%s" %
-                              constants.IMG_EXTENSION)
+    image_mask = constants.P2P_IMAGE_MASK
     recording = False
     # n_of_test_questions = [5, 9, 9]
     # n_of_options = [4, 4, 4]
@@ -374,7 +373,7 @@ class LeapP2PServer(basic.LineReceiver):
         # we are going to pick an image with 2
         # consecutive right guesses, at p = .5
         from random import random
-        pick_guessed_image = True if random() > NOVELTY_COEFFICENT else False
+        pick_guessed_image = True if random() > NOVELTY_COEFFICIENT else False
         log.msg("Do we intend to pick an already established meaning? %s" % pick_guessed_image)
 
         all_images = self.factory.images[:self.factory.image_pointer]

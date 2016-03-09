@@ -105,7 +105,7 @@ END_SESSION = "End session"
 # This is the probability of picking an unestablished meaning for a round
 # in P2P. so a random draw greater than this will cause the experiment to
 # pick an already established meaning.
-NOVELTY_COEFFICENT = 0.55
+NOVELTY_COEFFICIENT = 0.55
 
 # Analysis constants
 # unit parameters for train_hmm_n_times()
@@ -123,6 +123,8 @@ MEANING_DIR_P2P = join(IMG_DIR, 'meanings', 'featureless')
 IMG_EXTENSION = 'png'
 P2P_RES_DIR = join(ROOT_DIR, "res", "p2p")
 P2P_LOG_DIR = join('logs', 'p2p')
+P2P_IMAGE_MASK = join(MEANING_DIR_P2P, "*.%s" %
+                      IMG_EXTENSION)
 
 FALSE_OVERLAY = join(IMG_DIR, "false.png")
 TRUE_OVERLAY = join(IMG_DIR, "true.png")
