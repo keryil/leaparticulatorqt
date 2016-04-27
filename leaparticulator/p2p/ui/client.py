@@ -93,7 +93,7 @@ class LeapP2PClientUI(object):
             from pymouse import PyMouse
             m = PyMouse()
             x,y = m.position()
-            m.move(x+self.flickerDelta,y)
+            m.move(x + self.flickerDelta, y)
             self.flickerDelta *= -1
 
     def first_screen(self):

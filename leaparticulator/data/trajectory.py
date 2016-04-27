@@ -6,13 +6,33 @@ Created on Apr 14, 2013
 
 from copy import deepcopy
 
-from numpy.random import randint, random, normal
 import numpy as np
+from numpy.random import randint, random, normal
 # from matplotlib import pyplot as plt
 from scipy.spatial.distance import euclidean
 
 
 np.seterr(all='raise')
+
+
+def trajectory_from_leapframes(frames, dims=(0, 1), process_fn=lambda x: x):
+    """
+    Helper function that creates a Trajectory objects from an iterable of
+    LeapFrame objects, using dimensions specified in dims, and processing
+    each data point through process_fn.
+    :param frames:
+    :param dims:
+    :return:
+    """
+    arr = []
+    for frame in frames:
+        coords = []
+        coords_ = frame.get_stabilized_position()
+        for dim in dims:
+            coords.append(coords_[dim])
+        coords = process_fn(coords)
+        arr.append(coords)
+    return trajectory_from_array(arr)
 
 
 def trajectory_from_array(arr):
@@ -22,7 +42,7 @@ def trajectory_from_array(arr):
     :param arr:
     :return:
     """
-    arr = np.asarray(arr)
+    arr = np.asarray(arr, dtype=np.float)
     duration = len(arr)
     prob_c = .1
     try:
@@ -31,7 +51,8 @@ def trajectory_from_array(arr):
     except TypeError:
         ndim = 1
         dimsize = [1]
-    step_size = max([arr[n] - arr[n - 1] for n in range(1, duration)])
+    step_size = [arr[n] - arr[n - 1] for n in range(1, duration)]
+    step_size = np.max(step_size)
     return Trajectory(duration, step_size, prob_c, dimsize, ndim, from_arr=arr)
 
 
@@ -174,11 +195,13 @@ class Trajectory(object):
         self.current_duration = current_duration
         # self.boundary_check()
 
-    def plot2d(self, show=True, width=0.002, path=None, *args, **kwargs):
+    def plot2d(self, show=True, width=0.002, path=None, axes=None, *args, **kwargs):
         from matplotlib import pyplot as plt
         x, y = zip(*self.data)
         x, y = np.asarray(x), np.asarray(y)
-        q = plt.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1,
+        if not axes:
+            axes = plt.gca()
+        q = axes.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1,
                        width=width, *args, **kwargs)
         print q
         # print x[:1], y[:1], [x[1]-x[2]], [y[1]-y[2]]
@@ -337,6 +360,8 @@ class Trajectory(object):
     def __iter__(self):
         return iter(self.data)
 
+    def __repr__(self):
+        return "<Trajectory(n={}, dimsize={})>".format(self.data.shape, map(int, self.dim_size))
     if __name__ == "__main__":
         import sys, os
 

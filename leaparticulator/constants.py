@@ -107,6 +107,13 @@ END_SESSION = "End session"
 # pick an already established meaning.
 NOVELTY_COEFFICIENT = 0.55
 
+# This is the number of new meanings each space expansion gives
+MEANING_INCREMENT = 2
+
+# This is the number of consecutive correct guesses a meaning needs
+# to be considered established
+LEARNING_THRESHOLD = 2
+
 # Analysis constants
 # unit parameters for train_hmm_n_times()
 XY, AMP_AND_FREQ, AMP_AND_MEL = "xy", "amp_and_freq", "amp_and_mel"

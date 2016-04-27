@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
 
+from leaparticulator import constants
+
 __author__ = 'Kerem'
 
 
@@ -21,19 +23,74 @@ def flatten_to_emission(arr, domain=ghmm.Float()):
     return ghmm.EmissionSequence(domain, arr)
 
 
-def nest(arr, domain=ghmm.Float()):
+def to_emission_set(arrs, domain=ghmm.Float()):
+    set = []
+    for arr in arrs:
+        set.append(flatten_to_emission(arr, domain))
+    return ghmm.SequenceSet(set)
+
+
+def nest(arr, domain=ghmm.Float(), tolist=True):
     if isinstance(arr, ghmm.SequenceSet):
         to_return = []
         for a in arr:
             assert len(a) % 2 == 0
             a = np.array(a).reshape((len(a) / 2, 2))
-            to_return.append(a.tolist())
+            if tolist:
+                a = a.tolist()
+            to_return.append(a)
         return to_return
     else:
         assert len(arr) % 2 == 0
         arr = np.array(arr).reshape((len(arr) / 2, 2))
-        return arr.tolist()
+        if tolist:
+            arr = arr.tolist()
+        return arr
 
+
+# #####
+# PLOTTING
+# #####
+def plot_cov_ellipse(cov, pos, nstd=2, ax=None, **kwargs):
+    """
+    Plots an `nstd` sigma error ellipse based on the specified covariance
+    matrix (`cov`). Additional keyword arguments are passed on to the
+    ellipse patch artist.
+
+    Parameters
+    ----------
+        cov : The 2x2 covariance matrix to base the ellipse on
+        pos : The location of the center of the ellipse. Expects a 2-element
+            sequence of [x0, y0].
+        nstd : The radius of the ellipse in numbers of standard deviations.
+            Defaults to 2 standard deviations.
+        ax : The axis that the ellipse will be plotted on. Defaults to the
+            current axis.
+        Additional keyword arguments are pass on to the ellipse patch.
+
+    Returns
+    -------
+        A matplotlib ellipse artist
+    """
+    from matplotlib.pyplot import gca
+    from matplotlib.patches import Ellipse
+    def eigsorted(cov):
+        vals, vecs = np.linalg.eigh(np.asarray(cov).reshape((2, 2)))
+        order = vals.argsort()[::-1]
+        return vals[order], vecs[:, order]
+
+    if ax is None:
+        ax = gca()
+
+    vals, vecs = eigsorted(cov)
+    theta = np.degrees(np.arctan2(*vecs[:, 0][::-1]))
+
+    # Width and height are "full" widths, not radius
+    width, height = 2 * nstd * np.sqrt(vals)
+    ellip = Ellipse(xy=pos, width=width, height=height, angle=theta, ec="black", **kwargs)
+
+    ax.add_artist(ellip)
+    return ellip
 
 class HMM(object):
     """
@@ -69,6 +126,10 @@ class HMM(object):
         self.training_data = None
         self.mixtures = 1
         self.hmm_object = None
+        self.plot_means = []
+        self.plot_annotations = []
+        self.plot_arrows = []
+        self.cid = None
 
         self.hmm_type = hmm_type
         if hmm_type == "R":
@@ -472,6 +533,159 @@ class HMM(object):
         # print_dptable(V)
         (prob, state) = max((V[n][y], y) for y in states)
         return ViterbiPath(prob=prob, state_seq=path[state])
+
+    def format_training_dataset(self, data):
+        if self.is_multivariate():
+            return np.array(nest(data))
+        else:
+            return np.array(data)
+
+    def get_training_dataset(self, index):
+        return self.format_training_dataset(self.training_data[index])
+
+    def iterate_training_datasets(self):
+        return iter(map(self.format_training_dataset, self.training_data))
+
+    ###########
+    # PLOTTING
+    ###########
+    def on_pick(self, event):
+        print event
+        print self.plot_annotations
+        if hasattr(event, '_processed'):
+            return
+        event._processed = True
+        if event.artist in self.plot_annotations:
+            self.on_pick_annotation(event)
+        elif event.artist in self.plot_means:
+            self.on_pick_means(event)
+        from matplotlib import pyplot as plt
+        plt.draw()
+
+    def on_pick_annotation(self, event):
+        print "Annotation: %s" % event.artist
+        event.artist.set_visible(False)
+
+    def on_pick_means(self, event):
+        print "Mean: %s" % self.plot_means.index(event.artist)
+        self.plot_annotations[self.plot_means.index(event.artist)].set_visible(True)
+        print "%s" % self.plot_annotations[self.plot_means.index(event.artist)]
+
+    def plot_hmm(self, axes=None, clr=constants.kelly_colors, transition_arrows=True,
+                 prob_lists=True, legend=True, verbose=False, *args, **kwargs):
+        from matplotlib import pyplot as plt
+        from matplotlib.patches import FancyArrowPatch, ArrowStyle
+        univariate = not self.is_multivariate()
+
+        if univariate:
+            print "Univariate HMM detected (%d states)." % len(self.means)
+            means_ = [(0, m) for m in self.means]
+        else:
+            means_ = self.means
+        covars = self.variances
+
+        if axes is None:
+            axes = plt.gca()
+
+        self.plot_annotations = []
+        self.plot_means = []
+        self.plot_covars = []
+
+        arrows = []
+        colors = clr
+        max_prob = 0
+        for i, row in enumerate(self.transmat):
+            for j, p in enumerate(row):
+                # ignore self-transitions
+                if i != j:
+                    max_prob = max(max_prob, p)
+
+                    #     max_prob = max(transmat.flatten())
+        for i, mean in enumerate(means_):
+            color = colors[i % len(colors)]
+            if verbose:
+                print  "MEAN:", tuple(mean)
+            self.plot_means.append(axes.scatter(*tuple(mean), color=color, picker=10, label="State%i" % i))
+            axes.annotate(s="%d" % i, xy=mean, xytext=(-10, -10), xycoords="data", textcoords="offset points",
+                          alpha=1, bbox=dict(boxstyle='round,pad=0.2', fc=color, alpha=0.3))
+            if verbose:
+                print  "COVARS: %s" % covars[i]
+            if not univariate:
+                if verbose:
+                    print "Drawing ellipse..."
+                self.plot_covars.append(plot_cov_ellipse(covars[i], mean, alpha=.30, color=color, ax=axes))
+            else:
+                self.plot_covars.append(
+                    axes.axhspan(mean[1] - np.sqrt(covars[i]), mean[1] + np.sqrt(covars[i]), color=color, alpha=.30))
+            x0, y0 = mean
+            prob_string = "$\pi = %f$" % self.initProb[i]
+            for j, p in enumerate(self.transmat[i]):
+                xdif = 10
+                ydif = 5
+                s = "$A(S_%d) = %f$" % (j, p)
+                if p < 10 ** - 20:
+                    continue
+                    #             print_n_flush( "State%d: %s" % (i, s))
+                prob_string = "%s\n%s" % (prob_string, s)
+                if transition_arrows:
+                    if i != j:
+                        x1, y1 = means_[j]
+                        # if transmat[i][j] is too low, we get an underflow here
+                        #                 q = quiver([x0], [y0], [x1-x0], [y1-y0], alpha = 10000 * (transmat[i][j]**2),
+                        alpha = 0
+                        if p > 10 ** -300:
+                            alpha = (p * 100000) / (max_prob * 100000)
+                        alpha = min(1., (np.exp(2 * alpha / (len(self.means) * .5))) - 1)
+
+                        #                     alpha_in = 0
+                        #                     if transmat[j][i] > 10 ** -300:
+                        #                         alpha_in = (transmat[j][i]*100000) / (max_prob * 100000)
+                        #                     alpha_in = min(1.,(exp(alpha_in / (len(means)*.5))) - 1)
+
+                        #                     print alpha, old_alpha, p, max_prob
+                        #                     alpha = max(0, 1. / log(alpha))
+                        width = .55
+                        color = "red"
+                        if x1 > x0:
+                            color = "green"
+                            #                     if j > i:
+                        c_arrows = FancyArrowPatch(
+                            (x0, y0),
+                            (x1, y1),
+                            connectionstyle='arc3, rad=-.25',
+                            mutation_scale=10,
+                            # red is forward, green is backward prob
+                            color=color,
+                            alpha=alpha,
+                            linewidth=width,
+                            arrowstyle=ArrowStyle.Fancy(head_length=width * 4,
+                                                        head_width=width * 2.5,
+                                                        ))
+                        #                     c_arrows = FancyArrow(x0, y0, x1-x0, y1-y0, alpha=alpha, color="black",
+                        #                                          width=width, head_width=width * 2.5, head_length=width * 4.,
+                        #                                          overhang=1.)
+                        #                                             connectionstyle="angle3,angleA=0,angleB=-90")
+                        axes.add_patch(c_arrows)
+                        arrows.append(c_arrows)
+                        #                     q = axes.quiver([x0], [y0], [x1-x0], [y1-y0], alpha = alpha,
+                        #                            scale_units='xy',angles='xy', scale=1, width=0.005,
+                        #                             label="P(%d->%d)=%f" % (i,j,p))
+                        #         legend()
+            if prob_lists:
+                self.plot_annotations.append(
+                    plt.annotate(s=prob_string, xy=mean, xytext=(0, 10), xycoords="data", textcoords="offset points",
+                                 alpha=1, bbox=dict(boxstyle='round,pad=0.2', fc=color, alpha=0.3), picker=True,
+                                 visible=True))
+
+        if self.cid:
+            plt.gcf().canvas.mpl_disconnect(self.cid)
+        self.cid = plt.gcf().canvas.mpl_connect('pick_event', self.on_pick)
+        if legend:
+            axes.legend()
+        self.plot_arrows = arrows
+        if verbose:
+            print "Returning from plot_hmm"
+        return self.plot_annotations, self.plot_means, arrows
 
 
 class ViterbiPath(object):

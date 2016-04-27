@@ -16,7 +16,7 @@ if app is None:
 else:
     print "LeapP2PServer existing QApp: %s" % app
 
-from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT
+from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT, MEANING_INCREMENT, LEARNING_THRESHOLD
 
 qapplication = app
 install_reactor()
@@ -414,13 +414,13 @@ class LeapP2PServer(basic.LineReceiver):
         # figured out before expanding it
         for img in self.factory.images[:self.factory.image_pointer]:
             count = self.factory.image_success[str(img)]
-            if count < 2:
+            if count < LEARNING_THRESHOLD:
                 log.msg("Not expanding meaning space due to %s (%s correct guesses so far)" % (img, count))
                 break
         else:
             # expand the meaning space
-            new_pointer = min(self.factory.image_pointer + 2,
-                                             len(self.factory.images))
+            new_pointer = min(self.factory.image_pointer + MEANING_INCREMENT,
+                              len(self.factory.images))
 
             # if we run out of new images, just end the experiment.
             if new_pointer == self.factory.image_pointer:
@@ -602,13 +602,13 @@ class LeapP2PServerFactory(protocol.Factory):
             client.transport.loseConnection()
 
 
-def get_server_instance(condition, ui=None, max_images=None):
+def get_server_instance(condition, ui=None, max_images=None, uid=None):
     """
     Returns a default server instance, reading settings 
     from constants.py
     """
     endpoint = TCP4ServerEndpoint(reactor, constants.leap_port)
-    factory = LeapP2PServerFactory(ui=ui, condition=condition, no_log=True, max_images=max_images)
+    factory = LeapP2PServerFactory(ui=ui, condition=condition, no_log=True, max_images=max_images, uid=uid)
     listener = endpoint.listen(factory)
     factory.endpoint = endpoint
     factory.listener = listener
@@ -653,25 +653,47 @@ def start_server(qapplication, condition='1', no_ui=False, max_images=None):
 if __name__ == '__main__':
     import sys
 
-    try:
-        assert len(sys.argv) > 2
-        no_ui = "no_ui" in sys.argv
-        constants.RANDOM_SIGNALS = "randomsignals" in sys.argv
-        if constants.RANDOM_SIGNALS:
-            sys.argv.remove("randomsignals")
 
-        if sys.argv[2] == "client":
-            assert len(sys.argv) > 3
-            try:
-                constants.leap_server = sys.argv[4]
-            except IndexError:
-                pass
-            start_client(qapplication, uid=sys.argv[3])
-        elif sys.argv[2] == "server":
-            start_server(qapplication, condition=sys.argv[1], no_ui=no_ui)
+    def parse_argv(argv):
+        import argparse
+        import sys
 
-    except AssertionError:
-        print "USAGE: LeapP2PServer {condition} {client/server} [client_id] [server_ip (only in client mode)] [randomsignals]."
-        sys.exit(-1)
+        class HelpyParser(argparse.ArgumentParser):
+            def error(self, message):
+                sys.stderr.write('error: %s\n' % message)
+                sys.stderr.write(self.format_help())
+                sys.exit(2)
 
+        parser = HelpyParser(description='Run a P2P server or client.')
+        parser.add_argument('condition', choices="1/2/1r/2r".split("/"), type=str,
+                            help='Experimental condition')
+        parser.add_argument('mode', metavar='mode', choices="client server".split(), type=str,
+                            help='Client or server mode')
+        parser.add_argument("--no-ui", action='store_true', help="Run headless", required=False)
+        parser.add_argument('-c', '--client_id', type=str,
+                            help='Unique client ID', required=False)
+        parser.add_argument('-s', '--server_ip', type=str,
+                            help='Server IP address', required=False)
+        parser.add_argument('-r', '--randomsignals', action='store_true',
+                            help='For testing purposes.')
+        parser.add_argument('-u', '--uid', required=False,
+                            help="Unique ID for this session to be used as logfile name.")
+
+        parsed = parser.parse_args(argv)
+
+        if parsed.mode == 'client':
+            if not parsed.client_id:
+                parser.error("You chose the client mode, but haven't specified a Client ID.")
+        return parsed
+
+
+    parsed = parse_argv(sys.argv[1:])
+    constants.RANDOM_SIGNALS = parsed.randomsignals
+    no_ui = parsed.no_ui
+    if parsed.mode == 'client':
+        if parsed.server_ip:
+            constants.leap_server = parsed.server_ip
+        start_client(qapplication, uid=parsed.client_id)
+    else:
+        start_server(qapplication, condition=parsed.condition, no_ui=no_ui)
     sys.exit(app.exec_())
