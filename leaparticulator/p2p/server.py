@@ -670,7 +670,7 @@ if __name__ == '__main__':
         parser.add_argument('mode', metavar='mode', choices="client server".split(), type=str,
                             help='Client or server mode')
         parser.add_argument("--no-ui", action='store_true', help="Run headless", required=False)
-        parser.add_argument('-c', '--client_id', type=str,
+        parser.add_argument('--client_id', type=str,
                             help='Unique client ID', required=False)
         parser.add_argument('-s', '--server_ip', type=str,
                             help='Server IP address', required=False)
