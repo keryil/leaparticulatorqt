@@ -93,7 +93,7 @@ PRACTICE = "Practice"
 # p2p server modes
 INIT = "Init"
 SPEAKERS_TURN = "Speaker's turn"
-HEARERS_TURN = "Hearer's turn"
+LISTENERS_TURN = "Hearer's turn"
 FEEDBACK = "Feedback"
 
 # additional codes for the p2p version

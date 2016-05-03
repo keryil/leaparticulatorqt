@@ -472,7 +472,7 @@ class LeapP2PServer(basic.LineReceiver):
         elif self.factory.mode == constants.SPEAKERS_TURN:
             assert isinstance(message, ResponseMessage)
             # print "Received signal: %s" % message.data.signal[-5:]
-            self.factory.mode = constants.HEARERS_TURN
+            self.factory.mode = constants.LISTENERS_TURN
             self.factory.session.setSpeakerContribution(message)
 
             # pick the images
@@ -490,7 +490,7 @@ class LeapP2PServer(basic.LineReceiver):
 
             self.send_to_client(message,
                                 self.factory.session.getHearer())
-        elif self.factory.mode == constants.HEARERS_TURN:
+        elif self.factory.mode == constants.LISTENERS_TURN:
             assert isinstance(message, ResponseMessage)
             self.factory.session.setHearerContribution(message)
             # give feedback
