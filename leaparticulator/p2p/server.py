@@ -16,7 +16,8 @@ if app is None:
 else:
     print "LeapP2PServer existing QApp: %s" % app
 
-from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT, MEANING_INCREMENT, LEARNING_THRESHOLD
+from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT, MEANING_INCREMENT, LEARNING_THRESHOLD, \
+    N_OPTIONS
 
 qapplication = app
 install_reactor()
@@ -478,8 +479,8 @@ class LeapP2PServer(basic.LineReceiver):
             # pick the images
             image_pointer = self.factory.image_pointer
             options = filter(lambda x: str(x) != str(message.data.image), self.factory.images[:image_pointer])
-            if len(options) > 3:
-                options = sample(options, 3)
+            if len(options) > N_OPTIONS - 1:
+                options = sample(options, N_OPTIONS - 1)
             options = options + [message.data.image]
             shuffle(options)
             assert len(map(str, options)) == len(set(map(str, options)))

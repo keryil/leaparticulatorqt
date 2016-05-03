@@ -319,7 +319,7 @@ class LeapP2PClientUI(object):
             btnSubmit.setEnabled(False)
             btnPlay.setEnabled(False)
             image_ = None
-            for i, image in zip(range(1,5), images):
+            for i, image in zip(range(1, constants.N_OPTIONS + 1), images):
                 button = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
                 if button.isChecked():
                     image_ = image

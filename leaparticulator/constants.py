@@ -155,6 +155,10 @@ TXT_EMPTY_SIGNAL = "You have recorded an empty signal. Please record again."
 # the presentation of the next question in msec
 DELAY_TEST = 1000
 
+# number of options per test question, including
+# the correct answer
+N_OPTIONS = 4
+
 TESTING = False
 NO_SOUND = False
 RANDOM_SIGNALS = False
