@@ -32,7 +32,7 @@ import pyaudio
 THEREMIN_AUDIO_FORMAT = pyaudio.paInt32
 
 # maximum duration of a signal in seconds
-MAX_SIGNAL_DURATION = 1.
+MAX_SIGNAL_DURATION = 0
 
 # number of options each test question has
 n_of_options = [4, 4, 4]

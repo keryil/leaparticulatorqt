@@ -13,11 +13,14 @@ if app is None:
 else:
     print "LeapP2PClient existing QApp: %s" % app
 
+from leaparticulator.theremin.theremin import ConstantRateTheremin
 from leaparticulator.theremin.theremin import ThereminPlayback
 # from LeapTheremin import ThereminPlayback
 from leaparticulator.p2p.messaging import EndRoundMessage, StartMessage
 from leaparticulator.oldstuff.QtUtils import connect, disconnect, loadUiWidget
 import leaparticulator.constants as constants
+from twisted.internet import reactor
+
 # from QtUtils import loadWidget as loadUiWidget
 
 # def loadUiWidget(name, parent=None):
@@ -49,6 +52,12 @@ class LeapP2PClientUI(object):
     def setClientFactory(self, factory):
         self.factory = factory
         self.theremin = factory.theremin
+        if constants.MAX_SIGNAL_DURATION > 0:
+            # only constant rate theremins are allowed
+            # with duration constraints
+            assert isinstance(self.theremin, ConstantRateTheremin)
+            self.playback_player = ThereminPlayback(default_volume=None, default_rate=constants.THEREMIN_RATE)
+
 
     def setClient(self, client):
         print "Setting client to %s" % client
@@ -181,6 +190,10 @@ class LeapP2PClientUI(object):
             button = self.creationWin.findChildren(QPushButton, "btnRecord")[0]
             button.setText("Stop")
             self.unique_connect(button, "clicked()", self.stop_recording)
+            # if the duration is constrained
+            if constants.MAX_SIGNAL_DURATION > 0:
+                reactor.callLater(constants.MAX_SIGNAL_DURATION, self.stop_recording)
+
             self.flicker()
         else:
             string = "Cannot start recording because {}"
