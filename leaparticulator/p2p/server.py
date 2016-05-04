@@ -17,7 +17,7 @@ else:
     print "LeapP2PServer existing QApp: %s" % app
 
 from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT, MEANING_INCREMENT, LEARNING_THRESHOLD, \
-    N_OPTIONS
+    N_OPTIONS, LOG_DIR
 
 qapplication = app
 install_reactor()
@@ -128,7 +128,7 @@ class LeapP2PSession(object):
         from jsonpickle import encode
         filename = "P2P-%s.%s.exp.log" % (self.factory.uid, self.factory.condition)
         exists = self.started_file_dump
-        filename = join(constants.ROOT_DIR, "logs", filename)
+        filename = join(constants.ROOT_DIR, LOG_DIR, filename)
 
         print "Dumping round data to %s. First entry? %s" % (filename, not exists)
         extract_participant = lambda x: "%s@%s" % (x.other_end_alias, x.other_end)
@@ -348,7 +348,7 @@ class LeapP2PServer(basic.LineReceiver):
     def choose_speaker_and_topic(self):
         # choose a speaker
         log.msg("Choosing the speaker and topic...")
-        # choose the speaker and listener alternately
+        # choose the speaker and hearer alternately
 
         self.factory.mode = constants.SPEAKERS_TURN
         # speaker_no = choice(range(2))
@@ -473,7 +473,7 @@ class LeapP2PServer(basic.LineReceiver):
         elif self.factory.mode == constants.SPEAKERS_TURN:
             assert isinstance(message, ResponseMessage)
             # print "Received signal: %s" % message.data.signal[-5:]
-            self.factory.mode = constants.LISTENERS_TURN
+            self.factory.mode = constants.HEARERS_TURN
             self.factory.session.setSpeakerContribution(message)
 
             # pick the images
@@ -491,7 +491,7 @@ class LeapP2PServer(basic.LineReceiver):
 
             self.send_to_client(message,
                                 self.factory.session.getHearer())
-        elif self.factory.mode == constants.LISTENERS_TURN:
+        elif self.factory.mode == constants.HEARERS_TURN:
             assert isinstance(message, ResponseMessage)
             self.factory.session.setHearerContribution(message)
             # give feedback

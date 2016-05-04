@@ -90,15 +90,15 @@ class LeapP2PClient(basic.LineReceiver):
                 # self.speak()
                 # self.factory.theremin.mute()
             else:
-                self.factory.mode = constants.LISTENER
-                self.log("I am the listener. My mode is %s." % self.factory.mode)
+                self.factory.mode = constants.HEARER
+                self.log("I am the hearer. My mode is %s." % self.factory.mode)
                 self.factory.theremin.mute()
                 self.ui.show_wait()
         elif isinstance(message, ResponseMessage):
             try:
-                assert self.factory.mode == constants.LISTENER
+                assert self.factory.mode == constants.HEARER
             except AssertionError:
-                raise Exception("Mode not LISTENER: %s" % self.factory.mode)
+                raise Exception("Mode not HEARER: %s" % self.factory.mode)
             self.factory.theremin.mute()
             self.factory.last_response_data = message.data
 
@@ -172,7 +172,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
         # self.mode
 
     def buildProtocol(self, addr):
-        # self.listener = leap_listener
+        # self.hearer = leap_listener
         c = LeapP2PClient(self)
         log.msg("New LeapP2PClient initialized")
         return c
@@ -192,7 +192,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
     def mode(self, value):
         assert value in (constants.INIT,
                          constants.SPEAKER,
-                         constants.LISTENER,
+                         constants.HEARER,
                          constants.FEEDBACK,
                          constants.PRACTICE)
         log.msg("MY MODE IS BEING SET TO %s" % value)

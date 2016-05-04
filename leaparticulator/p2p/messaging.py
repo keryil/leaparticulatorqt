@@ -107,7 +107,7 @@ class ResponseMessage(LeapP2PMessage):
     Represents responses to images or signals. In the case of signal creation, 
     the speaker sends an instance of this message to the server, and puts 
     their own signal into the signal field. In the case of signal recognition, 
-    the hearer receives an instance of this message from the server, 
+    the hearer receives an instance of this message from the server,
     replays the signal, and puts its prediction of the topic object into the 
     image field to send it back to the server.
     """

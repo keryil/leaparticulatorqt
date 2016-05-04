@@ -437,7 +437,7 @@ class LeapClientFactory(protocol.ReconnectingClientFactory):
     protocol = LeapClient
     mode = None
     current_image = None
-    # this is the leap listener
+    # this is the leap hearer
     listener = None
     ui = None
     images = None

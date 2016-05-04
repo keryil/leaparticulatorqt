@@ -66,7 +66,7 @@ class TwoClientsFirstRound(P2PTestCase):
             self.assertIsNotNone(listener)
 
             # ui_speaker = speaker.factory.ui
-            # ui_listener = listener.factory.ui
+            # ui_listener = hearer.factory.ui
 
             self.assertEqual(
                 ui_speaker.get_active_window(), ui_speaker.creationWin)

@@ -86,14 +86,14 @@ INCOMING_RESPONSE = "Incoming"
 # p2p client modes
 INIT = "Init"
 SPEAKER = "Speaker"
-LISTENER = "Listener"
+HEARER = "Listener"
 FEEDBACK = "Feedback"
 PRACTICE = "Practice"
 
 # p2p server modes
 INIT = "Init"
 SPEAKERS_TURN = "Speaker's turn"
-LISTENERS_TURN = "Hearer's turn"
+HEARERS_TURN = "Hearer's turn"
 FEEDBACK = "Feedback"
 
 # additional codes for the p2p version
@@ -125,11 +125,12 @@ XY, AMP_AND_FREQ, AMP_AND_MEL = "xy", "amp_and_freq", "amp_and_mel"
 # from them
 QT_DIR = 'qt_generated'
 IMG_DIR = 'img'
+LOG_DIR = "logs"
 MEANING_DIR = join(IMG_DIR, 'meanings', 'featureless')
 MEANING_DIR_P2P = join(IMG_DIR, 'meanings', 'featureless')
 IMG_EXTENSION = 'png'
 P2P_RES_DIR = join(ROOT_DIR, "res", "p2p")
-P2P_LOG_DIR = join('logs', 'p2p')
+P2P_LOG_DIR = join(LOG_DIR, 'p2p')
 P2P_IMAGE_MASK = join(MEANING_DIR_P2P, "*.%s" %
                       IMG_EXTENSION)
 

@@ -62,8 +62,8 @@ class BrowserWindow(object):
         action.trigger()
         print self.figures()
         # self.setup_splitter()
-        
-        self.dir = os.path.join(constants.ROOT_DIR, "logs")
+
+        self.dir = os.path.join(constants.ROOT_DIR, constants.LOG_DIR)
         self.dir_model = QtGui.QFileSystemModel()
         self.dir_model.setReadOnly(True)
         self.log_model = QtGui.QStandardItemModel()

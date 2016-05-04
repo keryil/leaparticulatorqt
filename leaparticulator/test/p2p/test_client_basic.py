@@ -8,7 +8,7 @@ class P2PClientTest(P2PTestCase):
 
     # def tearDown(self):
     #     if hasattr(self, 'factory'):
-    #         self.factory.listener.result.stopListening()
+    #         self.factory.hearer.result.stopListening()
     #         self.factory.stopFactory()
         # self.app.quit()
 
