@@ -231,15 +231,16 @@ def toPandas_p2p(filename, nphases=8):
     response data, one for question data, respectively. For the response data,
     the "client" is the speaker. For the test data, the "client" is the hearer.
 
-    nphases is optional, and only necessary when there are less/more than
-    15 meanings. It informs the algorithm of the number of phases in the
-    experimental run.
+    nphases is optional (and deprecated). It informs the algorithm of the number
+    of phases in the experimental run. It used to be needed for runs that don't
+    have exactly 15 meanings.
     :param nphases:
     :param filename:
     :return:
     """
     from leaparticulator.constants import palmToAmpAndFreq, palmToAmpAndMel
-    columns_response = ['round', 'client', 'phase', 'image', 'data_index', 'x', 'y', 'z', 'frequency', 'mel']
+    columns_response = ['round', 'client', 'phase', 'image', 'data_index', 'x', 'y', 'z', 'frequency', 'mel',
+                        'amplitude']
     columns_test = ['client', 'phase', 'image0', 'image1', 'image2', 'image3', 'answer', 'given_answer', 'success']
 
     def response_hook(obj, nround, phase, context):
@@ -254,10 +255,11 @@ def toPandas_p2p(filename, nphases=8):
             context['phase_and_meaning'][(client, phase, str(meaning))] = True
             for i, frame in reversed(list(enumerate(signal))):
                 x, y, z = frame.get_stabilized_position()
-                hertz = palmToAmpAndFreq((x, y))[1]
+                amplitude, hertz = palmToAmpAndFreq((x, y))[1]
                 mel = palmToAmpAndMel((x, y))[1]
-                context['lst_responses'].append(pd.Series([nround, client, phase, meaning, i, x, y, z, hertz, mel],
-                                                          index=columns_response))
+                context['lst_responses'].append(
+                    pd.Series([nround, client, phase, meaning, i, x, y, z, hertz, mel, amplitude],
+                              index=columns_response))
         return context
 
     def question_hook(obj, nround, phase, context):

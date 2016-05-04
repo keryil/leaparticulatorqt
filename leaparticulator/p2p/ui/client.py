@@ -324,7 +324,7 @@ class LeapP2PClientUI(object):
                 if button.isChecked():
                     image_ = image
                     break
-            self.client.listen(image_)
+            self.client.hear(image_)
             self.show_wait(parent=self.testWin)
 
         connect(btnSubmit, "clicked()", submit)

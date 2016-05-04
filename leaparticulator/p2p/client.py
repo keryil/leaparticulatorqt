@@ -106,7 +106,7 @@ class LeapP2PClient(basic.LineReceiver):
             self.log("Received options: %s" % options)
             self.ui.wait_over()
             self.ui.test_screen(options)
-            # self.listen()
+            # self.hear()
         elif isinstance(message, FeedbackMessage):
             assert self.factory.mode == constants.FEEDBACK
             self.log("Received feedback: %s" % message)
@@ -140,7 +140,7 @@ class LeapP2PClient(basic.LineReceiver):
         self.log("Spoken")
         self.factory.mode = constants.FEEDBACK
 
-    def listen(self, image):
+    def hear(self, image):
         self.log("Listening")
         self.factory.current_hearer_image = image
         # print self.factory.last_response_data
