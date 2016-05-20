@@ -143,12 +143,16 @@ INFO_WIN_DEPRECATED = 'InfoWindow.ui'
 TEST_WIN_DEPRECATED = 'testingWindow.ui'
 
 # these are what should be used
+# note that these must be combined with QT_DIR
+# for the actual path
 CREATION_WIN = 'SignalCreation.ui'
 FINAL_WIN = "FinalWindow.ui"
 WAIT_WIN = 'WaitDialog.ui'
 FEEDBACK_WIN = 'Feedback.ui'
 TEST_WIN = 'SignalTesting.ui'
 FIRST_WIN = 'FirstWindow.ui'
+
+SERVER_WIN = 'ServerWindow.ui'
 
 # Mode constants for Info Window
 MOD_PREPHASE = "mod_prephase"

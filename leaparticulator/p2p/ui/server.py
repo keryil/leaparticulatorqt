@@ -7,6 +7,8 @@ import sys
 
 from PyQt4.QtGui import *
 
+from leaparticulator.constants import WAIT_WIN, SERVER_WIN
+
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
@@ -32,7 +34,7 @@ class LeapP2PServerUI(object):
         self.mainWin = None
         self.flickerDelta = 1
         self.session = None
-        self.mainWin = loadUiWidget('ServerWindow.ui')
+        self.mainWin = loadUiWidget(SERVER_WIN)
 
         self.lstParticipants = self.mainWin.findChildren(QListView, "lstParticipants")[0]
         self.clientModel = QStandardItemModel(self.lstParticipants)
@@ -257,7 +259,7 @@ class LeapP2PServerUI(object):
     def show_wait(self, parent=None):
         if not parent:
             parent = self.get_active_window()
-        self.waitDialog = loadUiWidget('WaitDialog.ui', parent)
+        self.waitDialog = loadUiWidget(WAIT_WIN, parent)
         # self.waitDialog.setParent(parent)#QDialog(parent)
         # flags = #Qt.WindowStaysOnTopHint# | Qt.WindowTitleHint
         # flags = flags & ~Qt.WindowCloseButtonHint
