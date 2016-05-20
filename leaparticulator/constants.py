@@ -137,10 +137,18 @@ P2P_IMAGE_MASK = join(MEANING_DIR_P2P, "*.%s" %
 FALSE_OVERLAY = join(IMG_DIR, "false.png")
 TRUE_OVERLAY = join(IMG_DIR, "true.png")
 
-LEARNING_WIN = 'learningWindow.ui'
-INFO_WIN = 'InfoWindow.ui'
-TEST_WIN = 'testingWindow.ui'
-P2P_FINAL_WIN = "FinalWindow.ui"
+# these are legacy, only kept for compatibility
+LEARNING_WIN_DEPRECATED = 'learningWindow.ui'
+INFO_WIN_DEPRECATED = 'InfoWindow.ui'
+TEST_WIN_DEPRECATED = 'testingWindow.ui'
+
+# these are what should be used
+CREATION_WIN = 'SignalCreation.ui'
+FINAL_WIN = "FinalWindow.ui"
+WAIT_WIN = 'WaitDialog.ui'
+FEEDBACK_WIN = 'Feedback.ui'
+TEST_WIN = 'SignalTesting.ui'
+FIRST_WIN = 'FirstWindow.ui'
 
 # Mode constants for Info Window
 MOD_PREPHASE = "mod_prephase"

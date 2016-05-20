@@ -96,9 +96,9 @@ class ClientUI(AbstractClientUI):
         self.isRecording = False
 
         self.activeWindow = None
-        self.learningWindow = loadWidget(constants.LEARNING_WIN)
-        self.infoWindow = loadWidget(constants.INFO_WIN)
-        self.testWindow = loadWidget(constants.TEST_WIN)
+        self.learningWindow = loadWidget(constants.LEARNING_WIN_DEPRECATED)
+        self.infoWindow = loadWidget(constants.INFO_WIN_DEPRECATED)
+        self.testWindow = loadWidget(constants.TEST_WIN_DEPRECATED)
 
         # this is to map clicked() signals of each button
         # to the same function with different arguments

@@ -6,6 +6,9 @@ import sys
 
 from PyQt4.QtCore import QPoint
 from PyQt4.QtGui import *
+
+from leaparticulator.constants import WAIT_WIN, CREATION_WIN, FEEDBACK_WIN, TEST_WIN, FIRST_WIN
+
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
@@ -108,7 +111,7 @@ class LeapP2PClientUI(object):
     def first_screen(self):
         self.close_all()
         # import pdb;pdb.set_trace()
-        self.firstWin = loadUiWidget('FirstWindow.ui')
+        self.firstWin = loadUiWidget(FIRST_WIN)
         button = self.firstWin.findChildren(QPushButton, "btnOkay")[0]
         text = self.firstWin.findChildren(QTextBrowser, "textBrowser")[0]
         print "loaded"
@@ -133,7 +136,7 @@ class LeapP2PClientUI(object):
         # close previous windows
         self.close_all()
 
-        self.creationWin = loadUiWidget('SignalCreation.ui')
+        self.creationWin = loadUiWidget(CREATION_WIN)
 
         def submit_and_proceed():
             self.client.speak()
@@ -276,7 +279,7 @@ class LeapP2PClientUI(object):
         if not parent:
             parent = self.get_active_window()
             self.close_except(parent)
-        self.waitDialog = loadUiWidget('WaitDialog.ui', parent)
+        self.waitDialog = loadUiWidget(WAIT_WIN, parent)
         # self.waitDialog.setParent(parent)#QDialog(parent)
         #flags = #Qt.WindowStaysOnTopHint# | Qt.WindowTitleHint 
         # flags = flags & ~Qt.WindowCloseButtonHint
@@ -308,7 +311,7 @@ class LeapP2PClientUI(object):
         # chosen
         self.picked_choice = False
 
-        self.testWin = loadUiWidget('SignalTesting.ui')
+        self.testWin = loadUiWidget(TEST_WIN)
         btnSubmit = self.testWin.findChildren(QPushButton, "btnSubmit")[0]
         btnPlay = self.testWin.findChildren(QPushButton, "btnPlay")[0]
         btnPlay.setEnabled(True)
@@ -364,7 +367,7 @@ class LeapP2PClientUI(object):
 
         self.close_all()
 
-        self.feedbackWin = loadUiWidget('Feedback.ui')
+        self.feedbackWin = loadUiWidget(FEEDBACK_WIN)
         button = self.feedbackWin.findChildren(QPushButton, "btnOkay")[0]
         # if final:
 
@@ -387,7 +390,7 @@ class LeapP2PClientUI(object):
     def final_screen(self):
         from os.path import join
         self.close_all()
-        self.finalScreen = loadUiWidget(constants.P2P_FINAL_WIN)
+        self.finalScreen = loadUiWidget(constants.FINAL_WIN)
         btn = self.finalScreen.findChildren(QPushButton, "btnOkay")[0]
 
         btn.clicked.connect(self.app.exit)
