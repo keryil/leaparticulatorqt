@@ -23,6 +23,12 @@ def refactor_old_references(string):
 
 
 def recursive_decode(lst, verbose=False):
+    """
+    Recursively decode a log file line encoded by JSON into a list of Python objects.
+    :param lst:
+    :param verbose:
+    :return:
+    """
     if verbose:
         print "Decoding %s" % (str(lst)[:100])
 
@@ -70,6 +76,12 @@ toStr = lambda x: map(str, x)
 
 
 def fromFile(filename, no_practice=False):
+    """
+    Read experiment log from file.
+    :param filename:
+    :param no_practice:
+    :return:
+    """
     from os import path
     if str.startswith(path.split(filename)[-1], "P2P"):
         return fromFile_p2p(filename)
@@ -120,6 +132,11 @@ def new_recursive_decode(string, verbose=False):
 
 
 def fromFile_p2p(filename):
+    """
+    Read experimental data from a P2P log file.
+    :param filename:
+    :return:
+    """
     def client_hook(obj, context):
         context['participants'] = obj
         context['responses'] = {p: {} for p in obj}
@@ -309,71 +326,12 @@ def toPandas_p2p(filename, nphases=8):
     # print context_dict
     return df_response, df_test
 
-
-# def toPandas_p2p(filename):
-#     """
-#     Takes a P2P log file, and returns TWO pandas.DataFrame objects, one for
-#     response data, one for question data, respectively. For the response data,
-#     the "client" is the speaker. For the test data, the "client" is the hearer.
-#     :param filename:
-#     :return:
-#     """
-#     from leaparticulator.constants import palmToAmpAndFreq, palmToAmpAndMel
-#     r = fromFile_p2p(filename)
-#     responses = r.responses
-#     columns = ['client', 'phase', 'image', 'data_index', 'x', 'y', 'z', 'frequency', 'mel']
-#     lst = []
-#     for client, client_ in responses.items():
-#         for phase, phase_ in client_.items():
-#             for meaning, signal in phase_.items():
-#                 if signal:
-#                     for i, frame in enumerate(signal):
-#                         x, y, z = frame.get_stabilized_position()
-#                         hertz = palmToAmpAndFreq((x, y))[1]
-#                         mel = palmToAmpAndMel((x, y))[1]
-#                         lst.append(pd.Series([client, phase, meaning, i, x, y, z, hertz, mel], index=columns))
-#
-#     df_response = pd.DataFrame(lst, columns=columns)
-#
-#     lst = []
-#     columns = ['client', 'phase', 'image0', 'image1', 'image2', 'image3', 'answer', 'given_answer', 'success']
-#
-#     with open(filename) as f:
-#         phase = -1
-#         last_pointer = -1
-#         for i, line in zip(range(-2, 40000), f):
-#             if i >= 0:
-#                 line = line.replace("__main__", "leaparticulator.p2p.server")
-#                 rnd = jsonpickle.decode(line)
-#
-#                 # phase change
-#                 if rnd.image_pointer > last_pointer:
-#                     phase += 1
-#                     last_pointer = rnd.image_pointer
-#
-#                 # the owner of the test is the hearer
-#                 client = rnd.hearer
-#                 answer = rnd.image
-#                 given_answer = rnd.guess
-#                 success = answer == given_answer
-#                 image0 = image1 = image2 = image3 = None
-#                 images = [image0, image1, image2, image3]
-#                 try:
-#                     image0 = rnd.options[0]
-#                     image1 = rnd.options[1]
-#                     image2 = rnd.options[2]
-#                     image3 = rnd.options[3]
-#                 except IndexError:
-#                     pass
-#
-#                 lst.append(pd.Series([client, phase, image0, image1, image2, image3, answer, given_answer, success],
-#                                      index=columns))
-#
-#     df_test = pd.DataFrame(lst, columns=columns)
-#     return df_response, df_test
-
-
 def fromFile_old(filename):
+    """
+    Read experimental data from an old file. Only here for backward compatibility.
+    :param filename:
+    :return:
+    """
     lines = open(filename).readlines()
     images = jsonpickle.decode(lines[0])
     responses = jsonpickle.decode(lines[1])
@@ -392,6 +350,12 @@ def fromFile_old(filename):
 
 
 def _expandResponsesNew(responses, images):
+    """
+    Updates the responses dictionary to include the actual meaning objects instead of their indexes.
+    :param responses:
+    :param images:
+    :return:
+    """
     d = {}
     for client in responses:
         d[client] = {}
@@ -399,11 +363,6 @@ def _expandResponsesNew(responses, images):
             d[client][phase] = {}
             for image in responses[client][phase]:
                 d[client][phase][images[int(phase)][int(image)]] = responses[client][phase][image]
-
-    # return {client: {phase: {images[int(phase)][int(image)]: responses[client][phase][image] \
-    #                          for image in responses[client][phase]} \
-    #                  for phase in responses[client]} \
-    #         for client in responses}
     return d
 
 
@@ -441,6 +400,12 @@ def _expandResponses(responses, images):
 
 
 def _expandTestResults(results, images):
+    """
+    Extends the test results by replacing meaning indexes with the actual meaning objects.
+    :param results:
+    :param images:
+    :return:
+    """
     for client in results:
         for phase in results[client]:
             for question in results[client][phase]:
@@ -597,6 +562,11 @@ def convertToPandas(images, responses, test_results):
 # return test_results
 
 def logToPandasFrame(logfile):
+    """
+    Returns the given log file as a pandas frame, structured identically to the CSV.
+    :param logfile:
+    :return:
+    """
     from itertools import product
     import pandas as pd
 
