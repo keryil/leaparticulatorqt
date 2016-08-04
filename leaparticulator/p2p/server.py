@@ -105,8 +105,13 @@ class LeapP2PRoundSummary(object):
         copy.image_pointer = self.image_pointer
         return copy
 
-
 def notifies(function):
+    """
+    This is a decorator used to notify the UI of any relevant changes in the session object so that they can
+    refresh their data.
+    :param function:
+    :return:
+    """
     def inner(*args, **kwargs):
         function(*args, **kwargs)
         args[0].notify()
@@ -115,6 +120,9 @@ def notifies(function):
 
 
 class LeapP2PSession(object):
+    """
+    Represents a whole session, including participants, eperimental conditions, and the summary of every round.
+    """
     def __init__(self, participants, condition, factory):
         self.round_data = []
         self.participants = list(participants)
@@ -124,6 +132,10 @@ class LeapP2PSession(object):
         self.started_file_dump = False
 
     def dump_to_file(self):
+        """
+        Dumps the session to a log file, or updates it with new rounds if one already exists.
+        :return:
+        """
         from os.path import join
         from jsonpickle import encode
         filename = "P2P-%s.%s.exp.log" % (self.factory.uid, self.factory.condition)
@@ -309,6 +321,11 @@ class LeapP2PServer(basic.LineReceiver):
         self.send_all(EndSessionMessage())
 
     def start(self, practice=False):
+        """
+        Start new round.
+        :param practice:
+        :return:
+        """
         if self.factory.mode == constants.INIT:
             print "--------->start() called"
             print "clients (%d): %s" % (len(self.factory.clients), self.factory.clients)
@@ -435,6 +452,12 @@ class LeapP2PServer(basic.LineReceiver):
             self.factory.image_pointer = new_pointer
 
     def lineReceived(self, line):
+        """
+        Callback for every line received from a client. The logic that controls the experimental
+        flow over the network is here.
+        :param line:
+        :return:
+        """
         nline = "<{}@{}> {}".format(self.other_end_alias, self.other_end, line)
         if len(nline) < 300:
             log.msg("Received: %s" % nline)
@@ -534,6 +557,10 @@ class LeapP2PServer(basic.LineReceiver):
 
 
 class LeapP2PServerFactory(protocol.Factory):
+    """
+    The 'factory' that produces LeapP2PServer connections/objects. All persistent data on the
+    server-side should reside here.
+    """
     numConnections = 0
     protocol = LeapP2PServer
     # Mode is either play or listen
@@ -551,13 +578,6 @@ class LeapP2PServerFactory(protocol.Factory):
     logger = log
     end_experiment = False
     max_images = None
-
-    # dict of dicts e.g. responses[client][phase][image] = response
-    # responses = {}
-    # responses_practice = {}
-    # dict of dicts e.g. responses[client][phase] = [questions]
-    # test_results = {}
-    # test_results_practice = {}
     condition = None
 
     def __init__(self, ui=None, condition=None, no_log=False, uid=None,
@@ -617,6 +637,16 @@ def get_server_instance(condition, ui=None, max_images=None, uid=None):
 
 
 def start_server(qapplication, condition='1', no_ui=False, max_images=None):
+    """
+    Start a server associated with the given qapplication and experimental condition.
+    Optionally, one can start a headless server using no_ui or constraint the maximum
+    number of images in a meaning space using max_images.
+    :param qapplication:
+    :param condition:
+    :param no_ui:
+    :param max_images:
+    :return:
+    """
     from leaparticulator.p2p.ui.server import LeapP2PServerUI
 
     factory = None

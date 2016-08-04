@@ -10,7 +10,9 @@ import pyaudio
 
 from leaparticulator import constants
 
-
+###################################################
+# Start tricks to hide spurious PortAudio warnings
+###################################################
 ERROR_HANDLER_FUNC = CFUNCTYPE(
     None,
     c_char_p,
@@ -39,9 +41,14 @@ def noalsaerr():
         asound.snd_lib_error_set_handler(None)
     except OSError:
         yield
-
+###################################################
+# End tricks to hide spurious PortAudio warnings
+###################################################
 
 class Tone(object):
+    """
+    A tone generates and plays a single sinusodial audio tone.
+    """
     def __init__(self, rate=constants.AUDIO_FRAMERATE, frequency=constants.default_pitch,
                  amplitude=constants.default_amplitude, record=False, filename=None):
         self.record = record
@@ -53,6 +60,10 @@ class Tone(object):
         self.phase = 0.0
 
     def open(self):
+        """
+        Open the audio stream.
+        :return:
+        """
         with noalsaerr():
             self.p = pyaudio.PyAudio()
         self.stream = self.p.open(rate=int(self.rate), channels=1,
@@ -83,6 +94,10 @@ class Tone(object):
         self.freq = freq
 
     def start(self):
+        """
+        Start the loop that continuously plays the tone.
+        :return:
+        """
         self.t = threading.Thread(target=self.run)
         self.t.daemon = True
         self.running = True
@@ -93,6 +108,11 @@ class Tone(object):
         self.t.join()
 
     def run(self):
+        """
+        Callback that fills the audio buffer at each iteration, based on
+        current parameters.
+        :return:
+        """
         def gen():
             for i in xrange(int(self.rate * 0.05)):
                 if constants.THEREMIN_AUDIO_FORMAT == pyaudio.paInt32:

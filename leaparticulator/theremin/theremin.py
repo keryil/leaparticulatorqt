@@ -4,6 +4,11 @@ import sys
 import jsonpickle
 from twisted.python import log
 
+
+"""
+This piece of code imports the Leap libraries. It is necessary to change the hard
+path in the library file under OS/X, hence all this mambo-jamboa
+"""
 if 'Leap' not in sys.modules:
     if platform.system() == "Linux":
         import leaparticulator.drivers.linux.Leap as Leap
@@ -44,8 +49,8 @@ if 'Leap' not in sys.modules:
 from leaparticulator.data.frame import LeapFrame
 from leaparticulator.constants import install_reactor, palmToAmpAndFreq
 
+# ensure reactor is installed at this point
 install_reactor()
-
 
 import leaparticulator.constants as constants
 from leaparticulator.theremin.tone import Tone
@@ -57,7 +62,8 @@ from twisted.internet import reactor
 
 class ThereminPlayer(object):
     """
-    This is what produces the sounds of the theremin.
+    This is what produces the sounds of the theremin. It can have variable pitch and amplitude,
+    as well as produce polytonic signals.
     """
     def __init__(self, n_of_tones, default_volume=constants.default_amplitude, default_pitch=None,
                  ui=None, record=False):
@@ -80,10 +86,19 @@ class ThereminPlayer(object):
         log.startLogging(sys.stdout)
 
     def dumpRecording(self, files):
+        """
+        Dump recording to a wave file.
+        :param files:
+        :return:
+        """
         for tone, f in zip(self.tones, files):
             tone.dump_to_file(f)
 
     def fadeOut(self):
+        """
+        Fadeout the volume using a separate job. Helps reduce pops.
+        :return:
+        """
         self.fadeout_counter += 1
         for tone in self.tones:
             amp = tone.getAmplitude()
@@ -104,6 +119,10 @@ class ThereminPlayer(object):
             self.ui.flicker()
 
     def resetFadeout(self):
+        """
+        Resets the counter for the fadeout job.
+        :return:
+        """
         if self.fadeout_call is not None:
             if self.fadeout_call.running:
                 self.fadeout_call.stop()
@@ -187,6 +206,14 @@ class Theremin(Leap.Listener):
 
     def __init__(self, n_of_tones=1, default_volume=.5, ui=None,
                  factory=LeapClientFactory, realtime=False):
+        """
+
+        :param n_of_tones: Number of simultaneous tones the theremin will produce.
+        :param default_volume: Fixed volume, set to None for variable volume.
+        :param ui: The ClientUI object that will control the theremin.
+        :param factory: The twisted reactor that runs the theremin.
+        :param realtime: If set to true, the theremin will broadcast the frames to the server in real time.
+        """
         Leap.Listener.__init__(self)
         self.realtime = realtime
         self.player = ThereminPlayer(n_of_tones=n_of_tones,
@@ -274,6 +301,9 @@ class Theremin(Leap.Listener):
         self.player.setVolume(value)
 
 class ConstantRateTheremin(Theremin):
+    """
+    This is a theremin that polls the Leap and produces frames at a constant rate.
+    """
     def __init__(self, n_of_tones=1, default_volume=.5, realtime=True, ui=None,
                  rate=constants.THEREMIN_RATE, factory=LeapClientFactory):
         Leap.Listener.__init__(self)
@@ -340,6 +370,14 @@ class ThereminPlayback(object):
             self.stop()
 
     def start(self, score, callback=None, filename=None, jsonencoded=True):
+        """
+        Start the playback
+        :param score: The list of possibly json encoded frames to play.
+        :param callback: The function to call when the playback is done.
+        :param filename: The filename to which the generated audio will be dumped, if any.
+        :param jsonencoded: Whether the score is a list of json encoded frames or frame objects.
+        :return:
+        """
         from copy import deepcopy as copy
         if self.record:
             assert filename

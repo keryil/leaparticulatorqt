@@ -155,6 +155,10 @@ class LeapP2PClient(basic.LineReceiver):
 
 
 class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
+    """
+    The 'factory' object that produces LeapP2PClient objects/connections. All persistent
+    data on the client-side should reside here.
+    """
     protocol = LeapP2PClient
     last_response_data = None
     recording = False
@@ -206,20 +210,9 @@ def start_client(qapplication, uid):
     print "Init UI object..."
     ui = LeapP2PClientUI(qapplication)
     print "Init theremin..."
-    # theremin, reactor, controller, call = gimmeSimpleTheremin(n_of_notes=1,
-    #                                                               # Constants.default_amplitude,
-    #                                                               default_volume=None,
-    #                                                               ui=ui, realtime=True)
-    # theremin, reactor, controller, connection = gimmeSomeTheremin(n_of_notes=1,
-    #                                                               # Constants.default_amplitude,
-    #                                                               default_volume=None,
-    #                                                               ui=ui, realtime=False,
-    #                                                               factory=None,
-    #                                                               ip=None)
     theremin = Theremin(ui=ui, realtime=False, factory=None)
     factory = LeapP2PClientFactory(theremin, ui=ui, uid=uid)
     theremin.factory = factory
-    # theremin.call = call
     theremin.reactor = reactor
     theremin.player.ui = ui
     print "Initiating connection with %s:%s" % (constants.leap_server, constants.leap_port)
