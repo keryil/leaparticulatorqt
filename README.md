@@ -7,7 +7,7 @@ server. It is a plain-text TCP protocol.
 
 LeapSDK binaries for OS X, Windows and Linux are included.
 
-Here is a quick start video for a P2P session: (https://youtu.be/kg7TLkERulU)
+Here is a quick start video for a P2P session: (https://www.youtube.com/watch?v=I2UjkYrSWVE)
 
 ### Requirement ###
 
