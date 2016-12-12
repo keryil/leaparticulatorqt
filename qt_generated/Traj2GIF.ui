@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Play</string>
+     <string>Preview</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnRecord">
