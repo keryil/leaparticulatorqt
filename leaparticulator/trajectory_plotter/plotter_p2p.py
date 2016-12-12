@@ -197,6 +197,8 @@ class PlotterWindow(QtGui.QMainWindow):
                     #                 try:
                     #                     x_, y_ = transform(*trajectory[i-n])
                     #                     frame[x_-delta_x:x_+delta_x, y_-delta_y:y_+delta_y] = 0.3 + n * .7 / n_trace
+                    if i - n - 1 < 0:
+                        continue
                     x_from, y_from = self.transform(*trajectory[i - n - 1])
                     x_to, y_to = self.transform(*trajectory[i - n])
 

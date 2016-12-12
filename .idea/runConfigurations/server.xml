@@ -11,6 +11,7 @@
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <module name="LeapArticulatorQt" />
+    <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/leaparticulator/p2p/server.py" />
     <option name="PARAMETERS" value="1 server" />
     <option name="SHOW_COMMAND_LINE" value="false" />
