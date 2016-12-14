@@ -1,6 +1,8 @@
 __author__ = 'kerem'
+import os
 import sip
-import sys, os
+import sys
+
 sys.path.append(os.getcwd())
 
 try:
@@ -18,37 +20,25 @@ from PyQt4 import QtGui
 
 app = QtGui.QApplication(sys.argv)
 
-from leaparticulator import constants
-
-# constants.install_reactor()
-
-from PyQt4 import QtGui
-
 from leaparticulator.oldstuff.QtUtils import loadUiWidget
 
 from leaparticulator.data.functions import fromFile
 import numpy as np
 import imageio as im
 
+
 class PlotterWindow(QtGui.QMainWindow):
     def __init__(self):
         super(PlotterWindow, self).__init__()
-        print QtGui.QMovie.supportedFormats()
-        # self.filename = "/shared/Dropbox/ABACUS/Workspace/LeapArticulatorQt/leaparticulator/test/test_data/123R0126514.1r.exp.log"
-        self.previewImage = None
-        self.filename = None
-        # self.playback = ThereminPlayback(record=False)
         loadUiWidget('Traj2GIF.ui', widget=self)
         self.setWindowTitle("Plotter")
         self.extension = None
+        self.previewImage = None
+        self.filename = None
+        self.trajectory = None
+
         self.set_extension()
-
-        # self.setLogFile(self.filename)
-        # self.score = self.data['1']['./img/meanings/1_1.png']
-        import os
         self.txtOutputPath.setText(os.path.abspath(os.path.expanduser("~" + os.sep + "Desktop")))
-
-        self.score = None
 
         self.ignoreX = False
         self.ignoreY = False
@@ -73,7 +63,7 @@ class PlotterWindow(QtGui.QMainWindow):
         self.actionPlay.triggered.connect(self.preview)
         self.actionRecord.triggered.connect(self.produce_selected_gifs)
         self.actionChange_Path.triggered.connect(self.setOutputPath)
-        self.lstSignals.currentItemChanged.connect(self.selectScore)
+        self.lstSignals.currentItemChanged.connect(self.selectTrajectory)
 
         self.spinPlayback.valueChanged.connect(self.setRate)
         self.spinAnchorFrames.valueChanged.connect(self.setAnchorCount)
@@ -95,21 +85,24 @@ class PlotterWindow(QtGui.QMainWindow):
         def toggle_y():
             self.ignoreY = not self.ignoreY
             print "Ignore y?", self.ignoreY
+
         self.chkIgnoreX.stateChanged.connect(toggle_x)
         self.chkIgnoreY.stateChanged.connect(toggle_y)
 
         def set_ntrace(n):
             self.n_trace = n
             print "n_trace set to", n
+
         def set_trace_width(n):
             self.trace_width = n
             print "Trace width set to", n
+
         self.spinTrace.valueChanged.connect(set_ntrace)
         self.spinWidth.valueChanged.connect(set_trace_width)
 
     def updatePredictedLength(self):
         self.lblLength.setText("Predicted video duration is %.2f seconds for the last selected item." %
-                               ((len(self.score) + self.anchorCount) / float(self.fps)))
+                               ((len(self.trajectory) + self.anchorCount) / float(self.fps)))
 
     def set_extension(self):
         self.extension = self.cmbExtension.currentText()
@@ -137,12 +130,12 @@ class PlotterWindow(QtGui.QMainWindow):
         self.updatePredictedLength()
         # self.previewImage.setSpeed(self.fps)
 
-    def selectScore(self, current, previous):
+    def selectTrajectory(self, current, previous):
         if current:
-            self.setScore(current.signal)
+            self.setTrajectory(current.signal)
 
-    def setScore(self, score):
-        self.score = score
+    def setTrajectory(self, trajectory):
+        self.trajectory = trajectory
         self.updatePredictedLength()
 
     def setOutputPath(self):
@@ -182,16 +175,14 @@ class PlotterWindow(QtGui.QMainWindow):
 
     def preview(self):
         print "Preview!"
-        from tempfile import NamedTemporaryFile
         f = "temp_file.%s" % self.extension
-        self.render_single_gif(traj=self.score, temp_file=f)
+        self.render_single_gif(traj=self.trajectory, temp_file=f)
         self.previewImage = QtGui.QMovie(f)
         self.previewImage.setCacheMode(QtGui.QMovie.CacheAll)
 
         lblPreview = self.findChild(QtGui.QLabel, "lblPreview")
         lblPreview.setMovie(self.previewImage)
         self.previewImage.setSpeed(100)
-        # preview.setScaledSize(lblPreview.sizeHint())
         self.previewImage.start()
 
     def new_image(self, fill=.5, x=0, y=0):
@@ -204,8 +195,6 @@ class PlotterWindow(QtGui.QMainWindow):
         :param y:
         :return:
         """
-        # if x + y < 1:
-        #     raise Exception("Cannot produce image of size %dx%d" % (x, y))
         if x == 0:
             x = self.x_max
         if y == 0:
@@ -218,6 +207,7 @@ class PlotterWindow(QtGui.QMainWindow):
     def transform(self, x, y, round=False):
         """
         Transforms given Leap coordinates to GIF coordinates.
+        :param round:
         :param x:
         :param y:
         :return:
@@ -262,7 +252,7 @@ class PlotterWindow(QtGui.QMainWindow):
         for i, (x, y) in enumerate(map(lambda x: self.transform(*x, round=True), trajectory)):
             frame = self.new_image(fill=1)
             if self.n_trace > 0:
-                for n in reversed(range(1,self.n_trace+1)):
+                for n in reversed(range(1, self.n_trace + 1)):
                     if i - n - 1 < 0:
                         continue
                     x_from, y_from = self.transform(*trajectory[i - n - 1])
@@ -275,7 +265,8 @@ class PlotterWindow(QtGui.QMainWindow):
                             if y_from > y_to:
                                 y_from, y_to = y_to, y_from
                                 down = False
-                            for n_line, y_ in enumerate(range(self.round(y_from, down), self.round(y_to, down) + 1)):
+                            for n_line, y_ in enumerate(range(self.round(y_from, down),
+                                                              self.round(y_to, down) + 1)):
                                 p_y = y_
                                 p_x = x_to
                                 frame[p_x - self.trace_width:p_x + self.trace_width,
@@ -288,13 +279,13 @@ class PlotterWindow(QtGui.QMainWindow):
                     if x_from > x_to:
                         x_from, x_to = x_to, x_from
                         down = False
-                    for n_line, x_ in enumerate(range(self.round(x_from, down), self.round(x_to, down)+1)):
+                    for n_line, x_ in enumerate(range(self.round(x_from, down), self.round(x_to, down) + 1)):
                         p_x = x_
                         p_y = min(self.y_max - 1, self.round(y_from + delta * n_line))
-                        frame[p_x-self.trace_width:p_x+self.trace_width,
-                              p_y-self.trace_width:p_y+self.trace_width] = (
-                        n * 1. / self.n_trace)
-            frame[x - self.hand_width:x + self.hand_width, y - self.hand_height:y + self.hand_height] = 0
+                        frame[p_x - self.trace_width:p_x + self.trace_width,
+                              p_y - self.trace_width:p_y + self.trace_width] = (n * 1. / self.n_trace)
+            frame[x - self.hand_width:x + self.hand_width,
+                  y - self.hand_height:y + self.hand_height] = 0
             frames.append(frame)
         return frames
 
@@ -321,26 +312,9 @@ class PlotterWindow(QtGui.QMainWindow):
                 im.mimsave(temp_file, animation,
                            fps=self.fps)
 
-    def log_to_gif(self, logfile, fps=10, n_trace=5):
-        print "Reading %s..." % logfile
-        r = fromFile(logfile)
-        print "Animating trajectories..."
-        self.n_trace = n_trace
-        self.produce_selected_gifs(r, fps=fps)
-
 if __name__ == '__main__':
-    # app = QtGui.QApplication(sys.argv)
-    # from twisted.internet import reactor
-    # console = embedded.EmbeddedIPython(app)#, main.window)
-    # print "Embedded."
     import sys
 
-    main = None
-    # if len(sys.argv) > 1 and sys.argv[1] == "constantrate":
-    #     main = ConstantRateRecorder()
-    # else:
     main = PlotterWindow()
     main.show()
-    # console.show()
-    # reactor.runReturn()
     sys.exit(app.exec_())
