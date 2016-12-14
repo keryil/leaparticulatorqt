@@ -67,7 +67,7 @@ class PlotterWindow(QtGui.QMainWindow):
         self.x_offset = 200
         self.y_max = 600
         self.x_max = 600
-        self.fps = 30
+        self.fps = 150
         self.n_trace = 15
         self.trace_width = 2
         self.hand_width = 10
