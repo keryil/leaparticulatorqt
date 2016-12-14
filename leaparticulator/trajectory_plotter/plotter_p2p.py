@@ -41,7 +41,6 @@ class PlotterWindow(QtGui.QMainWindow):
         loadUiWidget('Traj2GIF.ui', widget=self)
         self.setWindowTitle("Plotter")
         self.extension = None
-        self.actionChangeExtension.triggered.connect(self.set_extension)
         self.set_extension()
 
         # self.setLogFile(self.filename)
@@ -49,27 +48,10 @@ class PlotterWindow(QtGui.QMainWindow):
         import os
         self.txtOutputPath.setText(os.path.abspath(os.path.expanduser("~" + os.sep + "Desktop")))
 
-        self.actionPlay.triggered.connect(self.preview)
-        self.actionRecord.triggered.connect(self.produce_selected_gifs)
-        self.actionChange_Path.triggered.connect(self.setOutputPath)
-
-        # fix the terribly slow open file dialog under
-        # opensuse
-        import platform
-        options = QtGui.QFileDialog.Options(0)
-        if platform.system() == "Linux":
-            options = QtGui.QFileDialog.DontUseNativeDialog
-        self.actionOpenLog.triggered.connect(
-            lambda: self.setLogFile(str(QtGui.QFileDialog.getOpenFileName(options=options))))
-
         self.score = None
-        self.lstSignals.currentItemChanged.connect(self.selectScore)
 
-        # connect the playback rate spinner
-        self.spinPlayback.valueChanged.connect(self.setRate)
-        self.spinAnchorFrames.valueChanged.connect(self.setAnchorCount)
-        self.spinHandSize.valueChanged.connect(self.setHandSize)
-        # self.spinPlayback.setValue(int(1. / constants.THEREMIN_RATE))
+        self.ignoreX = False
+        self.ignoreY = False
 
         self.x_offset = 210
         self.y_max = 608
@@ -82,6 +64,40 @@ class PlotterWindow(QtGui.QMainWindow):
         # number of black frames at the beginning of each video
         self.anchorCount = 4
 
+        self.setupSignals()
+
+        print "Done!"
+
+    def setupSignals(self):
+        self.actionChangeExtension.triggered.connect(self.set_extension)
+        self.actionPlay.triggered.connect(self.preview)
+        self.actionRecord.triggered.connect(self.produce_selected_gifs)
+        self.actionChange_Path.triggered.connect(self.setOutputPath)
+        self.lstSignals.currentItemChanged.connect(self.selectScore)
+
+        self.spinPlayback.valueChanged.connect(self.setRate)
+        self.spinAnchorFrames.valueChanged.connect(self.setAnchorCount)
+        self.spinHandSize.valueChanged.connect(self.setHandSize)
+
+        # fix the terribly slow open file dialog under
+        # opensuse
+        import platform
+        options = QtGui.QFileDialog.Options(0)
+        if platform.system() == "Linux":
+            options = QtGui.QFileDialog.DontUseNativeDialog
+        self.actionOpenLog.triggered.connect(
+            lambda: self.setLogFile(str(QtGui.QFileDialog.getOpenFileName(options=options))))
+
+        def toggle_x():
+            self.ignoreX = not self.ignoreX
+            print "Ignore x?", self.ignoreX
+
+        def toggle_y():
+            self.ignoreY = not self.ignoreY
+            print "Ignore y?", self.ignoreY
+        self.chkIgnoreX.stateChanged.connect(toggle_x)
+        self.chkIgnoreY.stateChanged.connect(toggle_y)
+
         def set_ntrace(n):
             self.n_trace = n
             print "n_trace set to", n
@@ -90,8 +106,6 @@ class PlotterWindow(QtGui.QMainWindow):
             print "Trace width set to", n
         self.spinTrace.valueChanged.connect(set_ntrace)
         self.spinWidth.valueChanged.connect(set_trace_width)
-
-        print "Done!"
 
     def updatePredictedLength(self):
         self.lblLength.setText("Predicted video duration is %.2f seconds for the last selected item." %
@@ -222,9 +236,21 @@ class PlotterWindow(QtGui.QMainWindow):
             raise e
         if round:
             x, y = self.round(x), self.round(y)
+        if self.ignoreX:
+            x = self.y_max / 2
+        if self.ignoreY:
+            y = self.x_max / 2
         return y, x
 
     def animate(self, trajectory):
+        """
+        Animates a trajectory and returns the frames. Note that inside the
+        function all x's are actually y's and vice versa, since these are
+        swapped at self.transform to work around the row first notation
+        of numpy images I started out with.
+        :param trajectory:
+        :return:
+        """
         frames = [self.new_image(fill=0)] * self.anchorCount
         # minimum_x = min(t[0] for t in trajectory)
         # if minimum_x < 0:
@@ -244,8 +270,20 @@ class PlotterWindow(QtGui.QMainWindow):
 
                     xdiff = abs(x_to - x_from)
                     if xdiff == 0:
+                        if self.ignoreY:
+                            down = True
+                            if y_from > y_to:
+                                y_from, y_to = y_to, y_from
+                                down = False
+                            for n_line, y_ in enumerate(range(self.round(y_from, down), self.round(y_to, down) + 1)):
+                                p_y = y_
+                                p_x = x_to
+                                frame[p_x - self.trace_width:p_x + self.trace_width,
+                                p_y - self.trace_width:p_y + self.trace_width] = (
+                                    n * 1. / self.n_trace)
                         continue
-                    delta = (y_to - y_from) / xdiff
+                    else:
+                        delta = (y_to - y_from) / xdiff
                     down = True
                     if x_from > x_to:
                         x_from, x_to = x_to, x_from

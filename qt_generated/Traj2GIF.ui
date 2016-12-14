@@ -402,6 +402,32 @@
      <string>Note that the durations are almost certainly inaccurate for GIFs with FPS &gt; 50.</string>
     </property>
    </widget>
+   <widget class="QCheckBox" name="chkIgnoreX">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>430</y>
+      <width>86</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ignore X</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="chkIgnoreY">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>450</y>
+      <width>86</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ignore Y</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>btnPlay</zorder>
    <zorder>btnRecord</zorder>
@@ -425,6 +451,8 @@
    <zorder>label_6</zorder>
    <zorder>spinHandSize</zorder>
    <zorder>label_7</zorder>
+   <zorder>chkIgnoreX</zorder>
+   <zorder>chkIgnoreY</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
