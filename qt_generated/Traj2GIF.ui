@@ -131,7 +131,7 @@
      <rect>
       <x>13</x>
       <y>10</y>
-      <width>181</width>
+      <width>121</width>
       <height>20</height>
      </rect>
     </property>
@@ -257,6 +257,93 @@
      <number>2</number>
     </property>
    </widget>
+   <widget class="QComboBox" name="cmbExtension">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>360</y>
+      <width>104</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>gif</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>mp4</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>avi</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>mpg</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>mov</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>mkv</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>wmv</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>355</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Output format</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinAnchorFrames">
+    <property name="geometry">
+     <rect>
+      <x>440</x>
+      <y>380</y>
+      <width>48</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>1000</number>
+    </property>
+    <property name="value">
+     <number>4</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>360</y>
+      <width>221</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string># of black frames before playback</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>btnPlay</zorder>
    <zorder>btnRecord</zorder>
@@ -272,6 +359,10 @@
    <zorder>label_4</zorder>
    <zorder>line_2</zorder>
    <zorder>spinWidth</zorder>
+   <zorder>cmbExtension</zorder>
+   <zorder>label_2</zorder>
+   <zorder>spinAnchorFrames</zorder>
+   <zorder>label_5</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -302,6 +393,14 @@
   <action name="actionOpenLog">
    <property name="text">
     <string>openLog</string>
+   </property>
+  </action>
+  <action name="actionChangeExtension">
+   <property name="text">
+    <string>Change Extension</string>
+   </property>
+   <property name="toolTip">
+    <string>Change output extension</string>
    </property>
   </action>
  </widget>
@@ -364,6 +463,22 @@
     <hint type="sourcelabel">
      <x>300</x>
      <y>395</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>cmbExtension</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>actionChangeExtension</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>394</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

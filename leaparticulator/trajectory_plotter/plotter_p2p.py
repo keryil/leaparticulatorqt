@@ -33,11 +33,21 @@ import imageio as im
 class PlotterWindow(QtGui.QMainWindow):
     def __init__(self):
         super(PlotterWindow, self).__init__()
+        print QtGui.QMovie.supportedFormats()
         # self.filename = "/shared/Dropbox/ABACUS/Workspace/LeapArticulatorQt/leaparticulator/test/test_data/123R0126514.1r.exp.log"
+        self.previewImage = None
         self.filename = None
         # self.playback = ThereminPlayback(record=False)
         loadUiWidget('Traj2GIF.ui', widget=self)
         self.setWindowTitle("Plotter")
+        self.extension = None
+        self.actionChangeExtension.triggered.connect(self.set_extension)
+        self.set_extension()
+
+        # number of black frames at the beginning of each video
+        self.anchorCount = None
+
+
 
         # self.setLogFile(self.filename)
         # self.score = self.data['1']['./img/meanings/1_1.png']
@@ -62,11 +72,12 @@ class PlotterWindow(QtGui.QMainWindow):
 
         # connect the playback rate spinner
         self.spinPlayback.valueChanged.connect(self.setRate)
+        self.spinAnchorFrames.valueChanged.connect(self.setAnchorCount)
         # self.spinPlayback.setValue(int(1. / constants.THEREMIN_RATE))
 
         self.x_offset = 200
-        self.y_max = 600
-        self.x_max = 600
+        self.y_max = 608
+        self.x_max = 608
         self.fps = 150
         self.n_trace = 15
         self.trace_width = 2
@@ -84,6 +95,14 @@ class PlotterWindow(QtGui.QMainWindow):
 
         print "Done!"
 
+    def set_extension(self):
+        self.extension = self.cmbExtension.currentText()
+        print "Extension set to %s" % self.extension
+
+    def setAnchorCount(self, count):
+        self.anchorCount = count
+        print "Number of anchor frames set to %s" % self.anchorCount
+
     def round(self, flt):
         return int(np.round(flt))
 
@@ -93,6 +112,7 @@ class PlotterWindow(QtGui.QMainWindow):
     def setRate(self, rate):
         print "FPS set to", rate
         self.fps = rate
+        # self.previewImage.setSpeed(self.fps)
 
     def selectScore(self, current, previous):
         if current:
@@ -136,15 +156,16 @@ class PlotterWindow(QtGui.QMainWindow):
     def preview(self):
         print "Preview!"
         from tempfile import NamedTemporaryFile
-        f = "temp_file.gif"
+        f = "temp_file.%s" % self.extension
         self.render_single_gif(traj=self.score, temp_file=f)
-        preview = QtGui.QMovie(f)
-        preview.setCacheMode(QtGui.QMovie.CacheAll)
+        self.previewImage = QtGui.QMovie(f)
+        self.previewImage.setCacheMode(QtGui.QMovie.CacheAll)
 
         lblPreview = self.findChild(QtGui.QLabel, "lblPreview")
-        lblPreview.setMovie(preview)
+        lblPreview.setMovie(self.previewImage)
+        self.previewImage.setSpeed(100)
         # preview.setScaledSize(lblPreview.sizeHint())
-        preview.start()
+        self.previewImage.start()
 
     def new_image(self, fill=.5, x=0, y=0):
         """
@@ -189,7 +210,8 @@ class PlotterWindow(QtGui.QMainWindow):
         return x, y
 
     def animate(self, trajectory):
-        frames = [self.new_image(fill=0), self.new_image(fill=1), self.new_image(fill=0), self.new_image(fill=1)]
+        frames = [self.new_image(fill=0), self.new_image(fill=0),
+                  self.new_image(fill=0), self.new_image(fill=0)]
         for i, (x, y) in enumerate(trajectory):
             frame = self.new_image(fill=1)
             if self.n_trace > 0:
@@ -233,16 +255,18 @@ class PlotterWindow(QtGui.QMainWindow):
         if traj:
             data = map(lambda d: d.get_stabilized_position()[:2], traj)
             animation = self.animate(data)
+            print "Rendering at %s FPS" % self.fps
             # print participant, phase, meaning
             if temp_file is None:
                 meaning = image.split("(")[-1].split(".")[0]
-                fname = os.path.join(self.txtOutputPath.text(), "%s_phase%s_%s.gif") % (participant, phase, meaning)
+                fname = os.path.join(self.txtOutputPath.text(), "%s_phase%s_%s.%s") % \
+                        (participant, phase, meaning, self.extension)
                 print "Outputting %s..." % fname
                 im.mimsave(fname, animation,
-                       fps=self.fps, subrectangles=True)
+                           fps=self.fps)
             else:
                 im.mimsave(temp_file, animation,
-                           fps=self.fps, subrectangles=True)
+                           fps=self.fps)
 
     def log_to_gif(self, logfile, fps=10, n_trace=5):
         print "Reading %s..." % logfile
