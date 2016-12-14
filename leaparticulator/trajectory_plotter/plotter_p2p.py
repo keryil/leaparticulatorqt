@@ -53,6 +53,7 @@ class PlotterWindow(QtGui.QMainWindow):
         self.hand_height = 10
         # number of black frames at the beginning of each video
         self.anchorCount = 4
+        self.data, self.meanings = None, None
 
         self.setupSignals()
 
@@ -118,11 +119,6 @@ class PlotterWindow(QtGui.QMainWindow):
         self.hand_height = size
         self.hand_width = size
         print "Hand size set to %s" % size
-
-    def round(self, flt, down=False):
-        if down:
-            return int(np.ceil(flt))
-        return int(np.round(flt))
 
     def setRate(self, rate):
         print "FPS set to", rate
@@ -204,10 +200,10 @@ class PlotterWindow(QtGui.QMainWindow):
         data.fill(fill)
         return data
 
-    def transform(self, x, y, round=False):
+    def transform(self, x, y, rounded=False):
         """
         Transforms given Leap coordinates to GIF coordinates.
-        :param round:
+        :param rounded:
         :param x:
         :param y:
         :return:
@@ -224,12 +220,12 @@ class PlotterWindow(QtGui.QMainWindow):
         except AssertionError, e:
             print x, y
             raise e
-        if round:
-            x, y = self.round(x), self.round(y)
+        if rounded:
+            x, y = round(x), round(y)
         if self.ignoreX:
-            x = self.y_max / 2
+            x = self.x_max / 2
         if self.ignoreY:
-            y = self.x_max / 2
+            y = self.y_max / 2
         return y, x
 
     def animate(self, trajectory):
@@ -249,7 +245,7 @@ class PlotterWindow(QtGui.QMainWindow):
         #     self.x_offset = 0
         # print "X offset set to %s" % self.x_offset
 
-        for i, (x, y) in enumerate(map(lambda x: self.transform(*x, round=True), trajectory)):
+        for i, (x, y) in enumerate(map(lambda x: self.transform(*x, rounded=True), trajectory)):
             frame = self.new_image(fill=1)
             if self.n_trace > 0:
                 for n in reversed(range(1, self.n_trace + 1)):
@@ -265,8 +261,8 @@ class PlotterWindow(QtGui.QMainWindow):
                             if y_from > y_to:
                                 y_from, y_to = y_to, y_from
                                 down = False
-                            for n_line, y_ in enumerate(range(self.round(y_from, down),
-                                                              self.round(y_to, down) + 1)):
+                            for n_line, y_ in enumerate(range(round(y_from, down),
+                                                              round(y_to, down) + 1)):
                                 p_y = y_
                                 p_x = x_to
                                 frame[p_x - self.trace_width:p_x + self.trace_width,
@@ -279,13 +275,13 @@ class PlotterWindow(QtGui.QMainWindow):
                     if x_from > x_to:
                         x_from, x_to = x_to, x_from
                         down = False
-                    for n_line, x_ in enumerate(range(self.round(x_from, down), self.round(x_to, down) + 1)):
+                    for n_line, x_ in enumerate(range(round(x_from, down), round(x_to, down) + 1)):
                         p_x = x_
-                        p_y = min(self.y_max - 1, self.round(y_from + delta * n_line))
+                        p_y = min(self.y_max - 1, round(y_from + delta * n_line))
                         frame[p_x - self.trace_width:p_x + self.trace_width,
-                              p_y - self.trace_width:p_y + self.trace_width] = (n * 1. / self.n_trace)
+                        p_y - self.trace_width:p_y + self.trace_width] = (n * 1. / self.n_trace)
             frame[x - self.hand_width:x + self.hand_width,
-                  y - self.hand_height:y + self.hand_height] = 0
+            y - self.hand_height:y + self.hand_height] = 0
             frames.append(frame)
         return frames
 
@@ -311,6 +307,11 @@ class PlotterWindow(QtGui.QMainWindow):
             else:
                 im.mimsave(temp_file, animation,
                            fps=self.fps)
+
+def round(flt, down=False):
+    if down:
+        return int(np.ceil(flt))
+    return int(np.round(flt))
 
 if __name__ == '__main__':
     import sys
