@@ -20,7 +20,7 @@ app = QtGui.QApplication(sys.argv)
 
 from leaparticulator import constants
 
-constants.install_reactor()
+# constants.install_reactor()
 
 from PyQt4 import QtGui
 
@@ -43,11 +43,6 @@ class PlotterWindow(QtGui.QMainWindow):
         self.extension = None
         self.actionChangeExtension.triggered.connect(self.set_extension)
         self.set_extension()
-
-        # number of black frames at the beginning of each video
-        self.anchorCount = None
-
-
 
         # self.setLogFile(self.filename)
         # self.score = self.data['1']['./img/meanings/1_1.png']
@@ -73,9 +68,10 @@ class PlotterWindow(QtGui.QMainWindow):
         # connect the playback rate spinner
         self.spinPlayback.valueChanged.connect(self.setRate)
         self.spinAnchorFrames.valueChanged.connect(self.setAnchorCount)
+        self.spinHandSize.valueChanged.connect(self.setHandSize)
         # self.spinPlayback.setValue(int(1. / constants.THEREMIN_RATE))
 
-        self.x_offset = 200
+        self.x_offset = 210
         self.y_max = 608
         self.x_max = 608
         self.fps = 150
@@ -83,6 +79,8 @@ class PlotterWindow(QtGui.QMainWindow):
         self.trace_width = 2
         self.hand_width = 10
         self.hand_height = 10
+        # number of black frames at the beginning of each video
+        self.anchorCount = 4
 
         def set_ntrace(n):
             self.n_trace = n
@@ -95,23 +93,34 @@ class PlotterWindow(QtGui.QMainWindow):
 
         print "Done!"
 
+    def updatePredictedLength(self):
+        self.lblLength.setText("Predicted video duration is %.2f seconds for the last selected item." %
+                               ((len(self.score) + self.anchorCount) / float(self.fps)))
+
     def set_extension(self):
         self.extension = self.cmbExtension.currentText()
+        self.btnRecord.setText("Render all selected items as %s" % (self.extension.upper()))
         print "Extension set to %s" % self.extension
 
     def setAnchorCount(self, count):
         self.anchorCount = count
         print "Number of anchor frames set to %s" % self.anchorCount
+        self.updatePredictedLength()
 
-    def round(self, flt):
+    def setHandSize(self, size):
+        self.hand_height = size
+        self.hand_width = size
+        print "Hand size set to %s" % size
+
+    def round(self, flt, down=False):
+        if down:
+            return int(np.ceil(flt))
         return int(np.round(flt))
-
-    def updateRateSpin(self):
-        self.spinPlayback.setValue(constants.THEREMIN_RATE)
 
     def setRate(self, rate):
         print "FPS set to", rate
         self.fps = rate
+        self.updatePredictedLength()
         # self.previewImage.setSpeed(self.fps)
 
     def selectScore(self, current, previous):
@@ -120,6 +129,7 @@ class PlotterWindow(QtGui.QMainWindow):
 
     def setScore(self, score):
         self.score = score
+        self.updatePredictedLength()
 
     def setOutputPath(self):
         print self.txtOutputPath.text()
@@ -145,7 +155,10 @@ class PlotterWindow(QtGui.QMainWindow):
                 for meaning, signal in self.data[speaker][phase].items():
                     if signal is not None and signal != []:
                         item = QtGui.QListWidgetItem(
-                            "Speaker %s, Phase %s, Meaning %s" % (speaker.split("@")[0], phase, meaning))
+                            "Speaker %s, Phase %s, Meaning %s (%d Frames)" % (speaker.split("@")[0],
+                                                                              phase,
+                                                                              meaning,
+                                                                              len(signal)))
                         item.signal = signal
                         item.meaning = meaning
                         item.phase = phase
@@ -188,7 +201,7 @@ class PlotterWindow(QtGui.QMainWindow):
         data.fill(fill)
         return data
 
-    def transform(self, x, y):
+    def transform(self, x, y, round=False):
         """
         Transforms given Leap coordinates to GIF coordinates.
         :param x:
@@ -207,18 +220,23 @@ class PlotterWindow(QtGui.QMainWindow):
         except AssertionError, e:
             print x, y
             raise e
-        return x, y
+        if round:
+            x, y = self.round(x), self.round(y)
+        return y, x
 
     def animate(self, trajectory):
-        frames = [self.new_image(fill=0), self.new_image(fill=0),
-                  self.new_image(fill=0), self.new_image(fill=0)]
-        for i, (x, y) in enumerate(trajectory):
+        frames = [self.new_image(fill=0)] * self.anchorCount
+        # minimum_x = min(t[0] for t in trajectory)
+        # if minimum_x < 0:
+        #     self.x_offset = -minimum_x
+        # else:
+        #     self.x_offset = 0
+        # print "X offset set to %s" % self.x_offset
+
+        for i, (x, y) in enumerate(map(lambda x: self.transform(*x, round=True), trajectory)):
             frame = self.new_image(fill=1)
             if self.n_trace > 0:
-                for n in reversed(range(self.n_trace)):
-                    #                 try:
-                    #                     x_, y_ = transform(*trajectory[i-n])
-                    #                     frame[x_-delta_x:x_+delta_x, y_-delta_y:y_+delta_y] = 0.3 + n * .7 / n_trace
+                for n in reversed(range(1,self.n_trace+1)):
                     if i - n - 1 < 0:
                         continue
                     x_from, y_from = self.transform(*trajectory[i - n - 1])
@@ -226,22 +244,19 @@ class PlotterWindow(QtGui.QMainWindow):
 
                     xdiff = abs(x_to - x_from)
                     if xdiff == 0:
-                        xdiff = .01
+                        continue
                     delta = (y_to - y_from) / xdiff
+                    down = True
                     if x_from > x_to:
-                        x_from, y_from, x_to, y_to = x_to, y_to, x_from, y_from
-                    for n_line, x_ in enumerate(range(self.round(x_from), self.round(x_to)+1)):
+                        x_from, x_to = x_to, x_from
+                        down = False
+                    for n_line, x_ in enumerate(range(self.round(x_from, down), self.round(x_to, down)+1)):
                         p_x = x_
                         p_y = min(self.y_max - 1, self.round(y_from + delta * n_line))
                         frame[p_x-self.trace_width:p_x+self.trace_width,
                               p_y-self.trace_width:p_y+self.trace_width] = (
                         n * 1. / self.n_trace)
-                        #                     np.fill_diagonal(frame[x_:x__, y_:y__], 0.3 + n * .7 / n_trace)
-                        #                 except IndexError:
-                        #                     pass
-            x, y = self.transform(x, y)
             frame[x - self.hand_width:x + self.hand_width, y - self.hand_height:y + self.hand_height] = 0
-
             frames.append(frame)
         return frames
 
@@ -277,7 +292,7 @@ class PlotterWindow(QtGui.QMainWindow):
 
 if __name__ == '__main__':
     # app = QtGui.QApplication(sys.argv)
-    from twisted.internet import reactor
+    # from twisted.internet import reactor
     # console = embedded.EmbeddedIPython(app)#, main.window)
     # print "Embedded."
     import sys
@@ -289,5 +304,5 @@ if __name__ == '__main__':
     main = PlotterWindow()
     main.show()
     # console.show()
-    reactor.runReturn()
+    # reactor.runReturn()
     sys.exit(app.exec_())

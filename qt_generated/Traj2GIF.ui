@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>966</width>
-    <height>520</height>
+    <width>970</width>
+    <height>557</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -102,7 +102,7 @@
      <rect>
       <x>260</x>
       <y>430</y>
-      <width>281</width>
+      <width>311</width>
       <height>20</height>
      </rect>
     </property>
@@ -216,9 +216,9 @@
     <property name="geometry">
      <rect>
       <x>420</x>
-      <y>10</y>
-      <width>181</width>
-      <height>20</height>
+      <y>0</y>
+      <width>121</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -344,6 +344,64 @@
      <string># of black frames before playback</string>
     </property>
    </widget>
+   <widget class="QLabel" name="lblLength">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>450</y>
+      <width>471</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Panel</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>395</y>
+      <width>61</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hand size</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinHandSize">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>390</y>
+      <width>48</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>99</number>
+    </property>
+    <property name="value">
+     <number>10</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>470</y>
+      <width>481</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Note that the durations are almost certainly inaccurate for GIFs with FPS &gt; 50.</string>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>btnPlay</zorder>
    <zorder>btnRecord</zorder>
@@ -363,13 +421,17 @@
    <zorder>label_2</zorder>
    <zorder>spinAnchorFrames</zorder>
    <zorder>label_5</zorder>
+   <zorder>lblLength</zorder>
+   <zorder>label_6</zorder>
+   <zorder>spinHandSize</zorder>
+   <zorder>label_7</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>966</width>
+     <width>970</width>
      <height>22</height>
     </rect>
    </property>
