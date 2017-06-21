@@ -2,6 +2,10 @@ from collections import namedtuple
 
 import jsonpickle
 import pandas as pd
+import leaparticulator
+
+# to prevent unused import warnings
+leaparticulator
 
 # this is a list of refactored classes which need to be
 # replaced with their new FQ names for jsonpickle to be
