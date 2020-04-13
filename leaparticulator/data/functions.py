@@ -3,6 +3,7 @@ from collections import namedtuple
 import jsonpickle
 import pandas as pd
 import leaparticulator
+from leaparticulator.data.meaning import FeaturelessMeaning
 
 # to prevent unused import warnings
 leaparticulator
@@ -91,6 +92,8 @@ def fromFile(filename, no_practice=False):
         return fromFile_p2p(filename)
     lines = open(filename).readlines()
     lines = [refactor_old_references(line) for line in lines]
+    for i in range(len(lines)):
+        lines[i] = lines[i].replace("\"Meaning.", "\"leaparticulator.data.meaning.")
     images = jsonpickle.decode(lines[0])
     responses = recursive_decode(lines[1])
     test_results = jsonpickle.decode(lines[2])
