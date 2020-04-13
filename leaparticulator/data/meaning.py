@@ -144,6 +144,9 @@ class FeaturelessMeaning(AbstractMeaning):
         assert 0 < id_no < 16
         self.id_no = id_no
 
+    def __hash__(self):
+        return hash((self.id_no, ))
+
 
 class Meaning(object):
     def __init__(self, size, color, shade):

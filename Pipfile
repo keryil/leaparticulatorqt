@@ -11,6 +11,7 @@ jsonpickle = "*"
 jupyter = "*"
 pyaudio = "*"
 matplotlib = "*"
+twisted = "*"
 
 [requires]
 python_version = "3.8"

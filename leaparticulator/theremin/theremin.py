@@ -37,7 +37,7 @@ if 'Leap' not in sys.modules:
                 command = "install_name_tool -change %s %s %s" % (first_path,
                                                                   dylib_path,
                                                                   f)
-                print "Issuing command: %s" % command
+                print("Issuing command: %s" % command)
                 subprocess.check_call(command.split())
                 done = True
                 break
@@ -222,8 +222,8 @@ class Theremin(Leap.Listener):
         self.controller = Leap.Controller()
         self.controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
         self.controller.add_listener(self)
-        print "Connecting to: %s:%s" % (constants.leap_server,
-                                        constants.leap_port)
+        print("Connecting to: %s:%s" % (constants.leap_server,
+                                        constants.leap_port))
         if factory:
             self.protocol = reactor.connectTCP(constants.leap_server,
                                            constants.leap_port,
@@ -316,8 +316,8 @@ class ConstantRateTheremin(Theremin):
         self.controller = Leap.Controller()
         self.controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
 
-        print "Connecting to: %s:%s" % (constants.leap_server,
-                                        constants.leap_port)
+        print("Connecting to: %s:%s" % (constants.leap_server,
+                                        constants.leap_port))
         self.protocol = reactor.connectTCP(constants.leap_server,
                                            constants.leap_port,
                                            factory(self, ui))
@@ -433,10 +433,10 @@ class ThereminPlayback(object):
                 self.player.dumpRecording([self.filename])
                 # self.call = None
                 self.stopping = False
-                print "Stopped"
+                print("Stopped")
 
                 from datetime import datetime
-                print datetime.now() - self.start_time
+                print(datetime.now() - self.start_time)
                 if self.callback:
                     reactor.callLater(0, self.callback)
                     for callback in self.late_callbacks:
@@ -449,6 +449,6 @@ class ThereminPlayback(object):
 
 if __name__ == "__main__":
     # theremin = Theremin()
-    print "theremin.py test code init..."
+    print("theremin.py test code init...")
     theremin = ConstantRateTheremin()
     reactor.run()
