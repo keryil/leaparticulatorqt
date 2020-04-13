@@ -12,9 +12,9 @@ from leaparticulator.constants import WAIT_WIN, SERVER_WIN
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
-    print "LeapP2PServerUI new QApp: %s" % app
+    print("LeapP2PServerUI new QApp: %s" % app)
 else:
-    print "LeapP2PServerUI existing QApp: %s" % app
+    print("LeapP2PServerUI existing QApp: %s" % app)
 
 from PyQt4.QtCore import *
 
@@ -96,7 +96,7 @@ class LeapP2PServerUI(object):
         self.btnEnd.setEnabled(True)
 
     def connectionMade(self, client, client_id):
-        print "Connection made with %s!" % client_id
+        print("Connection made with %s!" % client_id)
         item = QStandardItem("%s (%s)" % (client, client_id))
         self.clientModel.appendRow(item)
 
@@ -155,11 +155,11 @@ class LeapP2PServerUI(object):
         rnd = self.session.round_data[row]
 
         if not implicit_update:
-            print "Selected round #%d" % row
-            print "Speaker: %s, Hearer: %s\nImage: %s, Guess: %s" % (rnd.speaker.other_end_alias,
+            print("Selected round #%d" % row)
+            print("Speaker: %s, Hearer: %s\nImage: %s, Guess: %s" % (rnd.speaker.other_end_alias,
                                                                  rnd.hearer.other_end_alias,
                                                                  rnd.image,
-                                                                 rnd.guess)
+                                                                 rnd.guess))
         self.lblSpeaker.setText("Speaker: %s" % rnd.speaker.other_end_alias)
         self.lblHearer.setText("Hearer: %s" % rnd.hearer.other_end_alias)
         # if rnd.signal and len(rnd.signal) > 5:
@@ -207,16 +207,16 @@ class LeapP2PServerUI(object):
         :return:
         """
         pointer = rnd.image_pointer
-        print "Image pointer with which I'll draw the meaning space: %s" % pointer
+        print("Image pointer with which I'll draw the meaning space: %s" % pointer)
         image_list = self.factory.images[:pointer]
         if not hasattr(self, 'meaningSpace'):
-            print "Creating the initial meaning space widgets..."
+            print("Creating the initial meaning space widgets...")
             self.meaningSpace = QGroupBox(title="Meaning Space")
             self.meaningSpace.setObjectName("meaningSpace")
             self.mainWin.findChildren(QScrollArea, "scrollArea")[0].setWidget(self.meaningSpace)
 
         assert self.meaningSpace
-        print "Got a handle for the meaning space now. It has {} meanings in it.".format(len(image_list))
+        print("Got a handle for the meaning space now. It has {} meanings in it.".format(len(image_list)))
 
         # first clean the current items, if present
         layout = self.meaningSpace.layout()
@@ -234,7 +234,7 @@ class LeapP2PServerUI(object):
         for meaning in map(str, image_list):
             count = rnd.success_counts[meaning]
             # print "Adding %s to meaning space" % meaning
-            index = map(str, image_list).index(meaning)
+            index = list(map(str, image_list)).index(meaning)
             label = QLabel()
             overlay = re.search('(\d+)\.png', meaning).group(1)
             label.setPixmap(image_list[index].pixmap(overlayed_text=overlay,
@@ -282,6 +282,6 @@ class LeapP2PServerUI(object):
 
 if __name__ == "__main__":
     gui = LeapP2PServerUI(app)
-    print "About to go..."
+    print("About to go...")
     gui.go()
     sys.exit(app.exec_())

@@ -12,9 +12,9 @@ from leaparticulator.constants import WAIT_WIN, CREATION_WIN, FEEDBACK_WIN, TEST
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
-    print "LeapP2PClient new QApp: %s" % app
+    print("LeapP2PClient new QApp: %s" % app)
 else:
-    print "LeapP2PClient existing QApp: %s" % app
+    print("LeapP2PClient existing QApp: %s" % app)
 
 from leaparticulator.theremin.theremin import ConstantRateTheremin
 from leaparticulator.theremin.theremin import ThereminPlayback
@@ -63,7 +63,7 @@ class LeapP2PClientUI(object):
 
 
     def setClient(self, client):
-        print "Setting client to %s" % client
+        print("Setting client to %s" % client)
         self.client = client
         self.setClientFactory(client.factory)
 
@@ -114,7 +114,7 @@ class LeapP2PClientUI(object):
         self.firstWin = loadUiWidget(FIRST_WIN)
         button = self.firstWin.findChildren(QPushButton, "btnOkay")[0]
         text = self.firstWin.findChildren(QTextBrowser, "textBrowser")[0]
-        print "loaded"
+        print("loaded")
         self.theremin.unmute()
         self.firstWin.showFullScreen()
 
@@ -125,7 +125,7 @@ class LeapP2PClientUI(object):
         connect(button, "clicked()", fn)
         from os.path import join
         text.setText(open(join(constants.P2P_RES_DIR, "first_screen.txt")).read())
-        print "first_screen done"
+        print("first_screen done")
         return self.firstWin
 
     def unique_connect(self, widget, signal, slot):
@@ -155,7 +155,7 @@ class LeapP2PClientUI(object):
 
         label = self.creationWin.findChildren(QLabel, "lblImage")[0]
         px = image.pixmap()
-        print "Displaying pixmap: %s" % px.toImage()
+        print("Displaying pixmap: %s" % px.toImage())
         label.setPixmap(px)
 
         slider = self.creationWin.findChildren(QSlider, "sldVolume")[0]
@@ -175,12 +175,12 @@ class LeapP2PClientUI(object):
         self.theremin.setVolume(value)
 
     def start_recording(self):
-        print "start_recording() called."
+        print("start_recording() called.")
         if self.recording:
-                print "Interrupting an apparently ongoing recording..."
+                print("Interrupting an apparently ongoing recording...")
                 self.stop_recording()
         if self.creationWin and not self.recording:
-            print "Start recording..."
+            print("Start recording...")
             self.theremin.reset_signal()
             self.theremin.unmute()
             self.theremin.record()
@@ -204,7 +204,7 @@ class LeapP2PClientUI(object):
                 string = string.format("self.creationWin is None (actually {}).".format(self.creationWin))
             else:
                 string = string.format("participant pushed record while already recording.")
-            print string
+            print(string)
 
 
     def setup_play_button(self, button, signal):
@@ -261,7 +261,7 @@ class LeapP2PClientUI(object):
                 QMessageBox.warning(self.creationWin, "Empty signal",
                                     "You have just recorded an empty signal. Please try again.")
             else:
-                print "Signal is %d frames long." % len(self.getSignal())
+                print("Signal is %d frames long." % len(self.getSignal()))
 
     def extend_last_signal(self, frame):
         if self.recording:
@@ -322,7 +322,7 @@ class LeapP2PClientUI(object):
             btnSubmit.setEnabled(False)
             btnPlay.setEnabled(False)
             image_ = None
-            for i, image in zip(range(1, constants.N_OPTIONS + 1), images):
+            for i, image in zip(list(range(1, constants.N_OPTIONS + 1)), images):
                 button = self.testWin.findChildren(QPushButton, "btnImage%d" % i)[0]
                 if button.isChecked():
                     image_ = image

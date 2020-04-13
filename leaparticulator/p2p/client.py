@@ -4,13 +4,13 @@ from PyQt4.QtGui import QApplication
 
 from leaparticulator import constants
 
-print "LeapP2PClient QApp check...",
+print("LeapP2PClient QApp check...", end=' ')
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
-    print "LeapP2PClient new QApp: %s" % app
+    print("LeapP2PClient new QApp: %s" % app)
 else:
-    print "LeapP2PClient existing QApp: %s" % app
+    print("LeapP2PClient existing QApp: %s" % app)
 
 from leaparticulator.constants import install_reactor
 
@@ -74,7 +74,7 @@ class LeapP2PClient(basic.LineReceiver):
             try:
                 assert self.factory.mode in (constants.IMAGE_LIST,
                                              constants.FEEDBACK)
-            except AssertionError, err:
+            except AssertionError as err:
                 if constants.TESTING:
                     return
                 else:
@@ -166,7 +166,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
     def __init__(self, leap_listener, ui, uid):
         log.startLogging(sys.stdout)
         if ui is None:
-            print "Warning: No UI"
+            print("Warning: No UI")
         self.theremin = leap_listener
         self.ui = ui
         self.uid = uid
@@ -207,15 +207,15 @@ def start_client(qapplication, uid):
     assert uid is not None
     from leaparticulator.p2p.ui.client import LeapP2PClientUI
 
-    print "Init UI object..."
+    print("Init UI object...")
     ui = LeapP2PClientUI(qapplication)
-    print "Init theremin..."
+    print("Init theremin...")
     theremin = Theremin(ui=ui, realtime=False, factory=None)
     factory = LeapP2PClientFactory(theremin, ui=ui, uid=uid)
     theremin.factory = factory
     theremin.reactor = reactor
     theremin.player.ui = ui
-    print "Initiating connection with %s:%s" % (constants.leap_server, constants.leap_port)
+    print("Initiating connection with %s:%s" % (constants.leap_server, constants.leap_port))
     endpoint = TCP4ClientEndpoint(
             reactor, constants.leap_server, constants.leap_port)
     theremin.factory = factory
@@ -226,9 +226,9 @@ def start_client(qapplication, uid):
     def go(client):
         ui.setClient(client)
         if not (constants.TESTING or reactor.running):
-            print "Starting reactor..."
+            print("Starting reactor...")
             reactor.runReturn()
-            print "Starting UI..."
+            print("Starting UI...")
             ui.go()
 
     connection_def = endpoint.connect(factory)

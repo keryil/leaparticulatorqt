@@ -29,7 +29,7 @@ def plot_hdp_hmm(hmm, axes=None, clr=kelly_colors, transition_arrows=True,
     univariate = hmm.obs_distns[0].mu.shape[0] == 1
 
     if univariate:
-        print "Univariate HMM detected (%d states)." % len(hmm.means)
+        print("Univariate HMM detected (%d states)." % len(hmm.means))
         means_ = [(0, d.mu) for d in hmm.obs_distns]
     else:
         means_ = [d.mu for d in hmm.obs_distns]
@@ -57,19 +57,19 @@ def plot_hdp_hmm(hmm, axes=None, clr=kelly_colors, transition_arrows=True,
     for i, mean in enumerate(means_):
         if hmm.state_usages[i] == 0:
             if verbose:
-                print "Skipping unused state %i" % (i)
+                print("Skipping unused state %i" % (i))
             continue
         color = colors[i % len(colors)]
         if verbose:
-            print  "MEAN:", tuple(mean)
+            print("MEAN:", tuple(mean))
         hmm.plot_means.append(axes.scatter(*tuple(mean), color=color, picker=10, label="State%i" % i))
         axes.annotate(s="%d" % i, xy=mean, xytext=(-10, -10), xycoords="data", textcoords="offset points",
                       alpha=1, bbox=dict(boxstyle='round,pad=0.2', fc=color, alpha=0.3))
         if verbose:
-            print  "COVARS: %s" % covars[i]
+            print("COVARS: %s" % covars[i])
         if not univariate:
             if verbose:
-                print "Drawing ellipse..."
+                print("Drawing ellipse...")
             hmm.plot_covars.append(plot_cov_ellipse(covars[i], mean, alpha=.30, color=color, ax=axes))
         else:
             hmm.plot_covars.append(
@@ -141,7 +141,7 @@ def plot_hdp_hmm(hmm, axes=None, clr=kelly_colors, transition_arrows=True,
         axes.legend()
     hmm.plot_arrows = arrows
     if verbose:
-        print "Returning from plot_hmm"
+        print("Returning from plot_hmm")
     return hmm.plot_annotations, hmm.plot_means, arrows
 
 

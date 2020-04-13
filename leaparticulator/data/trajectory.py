@@ -168,7 +168,7 @@ class Trajectory(object):
 
                 distance = euclidean(last_point, new_point)
                 ratio = float(self.step_size) / distance
-            except FloatingPointError, err:
+            except FloatingPointError as err:
                 self.__create(leading_silence, trailing_silence)
                 return
             #             print "Before scaling: %f" % norm([x2-x1 for x1,x2 in zip(last_point, new_point)])
@@ -186,7 +186,7 @@ class Trajectory(object):
                 ratio = None
                 try:
                     ratio = float(self.step_size) / distance
-                except FloatingPointError, err:
+                except FloatingPointError as err:
                     self.__create(leading_silence, trailing_silence)
                     return
                 #             print "Final length of segment is %f (%f)" %  (norm([x2-x1 for x1,x2 in zip(last_point, new_point)]),self.step_size)
@@ -197,13 +197,13 @@ class Trajectory(object):
 
     def plot2d(self, show=True, width=0.002, path=None, axes=None, *args, **kwargs):
         from matplotlib import pyplot as plt
-        x, y = zip(*self.data)
+        x, y = list(zip(*self.data))
         x, y = np.asarray(x), np.asarray(y)
         if not axes:
             axes = plt.gca()
         q = axes.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1,
                        width=width, *args, **kwargs)
-        print q
+        print(q)
         # print x[:1], y[:1], [x[1]-x[2]], [y[1]-y[2]]
         # plt.arrow(x[:1], y[:1], [x[1]-x[0]], [y[1]-y[0]], edgecolor="red", scale_units='xy', angles='xy', scale=1)
         # plt.plot(xdif, ydif)
@@ -218,11 +218,11 @@ class Trajectory(object):
         from matplotlib import pyplot as plt
         assert self.ndim == 1
 
-        x, y = zip(*enumerate(self.data))
+        x, y = list(zip(*enumerate(self.data)))
         x, y = np.asarray(x), np.asarray(y)
         q = plt.quiver(x[:-1], y[:-1], x[1:] - x[:-1], y[1:] - y[:-1], scale_units='xy', angles='xy', scale=1,
                        width=width, *args, **kwargs)
-        print q
+        print(q)
         # print x[:1], y[:1], [x[1]-x[2]], [y[1]-y[2]]
         # plt.arrow(x[:1], y[:1], [x[1]-x[0]], [y[1]-y[0]], edgecolor="red", scale_units='xy', angles='xy', scale=1)
         # plt.plot(xdif, ydif)
@@ -338,10 +338,10 @@ class Trajectory(object):
             last_point = np.array(self.data[j])
             distance = euclidean(this_point, last_point)
             if distance > self.step_size:
-                print("Old this_point (%f): %s\nLast point: %s" % (distance, this_point, last_point))
+                print(("Old this_point (%f): %s\nLast point: %s" % (distance, this_point, last_point)))
                 this_point = last_point + (self.step_size / distance) * (this_point - last_point)
-                print(
-                "New this_point (%f): %s\nLast point: %s" % (euclidean(this_point, last_point), this_point, last_point))
+                print((
+                "New this_point (%f): %s\nLast point: %s" % (euclidean(this_point, last_point), this_point, last_point)))
             self.data[j + 1] = tuple(this_point)
 
         # then, from j to 1
@@ -350,10 +350,10 @@ class Trajectory(object):
             last_point = np.array(self.data[j])
             distance = euclidean(this_point, last_point)
             if distance > self.step_size:
-                print("Old this_point (%f): %s\nLast point: %s" % (distance, this_point, last_point))
+                print(("Old this_point (%f): %s\nLast point: %s" % (distance, this_point, last_point)))
                 this_point = last_point + self.step_size / distance * (this_point - last_point)
-                print(
-                "New this_point (%f): %s\nLast point: %s" % (euclidean(this_point, last_point), this_point, last_point))
+                print((
+                "New this_point (%f): %s\nLast point: %s" % (euclidean(this_point, last_point), this_point, last_point)))
             self.data[j - 1] = tuple(this_point)
 
 
@@ -361,7 +361,7 @@ class Trajectory(object):
         return iter(self.data)
 
     def __repr__(self):
-        return "<Trajectory(n={}, dimsize={})>".format(self.data.shape, map(int, self.dim_size))
+        return "<Trajectory(n={}, dimsize={})>".format(self.data.shape, list(map(int, self.dim_size)))
     if __name__ == "__main__":
         import sys, os
 

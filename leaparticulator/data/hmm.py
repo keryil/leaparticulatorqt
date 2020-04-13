@@ -288,7 +288,7 @@ class HMM(object):
         assert training_data is not None
         matrix = ghmm_obj.asMatrices()
         self.transmat = np.asarray(matrix[0])
-        self.means, self.variances = zip(*matrix[1])
+        self.means, self.variances = list(zip(*matrix[1]))
         self.multivariate = isinstance(self.means[0], list)
         self.nstates = len(self.means)
         self.initProb = np.asarray(matrix[2])
@@ -370,7 +370,7 @@ class HMM(object):
         self.means = np.asarray(self.means)
         self.variances = np.asarray(self.variances)
         self.initProb = np.asarray(self.initProb)
-        self.transmat = pd.DataFrame(self.transmat, index=range(self.nstates), columns=range(self.nstates))
+        self.transmat = pd.DataFrame(self.transmat, index=list(range(self.nstates)), columns=list(range(self.nstates)))
 
     def _smooth_matrix(self, matrix):
         transmat = np.array(matrix)
@@ -463,7 +463,7 @@ class HMM(object):
         stationary_dist = r("statdistr(transmat)")
         # long_as = lambda x: range(len(x))
         rate = 0
-        for s1, s2 in product(range(len(self.means)), range(len(self.means))):
+        for s1, s2 in product(list(range(len(self.means))), list(range(len(self.means)))):
             p = self.transmat[s1][s2]
             rate -= stationary_dist[s1] * xlogy(p, p)
         return rate
@@ -476,7 +476,7 @@ class HMM(object):
         data = obs
         if self.is_multivariate() and flatten_input:
             if not isinstance(obs[0], ghmm.EmissionSequence):
-                print "Flattening..."
+                print("Flattening...")
                 data = [flatten_to_emission(d) for d in obs]
         data = ghmm.SequenceSet(ghmm.Float(), [d for d in obs])
         # paths, likelihoods =
@@ -503,7 +503,7 @@ class HMM(object):
 
         V = [{}]
         path = {}
-        states = range(self.nstates)
+        states = list(range(self.nstates))
         start_p = self.initProb
         trans_p = self.transmat
         self._mapB(obs)
@@ -550,8 +550,8 @@ class HMM(object):
     # PLOTTING
     ###########
     def on_pick(self, event):
-        print event
-        print self.plot_annotations
+        print(event)
+        print(self.plot_annotations)
         if hasattr(event, '_processed'):
             return
         event._processed = True
@@ -563,13 +563,13 @@ class HMM(object):
         plt.draw()
 
     def on_pick_annotation(self, event):
-        print "Annotation: %s" % event.artist
+        print("Annotation: %s" % event.artist)
         event.artist.set_visible(False)
 
     def on_pick_means(self, event):
-        print "Mean: %s" % self.plot_means.index(event.artist)
+        print("Mean: %s" % self.plot_means.index(event.artist))
         self.plot_annotations[self.plot_means.index(event.artist)].set_visible(True)
-        print "%s" % self.plot_annotations[self.plot_means.index(event.artist)]
+        print("%s" % self.plot_annotations[self.plot_means.index(event.artist)])
 
     def plot_hmm(self, axes=None, clr=constants.kelly_colors, transition_arrows=True,
                  prob_lists=True, legend=True, verbose=False, *args, **kwargs):
@@ -578,7 +578,7 @@ class HMM(object):
         univariate = not self.is_multivariate()
 
         if univariate:
-            print "Univariate HMM detected (%d states)." % len(self.means)
+            print("Univariate HMM detected (%d states)." % len(self.means))
             means_ = [(0, m) for m in self.means]
         else:
             means_ = self.means
@@ -604,15 +604,15 @@ class HMM(object):
         for i, mean in enumerate(means_):
             color = colors[i % len(colors)]
             if verbose:
-                print  "MEAN:", tuple(mean)
+                print("MEAN:", tuple(mean))
             self.plot_means.append(axes.scatter(*tuple(mean), color=color, picker=10, label="State%i" % i))
             axes.annotate(s="%d" % i, xy=mean, xytext=(-10, -10), xycoords="data", textcoords="offset points",
                           alpha=1, bbox=dict(boxstyle='round,pad=0.2', fc=color, alpha=0.3))
             if verbose:
-                print  "COVARS: %s" % covars[i]
+                print("COVARS: %s" % covars[i])
             if not univariate:
                 if verbose:
-                    print "Drawing ellipse..."
+                    print("Drawing ellipse...")
                 self.plot_covars.append(plot_cov_ellipse(covars[i], mean, alpha=.30, color=color, ax=axes))
             else:
                 self.plot_covars.append(
@@ -684,7 +684,7 @@ class HMM(object):
             axes.legend()
         self.plot_arrows = arrows
         if verbose:
-            print "Returning from plot_hmm"
+            print("Returning from plot_hmm")
         return self.plot_annotations, self.plot_means, arrows
 
 
@@ -704,7 +704,7 @@ class ViterbiPath(object):
         else:
             assert state_seq is not None
             self.state_seq = state_seq
-            print prob, state_seq
+            print(prob, state_seq)
             import sys;
 
             sys.stdout.flush()
@@ -721,9 +721,9 @@ def levenshtein(s1, s2):
     l1 = len(s1)
     l2 = len(s2)
 
-    matrix = [range(l1 + 1)] * (l2 + 1)
+    matrix = [list(range(l1 + 1))] * (l2 + 1)
     for zz in range(l2 + 1):
-        matrix[zz] = range(zz, zz + l1 + 1)
+        matrix[zz] = list(range(zz, zz + l1 + 1))
     for zz in range(0, l2):
         for sz in range(0, l1):
             if s1[sz] == s2[zz]:
@@ -762,7 +762,7 @@ def reduce_hmm(hmm):
     return (reconstruct_hmm, (hmm.hmm_object.asMatrices(),
                               data))
 
-import copy_reg
+import copyreg
 
-copy_reg.constructor(reconstruct_hmm)
-copy_reg.pickle(HMM, reduce_hmm)
+copyreg.constructor(reconstruct_hmm)
+copyreg.pickle(HMM, reduce_hmm)

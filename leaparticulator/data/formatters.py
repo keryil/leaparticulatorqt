@@ -13,7 +13,7 @@ def first_exp_parse_filename(fname):
 
 def first_experiment(fname):
     condition, phase, units = first_exp_parse_filename(fname)
-    print "Condition: %s, phase: %s, units: %s" % (condition, phase, units)
+    print("Condition: %s, phase: %s, units: %s" % (condition, phase, units))
     multivariate = False
     reverse_cond = condition in ("2r", "1r")
     interval = 1

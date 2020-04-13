@@ -8,13 +8,13 @@ import sys
 
 from PyQt4.QtGui import QApplication
 
-print "LeapP2PServer QApp check...",
+print("LeapP2PServer QApp check...", end=' ')
 app = QApplication.instance()
 if app is None:
     app = QApplication(sys.argv)
-    print "LeapP2PServer new QApp: %s" % app
+    print("LeapP2PServer new QApp: %s" % app)
 else:
-    print "LeapP2PServer existing QApp: %s" % app
+    print("LeapP2PServer existing QApp: %s" % app)
 
 from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT, MEANING_INCREMENT, LEARNING_THRESHOLD, \
     N_OPTIONS, LOG_DIR
@@ -142,7 +142,7 @@ class LeapP2PSession(object):
         exists = self.started_file_dump
         filename = join(constants.ROOT_DIR, LOG_DIR, filename)
 
-        print "Dumping round data to %s. First entry? %s" % (filename, not exists)
+        print("Dumping round data to %s. First entry? %s" % (filename, not exists))
         extract_participant = lambda x: "%s@%s" % (x.other_end_alias, x.other_end)
         mode = "a" if exists else "w"
         with open(filename, mode) as f:
@@ -265,10 +265,10 @@ class LeapP2PServer(basic.LineReceiver):
 
             self.factory.image_pointer = 2
             self.factory.image_success = {str(image): 0 for image in self.factory.images}
-            print "Success dict, initialized: %s" % self.factory.image_success
+            print("Success dict, initialized: %s" % self.factory.image_success)
             # print self.factory.image_success
             # print images[0], type(images[0])
-            print "Images in place!"
+            print("Images in place!")
             log.msg(self.factory.images)
 
     def addListenerConnectionLost(self, f):
@@ -282,7 +282,7 @@ class LeapP2PServer(basic.LineReceiver):
         self.factory.clients[self] = self.other_end
 
         log.msg("Connection with %s is made" % self.other_end)
-        print "Current client list:", self.factory.clients
+        print("Current client list:", self.factory.clients)
 
         for callback in self.connectionMadeListeners:
             callback(self)
@@ -298,7 +298,7 @@ class LeapP2PServer(basic.LineReceiver):
         """
         Send a message to all connected clients.
         """
-        for c in self.factory.clients.keys():
+        for c in list(self.factory.clients.keys()):
             c.send_to_client(message, c)
 
     def send_to_client(self, message, client):
@@ -306,7 +306,7 @@ class LeapP2PServer(basic.LineReceiver):
         Send a message to a specific client.
         """
         assert isinstance(message, LeapP2PMessage)
-        assert client in self.factory.clients.keys()
+        assert client in list(self.factory.clients.keys())
         message = jsonpickle.encode(message)
         nline = "<{}@{}> {}".format(
             self.factory.clients[client], client.transport.getPeer().host, message[:300])
@@ -317,7 +317,7 @@ class LeapP2PServer(basic.LineReceiver):
         """
         End the experiment.
         """
-        print "Server's end() method called, sending end messages."
+        print("Server's end() method called, sending end messages.")
         self.send_all(EndSessionMessage())
 
     def start(self, practice=False):
@@ -327,8 +327,8 @@ class LeapP2PServer(basic.LineReceiver):
         :return:
         """
         if self.factory.mode == constants.INIT:
-            print "--------->start() called"
-            print "clients (%d): %s" % (len(self.factory.clients), self.factory.clients)
+            print("--------->start() called")
+            print("clients (%d): %s" % (len(self.factory.clients), self.factory.clients))
         # elif self.factory.mode == "ENDING":
         #     self.end()
 
@@ -340,7 +340,7 @@ class LeapP2PServer(basic.LineReceiver):
         if len(self.factory.clients) == 2:
 
             if self.factory.end_round_msg_counter not in (-1, 2):
-                print 'Why the fuck are we restarting with %d end of round messages?! Ignoring...' % self.factory.end_round_msg_counter
+                print('Why the fuck are we restarting with %d end of round messages?! Ignoring...' % self.factory.end_round_msg_counter)
                 return
 
             self.factory.end_round_msg_counter = 0
@@ -353,14 +353,14 @@ class LeapP2PServer(basic.LineReceiver):
                     self.factory.ui.onSessionChange)
 
                 log.msg("Starting a new session with clients %s" %
-                        ([c for c in self.factory.clients.values()]))
+                        ([c for c in list(self.factory.clients.values())]))
 
                 self.send_all(StartMessage())
                 img_list = ImageListMessage(self.factory.images)
                 self.send_all(img_list)
             self.choose_speaker_and_topic()
         else:
-            print "--------->start() called with more or less than two clients"
+            print("--------->start() called with more or less than two clients")
 
     def choose_speaker_and_topic(self):
         # choose a speaker
@@ -396,8 +396,8 @@ class LeapP2PServer(basic.LineReceiver):
 
         all_images = self.factory.images[:self.factory.image_pointer]
         success = self.factory.image_success
-        guessed = filter(lambda x: success[str(x)] >= 2, all_images)
-        non_guessed = filter(lambda x: success[str(x)] < 2, all_images)
+        guessed = [x for x in all_images if success[str(x)] >= 2]
+        non_guessed = [x for x in all_images if success[str(x)] < 2]
 
         if pick_guessed_image:
             log.msg("Do we have enough established meanings to pick from? %s" % (len(guessed) > 1))
@@ -410,8 +410,8 @@ class LeapP2PServer(basic.LineReceiver):
         log.msg("The chosen image is: %s" % image)
         log.msg("Speaker: %s; Hearer: %s" % (self.factory.clients[speaker],
                                              self.factory.clients[hearer]))
-        print "Success dict:", success
-        print "Image pointer:", self.factory.image_pointer
+        print("Success dict:", success)
+        print("Image pointer:", self.factory.image_pointer)
         self.factory.session.newRound()
         self.factory.session.getLastRound().image = image
         self.factory.session.setParticipants(speaker=speaker,
@@ -486,7 +486,7 @@ class LeapP2PServer(basic.LineReceiver):
             else:
                 assert isinstance(message, StartMessage)
                 self.factory.start_counter += 1
-                print "Received START message #%d" % self.factory.start_counter
+                print("Received START message #%d" % self.factory.start_counter)
                 if self.factory.start_counter == 2:
                     # self.factory.ui.btnStart.clicked.connect(self.start)
                     # self.factory.ui.enableStart()
@@ -501,12 +501,12 @@ class LeapP2PServer(basic.LineReceiver):
 
             # pick the images
             image_pointer = self.factory.image_pointer
-            options = filter(lambda x: str(x) != str(message.data.image), self.factory.images[:image_pointer])
+            options = [x for x in self.factory.images[:image_pointer] if str(x) != str(message.data.image)]
             if len(options) > N_OPTIONS - 1:
                 options = sample(options, N_OPTIONS - 1)
             options = options + [message.data.image]
             shuffle(options)
-            assert len(map(str, options)) == len(set(map(str, options)))
+            assert len(list(map(str, options))) == len(set(map(str, options)))
             log.msg("Prepared options for the round: %s" % options)
             self.factory.session.setOptions(options)
 
@@ -526,9 +526,9 @@ class LeapP2PServer(basic.LineReceiver):
             if success:
                 try:
                     self.factory.image_success[str(image)] += 1
-                except Exception, e:
-                    print ["\"%s\"" % i for i in self.factory.image_success.keys()]
-                    print "\"%s\"" % image
+                except Exception as e:
+                    print(["\"%s\"" % i for i in list(self.factory.image_success.keys())])
+                    print("\"%s\"" % image)
                     raise
                 self.expandMeaningSpace()
             else:
@@ -653,16 +653,16 @@ def start_server(qapplication, condition='1', no_ui=False, max_images=None):
     assert condition in ['1', '1r', '2', '2r', 'master']
     try:
         if no_ui:
-            print "Headless mode..."
+            print("Headless mode...")
             sys.stdout.flush()
             factory = get_server_instance(condition=condition,
                                           ui=None,
                                           max_images=max_images)
             if not (constants.TESTING or reactor.running):
-                print "Starting reactor..."
+                print("Starting reactor...")
                 reactor.runReturn()
         else:
-            print "Normal GUI mode..."
+            print("Normal GUI mode...")
             sys.stdout.flush()
             ui = LeapP2PServerUI(qapplication)
             factory = get_server_instance(condition=condition,
@@ -670,14 +670,14 @@ def start_server(qapplication, condition='1', no_ui=False, max_images=None):
                                           max_images=max_images)
             ui.setFactory(factory)
             if not (constants.TESTING or reactor.running):
-                print "Starting reactor..."
+                print("Starting reactor...")
                 reactor.runReturn()
             ui.go()
         return factory
-    except IndexError, e:
+    except IndexError as e:
         import traceback
         traceback.print_exc()
-        print "ERROR: You should specify a condition (1/2/1r/2r) as a command line argument."
+        print("ERROR: You should specify a condition (1/2/1r/2r) as a command line argument.")
         sys.exit(-1)
 
 

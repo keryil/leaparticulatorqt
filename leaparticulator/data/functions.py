@@ -34,49 +34,49 @@ def recursive_decode(lst, verbose=False):
     :return:
     """
     if verbose:
-        print "Decoding %s" % (str(lst)[:100])
+        print("Decoding %s" % (str(lst)[:100]))
 
-    if isinstance(lst, str) or isinstance(lst, unicode):
+    if isinstance(lst, str) or isinstance(lst, str):
         try:
             # the arg lst may or may not be a pickled obj itself
             # if not isinstance(lst, str):
             #     raise TypeError
-            while isinstance(lst, str) or isinstance(lst, unicode):
+            while isinstance(lst, str) or isinstance(lst, str):
                 lst = jsonpickle.decode(lst)
-        except TypeError, err:
-            print err
+        except TypeError as err:
+            print(err)
             pass
-        except KeyError, err:
-            print "Error: %s" % err
-            print "String: %s" % lst
+        except KeyError as err:
+            print("Error: %s" % err)
+            print("String: %s" % lst)
             raise err
     if isinstance(lst, dict):
-        if "py/object" in lst.keys():
+        if "py/object" in list(lst.keys()):
             if verbose:
-                print "Unpickle obj (type: %s)..." % lst['py/object']
+                print("Unpickle obj (type: %s)..." % lst['py/object'])
             lst = jsonpickle.decode(lst)
         else:
             if verbose:
-                print "Unwind dict..."
-            lst = {i: recursive_decode(lst[i]) for i in lst.keys()}
+                print("Unwind dict...")
+            lst = {i: recursive_decode(lst[i]) for i in list(lst.keys())}
     elif isinstance(lst, list):
         if verbose:
-            print "Decode list..."
+            print("Decode list...")
         lst = [recursive_decode(l) for l in lst]
     else:
         if verbose:
-            print "Probably hit tail..."
+            print("Probably hit tail...")
     try:
         assert "py/object" not in str(lst)
-    except Exception, ex:
-        print ex, str(lst)
+    except Exception as ex:
+        print(ex, str(lst))
         raise Exception(type(lst), str(lst), ex)
     return lst
 
 
 # converts a list of objects to a list of their
 # string representations
-toStr = lambda x: map(str, x)
+toStr = lambda x: list(map(str, x))
 
 
 def fromFile(filename, no_practice=False):
@@ -110,10 +110,10 @@ def fromFile(filename, no_practice=False):
 def new_recursive_decode(string, verbose=False):
     def print_(stuff):
         if verbose:
-            print stuff
+            print(stuff)
 
     obj = string
-    if (isinstance(string, str) or isinstance(string, unicode)) \
+    if (isinstance(string, str) or isinstance(string, str)) \
             and "py/object" in string:
         print_("Decoding string: {}".format(string))
         obj = jsonpickle.decode(string)
@@ -122,7 +122,7 @@ def new_recursive_decode(string, verbose=False):
         if ("py/object" in obj):
             print_("Detected a dict with py/object as key: {}".format(obj))
             new_obj = {}
-            for k, v in obj.items():
+            for k, v in list(obj.items()):
                 try:
                     new_obj[k] = jsonpickle.decode(v)
                 except:
@@ -152,16 +152,16 @@ def fromFile_p2p(filename):
 
     def round_hook(obj, nround, phase, context):
         round_summary = obj
-        speaker = round_summary.speaker
-        hearer = round_summary.hearer
-        signal = round_summary.signal
-        image_pointer = round_summary.image_pointer
+        speaker = round_summary['speaker']
+        hearer = round_summary['hearer']
+        signal = round_summary['signal']
+        image_pointer = round_summary['image_pointer']
         meanings = context['meanings']
         responses = context['responses']
 
         # if this fails, there is something seriously
         # wrong about this log file.
-        assert round_summary.image in meanings
+        assert round_summary['image'] in meanings
 
         try:
             resp = responses[speaker][phase]
@@ -170,9 +170,9 @@ def fromFile_p2p(filename):
             resp = responses[speaker][phase]
 
         # we only want the successful rounds
-        if round_summary.success:
+        if round_summary['success']:
             # print resp.keys()
-            resp[str(round_summary.image)] = signal
+            resp[str(round_summary['image'])] = signal
             # print round_summary.image_pointer
             # responses.append(round_summary)
         return context
@@ -212,7 +212,7 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
     with open(filename) as f:
         phase = -1
         last_pointer = -1
-        lines = zip(range(-2, 40000), f)
+        lines = list(zip(list(range(-2, 40000)), f))
 
         if reverse:
             lines = reversed(lines)
@@ -222,17 +222,17 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
         for i, line in lines:
             obj = decode(line.replace("__main__", "leaparticulator.p2p.server"))
             if i >= 0:
-                phase_change = ((obj.image_pointer > last_pointer) and not reverse) \
-                               or ((obj.image_pointer < last_pointer) and reverse)
-                obj.signal = map(decode, obj.signal)
+                phase_change = ((obj['image_pointer'] > last_pointer) and not reverse) \
+                               or ((obj['image_pointer'] < last_pointer) and reverse)
+                obj['signal'] = list(map(decode, obj['signal']))
 
                 if phase_change:
                     phase += 1
                     if reverse:
                         phase -= 2
 
-                    last_pointer = obj.image_pointer
-                    print "Phase {} {} at round {}".format(phase, "ends" if reverse else "starts", i)
+                    last_pointer = obj['image_pointer']
+                    print("Phase {} {} at round {}".format(phase, "ends" if reverse else "starts", i))
 
                 for round_hook in round_hooks:
                     context_dict = round_hook(obj, i, phase, context_dict)
@@ -320,7 +320,7 @@ def toPandas_p2p(filename, nphases=8):
     # calculate the phase offset, and apply it if nonzero
     min_phase = context_dict['lst_questions'][-1]['phase']
     if min_phase:
-        print "Correcting for {} phases (offset: {})...".format(nphases - min_phase, - min_phase)
+        print("Correcting for {} phases (offset: {})...".format(nphases - min_phase, - min_phase))
         for lst in (context_dict['lst_questions'], context_dict['lst_responses']):
             for row in lst:
                 row['phase'] -= min_phase
@@ -388,15 +388,15 @@ def _expandResponses(responses, images):
                     # normalize time to lie between 0 and 1
                     try:
                         frame.timestamp = (frame.timestamp - firstTimeFrame) / dif
-                    except ZeroDivisionError, e:
-                        print e
-                        print (("Participant response at phase %s image %s (%s) consists of " +
+                    except ZeroDivisionError as e:
+                        print(e)
+                        print((("Participant response at phase %s image %s (%s) consists of " +
                                 "a single timeframe. This will be handled appropriately, " +
                                 "and the parse will not fail. But if " +
                                 "you are reading this while parsing a file that is not " +
                                 "logs/123R0126514.1r.exp.log, pm Kerem.") % (phase,
                                                                              image,
-                                                                             im))
+                                                                             im)))
 
                         frame.timestamp = 0
             responses[client][phase] = d
@@ -440,7 +440,7 @@ def toCSV(filename, delimiter="|", data=None):
 
     csv_filename = filename.replace(".log", ".responses.csv")
 
-    print("Saving responses into %s" % csv_filename)
+    print(("Saving responses into %s" % csv_filename))
     doublequote = lambda x: "\"%s\"" % str(x)
     # first, the responses
     with open(csv_filename, "w") as csv:
@@ -471,7 +471,7 @@ def toCSV(filename, delimiter="|", data=None):
     calculate_amp_and_freq(csv_filename, delimiter=delimiter)
 
     csv_filename = csv_filename.replace("responses", "tests")
-    print("Saving tests into %s" % csv_filename)
+    print(("Saving tests into %s" % csv_filename))
     # And now the tests
     with open(csv_filename, "w") as csv:
         # write headers
@@ -502,7 +502,7 @@ def toCSV(filename, delimiter="|", data=None):
 
     # Finally, the images
     csv_filename = csv_filename.replace("tests", "images")
-    print("Saving images into %s" % csv_filename)
+    print(("Saving images into %s" % csv_filename))
     with open(csv_filename, "w") as csv:
         # write headers
         csv.write(delimiter.join(["image_name"]))
@@ -519,7 +519,7 @@ def convertToPandas(images, responses, test_results):
     pd_results = {}
     for client in responses:
         clientd = {}
-        pd_client = pd.DataFrame(index=responses[client].keys())
+        pd_client = pd.DataFrame(index=list(responses[client].keys()))
         # pd_results[client] = pd_client
         # print "Client:", client
         # print "Phases:", responses[client].keys()
@@ -579,8 +579,8 @@ def logToPandasFrame(logfile):
     responses, test_results, responses_practice, test_results_practice, images = results
     responses = responses['127.0.0.1']
     responses_p = responses_practice['127.0.0.1']
-    phases = map(str, range(3))
-    meanings = responses[phases[0]].keys()
+    phases = list(map(str, list(range(3))))
+    meanings = list(responses[phases[0]].keys())
     columns = ['phase', 'meaning', 'frame_index', 'x', 'y', 'practice']
     all_data = pd.DataFrame(columns=columns)
     #     print all_data
@@ -600,7 +600,7 @@ def logToPandasFrame(logfile):
             #     xy_lists_p.append(traj)
             index0 = grand_index
             index_f = grand_index + len(traj)
-            index = range(grand_index, index_f)
+            index = list(range(grand_index, index_f))
             grand_index += len(traj)
 
             phase_l = []

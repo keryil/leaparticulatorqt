@@ -182,14 +182,14 @@ def install_reactor():
     # from qtreactor import qt4reactor as reactor
     import sys
     if 'qt4reactor' in sys.modules:
-        print "qt4reactor already in sys.modules!!"
+        print("qt4reactor already in sys.modules!!")
     if 'twisted.internet.reactor' not in sys.modules:
         import qt4reactor
         qt4reactor.install()
-        print "Installed qt4reactor"
+        print("Installed qt4reactor")
     else:
         from twisted.internet import reactor
-        print "Reactor already installed: %s" % reactor
+        print("Reactor already installed: %s" % reactor)
 
 
 def freqToMel(freq):

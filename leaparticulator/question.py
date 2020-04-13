@@ -43,7 +43,7 @@ class TestQuestion(object):
 
         self.n_of_images = n_of_images
         assert len(client_responses) == len(set(client_responses))
-        images = client_responses.keys()
+        images = list(client_responses.keys())
         if answer is None:
             self.pics = sample(images, n_of_images)
             self.answer = choice(self.pics)
@@ -51,10 +51,10 @@ class TestQuestion(object):
             wrong_choices = [answer, answer, answer]
             while answer in wrong_choices:
                 wrong_choices = sample(images, n_of_images - 1)
-            print wrong_choices, answer
+            print(wrong_choices, answer)
             wrong_choices.append(answer)
             self.pics = wrong_choices
-            print self.pics
+            print(self.pics)
             # extend(wrong_choices)
             # self.pics.extend(wrong_choices)
             self.answer = answer
@@ -70,10 +70,10 @@ def test(rounds=100):
     answers.
     """
     for i in range(rounds):
-        print "Round", i + 1, "of", rounds
+        print("Round", i + 1, "of", rounds)
         for n_of_pics in range(3, 30):
             # print n_of_pics, "symbols"
-            client_responses = range(n_of_pics)
+            client_responses = list(range(n_of_pics))
             for n_of_answers in range(3, n_of_pics + 1):
                 # print n_of_answers, "options per question"
                 qs = produce_questions(
@@ -85,8 +85,8 @@ def test_uniqueness(questions):
     answers = set()
     for q in questions:
         if q.answer in answers:
-            print q.answer, "is duplicate in set",
-            print[q.answer for q in questions]
+            print(q.answer, "is duplicate in set", end=' ')
+            print([q.answer for q in questions])
             import sys
 
             sys.exit(-1)
@@ -95,7 +95,7 @@ def test_uniqueness(questions):
 
 def test_arr_unique(arr):
     if len(arr) != len(set(arr)):
-        print "Duplicate in", arr
+        print("Duplicate in", arr)
         import sys
 
         sys.exit(-1)

@@ -52,12 +52,12 @@ class AbstractMeaning(object):
     @classmethod
     def FromFile(cls, filename):
         assert os.path.isfile(filename)
-        print "New meaning from: %s" % filename
+        print("New meaning from: %s" % filename)
         # print "Feature separator is: %s" % cls.feature_sep
         name = filename.split(os.path.sep)[-1].split('.')[0]
         args = name.split(cls.feature_sep)
-        print args
-        args = map(int, args)
+        print(args)
+        args = list(map(int, args))
         return cls(*args)
 
     def pixmap(self, tint=None, overlayed_text=None,
@@ -80,10 +80,10 @@ class AbstractMeaning(object):
             overlay = None
             if correct:
                 overlay = QtGui.QPixmap(TRUE_OVERLAY)
-                print "Overlay: %s" % TRUE_OVERLAY
+                print("Overlay: %s" % TRUE_OVERLAY)
             else:
                 overlay = QtGui.QPixmap(FALSE_OVERLAY)
-                print "Overlay: %s" % TRUE_OVERLAY
+                print("Overlay: %s" % TRUE_OVERLAY)
             # color = QtGui.QColor(r,g,b,a)
             painter = QtGui.QPainter(px)
             painter.drawPixmap(0, 0, base)
@@ -126,7 +126,7 @@ class P2PMeaning(AbstractMeaning):
         # print "Feature separator is: %s" % cls.feature_sep
         name = filename.split(os.path.sep)[-1].split('.')[0]
         args = name.split(cls.feature_sep)
-        args = map(int, args)
+        args = list(map(int, args))
         feature_dict = {"param%s" % i: arg for i, arg in enumerate(args)}
         feature_order = ["param%s" % i for i in range(len(args))]
         return cls(feature_dict, feature_order)
@@ -161,7 +161,7 @@ class Meaning(object):
 
     def FromFile(filename):
         name = filename.split(os.path.sep)[-1].split('.')[0]
-        args = map(int, list(name))
+        args = list(map(int, list(name)))
         return Meaning(*args)
 
     def __repr__(self):
