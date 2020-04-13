@@ -6,21 +6,26 @@ qapplication = None
 
 import sys
 
-from PyQt4.QtGui import QApplication
+try:
+    from PyQt4.QtGui import QApplication
 
-print("LeapP2PServer QApp check...", end=' ')
-app = QApplication.instance()
-if app is None:
-    app = QApplication(sys.argv)
-    print("LeapP2PServer new QApp: %s" % app)
-else:
-    print("LeapP2PServer existing QApp: %s" % app)
+    print("LeapP2PServer QApp check...", end=' ')
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication(sys.argv)
+        print("LeapP2PServer new QApp: %s" % app)
+    else:
+        print("LeapP2PServer existing QApp: %s" % app)
+    qapplication = app
+    from leaparticulator.constants import install_reactor
+    install_reactor()
+except ModuleNotFoundError:
+    print("No QT, P2PServer functioning as a library.")
 
-from leaparticulator.constants import install_reactor, NOVELTY_COEFFICIENT, MEANING_INCREMENT, LEARNING_THRESHOLD, \
+from leaparticulator.constants import NOVELTY_COEFFICIENT, MEANING_INCREMENT, LEARNING_THRESHOLD, \
     N_OPTIONS, LOG_DIR
 
-qapplication = app
-install_reactor()
+
 
 from twisted.internet import protocol, reactor
 from twisted.internet.endpoints import TCP4ServerEndpoint

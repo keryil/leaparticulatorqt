@@ -70,7 +70,7 @@ class Tone(object):
                                   format=constants.THEREMIN_AUDIO_FORMAT, output=True,
                                   frames_per_buffer=constants.FRAMES_PER_BUFFER)
         if self.record:
-            print self.p.get_default_output_device_info()
+            print(self.p.get_default_output_device_info())
             # SPEAKERS = self.p.get_default_output_device_info()["hostApi"] #The part I have modified
 
             # self.readfrom_stream = self.p.open(format=constants.THEREMIN_AUDIO_FORMAT,
@@ -114,7 +114,7 @@ class Tone(object):
         :return:
         """
         def gen():
-            for i in xrange(int(self.rate * 0.05)):
+            for i in range(int(self.rate * 0.05)):
                 if constants.THEREMIN_AUDIO_FORMAT == pyaudio.paInt32:
                     yield int((math.sin(self.phase) + 1) * self.amp * (2 ** 31))
                 else:
@@ -164,7 +164,7 @@ class Tone(object):
             wf.close()
             self.reset_record()
         else:
-            print "Cannot dump Tone to file, this is not a recording playback instance."
+            print("Cannot dump Tone to file, this is not a recording playback instance.")
 
     def reset_record(self):
         if self.record:

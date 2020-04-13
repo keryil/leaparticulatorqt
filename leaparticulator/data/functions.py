@@ -3,6 +3,7 @@ from collections import namedtuple
 import jsonpickle
 import pandas as pd
 import leaparticulator
+from leaparticulator.data.meaning import FeaturelessMeaning, Meaning, AbstractMeaning
 
 # to prevent unused import warnings
 leaparticulator
@@ -36,12 +37,12 @@ def recursive_decode(lst, verbose=False):
     if verbose:
         print("Decoding %s" % (str(lst)[:100]))
 
-    if isinstance(lst, str) or isinstance(lst, str):
+    if isinstance(lst, str):
         try:
             # the arg lst may or may not be a pickled obj itself
             # if not isinstance(lst, str):
             #     raise TypeError
-            while isinstance(lst, str) or isinstance(lst, str):
+            while isinstance(lst, str):
                 lst = jsonpickle.decode(lst)
         except TypeError as err:
             print(err)
@@ -91,6 +92,8 @@ def fromFile(filename, no_practice=False):
         return fromFile_p2p(filename)
     lines = open(filename).readlines()
     lines = [refactor_old_references(line) for line in lines]
+    for i in range(len(lines)):
+        lines[i] = lines[i].replace("\"Meaning.", "\"leaparticulator.data.meaning.")
     images = jsonpickle.decode(lines[0])
     responses = recursive_decode(lines[1])
     test_results = jsonpickle.decode(lines[2])
@@ -152,16 +155,16 @@ def fromFile_p2p(filename):
 
     def round_hook(obj, nround, phase, context):
         round_summary = obj
-        speaker = round_summary['speaker']
-        hearer = round_summary['hearer']
-        signal = round_summary['signal']
-        image_pointer = round_summary['image_pointer']
+        speaker = round_summary.speaker
+        hearer = round_summary.hearer
+        signal = round_summary.signal
+        image_pointer = round_summary.image_pointer
         meanings = context['meanings']
         responses = context['responses']
 
         # if this fails, there is something seriously
         # wrong about this log file.
-        assert round_summary['image'] in meanings
+        assert round_summary.image in meanings
 
         try:
             resp = responses[speaker][phase]
@@ -170,9 +173,9 @@ def fromFile_p2p(filename):
             resp = responses[speaker][phase]
 
         # we only want the successful rounds
-        if round_summary['success']:
+        if round_summary.success:
             # print resp.keys()
-            resp[str(round_summary['image'])] = signal
+            resp[str(round_summary.image)] = signal
             # print round_summary.image_pointer
             # responses.append(round_summary)
         return context
@@ -222,16 +225,16 @@ def process_p2p_log(filename, clients_hooks=[], meanings_hooks=[], round_hooks=[
         for i, line in lines:
             obj = decode(line.replace("__main__", "leaparticulator.p2p.server"))
             if i >= 0:
-                phase_change = ((obj['image_pointer'] > last_pointer) and not reverse) \
-                               or ((obj['image_pointer'] < last_pointer) and reverse)
-                obj['signal'] = list(map(decode, obj['signal']))
+                phase_change = ((obj.image_pointer > last_pointer) and not reverse) \
+                               or ((obj.image_pointer < last_pointer) and reverse)
+                obj.signal = list(map(decode, obj.signal))
 
                 if phase_change:
                     phase += 1
                     if reverse:
                         phase -= 2
 
-                    last_pointer = obj['image_pointer']
+                    last_pointer = obj.image_pointer
                     print("Phase {} {} at round {}".format(phase, "ends" if reverse else "starts", i))
 
                 for round_hook in round_hooks:
@@ -366,7 +369,10 @@ def _expandResponsesNew(responses, images):
         for phase in responses[client]:
             d[client][phase] = {}
             for image in responses[client][phase]:
-                d[client][phase][images[int(phase)][int(image)]] = responses[client][phase][image]
+                try:
+                    d[client][phase][images[int(phase)][int(image)]] = responses[client][phase][image]
+                except Exception as err:
+                    raise err
     return d
 
 

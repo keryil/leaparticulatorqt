@@ -1,21 +1,27 @@
 import sys
 
-from PyQt4.QtGui import QApplication
+try:
+    from PyQt4.QtGui import QApplication
+
+    print("LeapP2PClient QApp check...", end=' ')
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication(sys.argv)
+        print("LeapP2PClient new QApp: %s" % app)
+    else:
+        print("LeapP2PClient existing QApp: %s" % app)
+    qapplication = app
+    from leaparticulator.constants import install_reactor
+
+    install_reactor()
+except ModuleNotFoundError:
+    print("No QT, P2PClient functioning as a library.")
 
 from leaparticulator import constants
 
-print("LeapP2PClient QApp check...", end=' ')
-app = QApplication.instance()
-if app is None:
-    app = QApplication(sys.argv)
-    print("LeapP2PClient new QApp: %s" % app)
-else:
-    print("LeapP2PClient existing QApp: %s" % app)
 
-from leaparticulator.constants import install_reactor
 
-qapplication = app
-install_reactor()
+
 
 import jsonpickle
 from twisted.internet import protocol, reactor
@@ -25,7 +31,6 @@ from twisted.python import log
 
 from leaparticulator.p2p.messaging import InitMessage, LeapP2PMessage, StartMessage, ImageListMessage, \
     StartRoundMessage, ResponseMessage, FeedbackMessage, EndSessionMessage
-from leaparticulator.theremin.theremin import Theremin
 
 
 class LeapP2PClient(basic.LineReceiver):
@@ -206,6 +211,7 @@ class LeapP2PClientFactory(protocol.ReconnectingClientFactory):
 def start_client(qapplication, uid):
     assert uid is not None
     from leaparticulator.p2p.ui.client import LeapP2PClientUI
+    from leaparticulator.theremin.theremin import Theremin
 
     print("Init UI object...")
     ui = LeapP2PClientUI(qapplication)

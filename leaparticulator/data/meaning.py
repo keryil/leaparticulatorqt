@@ -1,7 +1,11 @@
 import os
 from os.path import join
 
-from PyQt4 import QtGui, QtCore
+try:
+    from PyQt4 import QtGui, QtCore
+    noqt = False
+except ModuleNotFoundError:
+    noqt = True
 
 from leaparticulator.constants import (IMG_EXTENSION, MEANING_DIR, TRUE_OVERLAY,
                                        FALSE_OVERLAY, MEANING_DIR_P2P, ROOT_DIR)
@@ -60,47 +64,48 @@ class AbstractMeaning(object):
         args = list(map(int, args))
         return cls(*args)
 
-    def pixmap(self, tint=None, overlayed_text=None,
-               font=QtGui.QFont("Arial", 27),
-               size=(250, 250)):
-        """
-        Tint is a tuple (r,g,b,a).
-        """
-        # if tint is None and self._ready:
-        #     return self._ready
-        base = QtGui.QPixmap(self.filename())
-        px = base
-        # self._ready = px
+    if not noqt:
+        def pixmap(self, tint=None, overlayed_text=None,
+                   font=QtGui.QFont("Arial", 27),
+                   size=(250, 250)):
+            """
+            Tint is a tuple (r,g,b,a).
+            """
+            # if tint is None and self._ready:
+            #     return self._ready
+            base = QtGui.QPixmap(self.filename())
+            px = base
+            # self._ready = px
 
-        if tint is not None:
-            px = QtGui.QPixmap(*size)
-            px.fill(QtCore.Qt.transparent)
-            r, g, b, a = tint
-            correct = g > 1
-            overlay = None
-            if correct:
-                overlay = QtGui.QPixmap(TRUE_OVERLAY)
-                print("Overlay: %s" % TRUE_OVERLAY)
-            else:
-                overlay = QtGui.QPixmap(FALSE_OVERLAY)
-                print("Overlay: %s" % TRUE_OVERLAY)
-            # color = QtGui.QColor(r,g,b,a)
-            painter = QtGui.QPainter(px)
-            painter.drawPixmap(0, 0, base)
-            painter.drawPixmap(0, 0, overlay)
-            painter.end()
+            if tint is not None:
+                px = QtGui.QPixmap(*size)
+                px.fill(QtCore.Qt.transparent)
+                r, g, b, a = tint
+                correct = g > 1
+                overlay = None
+                if correct:
+                    overlay = QtGui.QPixmap(TRUE_OVERLAY)
+                    print("Overlay: %s" % TRUE_OVERLAY)
+                else:
+                    overlay = QtGui.QPixmap(FALSE_OVERLAY)
+                    print("Overlay: %s" % TRUE_OVERLAY)
+                # color = QtGui.QColor(r,g,b,a)
+                painter = QtGui.QPainter(px)
+                painter.drawPixmap(0, 0, base)
+                painter.drawPixmap(0, 0, overlay)
+                painter.end()
 
-        if overlayed_text:
-            painter = QtGui.QPainter(px)
-            painter.drawPixmap(0, 0, base)
-            painter.setPen(QtCore.Qt.red)
-            painter.setFont(font)
-            painter.drawText(base.rect(),
-                             QtCore.Qt.AlignCenter,
-                             overlayed_text)
-            painter.end()
+            if overlayed_text:
+                painter = QtGui.QPainter(px)
+                painter.drawPixmap(0, 0, base)
+                painter.setPen(QtCore.Qt.red)
+                painter.setFont(font)
+                painter.drawText(base.rect(),
+                                 QtCore.Qt.AlignCenter,
+                                 overlayed_text)
+                painter.end()
 
-        return px
+            return px
 
     def __repr__(self):
         return self.__str__()
@@ -138,6 +143,9 @@ class FeaturelessMeaning(AbstractMeaning):
                                                  feature_order=['id_no'])
         assert 0 < id_no < 16
         self.id_no = id_no
+
+    def __hash__(self):
+        return hash((self.id_no, ))
 
 
 class Meaning(object):
