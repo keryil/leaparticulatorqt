@@ -279,7 +279,7 @@ def toPandas_p2p(filename, nphases=8):
             context['phase_and_meaning'][(client, phase, str(meaning))] = True
             for i, frame in reversed(list(enumerate(signal))):
                 x, y, z = frame.get_stabilized_position()
-                amplitude, hertz = palmToAmpAndFreq((x, y))[1]
+                amplitude, hertz = palmToAmpAndFreq((x, y))
                 mel = palmToAmpAndMel((x, y))[1]
                 context['lst_responses'].append(
                     pd.Series([nround, client, phase, meaning, i, x, y, z, hertz, mel, amplitude],
